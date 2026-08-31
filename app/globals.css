@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 300 50% 98%;
+    --foreground: 270 20% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 270 20% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 270 20% 15%;
+
+    --primary: 280 60% 40%; /* Deep purple */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 330 40% 95%; /* Light pinkish background */
+    --secondary-foreground: 330 40% 25%;
+
+    --muted: 300 30% 95%;
+    --muted-foreground: 270 10% 40%;
+
+    --accent: 330 70% 50%; /* Vibrant pink */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 65%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 300 30% 90%;
+    --input: 300 30% 90%;
+    --ring: 280 60% 40%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 270 25% 10%; /* Dark purple */
+    --foreground: 300 30% 95%;
+
+    --card: 270 30% 12%;
+    --card-foreground: 300 30% 95%;
+
+    --popover: 270 30% 12%;
+    --popover-foreground: 300 30% 95%;
+
+    --primary: 280 80% 65%; /* Brighter purple for contrast */
+    --primary-foreground: 270 20% 10%;
+
+    --secondary: 330 20% 20%; /* Muted pinkish gray */
+    --secondary-foreground: 330 70% 90%;
+
+    --muted: 270 15% 20%;
+    --muted-foreground: 300 15% 70%;
+
+    --accent: 330 70% 60%; /* Bright pink */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 270 20% 25%;
+    --input: 270 20% 25%;
+    --ring: 330 70% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+@layer utilities {
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* Prose styles for blog content */
+.prose {
+  @apply text-foreground;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply text-foreground font-bold;
+}
+
+.prose h1 {
+  @apply text-3xl mb-4 mt-8;
+}
+
+.prose h2 {
+  @apply text-2xl mb-3 mt-6;
+}
+
+.prose h3 {
+  @apply text-xl mb-2 mt-4;
+}
+
+.prose p {
+  @apply mb-4 leading-7;
+}
+
+.prose ul,
+.prose ol {
+  @apply mb-4 pl-6;
+}
+
+.prose li {
+  @apply mb-1;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-primary pl-4 italic my-4;
+}
+
+.prose code {
+  @apply bg-muted px-1 py-0.5 rounded text-sm;
+}
+
+.prose pre {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto my-4;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0;
+}
+
+.prose a {
+  @apply text-primary hover:underline;
+}
+
+.prose img {
+  @apply rounded-lg my-4;
+}
+
+.prose table {
+  @apply w-full border-collapse my-4;
+}
+
+.prose th,
+.prose td {
+  @apply border border-border px-4 py-2 text-left;
+}
+
+.prose th {
+  @apply bg-muted font-semibold;
+}
