@@ -44,10 +44,38 @@ export async function publicMember(id: string) {
     published: true,
   }).lean()) as any;
   if (!appointment) return null;
-  const [year, person] = await Promise.all([
+  const [year, person, appointments] = await Promise.all([
     TeamYear.findOne({ _id: appointment.yearId, published: true }).lean(),
     TeamPerson.findById(appointment.personId).lean(),
+    TeamAppointment.find({
+      personId: appointment.personId,
+      published: true,
+    }).lean(),
   ]);
   if (!year || !person) return null;
-  return JSON.parse(JSON.stringify({ ...appointment, year, person }));
+  const positionYears = (await TeamYear.find({
+    _id: { $in: appointments.map((value) => value.yearId) },
+    published: true,
+  }).lean()) as any[];
+  const positions = appointments
+    .map((value) => {
+      const positionYear = positionYears.find(
+        (candidate) => String(candidate._id) === String(value.yearId),
+      );
+      if (!positionYear) return null;
+      return {
+        por: value.por || "",
+        group:
+          positionYear.groups?.find(
+            (group: { id: string; name: string }) =>
+              group.id === value.groupId,
+          )?.name || "",
+        year: positionYear.year,
+      };
+    })
+    .filter(Boolean)
+    .sort((a: any, b: any) => b.year - a.year);
+  return JSON.parse(
+    JSON.stringify({ ...appointment, year, person, positions }),
+  );
 }
