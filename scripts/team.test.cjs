@@ -24,6 +24,7 @@ function load(file, mocks = {}) {
     fetch,
     Error,
     Date,
+    process,
     require: (name) => (name in mocks ? mocks[name] : require(name)),
   };
   vm.runInNewContext(outputText, context, { filename: file });
@@ -364,7 +365,9 @@ test("request history is scoped to the authenticated applicant", async () => {
 
 test("public member lookup hides draft appointments and draft years", async () => {
   let returnedAppointment = null,
-    returnedYear = null;
+    returnedYear = null,
+    returnedAppointments = [],
+    returnedYears = [];
   const data = load("lib/team-data.ts", {
     "@/lib/mongodb": async () => {},
     "@/lib/team-validation": schemas,
@@ -374,11 +377,20 @@ test("public member lookup hides draft appointments and draft years", async () =
           assert.equal(filter.published, true);
           return query(returnedAppointment);
         },
+        find: (filter) => {
+          assert.equal(filter.published, true);
+          assert.equal(filter.personId, personId);
+          return query(returnedAppointments);
+        },
       },
       TeamYear: {
         findOne: (filter) => {
           assert.equal(filter.published, true);
           return query(returnedYear);
+        },
+        find: (filter) => {
+          assert.equal(filter.published, true);
+          return query(returnedYears);
         },
       },
       TeamPerson: { findById: () => query(profile) },
@@ -388,8 +400,37 @@ test("public member lookup hides draft appointments and draft years", async () =
   assert.equal(await data.publicMember(id), null);
   returnedAppointment = appointment;
   assert.equal(await data.publicMember(id), null);
-  returnedYear = { year: 2026 };
-  assert.equal((await data.publicMember(id)).person.name, profile.name);
+  const previousYearId = "123456789012345678901237";
+  returnedYear = {
+    _id: yearId,
+    year: 2026,
+    groups: [{ id: "domain", name: "Domain Leads" }],
+  };
+  returnedAppointments = [
+    appointment,
+    {
+      ...appointment,
+      yearId: previousYearId,
+      groupId: "core",
+      por: "Core Member",
+    },
+  ];
+  returnedYears = [
+    returnedYear,
+    {
+      _id: previousYearId,
+      year: 2025,
+      groups: [{ id: "core", name: "Core Committee" }],
+    },
+  ];
+  const member = await data.publicMember(id);
+  assert.equal(member.person.name, profile.name);
+  assert.equal(member.positions.length, 2);
+  assert.equal(member.positions[0].por, "NLP Lead");
+  assert.equal(member.positions[0].group, "Domain Leads");
+  assert.equal(member.positions[0].year, 2026);
+  assert.equal(member.positions[1].por, "Core Member");
+  assert.equal(member.positions[1].year, 2025);
 });
 
 test("real Mongoose indexes prevent duplicate person/year appointments and pending requests", () => {
@@ -427,7 +468,16 @@ test("share card route renders a real 1200px PNG and unpublished cards return 40
     ),
   };
   assert.equal((await route.GET(request, context)).status, 404);
-  member = { ...appointment, _id: id, person: profile, year: { year: 2026 } };
+  member = {
+    ...appointment,
+    _id: id,
+    person: profile,
+    year: { year: 2026 },
+    positions: [
+      { por: "NLP Lead", group: "Domain Leads", year: 2026 },
+      { por: "Core Member", group: "Core Committee", year: 2025 },
+    ],
+  };
   const response = await route.GET(request, context);
   assert.equal(response.headers.get("Content-Type"), "image/png");
   assert.match(response.headers.get("Content-Disposition"), /attachment/);
