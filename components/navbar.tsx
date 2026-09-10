@@ -1,8 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -207,8 +206,8 @@ export function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button onClick={() => signIn("google")}>
-                Sign in
+              <Button asChild>
+                <Link href="/auth/signin">Sign in</Link>
               </Button>
             )}
           </div>
@@ -335,14 +334,10 @@ export function Navbar() {
                       </button>
                     </div>
                   ) : (
-                    <Button
-                      onClick={() => {
-                        signIn("google");
-                        handleMenuClose();
-                      }}
-                      className="w-full"
-                    >
-                      Sign in
+                    <Button asChild className="w-full">
+                      <Link href="/auth/signin" onClick={handleMenuClose}>
+                        Sign in
+                      </Link>
                     </Button>
                   )}
                 </div>
