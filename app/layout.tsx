@@ -84,6 +84,7 @@ import { Inter } from "next/font/google"
 import { Providers } from "@/components/providers"
 import { Toaster } from "@/components/ui/sonner"
 import { ConditionalLayout } from "@/components/conditional-layout"
+import { Analytics } from '@vercel/analytics/next'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -108,6 +109,7 @@ export default function RootLayout({
           </ConditionalLayout>
           <Toaster />
         </Providers>
+        <Analytics />
       </body>
     </html>
   )
