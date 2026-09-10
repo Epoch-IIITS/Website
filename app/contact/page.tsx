@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { Mail, MapPin, Phone, Clock, Instagram } from "lucide-react"
+import { PageKicker } from "@/components/page-kicker"
 
 export default function ContactPage() {
   const { data: session, status } = useSession()
@@ -44,12 +45,7 @@ export default function ContactPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Have questions about our events, want to collaborate, or just want to say hello? We'd love to hear from you!
-        </p>
-      </div>
+      <PageKicker>Get in Touch</PageKicker>
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Contact Information */}

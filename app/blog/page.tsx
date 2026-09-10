@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import { AuthWrapper } from "@/components/auth-wrapper"
+import { PageKicker } from "@/components/page-kicker"
 
 async function getBlogs(searchParams: Promise<{ page?: string; search?: string }>) {
   const resolvedParams = await searchParams
@@ -42,12 +43,7 @@ export default async function BlogPage({
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Blog</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Discover insights, tutorials, and stories from our tech community
-        </p>
-      </div>
+      <PageKicker>Insights &amp; Stories</PageKicker>
 
       {/* Search */}
       {/* <div className="max-w-md mx-auto mb-8">

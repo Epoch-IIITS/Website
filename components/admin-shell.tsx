@@ -17,6 +17,7 @@ const navigation = [
   { label: "Projects", href: "/admin/projects", icon: FolderOpen },
   { label: "Events", href: "/admin/events", icon: Calendar },
   { label: "Gallery", href: "/admin/gallery", icon: ImageIcon },
+  { label: "Team", href: "/admin/team", icon: Users },
   { label: "Users", href: "/admin/users", icon: Users },
   { label: "Contact queries", href: "/admin/queries", icon: Inbox },
 ]

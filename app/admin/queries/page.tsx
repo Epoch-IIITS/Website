@@ -1,8 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { Inbox, RefreshCw, ChevronLeft, ChevronRight, Mail } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { Inbox, RefreshCw, ChevronLeft, ChevronRight, Mail, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog"
+import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 interface ContactQuery {
@@ -26,6 +28,10 @@ export default function ContactQueriesPage() {
   const [revision, setRevision] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [deleteTarget, setDeleteTarget] = useState<ContactQuery | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState("")
+  const inboxHeading = useRef<HTMLHeadingElement>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -37,6 +43,10 @@ export default function ContactQueriesPage() {
         if (!response.ok) throw new Error(response.status === 401 || response.status === 403 ? "Your admin session has expired or access was denied. Please sign in again." : "Unable to load messages. Please try again.")
         const result: InboxData = await response.json()
         if (controller.signal.aborted) return
+        if (page > Math.max(1, result.pagination.pages)) {
+          setPage(Math.max(1, result.pagination.pages))
+          return
+        }
         setData(result)
         setSelectedId(current => result.queries.some(query => query._id === current) ? current : result.queries[0]?._id || null)
       } catch (error) {
@@ -50,11 +60,33 @@ export default function ContactQueriesPage() {
   }, [page, revision])
 
   const selected = data?.queries.find(query => query._id === selectedId)
+
+  async function deleteQuery() {
+    if (!deleteTarget || deleting) return
+    setDeleting(true)
+    setDeleteError("")
+    try {
+      const response = await fetch(`/api/admin/queries/${deleteTarget._id}`, { method: "DELETE" })
+      if (!response.ok && response.status !== 404) {
+        throw new Error(response.status === 401 || response.status === 403
+          ? "Your admin session has expired or access was denied. Please sign in again."
+          : "Unable to delete the query. Please try again.")
+      }
+      if (response.status === 404) toast.info("This query was already deleted.")
+      else toast.success("Query deleted")
+      setDeleteTarget(null)
+      setRevision(value => value + 1)
+    } catch (error) {
+      setDeleteError(error instanceof Error ? error.message : "Unable to delete the query.")
+    } finally {
+      setDeleting(false)
+    }
+  }
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-4 sm:px-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div><h1 className="text-3xl font-semibold tracking-tight">Contact queries</h1><p className="mt-2 text-muted-foreground">Read questions and ideas submitted through Contact Us.</p></div>
-        <Button variant="outline" disabled={loading} onClick={() => setRevision(value => value + 1)}><RefreshCw className={cn("mr-2 h-4 w-4", loading && "animate-spin")} />Refresh</Button>
+        <div><h1 ref={inboxHeading} tabIndex={-1} className="text-3xl font-semibold tracking-tight">Contact queries</h1><p className="mt-2 text-muted-foreground">Read questions and ideas submitted through Contact Us.</p></div>
+        <Button variant="outline" disabled={loading || deleting} onClick={() => setRevision(value => value + 1)}><RefreshCw className={cn("mr-2 h-4 w-4", loading && "animate-spin")} />Refresh</Button>
       </div>
       {error ? <div role="alert" className="rounded-xl border bg-card p-8"><p className="mb-4 text-destructive">{error}</p><Button variant="outline" onClick={() => setRevision(value => value + 1)}>Try again</Button></div> : loading ? (
         <div role="status" className="flex min-h-80 items-center justify-center rounded-xl border bg-card text-muted-foreground">Loading messages…</div>
@@ -72,7 +104,12 @@ export default function ContactQueriesPage() {
             </nav>
             <article id="query-detail" aria-label="Selected message" className="min-w-0 p-6 sm:p-8" aria-live="polite">
               {selected && <>
-                <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">Contact submission</p>
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Contact submission</p>
+                  <Button variant="outline" size="sm" className="text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => { setDeleteTarget(selected); setDeleteError("") }}>
+                    <Trash2 className="mr-2 h-4 w-4" />Delete query
+                  </Button>
+                </div>
                 <h2 className="break-words text-2xl font-semibold tracking-tight">{selected.subject}</h2>
                 <div className="my-6 flex flex-wrap items-start gap-3 border-b pb-6">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold">{selected.firstName.charAt(0)}{selected.lastName.charAt(0)}</span>
@@ -88,6 +125,19 @@ export default function ContactQueriesPage() {
           </div>
         </div>
       )}
+      <AlertDialog open={deleteTarget !== null} onOpenChange={open => { if (!open && !deleting) setDeleteTarget(null) }}>
+        <AlertDialogContent onEscapeKeyDown={event => { if (deleting) event.preventDefault() }} onCloseAutoFocus={event => { event.preventDefault(); inboxHeading.current?.focus({ preventScroll: true }) }}>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this query?</AlertDialogTitle>
+            <AlertDialogDescription className="break-words">This will permanently delete “{deleteTarget?.subject}” from {deleteTarget?.firstName} {deleteTarget?.lastName}. This action cannot be undone.</AlertDialogDescription>
+          </AlertDialogHeader>
+          {deleteError && <p role="alert" className="text-sm text-destructive">{deleteError}</p>}
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction disabled={deleting} className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={event => { event.preventDefault(); deleteQuery() }}>{deleting ? "Deleting…" : "Delete query"}</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

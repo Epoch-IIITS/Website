@@ -126,3 +126,45 @@ test('inbox storage errors return a recoverable error', async () => {
   const route = inboxRoute({ user: { role: 'admin' } }, {}, async () => { throw new Error('offline') })
   assert.equal((await route.GET(pageRequest(1))).status, 500)
 })
+
+function deleteRoute(session, model, connect = async () => {}) {
+  return load('app/api/admin/queries/[id]/route.ts', {
+    'next/server': nextServer, 'next-auth': { getServerSession: async () => session },
+    '@/lib/auth': { authOptions: {} }, '@/lib/mongodb': connect, '@/models/ContactQuery': model,
+  })
+}
+const queryId = '507f1f77bcf86cd799439011'
+const deleteContext = id => ({ params: Promise.resolve({ id }) })
+
+test('query deletion rejects anonymous and member sessions before accessing storage', async () => {
+  let connected = false
+  for (const [session, status] of [[null, 401], [{ user: { role: 'user' } }, 403]]) {
+    const route = deleteRoute(session, {}, async () => { connected = true })
+    assert.equal((await route.DELETE({}, deleteContext(queryId))).status, status)
+  }
+  assert.equal(connected, false)
+})
+
+test('query deletion validates IDs before accessing storage', async () => {
+  let connected = false
+  const route = deleteRoute({ user: { role: 'admin' } }, {}, async () => { connected = true })
+  for (const id of ['invalid', '', '507f1f77bcf86cd79943901z']) assert.equal((await route.DELETE({}, deleteContext(id))).status, 400)
+  assert.equal(connected, false)
+})
+
+test('admin deletion removes only the requested record without returning message contents', async () => {
+  const ids = []
+  const route = deleteRoute({ user: { role: 'admin' } }, { findByIdAndDelete: async id => { ids.push(id); return { _id: id, message: 'Private text' } } })
+  const response = await route.DELETE({}, deleteContext(queryId))
+  assert.equal(response.status, 200)
+  assert.deepEqual(ids, [queryId])
+  assert.deepEqual(response.body, { message: 'Query deleted' })
+})
+
+test('deleting a missing record returns 404 and database failures return 500', async () => {
+  const session = { user: { role: 'admin' } }
+  assert.equal((await deleteRoute(session, { findByIdAndDelete: async () => null }).DELETE({}, deleteContext(queryId))).status, 404)
+  const response = await deleteRoute(session, { findByIdAndDelete: async () => { throw new Error('Private database details') } }).DELETE({}, deleteContext(queryId))
+  assert.equal(response.status, 500)
+  assert.doesNotMatch(response.body.error, /Private database/)
+})

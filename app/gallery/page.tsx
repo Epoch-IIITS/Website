@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import GalleryImage from "@/components/GalleryImage";
 import { AuthWrapper } from "@/components/auth-wrapper";
+import { PageKicker } from "@/components/page-kicker";
 
 async function getGalleries() {
   try {
@@ -26,12 +27,7 @@ export default async function GalleryPage() {
     // <AuthWrapper>
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Photo Gallery</h1>
-          <p className="text-xl text-muted-foreground">
-            Capturing moments from our community events
-          </p>
-        </div>
+        <PageKicker>Community Moments</PageKicker>
 
         {galleries.length === 0 ? (
           <Card>

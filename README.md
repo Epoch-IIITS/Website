@@ -72,6 +72,7 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 
 ### Admin Endpoints (Require Admin Role)
 - `GET /api/admin/queries?page=1` - Read contact submissions, newest first, 20 per page
+- `DELETE /api/admin/queries/[id]` - Permanently delete a contact query (admin only)
 - \`POST /api/blogs\` - Create blog post
 - \`PUT /api/blogs/[id]\` - Update blog post
 - \`DELETE /api/blogs/[id]\` - Delete blog post
