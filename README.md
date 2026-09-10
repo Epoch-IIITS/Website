@@ -9,7 +9,6 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 - **Project Showcase**: Manage and display club projects
 - **Event Management**: Create events with RSVP functionality and ticket generation
 - **Gallery**: Upload and organize event photos
-- **Podcast Management**: Embed YouTube videos
 - **Admin Panel**: Role-based access control for content management
 
 ## Tech Stack
@@ -62,7 +61,6 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 - \`GET /api/projects\` - Get all projects
 - \`GET /api/events\` - Get all events
 - \`GET /api/gallery\` - Get gallery items
-- \`GET /api/podcasts\` - Get podcast episodes
 
 ### Protected Endpoints (Require Authentication)
 - \`POST /api/rsvp\` - Create RSVP for event
@@ -76,7 +74,6 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 - \`POST /api/projects\` - Create project
 - \`POST /api/events\` - Create event
 - \`POST /api/gallery\` - Create gallery
-- \`POST /api/podcasts\` - Create podcast
 - \`GET /api/admin/stats\` - Get admin dashboard stats
 - \`GET /api/admin/events/[id]/rsvps\` - Get event RSVPs
 
@@ -106,10 +103,6 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 ### Gallery
 - Event name, date, images with captions
 - Admin-managed photo collections
-
-### Podcast
-- YouTube URL integration
-- Auto-extracted video ID and thumbnail
 
 ## Authentication & Authorization
 

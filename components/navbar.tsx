@@ -31,7 +31,6 @@ const navigation = [
   { name: "Projects", href: "/projects" },
   { name: "Events", href: "/events" },
   { name: "Gallery", href: "/gallery" },
-  { name: "Podcast", href: "/podcast" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];

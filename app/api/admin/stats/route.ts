@@ -5,7 +5,6 @@ import Project from "@/models/Project"
 import Event from "@/models/Event"
 import RSVP from "@/models/RSVP"
 import Gallery from "@/models/Gallery"
-import Podcast from "@/models/Podcast"
 import User from "@/models/User"
 
 export async function GET() {
@@ -20,7 +19,6 @@ export async function GET() {
       upcomingEvents,
       totalRSVPs,
       totalGalleries,
-      totalPodcasts,
       totalUsers,
     ] = await Promise.all([
       Blog.countDocuments(),
@@ -30,7 +28,6 @@ export async function GET() {
       Event.countDocuments({ date: { $gte: new Date() } }),
       RSVP.countDocuments(), // Count all RSVPs since they're all attending now
       Gallery.countDocuments(),
-      Podcast.countDocuments(),
       User.countDocuments(),
     ])
 
@@ -53,9 +50,6 @@ export async function GET() {
       },
       galleries: {
         total: totalGalleries,
-      },
-      podcasts: {
-        total: totalPodcasts,
       },
       users: {
         total: totalUsers,

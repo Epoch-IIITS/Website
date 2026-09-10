@@ -31,13 +31,6 @@ export const eventSchema = z.object({
   rsvpDeadline: z.string().optional(),
 })
 
-export const podcastSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
-  youtubeUrl: z.string().url("Please enter a valid YouTube URL"),
-  duration: z.string().optional(),
-})
-
 export const gallerySchema = z.object({
   eventName: z.string().min(1, "Event name is required"),
   eventDate: z.string().min(1, "Event date is required"),

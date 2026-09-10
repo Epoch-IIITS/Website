@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Users, FileText, Calendar, ImageIcon, Mic, FolderOpen } from "lucide-react"
+import { Users, FileText, Calendar, ImageIcon, FolderOpen } from "lucide-react"
 import Link from "next/link"
 
 export default function AdminDashboard() {
@@ -72,13 +72,6 @@ export default function AdminDashboard() {
       href: "/admin/gallery",
       icon: ImageIcon,
       stats: stats?.galleries,
-    },
-    {
-      title: "Manage Podcasts",
-      description: "Add YouTube videos",
-      href: "/admin/podcasts",
-      icon: Mic,
-      stats: stats?.podcasts,
     },
     {
       title: "View Users",

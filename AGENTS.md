@@ -2,7 +2,7 @@
 
 ## Overview
 
-Epoch is a full-stack tech club website for sharing blogs, projects, events, photo galleries, and YouTube podcasts. Members can sign in, manage their profile, register for events, and download PDF tickets with QR codes. An admin dashboard manages content, users, and event registrations.
+Epoch is a full-stack tech club website for sharing blogs, projects, events, and photo galleries. Members can sign in, manage their profile, register for events, and download PDF tickets with QR codes. An admin dashboard manages content, users, and event registrations.
 
 The app is a single Next.js project: pages and API handlers live together in `app/`. There is no separate backend service in this repository.
 
@@ -38,12 +38,12 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 | Path | Responsibility |
 | --- | --- |
 | `app/layout.tsx`, `app/page.tsx` | Root layout, metadata, providers, and homepage content fetching. |
-| `app/blog/`, `app/projects/`, `app/events/`, `app/gallery/`, `app/podcast/` | Public content pages. Blog detail URLs use slugs; event and gallery details use IDs. |
+| `app/blog/`, `app/projects/`, `app/events/`, `app/gallery/` | Public content pages. Blog detail URLs use slugs; event and gallery details use IDs. |
 | `app/about/`, `app/contact/`, `app/privacy/`, `app/terms/` | Informational pages. |
 | `app/auth/`, `app/profile/`, `app/my-rsvps/` | Sign-in/error screens and member pages. |
 | `app/admin/` | Content CRUD screens, users, statistics, and event RSVP management. |
 | `app/api/` | HTTP route handlers for content, auth, uploads, profiles, and RSVPs. |
-| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `Podcast`, `RSVP`. |
+| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`. |
 | `lib/mongodb.ts` | Shared MongoDB connector with a cached connection/promise for reuse across reloads. |
 | `lib/auth.ts`, `types/next-auth.d.ts` | Authentication callbacks and session/JWT types, including user ID and role. |
 | `lib/validations.ts`, `lib/utils.ts` | Shared Zod schemas and helpers such as slug/ticket ID generation and class merging. |
@@ -56,7 +56,7 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 ## Main flows and conventions
 
 - Public pages often fetch `/api/...` from server components using `NEXTAUTH_URL` and `cache: "no-store"`. Some fetch failures produce empty content, so an empty page does not necessarily mean the database is empty.
-- Content APIs use plural names (`/api/blogs`, `/api/projects`, `/api/events`, `/api/gallery`, `/api/podcasts`). Public page paths include singular `/blog` and `/podcast`. Check each handler's response shape: the blog list returns `{ blogs, pagination }`, while several other lists return arrays.
+- Content APIs live at `/api/blogs`, `/api/projects`, `/api/events`, and `/api/gallery`. The public blog page uses singular `/blog`. Check each handler's response shape: the blog list returns `{ blogs, pagination }`, while several other lists return arrays.
 - API handlers connect through `connectDB()`, use Mongoose models, and generally return JSON with `NextResponse`. Extend shared Zod schemas alongside model, handler, and form changes where applicable.
 - `middleware.ts` matches `/api/admin/:path*` and `/api/rsvp/:path*`. Admin pages use `AdminGuard`; content mutation handlers also perform server-side role checks. Preserve server-side authorization rather than relying on the UI guard. The upload handler currently has no session check.
 - RSVP creation links an event and user, enforces the deadline/capacity checks in the handler, and generates a ticket ID. The model has a unique event/user index. Tickets at `/api/rsvp/[id]/ticket` are restricted to the owner or an admin.
