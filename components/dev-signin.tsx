@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function DevSignIn() {
+export function DevSignIn({ callbackUrl = "/admin" }: { callbackUrl?: string }) {
   const [action, setAction] = useState<"signin" | "signup">("signin")
   const [pending, setPending] = useState(false)
   const [error, setError] = useState("")
@@ -23,14 +23,14 @@ export function DevSignIn() {
         password: String(data.get("password")),
         action,
         redirect: false,
-        callbackUrl: "/admin",
+        callbackUrl,
       })
       if (!result?.ok || result.error) {
         setError(result?.error || "Sign-in failed. Please try again.")
         return
       }
       // Reload so the session provider and admin guard read the new session.
-      window.location.assign("/admin")
+      window.location.assign(result.url || "/")
     } catch {
       setError("Unable to sign in. Check your development server and database connection.")
     } finally {

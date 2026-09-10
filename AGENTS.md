@@ -2,7 +2,7 @@
 
 ## Overview
 
-Epoch is a full-stack tech club website for sharing blogs, projects, events, and photo galleries. Members can sign in, manage their profile, register for events, and download PDF tickets with QR codes. An admin dashboard manages content, users, and event registrations.
+Epoch is a full-stack tech club website for sharing blogs, projects, events, and photo galleries. Members can sign in, manage their profile, register for events, and download PDF tickets with QR codes. A sidebar admin workspace manages content, users, event registrations, and contact queries.
 
 The app is a single Next.js project: pages and API handlers live together in `app/`. There is no separate backend service in this repository.
 
@@ -41,9 +41,9 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 | `app/blog/`, `app/projects/`, `app/events/`, `app/gallery/` | Public content pages. Blog detail URLs use slugs; event and gallery details use IDs. |
 | `app/about/`, `app/contact/`, `app/privacy/`, `app/terms/` | Informational pages. |
 | `app/auth/`, `app/profile/`, `app/my-rsvps/` | Sign-in/error screens and member pages. |
-| `app/admin/` | Content CRUD screens, users, statistics, and event RSVP management. |
+| `app/admin/`, `components/admin-shell.tsx` | Sidebar workspace, overview, content CRUD, users, event RSVPs, and the contact queries inbox at `/admin/queries`. |
 | `app/api/` | HTTP route handlers for content, auth, uploads, profiles, and RSVPs. |
-| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`. |
+| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`, `ContactQuery`. |
 | `lib/mongodb.ts` | Shared MongoDB connector with a cached connection/promise for reuse across reloads. |
 | `lib/auth.ts`, `types/next-auth.d.ts` | Authentication callbacks and session/JWT types, including user ID and role. |
 | `lib/validations.ts`, `lib/utils.ts` | Shared Zod schemas and helpers such as slug/ticket ID generation and class merging. |
@@ -60,6 +60,7 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 - API handlers connect through `connectDB()`, use Mongoose models, and generally return JSON with `NextResponse`. Extend shared Zod schemas alongside model, handler, and form changes where applicable.
 - `middleware.ts` matches `/api/admin/:path*` and `/api/rsvp/:path*`. Admin pages use `AdminGuard`; content mutation handlers also perform server-side role checks. Preserve server-side authorization rather than relying on the UI guard. The upload handler currently has no session check.
 - RSVP creation links an event and user, enforces the deadline/capacity checks in the handler, and generates a ticket ID. The model has a unique event/user index. Tickets at `/api/rsvp/[id]/ticket` are restricted to the owner or an admin.
+- Contact Us requires sign-in to view the form and submit through `POST /api/contact`; signed-out visitors see a login prompt that returns them to `/contact` after authentication. The account email is read-only, and the API uses the server session email. Submissions are validated, stored in MongoDB, and shown newest first through admin-only `GET /api/admin/queries?page=1` (20 per page). The form reports success only after persistence. This stores messages for review; it does not send email. Earlier simulated submissions were never saved.
 - Prefer existing UI components, Tailwind theme tokens, and `@/` imports. Add `"use client"` where browser APIs, React state/effects, or client session hooks require it; keep database and secret-bearing code on the server.
 - Several files contain large commented-out earlier implementations. Read the active code before making changes.
 
@@ -73,7 +74,7 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 | `npx tsc --noEmit --incremental false` | Run TypeScript checking separately without writing incremental build metadata. |
 | `npm run lint` | Invokes `next lint`. No ESLint configuration or direct ESLint dependency is present, so expect an initial setup prompt rather than a ready-to-run unattended check. |
 
-There is no configured automated test suite or `test` script. `scripts/test-db.js` is a diagnostic script that imports `.js` paths for source files stored as `.ts`; it is not a ready-to-run test harness.
+Run `node --test scripts/*.test.cjs` for contact validation, inbox authorization/pagination, and project read/update regression tests using isolated database/session boundaries. Project tests use the real Mongoose schema and query handling with database I/O stubbed out. There is no package-level `test` script. `scripts/test-db.js` is a diagnostic script that imports `.js` paths for source files stored as `.ts`; it is not a ready-to-run test harness.
 
 For application changes, run relevant available checks and manually exercise the affected pages/API flows. Check signed-out, member, and admin behavior when changing access control; check responsive layout and both themes for UI changes. Report existing failures separately from regressions. Documentation-only changes do not require an application build.
 

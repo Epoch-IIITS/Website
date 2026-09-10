@@ -10,6 +10,8 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 - **Event Management**: Create events with RSVP functionality and ticket generation
 - **Gallery**: Upload and organize event photos
 - **Admin Panel**: Role-based access control for content management
+- **Admin Workspace**: Responsive sidebar navigation and a contact queries inbox
+- **Contact Form**: Saves messages to MongoDB for admin review
 
 ## Tech Stack
 
@@ -63,11 +65,13 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 - \`GET /api/gallery\` - Get gallery items
 
 ### Protected Endpoints (Require Authentication)
+- `POST /api/contact` - Submit a contact message (name, subject, message; email from the signed-in account)
 - \`POST /api/rsvp\` - Create RSVP for event
 - \`GET /api/rsvp\` - Get user's RSVPs
 - \`GET /api/rsvp/[id]/ticket\` - Download ticket PDF
 
 ### Admin Endpoints (Require Admin Role)
+- `GET /api/admin/queries?page=1` - Read contact submissions, newest first, 20 per page
 - \`POST /api/blogs\` - Create blog post
 - \`PUT /api/blogs/[id]\` - Update blog post
 - \`DELETE /api/blogs/[id]\` - Delete blog post

@@ -341,7 +341,7 @@ export default function SignInPage() {
                 </div>
               )}
 
-              {process.env.NODE_ENV === "development" && <DevSignIn />}
+              {process.env.NODE_ENV === "development" && <DevSignIn callbackUrl={searchParams.get("callbackUrl") || "/admin"} />}
 
               {/* Informational content */}
               <div className="space-y-3 text-center text-sm text-muted-foreground">

@@ -21,6 +21,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
   const [loading, setLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
   const [projectId, setProjectId] = useState<string>("")
+  const [loadError, setLoadError] = useState("")
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -42,8 +43,10 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
   }, [params])
 
   const fetchProject = async (id: string) => {
+    setInitialLoading(true)
+    setLoadError("")
     try {
-      const response = await fetch(`/api/projects/${id}`)
+      const response = await fetch(`/api/projects/${id}`, { cache: "no-store" })
       if (response.ok) {
         const project = await response.json()
         setFormData({
@@ -56,11 +59,12 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
           featured: project.featured || false,
         })
       } else {
-        toast.error("Project not found")
-        router.push("/admin/projects")
+        setLoadError(response.status === 404
+          ? "This project no longer exists. Return to Projects to choose another one."
+          : "Unable to load this project. Please try again.")
       }
     } catch (error) {
-      toast.error("Failed to fetch project")
+      setLoadError("Unable to connect. Please try loading the project again.")
     } finally {
       setInitialLoading(false)
     }
@@ -121,6 +125,23 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
           <div className="h-8 bg-muted rounded w-1/4"></div>
           <div className="h-64 bg-muted rounded"></div>
         </div>
+      </div>
+    )
+  }
+
+  if (loadError) {
+    return (
+      <div className="container mx-auto max-w-4xl px-4 py-8">
+        <Card>
+          <CardHeader><CardTitle>Unable to open project</CardTitle></CardHeader>
+          <CardContent className="space-y-4">
+            <p role="alert" className="text-sm text-destructive">{loadError}</p>
+            <div className="flex gap-3">
+              <Button onClick={() => fetchProject(projectId)}>Try again</Button>
+              <Button variant="outline" asChild><Link href="/admin/projects">Back to Projects</Link></Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     )
   }

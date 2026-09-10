@@ -9,6 +9,7 @@ import ShootingStars from "@/components/shooting-stars"
 
 export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/')
   const [isLoading, setIsLoading] = useState(false)
   const [isInitialLoad, setIsInitialLoad] = useState(true)
 
@@ -19,16 +20,18 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
 
   // Only show loader for client-side navigation, not initial page loads or home page
   useEffect(() => {
-    if (!isInitialLoad && pathname !== '/') {
+    if (!isInitialLoad && pathname !== '/' && !isAdminRoute) {
       setIsLoading(true)
       const timer = setTimeout(() => setIsLoading(false), 1000) // Adjust timing as needed
       return () => clearTimeout(timer)
     }
-  }, [pathname, isInitialLoad])
+  }, [pathname, isInitialLoad, isAdminRoute])
 
   // Define routes where you want to hide navbar/footer
   const authRoutes = ['/auth/signin']
   const isAuthRoute = authRoutes.includes(pathname)
+
+  if (isAdminRoute) return <main>{children}</main>
 
   // Show loader for non-home page navigation
   if (isLoading && !isInitialLoad && pathname !== '/') {
