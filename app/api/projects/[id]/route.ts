@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import connectDB from "@/lib/mongodb"
 import Project from "@/models/Project"
-import User from "@/models/User"
 import { projectSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
@@ -11,7 +10,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params
     await connectDB()
 
-    const project = await Project.findById(id).populate("createdBy", "name email")
+    const project = await Project.findById(id)
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 })
@@ -37,20 +36,11 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     await connectDB()
 
-    // Find the user to get the ObjectId
-    const user = await User.findOne({ email: session.user.email })
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
-    }
-
     const project = await Project.findByIdAndUpdate(
       id,
-      {
-        ...validatedData,
-        createdBy: user._id,
-      },
-      { new: true },
-    ).populate("createdBy", "name email")
+      { $set: validatedData },
+      { returnDocument: "after", runValidators: true },
+    )
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 })

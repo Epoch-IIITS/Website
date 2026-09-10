@@ -38,10 +38,10 @@ export function Footer() {
             </p>
             <div className="flex space-x-6">
               <Link
-                href="/about"
+                href="/team"
                 className="text-xs text-muted-foreground hover:text-foreground"
               >
-                About
+                Team
               </Link>
               <Link
                 href="/contact"

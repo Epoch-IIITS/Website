@@ -1,5 +1,13 @@
 import { z } from "zod"
 
+export const contactQuerySchema = z.object({
+  firstName: z.string().trim().min(1, "First name is required").max(80),
+  lastName: z.string().trim().min(1, "Last name is required").max(80),
+  email: z.string().trim().email("Enter a valid email address").max(254).toLowerCase(),
+  subject: z.string().trim().min(1, "Subject is required").max(200),
+  message: z.string().trim().min(1, "Message is required").max(5000),
+})
+
 export const blogSchema = z.object({
   title: z.string().min(1, "Title is required"),
   content: z.string().min(1, "Content is required"),
@@ -29,13 +37,6 @@ export const eventSchema = z.object({
   image: z.string().optional(),
   maxAttendees: z.number().positive().optional(),
   rsvpDeadline: z.string().optional(),
-})
-
-export const podcastSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
-  youtubeUrl: z.string().url("Please enter a valid YouTube URL"),
-  duration: z.string().optional(),
 })
 
 export const gallerySchema = z.object({

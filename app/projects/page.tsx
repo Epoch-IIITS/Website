@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Github, ExternalLink } from "lucide-react"
 import { AuthWrapper } from "@/components/auth-wrapper"
+import { PageKicker } from "@/components/page-kicker"
 
 async function getProjects() {
   try {
@@ -27,13 +28,7 @@ export default async function ProjectsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Our Projects</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Discover the amazing projects built by our community members. From web applications to mobile apps and
-          everything in between.
-        </p>
-      </div>
+      <PageKicker>Built by the Community</PageKicker>
 
       {projects.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

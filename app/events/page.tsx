@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Calendar, MapPin, Users } from "lucide-react"
 import { AuthWrapper } from "@/components/auth-wrapper"
+import { PageKicker } from "@/components/page-kicker"
 
 async function getEvents() {
   try {
@@ -30,13 +31,7 @@ export default async function EventsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Events</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Join our community events, workshops, and networking sessions. Learn new skills and connect with fellow tech
-          enthusiasts.
-        </p>
-      </div>
+      <PageKicker>Workshops &amp; Meetups</PageKicker>
 
       {/* Upcoming Events */}
       <div className="mb-12">

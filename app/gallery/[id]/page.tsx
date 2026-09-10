@@ -2,11 +2,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowLeft, Images } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import GalleryImage from "@/components/GalleryImage";
-import { AuthWrapper } from "@/components/auth-wrapper";
+import { EventGallery } from "@/components/event-gallery";
 async function getGallery(id: string) {
   try {
     const response = await fetch(
@@ -39,7 +37,6 @@ export default async function GalleryDetailPage({ params }: PageProps) {
   }
 
   return (
-    // <AuthWrapper>
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -88,35 +85,12 @@ export default async function GalleryDetailPage({ params }: PageProps) {
             <div className="text-center">
               <h2 className="text-2xl font-semibold mb-2">Event Photos</h2>
               <p className="text-muted-foreground">
-                Browse through {gallery.images.length} photos from this event
+                Browse through {gallery.images.length} photos from this event. Click a photo to view it in full.
               </p>
             </div>
 
             {/* Masonry Grid */}
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
-              {gallery.images.map((image: any, index: number) => (
-                <div key={index} className="break-inside-avoid">
-                  <Card className="overflow-hidden group hover:shadow-lg transition-shadow duration-300">
-                    <GalleryImage
-                      src={
-                        image.url ||
-                        "/placeholder.svg?height=300&width=400&text=Image"
-                      }
-                      alt={image.caption || `Event photo ${index + 1}`}
-                      aspect="aspect-[4/3]"
-                      className="group-hover:scale-105 transition-transform duration-300"
-                    />
-                    {image.caption && (
-                      <CardContent className="p-4">
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {image.caption}
-                        </p>
-                      </CardContent>
-                    )}
-                  </Card>
-                </div>
-              ))}
-            </div>
+            <EventGallery images={gallery.images} eventName={gallery.eventName} />
 
             {/* Gallery Stats */}
             <Card>
@@ -171,6 +145,5 @@ export default async function GalleryDetailPage({ params }: PageProps) {
         )}
       </div>
     </div>
-    // </AuthWrapper>
   );
 }

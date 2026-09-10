@@ -5,11 +5,17 @@ import Project from "@/models/Project"
 import Event from "@/models/Event"
 import RSVP from "@/models/RSVP"
 import Gallery from "@/models/Gallery"
-import Podcast from "@/models/Podcast"
 import User from "@/models/User"
+import ContactQuery from "@/models/ContactQuery"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user || session.user.role !== "admin") {
+      return NextResponse.json({ error: "Admin access required" }, { status: session ? 403 : 401 })
+    }
     await connectDB()
 
     const [
@@ -20,8 +26,8 @@ export async function GET() {
       upcomingEvents,
       totalRSVPs,
       totalGalleries,
-      totalPodcasts,
       totalUsers,
+      totalQueries,
     ] = await Promise.all([
       Blog.countDocuments(),
       Blog.countDocuments({ published: true }),
@@ -30,11 +36,12 @@ export async function GET() {
       Event.countDocuments({ date: { $gte: new Date() } }),
       RSVP.countDocuments(), // Count all RSVPs since they're all attending now
       Gallery.countDocuments(),
-      Podcast.countDocuments(),
       User.countDocuments(),
+      ContactQuery.countDocuments(),
     ])
 
     const stats = {
+      queries: { total: totalQueries },
       blogs: {
         total: totalBlogs,
         published: publishedBlogs,
@@ -53,9 +60,6 @@ export async function GET() {
       },
       galleries: {
         total: totalGalleries,
-      },
-      podcasts: {
-        total: totalPodcasts,
       },
       users: {
         total: totalUsers,

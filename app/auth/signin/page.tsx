@@ -7,9 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle } from "lucide-react"
+import { AlertCircle, ArrowLeft } from "lucide-react"
 import { toast } from "sonner"
 import dynamic from "next/dynamic"
+import { DevSignIn } from "@/components/dev-signin"
 
 export default function SignInPage() {
   const [providers, setProviders] = useState<any>(null)
@@ -268,6 +269,22 @@ export default function SignInPage() {
           {/* Sign-in Card */}
           <Card className={`w-full max-w-md bg-card/90 backdrop-blur-lg border border-border/50 rounded-2xl shadow-2xl hover-glow relative ${mounted ? 'animate-fade-in-scale' : 'opacity-0'}`}>
             <CardHeader className="text-center space-y-2 pb-0">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="self-start -ml-2"
+                onClick={() => {
+                  if (window.history.length > 1) {
+                    router.back()
+                  } else {
+                    router.replace("/")
+                  }
+                }}
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
+                Back
+              </Button>
               <CardTitle className={`text-3xl font-extrabold gradient-text ${mounted ? 'animate-slide-in-top' : 'opacity-0'}`}>
                 Welcome to Epoch
               </CardTitle>
@@ -323,6 +340,8 @@ export default function SignInPage() {
                   </div>
                 </div>
               )}
+
+              {process.env.NODE_ENV === "development" && <DevSignIn callbackUrl={searchParams.get("callbackUrl") || "/admin"} />}
 
               {/* Informational content */}
               <div className="space-y-3 text-center text-sm text-muted-foreground">

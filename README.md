@@ -9,8 +9,9 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 - **Project Showcase**: Manage and display club projects
 - **Event Management**: Create events with RSVP functionality and ticket generation
 - **Gallery**: Upload and organize event photos
-- **Podcast Management**: Embed YouTube videos
 - **Admin Panel**: Role-based access control for content management
+- **Admin Workspace**: Responsive sidebar navigation and a contact queries inbox
+- **Contact Form**: Saves messages to MongoDB for admin review
 
 ## Tech Stack
 
@@ -62,21 +63,22 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 - \`GET /api/projects\` - Get all projects
 - \`GET /api/events\` - Get all events
 - \`GET /api/gallery\` - Get gallery items
-- \`GET /api/podcasts\` - Get podcast episodes
 
 ### Protected Endpoints (Require Authentication)
+- `POST /api/contact` - Submit a contact message (name, subject, message; email from the signed-in account)
 - \`POST /api/rsvp\` - Create RSVP for event
 - \`GET /api/rsvp\` - Get user's RSVPs
 - \`GET /api/rsvp/[id]/ticket\` - Download ticket PDF
 
 ### Admin Endpoints (Require Admin Role)
+- `GET /api/admin/queries?page=1` - Read contact submissions, newest first, 20 per page
+- `DELETE /api/admin/queries/[id]` - Permanently delete a contact query (admin only)
 - \`POST /api/blogs\` - Create blog post
 - \`PUT /api/blogs/[id]\` - Update blog post
 - \`DELETE /api/blogs/[id]\` - Delete blog post
 - \`POST /api/projects\` - Create project
 - \`POST /api/events\` - Create event
 - \`POST /api/gallery\` - Create gallery
-- \`POST /api/podcasts\` - Create podcast
 - \`GET /api/admin/stats\` - Get admin dashboard stats
 - \`GET /api/admin/events/[id]/rsvps\` - Get event RSVPs
 
@@ -106,10 +108,6 @@ A comprehensive backend for a club website built with Next.js App Router, MongoD
 ### Gallery
 - Event name, date, images with captions
 - Admin-managed photo collections
-
-### Podcast
-- YouTube URL integration
-- Auto-extracted video ID and thumbnail
 
 ## Authentication & Authorization
 
