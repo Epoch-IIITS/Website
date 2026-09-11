@@ -32,16 +32,12 @@ export default function AdminEventsPage() {
 
   // Helper function to convert UTC date to local time for display
   const formatEventDate = (utcDateString: string) => {
-    const utcDate = new Date(utcDateString)
-    const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
-    return localDate.toLocaleDateString()
+    return new Date(utcDateString).toLocaleDateString()
   }
 
   // Helper function to check if event is upcoming
   const isEventUpcoming = (utcDateString: string) => {
-    const utcDate = new Date(utcDateString)
-    const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
-    return localDate >= new Date()
+    return new Date(utcDateString) >= new Date()
   }
 
   const fetchEvents = async () => {

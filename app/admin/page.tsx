@@ -12,7 +12,7 @@ interface Stats {
   events: { total: number; upcoming: number }
   galleries: { total: number }
   users: { total: number }
-  rsvps: { total: number }
+  rsvps: { total: number; upcoming: number }
   queries: { total: number }
 }
 
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
 
   const metrics = stats ? [
     { label: "Community members", value: stats.users.total, detail: "Registered accounts", icon: Users, href: "/admin/users" },
-    { label: "Upcoming events", value: stats.events.upcoming, detail: `${stats.rsvps.total} total registrations`, icon: Calendar, href: "/admin/events" },
+    { label: "Upcoming events", value: stats.events.upcoming, detail: `${stats.rsvps.upcoming} upcoming-event registrations`, icon: Calendar, href: "/admin/events" },
     { label: "Published stories", value: stats.blogs.published, detail: `${stats.blogs.draft} drafts in progress`, icon: FileText, href: "/admin/blogs" },
     { label: "Contact queries", value: stats.queries.total, detail: "Messages from the community", icon: Inbox, href: "/admin/queries" },
   ] : []

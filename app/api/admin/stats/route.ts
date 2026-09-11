@@ -9,6 +9,7 @@ import User from "@/models/User"
 import ContactQuery from "@/models/ContactQuery"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { eventDateForUse } from "@/lib/event-dates"
 
 export async function GET() {
   try {
@@ -17,6 +18,12 @@ export async function GET() {
       return NextResponse.json({ error: "Admin access required" }, { status: session ? 403 : 401 })
     }
     await connectDB()
+    const now = new Date()
+    const eventDates = await Event.find().select("_id date timezoneNormalized").lean()
+    const allEventIds = eventDates.map((event) => event._id)
+    const upcomingEventIds = eventDates
+      .filter((event) => eventDateForUse(event.date, event.timezoneNormalized) >= now)
+      .map((event) => event._id)
 
     const [
       totalBlogs,
@@ -25,6 +32,7 @@ export async function GET() {
       totalEvents,
       upcomingEvents,
       totalRSVPs,
+      upcomingRSVPs,
       totalGalleries,
       totalUsers,
       totalQueries,
@@ -32,9 +40,10 @@ export async function GET() {
       Blog.countDocuments(),
       Blog.countDocuments({ published: true }),
       Project.countDocuments(),
-      Event.countDocuments(),
-      Event.countDocuments({ date: { $gte: new Date() } }),
-      RSVP.countDocuments(), // Count all RSVPs since they're all attending now
+      Promise.resolve(allEventIds.length),
+      Promise.resolve(upcomingEventIds.length),
+      RSVP.countDocuments({ event: { $in: allEventIds } }),
+      RSVP.countDocuments({ event: { $in: upcomingEventIds } }),
       Gallery.countDocuments(),
       User.countDocuments(),
       ContactQuery.countDocuments(),
@@ -57,6 +66,7 @@ export async function GET() {
       },
       rsvps: {
         total: totalRSVPs,
+        upcoming: upcomingRSVPs,
       },
       galleries: {
         total: totalGalleries,

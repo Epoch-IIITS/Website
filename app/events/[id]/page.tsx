@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, MapPin, Users, Clock, ArrowLeft, Download } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
-import { AuthWrapper } from "@/components/auth-wrapper"
 
 export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { data: session } = useSession()
@@ -37,13 +36,8 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
     }
   }, [eventId, session])
 
-  // Helper function to convert UTC date to local display format
   const formatEventDateTime = (utcDateString: string) => {
-    const utcDate = new Date(utcDateString)
-    
-    // Convert UTC to local time by removing the timezone offset
-    const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
-    
+    const localDate = new Date(utcDateString)
     return {
       date: localDate.toLocaleDateString(),
       time: localDate.toLocaleTimeString([], {
@@ -86,7 +80,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
   const handleRsvp = async () => {
     if (!session) {
-      toast.error("Please sign in to RSVP")
+      router.push(`/auth/signin?callbackUrl=${encodeURIComponent(`/events/${eventId}`)}`)
       return
     }
 
@@ -163,7 +157,6 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
   const rsvpDeadlineDateTime = event.rsvpDeadline ? formatEventDateTime(event.rsvpDeadline) : null
 
   return (
-    <AuthWrapper>
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <Button variant="ghost" asChild className="mb-6">
         <Link href="/events">
@@ -239,12 +232,16 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
           </Card>
 
           {/* RSVP/Ticket Section */}
-          {session && canRsvp && (
+          {canRsvp && (
             <Card>
               <CardHeader>
                 <CardTitle>{rsvp ? "Your Ticket" : "RSVP"}</CardTitle>
                 <CardDescription>
-                  {rsvp ? "Download your event ticket" : "Reserve your spot for this event"}
+                  {rsvp
+                    ? "Download your event ticket"
+                    : session
+                      ? "Reserve your spot for this event"
+                      : "Sign in to reserve your spot for this event"}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -267,23 +264,8 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
             </Card>
           )}
 
-          {/* Sign in prompt */}
-          {!session && canRsvp && (
-            <Card>
-              <CardHeader>
-                <CardTitle>RSVP Required</CardTitle>
-                <CardDescription>Sign in to RSVP for this event</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild className="w-full">
-                  <Link href="/api/auth/signin">Sign In to RSVP</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          )}
         </div>
       </div>
     </div>
-    </AuthWrapper>
   )
 }

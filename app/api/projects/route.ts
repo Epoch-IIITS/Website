@@ -4,6 +4,7 @@ import Project from "@/models/Project"
 import { projectSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { escapeRegex } from "@/lib/utils"
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,8 +12,13 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const featured = searchParams.get("featured")
+    const search = searchParams.get("search")?.trim().slice(0, 100)
 
-    const filter = featured === "true" ? { featured: true } : {}
+    const filter: Record<string, unknown> = featured === "true" ? { featured: true } : {}
+    if (search) {
+      const pattern = new RegExp(escapeRegex(search), "i")
+      filter.$or = [{ title: pattern }, { description: pattern }, { techStack: pattern }]
+    }
 
     const projects = await Project.find(filter).sort({ createdAt: -1 })
 

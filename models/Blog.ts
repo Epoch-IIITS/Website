@@ -55,11 +55,10 @@ const BlogSchema = new Schema<IBlog>(
   },
 )
 
-BlogSchema.pre("save", function (next) {
-  if (this.isModified("title")) {
+BlogSchema.pre("save", function () {
+  if (this.isModified("title") && !this.slug) {
     this.slug = slugify(this.title, { lower: true, strict: true })
   }
-  next()
 })
 
 export default mongoose.models.Blog || mongoose.model<IBlog>("Blog", BlogSchema)

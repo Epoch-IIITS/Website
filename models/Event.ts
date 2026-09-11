@@ -9,6 +9,7 @@ export interface IEvent extends Document {
   maxAttendees?: number
   rsvpDeadline?: Date
   createdBy: mongoose.Types.ObjectId
+  timezoneNormalized?: boolean
   createdAt: Date
   updatedAt: Date
 }
@@ -44,6 +45,9 @@ const EventSchema = new Schema<IEvent>(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    timezoneNormalized: {
+      type: Boolean,
     },
   },
   {

@@ -16,3 +16,7 @@ export function generateTicketId(): string {
 export function isAdmin(userRole?: string): boolean {
   return userRole === "admin"
 }
+
+export function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}

@@ -3,6 +3,7 @@ import connectDB from "@/lib/mongodb"
 import Gallery from "@/models/Gallery"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { gallerySchema } from "@/lib/validations"
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -37,18 +38,25 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     const { id } = await params
-    const body = await request.json()
+    const body = gallerySchema.parse(await request.json())
 
     await connectDB()
 
-    const gallery = await Gallery.findByIdAndUpdate(id, body, { new: true })
+    const gallery = await Gallery.findByIdAndUpdate(
+      id,
+      { $set: { ...body, eventDate: new Date(body.eventDate) } },
+      { new: true, runValidators: true },
+    )
     if (!gallery) {
       return NextResponse.json({ error: "Gallery not found" }, { status: 404 })
     }
 
     return NextResponse.json(gallery)
-  } catch (error) {
+  } catch (error: any) {
     console.error("Gallery update error:", error)
+    if (error?.issues) {
+      return NextResponse.json({ error: error.issues[0].message }, { status: 400 })
+    }
     return NextResponse.json({ error: "Failed to update gallery" }, { status: 500 })
   }
 }
