@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, Users, Code, Zap, ArrowRight, Github, ExternalLink, MapPin, Clock } from "lucide-react"
 import HeroSection from "@/components/HeroSection"
 import CTASection from "@/components/CTAsection"
+import { formatEventDate, formatEventTime } from "@/lib/event-dates"
 
 async function getLatestContent() {
   try {
@@ -266,7 +267,7 @@ export default async function HomePage() {
                   <CardHeader className="p-8">
                     <div className="flex items-start justify-between mb-4">
                       <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                        {new Date(event.date).toLocaleDateString()}
+                        {formatEventDate(event.date)}
                       </Badge>
                       <Badge variant="outline">Upcoming</Badge>
                     </div>
@@ -279,11 +280,7 @@ export default async function HomePage() {
                       <p className="text-muted-foreground line-clamp-3 leading-relaxed">{event.description}</p>
                       <div className="flex items-center text-sm text-muted-foreground">
                         <Calendar className="mr-2 h-4 w-4" />
-                        {new Date(event.date).toLocaleDateString()} at{" "}
-                        {new Date(event.date).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                        {formatEventDate(event.date)} at {formatEventTime(event.date)}
                       </div>
                       <div className="flex items-center text-sm text-muted-foreground">
                         <MapPin className="mr-2 h-4 w-4" />
@@ -355,4 +352,3 @@ export default async function HomePage() {
     </div>
   )
 }
-

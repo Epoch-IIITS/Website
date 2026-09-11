@@ -56,6 +56,13 @@ test("legacy event timestamps are corrected once and normalized timestamps are u
   assert.equal(eventDateForUse(stored, true).toISOString(), stored)
 })
 
+test("event display formatting is stable across server and browser timezones", () => {
+  const { formatEventDateTime } = load("lib/event-dates.ts")
+  const formatted = formatEventDateTime("2026-09-12T07:30:00.000Z")
+  assert.equal(formatted.date, "12 Sept 2026")
+  assert.equal(formatted.time, "01:00 pm")
+})
+
 test("blog save middleware works with Mongoose 9 and preserves a collision-safe slug", async () => {
   delete mongoose.models.Blog
   const Blog = load("models/Blog.ts").default
