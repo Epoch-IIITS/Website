@@ -5,10 +5,15 @@ import User from "@/models/User"
 import { blogSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import sanitizeHtml from "sanitize-html"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
+    const session = await getServerSession(authOptions)
+    if (!session?.user || session.user.role !== "admin") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
     await connectDB()
 
     const blog = await Blog.findById(id).populate("author", "name email")
@@ -47,9 +52,10 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       id,
       {
         ...validatedData,
+        content: sanitizeHtml(validatedData.content),
         author: user._id,
       },
-      { new: true },
+      { new: true, runValidators: true },
     ).populate("author", "name email")
 
     if (!blog) {

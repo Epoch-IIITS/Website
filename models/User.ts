@@ -8,6 +8,7 @@ export interface IUser extends Document {
   role: "admin" | "user"
   provider: string
   providerId: string
+  lastLogin?: Date
   createdAt: Date
   updatedAt: Date
 }
@@ -18,6 +19,8 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+      trim: true,
     },
     name: {
       type: String,
@@ -42,6 +45,9 @@ const UserSchema = new Schema<IUser>(
     providerId: {
       type: String,
       required: true,
+    },
+    lastLogin: {
+      type: Date,
     },
   },
   {

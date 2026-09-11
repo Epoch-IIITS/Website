@@ -4,6 +4,7 @@ export interface IRSVP extends Document {
   event: mongoose.Types.ObjectId
   user: mongoose.Types.ObjectId
   ticketId: string
+  capacitySlot?: number
   createdAt: Date
   updatedAt: Date
 }
@@ -25,6 +26,10 @@ const RSVPSchema = new Schema<IRSVP>(
       unique: true,
       required: true,
     },
+    capacitySlot: {
+      type: Number,
+      min: 1,
+    },
   },
   {
     timestamps: true,
@@ -32,5 +37,9 @@ const RSVPSchema = new Schema<IRSVP>(
 )
 
 RSVPSchema.index({ event: 1, user: 1 }, { unique: true })
+RSVPSchema.index(
+  { event: 1, capacitySlot: 1 },
+  { unique: true, partialFilterExpression: { capacitySlot: { $type: "number" } } },
+)
 
 export default mongoose.models.RSVP || mongoose.model<IRSVP>("RSVP", RSVPSchema)

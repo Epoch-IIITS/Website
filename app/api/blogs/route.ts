@@ -5,6 +5,8 @@ import User from "@/models/User"
 import { blogSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { escapeRegex } from "@/lib/utils"
+import sanitizeHtml from "sanitize-html"
 
 // Helper function to generate slug from title
 function generateSlug(title: string): string {
@@ -22,14 +24,24 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const published = searchParams.get("published")
-    const page = Number.parseInt(searchParams.get("page") || "1")
-    const limit = Number.parseInt(searchParams.get("limit") || "10")
+    const search = searchParams.get("search")?.trim().slice(0, 100)
+    const requestedPage = Number.parseInt(searchParams.get("page") || "1", 10)
+    const requestedLimit = Number.parseInt(searchParams.get("limit") || "10", 10)
+    const page = Number.isInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1
+    const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 50) : 10
     const skip = (page - 1) * limit
 
-    const filter = published === "true" ? { published: true } : {}
+    const session = published === "true" ? null : await getServerSession(authOptions)
+    const filter: Record<string, unknown> = session?.user?.role === "admin" && published !== "true"
+      ? {}
+      : { published: true }
+    if (search) {
+      const pattern = new RegExp(escapeRegex(search), "i")
+      filter.$or = [{ title: pattern }, { excerpt: pattern }, { tags: pattern }]
+    }
 
     const blogs = await Blog.find(filter)
-      .populate("author", "name email")
+      .populate("author", session?.user?.role === "admin" ? "name email" : "name")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -77,7 +89,6 @@ export async function POST(request: NextRequest) {
       delete body.published
     }
 
-    console.log("Blog data before validation:", body)
     const validatedData = blogSchema.parse(body)
 
     await connectDB()
@@ -97,12 +108,13 @@ export async function POST(request: NextRequest) {
 
     const blog = await Blog.create({
       ...validatedData,
+      content: sanitizeHtml(validatedData.content),
       slug: finalSlug,
       author: user._id,
       published: validatedData.status === "published",
     })
 
-    const populatedBlog = await Blog.findById(blog._id).populate("author", "name email")
+    const populatedBlog = await Blog.findById(blog._id).populate("author", "name")
 
     return NextResponse.json(populatedBlog, { status: 201 })
   } catch (error) {

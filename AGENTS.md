@@ -18,11 +18,11 @@ The app is a single Next.js project: pages and API handlers live together in `ap
 ## Local setup
 
 1. Install Node.js compatible with the pinned Next.js version. No Node version is pinned in the repository.
-2. Run `npm install`. Both `package-lock.json` and `pnpm-lock.yaml` exist; the README uses npm. Avoid incidental lockfile changes or switching package managers during unrelated work.
+2. Run `npm install`. Both `package-lock.json` and `pnpm-lock.yaml` exist; the README uses npm, while Vercel currently detects `pnpm-lock.yaml` and runs pnpm with a frozen lockfile. Until the repository is standardized on one package manager, dependency changes must keep both lockfiles synchronized.
 3. Configure local environment variables in `.env.local` (Next.js also loads `.env`). Keep credentials out of source control and documentation; `.env*` files are ignored.
 4. Run `npm run dev` and open `http://localhost:3000`.
 
-For local admin access without Google, add an unused email to `ADMIN_EMAILS`, restart the dev server, and open `/auth/signin`. The development-only email/password form supports creating an account and signing in, then opens `/admin`. Use the exact configured email when creating the account. Existing Google-only accounts have no password; use a separate development account. This form uses the existing credentials provider and stored roles, and is hidden in production builds.
+For local admin access without Google, add an unused email to `ADMIN_EMAILS`, restart the dev server, and open `/auth/signin`. The development-only email/password form supports creating an account and signing in, then opens `/admin`. Existing Google-only accounts have no password; use a separate development account. The credentials provider is not registered in production.
 
 | Variable | Purpose |
 | --- | --- |
@@ -30,7 +30,7 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 | `NEXTAUTH_URL` | App origin, normally `http://localhost:3000` locally. Also used by server pages to fetch this app's API, so it must match the running app. |
 | `NEXTAUTH_SECRET` | NextAuth session secret. |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Google OAuth credentials; the callback route is `/api/auth/callback/google`. |
-| `ADMIN_EMAILS` | Comma-separated emails assigned admin role when new accounts are created. Current parsing does not trim spaces. Changing this list does not update existing users' stored roles. |
+| `ADMIN_EMAILS` | Comma-separated emails assigned admin role when new accounts are created. Values are trimmed and compared case-insensitively. Changing this list does not update existing users' stored roles. |
 | `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Required to use image uploads. |
 
 ## Where to start reading
@@ -41,9 +41,9 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 | `app/blog/`, `app/projects/`, `app/events/`, `app/gallery/` | Public content pages. Blog detail URLs use slugs; event and gallery details use IDs. A gallery detail page uses `components/event-gallery.tsx` for its full-image viewer. |
 | `app/team/`, `app/contact/`, `app/privacy/`, `app/terms/` | Team directory and informational pages. `/about` permanently redirects to `/team`. |
 | `app/auth/`, `app/profile/`, `app/my-rsvps/` | Sign-in/error screens and member pages. |
-| `app/admin/`, `components/admin-shell.tsx` | Sidebar workspace, overview, content CRUD, users, event RSVPs, and the contact queries inbox at `/admin/queries`. |
+| `app/admin/`, `components/admin-shell.tsx` | Sidebar workspace, overview, content CRUD, users, event RSVPs, contact queries, and utilities. The QR generator is at `/admin/utilities/qr-code-generator`. |
 | `app/api/` | HTTP route handlers for content, auth, uploads, profiles, and RSVPs. |
-| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`, `ContactQuery`. |
+| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`, `ContactQuery`, `GeneratedQRCode`, and `QRCodeScan`. |
 | `lib/mongodb.ts` | Shared MongoDB connector with a cached connection/promise for reuse across reloads. |
 | `lib/auth.ts`, `types/next-auth.d.ts` | Authentication callbacks and session/JWT types, including user ID and role. |
 | `lib/validations.ts`, `lib/utils.ts` | Shared Zod schemas and helpers such as slug/ticket ID generation and class merging. |
@@ -58,8 +58,12 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 - Public pages often fetch `/api/...` from server components using `NEXTAUTH_URL` and `cache: "no-store"`. Some fetch failures produce empty content, so an empty page does not necessarily mean the database is empty.
 - Content APIs live at `/api/blogs`, `/api/projects`, `/api/events`, and `/api/gallery`. The public blog page uses singular `/blog`. Check each handler's response shape: the blog list returns `{ blogs, pagination }`, while several other lists return arrays.
 - API handlers connect through `connectDB()`, use Mongoose models, and generally return JSON with `NextResponse`. Extend shared Zod schemas alongside model, handler, and form changes where applicable.
-- `middleware.ts` matches `/api/admin/:path*` and `/api/rsvp/:path*`. Admin pages use `AdminGuard`; content mutation handlers also perform server-side role checks. Preserve server-side authorization rather than relying on the UI guard. The upload handler currently has no session check.
-- RSVP creation links an event and user, enforces the deadline/capacity checks in the handler, and generates a ticket ID. The model has a unique event/user index. Tickets at `/api/rsvp/[id]/ticket` are restricted to the owner or an admin.
+- `middleware.ts` matches `/api/admin/:path*` and `/api/rsvp/:path*`. Admin pages use `AdminGuard`; admin API handlers and content mutations perform their own server-side role checks. Preserve handler-level authorization rather than relying on middleware or the UI guard. The general content upload handler requires an admin session; the separate team-photo handler accepts any authenticated member.
+- RSVP creation links an event and user, enforces the deadline/capacity checks in the handler, and generates a ticket ID. The model has unique event/user and event/capacity-slot indexes so concurrent registrations cannot exceed capacity. Tickets at `/api/rsvp/[id]/ticket` are restricted to the owner or an admin.
+- Ticket PDFs use the tracked Inter files in `fonts/`. Keep `pdfkit` in `serverExternalPackages` in `next.config.mjs`; PDFKit loads font metrics and its ICC profile relative to its installed package, and bundling it into a Next.js server chunk breaks those runtime paths.
+- Admins create and permanently delete downloadable QR codes for URLs or text through `/admin/utilities/qr-code-generator`. The form renders a local live preview before saving; tracked previews use a nonfunctional sample slug until creation assigns the real tracked link. Deletion also removes the code's scan aggregates and disables its tracked link. Only http/https URLs can enable tracking. Tracked codes encode `/q/[slug]`, which records a privacy-preserving aggregate scan fingerprint and redirects to the saved destination. Raw IP addresses and user-agent strings are not stored; unique scans are estimates. QR image and management APIs remain admin-only under `/api/admin/qr-codes`.
+- Event timestamps created or edited by the current forms are stored as real UTC instants and marked `timezoneNormalized`. API responses compensate once for legacy records written by the previous IST double-offset logic, preserving their intended displayed time until they are edited. Deleting an event also removes its RSVP records.
+- The admin overview reports registrations attached to upcoming events separately from registrations for all events.
 - Contact Us requires sign-in to view the form and submit through `POST /api/contact`; signed-out visitors see a login prompt that returns them to `/contact` after authentication. The account email is read-only, and the API uses the server session email. Submissions are validated, stored in MongoDB, and shown newest first through admin-only `GET /api/admin/queries?page=1` (20 per page). The form reports success only after persistence. This stores messages for review; it does not send email. Earlier simulated submissions were never saved.
 - The Blog, Projects, Events, Gallery, Team, and Contact listing pages use the shared `components/page-kicker.tsx` header. Each header contains only its one-line uppercase kicker; page titles and introductory descriptions are intentionally omitted.
 - Gallery detail pages render thumbnails through `EventGallery`. Clicking a photo opens an uncropped full-image dialog; Previous/Next buttons and Left/Right Arrow keys wrap through the collection, while Escape closes the dialog and restores focus to the originating thumbnail. Preserve the dialog title, instructions, counter, captions, broken-image state, and keyboard behavior when changing this component.

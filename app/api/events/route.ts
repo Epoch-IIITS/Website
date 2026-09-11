@@ -5,6 +5,8 @@ import User from "@/models/User"
 import { eventSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { escapeRegex } from "@/lib/utils"
+import { eventForResponse } from "@/lib/event-dates"
 
 export async function GET(request: NextRequest) {
   try {
@@ -12,13 +14,18 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const upcoming = searchParams.get("upcoming")
+    const search = searchParams.get("search")?.trim().slice(0, 100)
 
-    let filter = {}
-    if (upcoming === "true") {
-      filter = { date: { $gte: new Date() } }
+    const filter: Record<string, unknown> = {}
+    if (search) {
+      const pattern = new RegExp(escapeRegex(search), "i")
+      filter.$or = [{ title: pattern }, { description: pattern }, { venue: pattern }]
     }
 
-    const events = await Event.find(filter).populate("createdBy", "name email").sort({ date: 1 })
+    const events = (await Event.find(filter).populate("createdBy", "name"))
+      .map(eventForResponse)
+      .filter((event) => upcoming !== "true" || new Date(event.date) >= new Date())
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
     return NextResponse.json(events)
   } catch (error) {
@@ -51,9 +58,10 @@ export async function POST(request: NextRequest) {
       date: new Date(validatedData.date),
       rsvpDeadline: validatedData.rsvpDeadline ? new Date(validatedData.rsvpDeadline) : undefined,
       createdBy: user._id,
+      timezoneNormalized: true,
     })
 
-    const populatedEvent = await Event.findById(event._id).populate("createdBy", "name email")
+    const populatedEvent = await Event.findById(event._id).populate("createdBy", "name")
 
     return NextResponse.json(populatedEvent, { status: 201 })
   } catch (error) {

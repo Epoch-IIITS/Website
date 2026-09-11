@@ -28,8 +28,7 @@ export default function NewEventPage() {
 
   // Helper function to convert local datetime-local to UTC
   const localDatetimeToUtc = (localDatetime: string): Date => {
-    const localDate = new Date(localDatetime)
-    return new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000)
+    return new Date(localDatetime)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

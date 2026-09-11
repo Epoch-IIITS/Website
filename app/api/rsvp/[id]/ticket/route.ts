@@ -6,6 +6,7 @@ import { generateTicketPDF } from "@/lib/ticket-generator"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import { type Session } from "next-auth"
+import { eventDateForUse } from "@/lib/event-dates"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -19,37 +20,31 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     await connectDB()
 
     const rsvp = await RSVP.findById(id)
-      .populate("event", "title date venue")
+      .populate("event", "title date venue timezoneNormalized")
       .populate("user", "name email")
 
     if (!rsvp) {
       return NextResponse.json({ error: "RSVP not found" }, { status: 404 })
+    }
+    if (!rsvp.user || !rsvp.event) {
+      return NextResponse.json({ error: "This ticket is no longer available" }, { status: 404 })
     }
 
     // Check if user owns this RSVP or is admin
     if (rsvp.user.email !== session.user.email && session.user.role !== "admin") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    console.log("Generating ticket for RSVP:", {
-      eventTitle: rsvp.event?.title,
-      eventDate: rsvp.event?.date,
-      eventVenue: rsvp.event?.venue,
-      attendeeName: rsvp.user?.name,
-      attendeeEmail: rsvp.user?.email,
-      ticketId: rsvp.ticketId,
-    })
-
     try {
       const pdfBuffer = await generateTicketPDF({
         eventTitle: rsvp.event.title,
-        eventDate: new Date(rsvp.event.date),
+        eventDate: eventDateForUse(rsvp.event.date, rsvp.event.timezoneNormalized),
         eventVenue: rsvp.event.venue,
         attendeeName: rsvp.user.name,
         attendeeEmail: rsvp.user.email,
         ticketId: rsvp.ticketId,
       })
 
-      return new NextResponse(pdfBuffer, {
+      return new NextResponse(new Uint8Array(pdfBuffer), {
         headers: {
           "Content-Type": "application/pdf",
           "Content-Disposition": `attachment; filename="ticket-${rsvp.ticketId}.pdf"`,

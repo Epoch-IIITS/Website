@@ -10,6 +10,8 @@ declare module "next-auth" {
       image?: string | null
       role?: string
       isAdmin?: boolean
+      provider?: string
+      createdAt?: string
     }
   }
 
@@ -17,6 +19,8 @@ declare module "next-auth" {
     id: string
     role?: string
     isAdmin?: boolean
+    provider?: string
+    createdAt?: string
   }
 }
 
@@ -24,5 +28,7 @@ declare module "next-auth/jwt" {
   interface JWT {
     role?: string
     isAdmin?: boolean
+    provider?: string
+    createdAt?: string
   }
 }

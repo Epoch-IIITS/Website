@@ -190,17 +190,20 @@ export async function generateTicketPDF(ticketData: TicketData): Promise<Buffer>
       const doc = new PDFDocument({
         size: [600, 800], // Custom size for better proportions
         margin: 0,
+        // PDFKit otherwise loads Helvetica during construction. When PDFKit is
+        // bundled by Next.js, its AFM files are not beside the generated chunk.
+        // Starting with the project font avoids that implicit filesystem lookup.
+        font,
         info: {
           Title: `Event Ticket - ${ticketData.eventTitle}`,
           Author: "Epoch Events",
           Subject: "Event Event Ticket",
           Creator: "Epoch Management System"
         },
-        font: false,
       });
 
       const chunks: Buffer[] = [];
-      doc.on("data", (chunk) => chunks.push(chunk));
+      doc.on("data", (chunk: Buffer) => chunks.push(chunk));
       doc.on("end", () => resolve(Buffer.concat(chunks)));
       doc.on("error", reject);
 
@@ -451,8 +454,8 @@ export async function generateTicketPDF(ticketData: TicketData): Promise<Buffer>
       })}`, 50, footerY + 35, { width: 500, align: "center" });
 
       // Outer border with rounded corners effect
-      doc.rect(10, 10, 580, 780).stroke(primaryColor, 2);
-      doc.rect(15, 15, 570, 770).stroke(borderColor, 1);
+      doc.lineWidth(2).rect(10, 10, 580, 780).stroke(primaryColor);
+      doc.lineWidth(1).rect(15, 15, 570, 770).stroke(borderColor);
 
       // Decorative corner elements
       const cornerSize = 20;

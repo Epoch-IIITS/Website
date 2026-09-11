@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { writeFile, mkdir } from "fs/promises"
-import path from "path"
 import { v2 as cloudinary } from "cloudinary"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,6 +11,11 @@ cloudinary.config({
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user || session.user.role !== "admin") {
+      return NextResponse.json({ error: "Admin access required" }, { status: session ? 403 : 401 })
+    }
+
     const formData = await request.formData()
     const file = formData.get("file") as File
 
@@ -53,8 +58,6 @@ export async function POST(request: NextRequest) {
 
     // Return the URL path
     
-    console.log("File uploaded successfully:", result)
-
     return NextResponse.json({ url: result.secure_url }, { status: 200 })
   } catch (error) {
     console.error("Upload error:", error)

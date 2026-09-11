@@ -4,7 +4,7 @@ import { type ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
-import { LayoutDashboard, FileText, FolderOpen, Calendar, ImageIcon, Users, Inbox, ArrowUpRight, LogOut, X } from "lucide-react"
+import { LayoutDashboard, FileText, FolderOpen, Calendar, ImageIcon, Users, Inbox, ArrowUpRight, LogOut, X, Wrench } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import { Sidebar, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
@@ -20,6 +20,7 @@ const navigation = [
   { label: "Team", href: "/admin/team", icon: Users },
   { label: "Users", href: "/admin/users", icon: Users },
   { label: "Contact queries", href: "/admin/queries", icon: Inbox },
+  { label: "Utilities", href: "/admin/utilities", icon: Wrench },
 ]
 
 export function AdminShell({ children }: { children: ReactNode }) {

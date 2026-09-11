@@ -138,7 +138,9 @@ export default function ProfilePage() {
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span>Member since: {new Date().toLocaleDateString()}</span>
+                <span>
+                  Member since: {session.user.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : "Unavailable"}
+                </span>
               </div>
             </div>
           </CardContent>

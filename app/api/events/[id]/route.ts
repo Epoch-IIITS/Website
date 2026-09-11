@@ -5,19 +5,22 @@ import User from "@/models/User"
 import { eventSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import RSVP from "@/models/RSVP"
+import { eventForResponse } from "@/lib/event-dates"
+import mongoose from "mongoose"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     await connectDB()
 
-    const event = await Event.findById(id).populate("createdBy", "name email")
+    const event = await Event.findById(id).populate("createdBy", "name")
 
     if (!event) {
       return NextResponse.json({ error: "Event not found" }, { status: 404 })
     }
 
-    return NextResponse.json(event)
+    return NextResponse.json(eventForResponse(event))
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch event" }, { status: 500 })
   }
@@ -42,22 +45,43 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
+    if (validatedData.maxAttendees) {
+      const registrations = await RSVP.countDocuments({ event: id })
+      if (validatedData.maxAttendees < registrations) {
+        return NextResponse.json(
+          { error: `Capacity cannot be lower than the ${registrations} existing registrations` },
+          { status: 400 },
+        )
+      }
+    }
+
+    const eventUpdate: Record<string, unknown> = {
+      ...validatedData,
+      createdBy: user._id,
+      date: new Date(validatedData.date),
+      timezoneNormalized: true,
+    }
+    delete eventUpdate.rsvpDeadline
+    if (validatedData.rsvpDeadline) {
+      eventUpdate.rsvpDeadline = new Date(validatedData.rsvpDeadline)
+    }
+    if (validatedData.maxAttendees === undefined) delete eventUpdate.maxAttendees
+
+    const unset: Record<string, 1> = {}
+    if (!validatedData.rsvpDeadline) unset.rsvpDeadline = 1
+    if (validatedData.maxAttendees === undefined) unset.maxAttendees = 1
 
     const event = await Event.findByIdAndUpdate(
       id,
-      {
-        ...validatedData,
-        createdBy: user._id,
-        date: validatedData.date ? new Date(validatedData.date) : undefined,
-      },
-      { new: true },
-    ).populate("createdBy", "name email")
+      { $set: eventUpdate, ...(Object.keys(unset).length ? { $unset: unset } : {}) },
+      { new: true, runValidators: true },
+    ).populate("createdBy", "name")
 
     if (!event) {
       return NextResponse.json({ error: "Event not found" }, { status: 404 })
     }
 
-    return NextResponse.json(event)
+    return NextResponse.json(eventForResponse(event))
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 400 })
@@ -77,9 +101,15 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     await connectDB()
 
-    const event = await Event.findByIdAndDelete(id)
+    let deleted = false
+    await mongoose.connection.transaction(async (transaction) => {
+      const event = await Event.findByIdAndDelete(id, { session: transaction })
+      if (!event) return
+      await RSVP.deleteMany({ event: id }, { session: transaction })
+      deleted = true
+    })
 
-    if (!event) {
+    if (!deleted) {
       return NextResponse.json({ error: "Event not found" }, { status: 404 })
     }
 

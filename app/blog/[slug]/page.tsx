@@ -4,7 +4,7 @@ import { ArrowLeft, Calendar, User, Tag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { AuthWrapper } from "@/components/auth-wrapper"
+import sanitizeHtml from "sanitize-html"
 
 async function getBlog(slug: string) {
   try {
@@ -56,7 +56,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   }
 
   return (
-    <AuthWrapper>
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <Button variant="ghost" asChild className="mb-6">
         <Link href="/blog">
@@ -119,7 +118,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           <CardContent className="prose prose-lg max-w-none">
             <div
               className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100"
-              dangerouslySetInnerHTML={{ __html: blog.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(blog.content) }}
             />
           </CardContent>
         </Card>
@@ -144,6 +143,5 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         )}
       </article>
     </div>
-    </AuthWrapper>
   )
 }
