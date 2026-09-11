@@ -18,7 +18,7 @@ The app is a single Next.js project: pages and API handlers live together in `ap
 ## Local setup
 
 1. Install Node.js compatible with the pinned Next.js version. No Node version is pinned in the repository.
-2. Run `npm install`. Both `package-lock.json` and `pnpm-lock.yaml` exist; the README uses npm. Avoid incidental lockfile changes or switching package managers during unrelated work.
+2. Run `npm install`. Both `package-lock.json` and `pnpm-lock.yaml` exist; the README uses npm, while Vercel currently detects `pnpm-lock.yaml` and runs pnpm with a frozen lockfile. Until the repository is standardized on one package manager, dependency changes must keep both lockfiles synchronized.
 3. Configure local environment variables in `.env.local` (Next.js also loads `.env`). Keep credentials out of source control and documentation; `.env*` files are ignored.
 4. Run `npm run dev` and open `http://localhost:3000`.
 
