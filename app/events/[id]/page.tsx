@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, MapPin, Users, Clock, ArrowLeft, Download } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
+import { formatEventDateTime } from "@/lib/event-dates"
 
 export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { data: session } = useSession()
@@ -35,17 +36,6 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
       }
     }
   }, [eventId, session])
-
-  const formatEventDateTime = (utcDateString: string) => {
-    const localDate = new Date(utcDateString)
-    return {
-      date: localDate.toLocaleDateString(),
-      time: localDate.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    }
-  }
 
   const fetchEvent = async () => {
     try {

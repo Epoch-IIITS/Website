@@ -278,13 +278,15 @@ export async function generateTicketPDF(ticketData: TicketData): Promise<Buffer>
         weekday: "short",
         month: "short",
         day: "numeric",
-        year: "numeric"
+        year: "numeric",
+        timeZone: "Asia/Kolkata",
       });
 
       const formattedTime = ticketData.eventDate.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
-        hour12: true
+        hour12: true,
+        timeZone: "Asia/Kolkata",
       });
 
       doc.fillColor(darkGray)

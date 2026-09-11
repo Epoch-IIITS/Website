@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Plus, Search, Edit, Trash2, Users, Calendar } from "lucide-react"
 import { toast } from "sonner"
+import { formatEventDate } from "@/lib/event-dates"
 
 export default function AdminEventsPage() {
   const [events, setEvents] = useState([])
@@ -29,11 +30,6 @@ export default function AdminEventsPage() {
   useEffect(() => {
     fetchEvents()
   }, [searchTerm])
-
-  // Helper function to convert UTC date to local time for display
-  const formatEventDate = (utcDateString: string) => {
-    return new Date(utcDateString).toLocaleDateString()
-  }
 
   // Helper function to check if event is upcoming
   const isEventUpcoming = (utcDateString: string) => {

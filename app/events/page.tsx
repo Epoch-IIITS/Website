@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Calendar, MapPin, Users } from "lucide-react"
 import { AuthWrapper } from "@/components/auth-wrapper"
 import { PageKicker } from "@/components/page-kicker"
+import { formatEventDate, formatEventTime } from "@/lib/event-dates"
 
 async function getEvents() {
   try {
@@ -51,7 +52,7 @@ export default async function EventsPage() {
                 )}
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary">{new Date(event.date).toLocaleDateString()}</Badge>
+                    <Badge variant="secondary">{formatEventDate(event.date)}</Badge>
                     <Badge variant="outline">Upcoming</Badge>
                   </div>
                   <CardTitle className="line-clamp-2">{event.title}</CardTitle>
@@ -61,11 +62,7 @@ export default async function EventsPage() {
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Calendar className="mr-2 h-4 w-4" />
-                      {new Date(event.date).toLocaleDateString()} at{" "}
-                      {new Date(event.date).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      {formatEventDate(event.date)} at {formatEventTime(event.date)}
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <MapPin className="mr-2 h-4 w-4" />
@@ -110,7 +107,7 @@ export default async function EventsPage() {
                 )}
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary">{new Date(event.date).toLocaleDateString()}</Badge>
+                    <Badge variant="secondary">{formatEventDate(event.date)}</Badge>
                     <Badge variant="outline">Past</Badge>
                   </div>
                   <CardTitle className="line-clamp-2">{event.title}</CardTitle>
@@ -120,7 +117,7 @@ export default async function EventsPage() {
                   <div className="space-y-2">
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Calendar className="mr-2 h-4 w-4" />
-                      {new Date(event.date).toLocaleDateString()}
+                      {formatEventDate(event.date)}
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <MapPin className="mr-2 h-4 w-4" />

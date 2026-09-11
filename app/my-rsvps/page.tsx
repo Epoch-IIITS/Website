@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Download } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { formatEventDate, formatEventTime } from "@/lib/event-dates";
 
 export default function MyRSVPsPage() {
   const { data: session, status } = useSession();
@@ -126,11 +127,7 @@ export default function MyRSVPsPage() {
                     <div className="space-y-2">
                       <div className="flex items-center text-sm text-muted-foreground">
                         <Calendar className="mr-2 h-4 w-4" />
-                        {new Date(rsvp.event.date).toLocaleDateString()} at{" "}
-                        {new Date(rsvp.event.date).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                        {formatEventDate(rsvp.event.date)} at {formatEventTime(rsvp.event.date)}
                       </div>
                       <div className="flex items-center text-sm text-muted-foreground">
                         <MapPin className="mr-2 h-4 w-4" />
