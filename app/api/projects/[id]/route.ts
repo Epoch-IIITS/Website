@@ -4,6 +4,7 @@ import Project from "@/models/Project"
 import { projectSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -36,11 +37,28 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     await connectDB()
 
-    const project = await Project.findByIdAndUpdate(
-      id,
-      { $set: validatedData },
-      { returnDocument: "after", runValidators: true },
-    )
+    const project = await runAuditedMutation(session, request, async (databaseSession) => {
+      const before = await Project.findById(id).session(databaseSession)
+      if (!before) return { value: null, logs: [] }
+
+      const updated = await Project.findByIdAndUpdate(
+        id,
+        { $set: validatedData },
+        { returnDocument: "after", runValidators: true, session: databaseSession },
+      )
+      const changes = diffAuditFields(before, updated, ["title", "description", "techStack", "githubUrl", "liveUrl", "image", "featured"])
+      return {
+        value: updated,
+        logs: changes.length ? [{
+          action: "update",
+          entityType: "project",
+          entityId: id,
+          entityLabel: updated?.title || before.title,
+          summary: `Updated project “${updated?.title || before.title}”`,
+          changes,
+        }] : [],
+      }
+    })
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 })
@@ -66,7 +84,20 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     await connectDB()
 
-    const project = await Project.findByIdAndDelete(id)
+    const project = await runAuditedMutation(session, request, async (databaseSession) => {
+      const deleted = await Project.findByIdAndDelete(id, { session: databaseSession })
+      return {
+        value: deleted,
+        logs: deleted ? [{
+          action: "delete",
+          entityType: "project",
+          entityId: id,
+          entityLabel: deleted.title,
+          summary: `Deleted project “${deleted.title}”`,
+          changes: diffAuditFields(deleted, {}, ["title", "description", "techStack", "githubUrl", "liveUrl", "image", "featured"]),
+        }] : [],
+      }
+    })
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 })

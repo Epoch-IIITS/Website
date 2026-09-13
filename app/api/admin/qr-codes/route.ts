@@ -6,6 +6,7 @@ import { qrCodeSchema } from "@/lib/validations"
 import { createQRCodeSlug, getPublicOrigin, isHttpUrl } from "@/lib/qr-code"
 import GeneratedQRCode from "@/models/GeneratedQRCode"
 import QRCodeScan from "@/models/QRCodeScan"
+import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 function responseRecord(record: Record<string, any>, origin: string, analytics?: Record<string, any>) {
   const id = String(record._id)
@@ -87,11 +88,24 @@ export async function POST(request: NextRequest) {
     let record
     for (let attempt = 0; attempt < 3; attempt += 1) {
       try {
-        record = await GeneratedQRCode.create({
-          ...parsed.data,
-          contentType,
-          slug: createQRCodeSlug(),
-          createdBy: session.user.id,
+        record = await runAuditedMutation(session, request, async (databaseSession) => {
+          const [created] = await GeneratedQRCode.create([{
+            ...parsed.data,
+            contentType,
+            slug: createQRCodeSlug(),
+            createdBy: session.user.id,
+          }], { session: databaseSession })
+          return {
+            value: created,
+            logs: [{
+              action: "create",
+              entityType: "qr-code",
+              entityId: created._id.toString(),
+              entityLabel: created.name,
+              summary: `Created QR code “${created.name}”`,
+              changes: diffAuditFields({}, created, ["name", "contentType", "trackingEnabled", "foregroundColor", "backgroundColor", "size", "margin", "errorCorrectionLevel"]),
+            }],
+          }
         })
         break
       } catch (error: any) {

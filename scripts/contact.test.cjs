@@ -131,6 +131,10 @@ function deleteRoute(session, model, connect = async () => {}) {
   return load('app/api/admin/queries/[id]/route.ts', {
     'next/server': nextServer, 'next-auth': { getServerSession: async () => session },
     '@/lib/auth': { authOptions: {} }, '@/lib/mongodb': connect, '@/models/ContactQuery': model,
+    '@/lib/audit-log': {
+      diffAuditFields: () => [],
+      runAuditedMutation: async (_session, _request, mutation) => (await mutation('audit-session')).value,
+    },
   })
 }
 const queryId = '507f1f77bcf86cd799439011'

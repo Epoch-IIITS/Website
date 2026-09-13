@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { escapeRegex } from "@/lib/utils"
 import { eventForResponse } from "@/lib/event-dates"
+import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 export async function GET(request: NextRequest) {
   try {
@@ -53,15 +54,30 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    const event = await Event.create({
-      ...validatedData,
-      date: new Date(validatedData.date),
-      rsvpDeadline: validatedData.rsvpDeadline ? new Date(validatedData.rsvpDeadline) : undefined,
-      createdBy: user._id,
-      timezoneNormalized: true,
-    })
+    const populatedEvent = await runAuditedMutation(session, request, async (databaseSession) => {
+      const [event] = await Event.create([{
+        ...validatedData,
+        date: new Date(validatedData.date),
+        rsvpDeadline: validatedData.rsvpDeadline ? new Date(validatedData.rsvpDeadline) : undefined,
+        createdBy: user._id,
+        timezoneNormalized: true,
+      }], { session: databaseSession })
 
-    const populatedEvent = await Event.findById(event._id).populate("createdBy", "name")
+      const populated = await Event.findById(event._id)
+        .populate("createdBy", "name")
+        .session(databaseSession)
+      return {
+        value: populated,
+        logs: [{
+          action: "create",
+          entityType: "event",
+          entityId: event._id.toString(),
+          entityLabel: event.title,
+          summary: `Created event “${event.title}”`,
+          changes: diffAuditFields({}, event, ["title", "description", "date", "venue", "image", "maxAttendees", "rsvpDeadline"]),
+        }],
+      }
+    })
 
     return NextResponse.json(populatedEvent, { status: 201 })
   } catch (error) {

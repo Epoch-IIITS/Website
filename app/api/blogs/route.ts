@@ -6,6 +6,7 @@ import { blogSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { escapeRegex } from "@/lib/utils"
+import { diffAuditFields, runAuditedMutation, textContentChange } from "@/lib/audit-log"
 import sanitizeHtml from "sanitize-html"
 
 // Helper function to generate slug from title
@@ -106,15 +107,33 @@ export async function POST(request: NextRequest) {
       finalSlug = `${finalSlug}-${Date.now()}`
     }
 
-    const blog = await Blog.create({
-      ...validatedData,
-      content: sanitizeHtml(validatedData.content),
-      slug: finalSlug,
-      author: user._id,
-      published: validatedData.status === "published",
-    })
+    const populatedBlog = await runAuditedMutation(session, request, async (databaseSession) => {
+      const [blog] = await Blog.create([{
+        ...validatedData,
+        content: sanitizeHtml(validatedData.content),
+        slug: finalSlug,
+        author: user._id,
+        published: validatedData.status === "published",
+      }], { session: databaseSession })
 
-    const populatedBlog = await Blog.findById(blog._id).populate("author", "name")
+      const populated = await Blog.findById(blog._id)
+        .populate("author", "name")
+        .session(databaseSession)
+      return {
+        value: populated,
+        logs: [{
+          action: "create",
+          entityType: "blog",
+          entityId: blog._id.toString(),
+          entityLabel: blog.title,
+          summary: `Created blog “${blog.title}”`,
+          changes: [
+            ...diffAuditFields({}, blog, ["title", "slug", "excerpt", "featuredImage", "published", "tags"]),
+            ...textContentChange("content", "", blog.content),
+          ],
+        }],
+      }
+    })
 
     return NextResponse.json(populatedBlog, { status: 201 })
   } catch (error) {

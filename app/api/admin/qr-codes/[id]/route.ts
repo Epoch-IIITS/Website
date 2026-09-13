@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth"
 import connectDB from "@/lib/mongodb"
 import GeneratedQRCode from "@/models/GeneratedQRCode"
 import QRCodeScan from "@/models/QRCodeScan"
+import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -19,12 +20,22 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     await connectDB()
-    let deleted = false
-    await mongoose.connection.transaction(async transaction => {
-      const qrCode = await GeneratedQRCode.findByIdAndDelete(id, { session: transaction })
-      if (!qrCode) return
-      await QRCodeScan.deleteMany({ qrCode: id }, { session: transaction })
-      deleted = true
+    const deleted = await runAuditedMutation(session, request, async (databaseSession) => {
+      const qrCode = await GeneratedQRCode.findByIdAndDelete(id, { session: databaseSession })
+      if (!qrCode) return { value: false, logs: [] }
+      const scanResult = await QRCodeScan.deleteMany({ qrCode: id }, { session: databaseSession })
+      return {
+        value: true,
+        logs: [{
+          action: "delete",
+          entityType: "qr-code",
+          entityId: id,
+          entityLabel: qrCode.name,
+          summary: `Deleted QR code “${qrCode.name}”`,
+          changes: diffAuditFields(qrCode, {}, ["name", "contentType", "trackingEnabled", "foregroundColor", "backgroundColor", "size", "margin", "errorCorrectionLevel"]),
+          sideEffects: { deletedScanAggregates: scanResult.deletedCount },
+        }],
+      }
     })
 
     if (!deleted) {

@@ -74,6 +74,7 @@ const query = (value) => ({
   },
 });
 function adminRoute(models = {}, role = "admin", transaction) {
+  const runTransaction = transaction || (async (fn) => fn({}));
   return load("app/api/admin/team/route.ts", {
     "next/server": next,
     "next-auth": {
@@ -83,8 +84,14 @@ function adminRoute(models = {}, role = "admin", transaction) {
     "@/lib/mongodb": async () => {},
     "@/models/Team": { ...models, ensureTeamStorage: async () => {} },
     "@/lib/team-validation": schemas,
+    "@/lib/audit-log": {
+      diffAuditFields: () => [],
+      runAuditedMutation: async (_session, _request, mutation) =>
+        runTransaction(async (databaseSession) =>
+          (await mutation(databaseSession)).value),
+    },
     mongoose: {
-      connection: { transaction: transaction || (async (fn) => fn({})) },
+      connection: { transaction: runTransaction },
     },
   });
 }
@@ -220,7 +227,10 @@ test("request approval is transactional, preserves an existing profile, and cann
     reviews = 0,
     txCount = 0;
   const record = {
+    _id: id,
     status: "pending",
+    name: "Ada Lovelace",
+    toObject() { return { status: this.status, name: this.name }; },
     save: async () => {
       reviews++;
     },
@@ -230,9 +240,13 @@ test("request approval is transactional, preserves an existing profile, and cann
       TeamRequest: {
         findOne: () => query(record.status === "pending" ? record : null),
       },
-      TeamPerson: { exists: () => query(true) },
-      TeamYear: { findById: () => query({ groups: [{ id: "domain" }] }) },
+      TeamPerson: {
+        exists: () => query(true),
+        findById: () => query({ name: "Ada Lovelace" }),
+      },
+      TeamYear: { findById: () => query({ year: 2026, groups: [{ id: "domain" }] }) },
       TeamAppointment: {
+        findOne: () => query(null),
         findOneAndUpdate: async (filter, update) => {
           savedAppointment = { filter, update };
           return { _id: id };
@@ -263,7 +277,13 @@ test("request approval is transactional, preserves an existing profile, and cann
 });
 
 test("rejection requires feedback and never creates a public appointment", async () => {
-  const record = { status: "pending", save: async () => {} };
+  const record = {
+    _id: id,
+    status: "pending",
+    name: "Ada Lovelace",
+    toObject() { return { status: this.status, name: this.name }; },
+    save: async () => {},
+  };
   const route = adminRoute({ TeamRequest: { findOne: () => query(record) } });
   assert.equal(
     (

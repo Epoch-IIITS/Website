@@ -4,6 +4,7 @@ import Gallery from "@/models/Gallery"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { gallerySchema } from "@/lib/validations"
+import { countChange, diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -42,11 +43,31 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     await connectDB()
 
-    const gallery = await Gallery.findByIdAndUpdate(
-      id,
-      { $set: { ...body, eventDate: new Date(body.eventDate) } },
-      { new: true, runValidators: true },
-    )
+    const gallery = await runAuditedMutation(session, request, async (databaseSession) => {
+      const before = await Gallery.findById(id).session(databaseSession)
+      if (!before) return { value: null, logs: [] }
+
+      const updated = await Gallery.findByIdAndUpdate(
+        id,
+        { $set: { ...body, eventDate: new Date(body.eventDate) } },
+        { new: true, runValidators: true, session: databaseSession },
+      )
+      const changes = [
+        ...diffAuditFields(before, updated, ["eventName", "eventDate", "description"]),
+        ...countChange("images", before.images, updated?.images || []),
+      ]
+      return {
+        value: updated,
+        logs: changes.length ? [{
+          action: "update",
+          entityType: "gallery",
+          entityId: id,
+          entityLabel: updated?.eventName || before.eventName,
+          summary: `Updated gallery “${updated?.eventName || before.eventName}”`,
+          changes,
+        }] : [],
+      }
+    })
     if (!gallery) {
       return NextResponse.json({ error: "Gallery not found" }, { status: 404 })
     }
@@ -71,7 +92,23 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     const { id } = await params
     await connectDB()
 
-    const gallery = await Gallery.findByIdAndDelete(id)
+    const gallery = await runAuditedMutation(session, request, async (databaseSession) => {
+      const deleted = await Gallery.findByIdAndDelete(id, { session: databaseSession })
+      return {
+        value: deleted,
+        logs: deleted ? [{
+          action: "delete",
+          entityType: "gallery",
+          entityId: id,
+          entityLabel: deleted.eventName,
+          summary: `Deleted gallery “${deleted.eventName}”`,
+          changes: [
+            ...diffAuditFields(deleted, {}, ["eventName", "eventDate", "description"]),
+            ...countChange("images", deleted.images, []),
+          ],
+        }] : [],
+      }
+    })
     if (!gallery) {
       return NextResponse.json({ error: "Gallery not found" }, { status: 404 })
     }

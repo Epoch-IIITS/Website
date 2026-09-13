@@ -4,6 +4,7 @@ import Gallery from "@/models/Gallery"
 import { gallerySchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { countChange, diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 export async function GET() {
   try {
@@ -31,7 +32,23 @@ export async function POST(request: NextRequest) {
 
     await connectDB()
 
-    const gallery = await Gallery.create(validatedData)
+    const gallery = await runAuditedMutation(session, request, async (databaseSession) => {
+      const [created] = await Gallery.create([validatedData], { session: databaseSession })
+      return {
+        value: created,
+        logs: [{
+          action: "create",
+          entityType: "gallery",
+          entityId: created._id.toString(),
+          entityLabel: created.eventName,
+          summary: `Created gallery “${created.eventName}”`,
+          changes: [
+            ...diffAuditFields({}, created, ["eventName", "eventDate", "description"]),
+            ...countChange("images", [], created.images),
+          ],
+        }],
+      }
+    })
 
     return NextResponse.json(gallery, { status: 201 })
   } catch (error) {
