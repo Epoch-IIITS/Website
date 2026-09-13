@@ -178,6 +178,7 @@ test("QR admin APIs reject anonymous requests before database access", async () 
     "@/lib/qr-code": {},
     "@/models/GeneratedQRCode": {},
     "@/models/QRCodeScan": {},
+    "@/lib/audit-log": {},
   })
 
   assert.equal((await route.GET({})).status, 401)
@@ -200,6 +201,7 @@ test("QR deletion is admin-only and removes its scan aggregates", async () => {
     "@/lib/mongodb": async () => { connected = true },
     "@/models/GeneratedQRCode": {},
     "@/models/QRCodeScan": {},
+    "@/lib/audit-log": {},
   })
   const params = { params: Promise.resolve({ id: "507f1f77bcf86cd799439011" }) }
   assert.equal((await anonymousRoute.DELETE({}, params)).status, 401)
@@ -227,7 +229,13 @@ test("QR deletion is admin-only and removes its scan aggregates", async () => {
         assert.equal(filter.qrCode, "507f1f77bcf86cd799439011")
         assert.equal(options.session, "transaction")
         deletedScans = true
+        return { deletedCount: 1 }
       },
+    },
+    "@/lib/audit-log": {
+      diffAuditFields: () => [],
+      runAuditedMutation: async (_session, _request, mutation) =>
+        (await mutation("transaction")).value,
     },
   })
   assert.equal((await adminRoute.DELETE({}, params)).status, 200)

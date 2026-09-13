@@ -5,6 +5,7 @@ import { projectSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { escapeRegex } from "@/lib/utils"
+import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 export async function GET(request: NextRequest) {
   try {
@@ -41,7 +42,20 @@ export async function POST(request: NextRequest) {
 
     await connectDB()
 
-    const project = await Project.create(validatedData)
+    const project = await runAuditedMutation(session, request, async (databaseSession) => {
+      const [created] = await Project.create([validatedData], { session: databaseSession })
+      return {
+        value: created,
+        logs: [{
+          action: "create",
+          entityType: "project",
+          entityId: created._id.toString(),
+          entityLabel: created.title,
+          summary: `Created project “${created.title}”`,
+          changes: diffAuditFields({}, created, ["title", "description", "techStack", "githubUrl", "liveUrl", "image", "featured"]),
+        }],
+      }
+    })
 
     return NextResponse.json(project, { status: 201 })
   } catch (error) {

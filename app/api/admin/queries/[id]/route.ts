@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import connectDB from "@/lib/mongodb"
 import ContactQuery from "@/models/ContactQuery"
+import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -15,7 +16,20 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       return NextResponse.json({ error: "Invalid query ID" }, { status: 400 })
     }
     await connectDB()
-    const deleted = await ContactQuery.findByIdAndDelete(id)
+    const deleted = await runAuditedMutation(session, request, async (databaseSession) => {
+      const query = await ContactQuery.findByIdAndDelete(id, { session: databaseSession })
+      return {
+        value: query,
+        logs: query ? [{
+          action: "delete",
+          entityType: "contact-query",
+          entityId: id,
+          entityLabel: query.subject,
+          summary: `Deleted contact query “${query.subject}”`,
+          changes: diffAuditFields(query, {}, ["subject"]),
+        }] : [],
+      }
+    })
     if (!deleted) {
       return NextResponse.json({ error: "This query has already been deleted" }, { status: 404 })
     }

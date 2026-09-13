@@ -43,7 +43,7 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 | `app/auth/`, `app/profile/`, `app/my-rsvps/` | Sign-in/error screens and member pages. |
 | `app/admin/`, `components/admin-shell.tsx` | Sidebar workspace, overview, content CRUD, users, event RSVPs, contact queries, and utilities. The QR generator is at `/admin/utilities/qr-code-generator`. |
 | `app/api/` | HTTP route handlers for content, auth, uploads, profiles, and RSVPs. |
-| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`, `ContactQuery`, `GeneratedQRCode`, and `QRCodeScan`. |
+| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`, `ContactQuery`, `GeneratedQRCode`, `QRCodeScan`, and the append-only `AuditLog`. |
 | `lib/mongodb.ts` | Shared MongoDB connector with a cached connection/promise for reuse across reloads. |
 | `lib/auth.ts`, `types/next-auth.d.ts` | Authentication callbacks and session/JWT types, including user ID and role. |
 | `lib/validations.ts`, `lib/utils.ts` | Shared Zod schemas and helpers such as slug/ticket ID generation and class merging. |
@@ -70,6 +70,7 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 - Gallery detail pages render thumbnails through `EventGallery`. Clicking a photo opens an uncropped full-image dialog; Previous/Next buttons and Left/Right Arrow keys wrap through the collection, while Escape closes the dialog and restores focus to the originating thumbnail. Preserve the dialog title, instructions, counter, captions, broken-image state, and keyboard behavior when changing this component.
 - Prefer existing UI components, Tailwind theme tokens, and `@/` imports. Add `"use client"` where browser APIs, React state/effects, or client session hooks require it; keep database and secret-bearing code on the server.
 - Admins can permanently delete a contact query through `DELETE /api/admin/queries/[id]`. The inbox requires confirmation, refreshes after deletion, and moves back to the last available page if necessary. The endpoint checks the session's admin role and validates the record ID.
+- Successful administrator creates, updates, and deletes are recorded atomically with their domain writes through `lib/audit-log.ts`. The admin-only `/admin/logs` page provides searchable, filterable activity history. Audit values are allowlisted, large blog content and gallery image changes are summarized, and sensitive contact/QR payloads are not copied. Compound team changes share an operation ID; event and QR deletions include cascade counts. `AuditLog` records are immutable and expire automatically six calendar months after creation through a TTL index; the read API also excludes expired records while MongoDB's asynchronous TTL cleanup catches up. Audited mutations require a MongoDB replica set because the domain and audit records share a transaction.
 - `Project` has no `createdBy` field. Project detail reads and updates must not populate or assign that relationship; doing so makes existing projects fail to load under Mongoose strict population. The project edit page distinguishes a real 404 from other load failures and offers retry for recoverable errors.
 - Several files contain large commented-out earlier implementations. Read the active code before making changes.
 
@@ -100,7 +101,7 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 | `npx tsc --noEmit --incremental false` | Run TypeScript checking separately without writing incremental build metadata. |
 | `npm run lint` | Invokes `next lint`. No ESLint configuration or direct ESLint dependency is present, so expect an initial setup prompt rather than a ready-to-run unattended check. |
 
-Run `node --test scripts/*.test.cjs` for contact validation, authenticated submission behavior, inbox authorization/pagination/deletion, and project read/update regression tests using isolated database/session boundaries. Project tests use the real Mongoose schema and query handling with database I/O stubbed out. There is no package-level `test` script. `scripts/test-db.js` is a diagnostic script that imports `.js` paths for source files stored as `.ts`; it is not a ready-to-run test harness.
+Run `node --test scripts/*.test.cjs` for audit retention/authorization/transaction behavior, contact validation, authenticated submission behavior, inbox authorization/pagination/deletion, and project read/update regression tests using isolated database/session boundaries. Project tests use the real Mongoose schema and query handling with database I/O stubbed out. There is no package-level `test` script. `scripts/test-db.js` is a diagnostic script that imports `.js` paths for source files stored as `.ts`; it is not a ready-to-run test harness.
 
 For application changes, run relevant available checks and manually exercise the affected pages/API flows. Check signed-out, member, and admin behavior when changing access control; check responsive layout and both themes for UI changes. Report existing failures separately from regressions. Documentation-only changes do not require an application build.
 

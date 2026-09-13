@@ -31,6 +31,10 @@ function route(session = null) {
     '@/lib/validations': schemas,
     'next-auth': { getServerSession: async () => session },
     '@/lib/auth': { authOptions: {} },
+    '@/lib/audit-log': {
+      diffAuditFields: () => [{ field: 'title', before: null, after: 'changed' }],
+      runAuditedMutation: async (_session, _request, mutation) => (await mutation('audit-session')).value,
+    },
   })
 }
 
@@ -56,6 +60,7 @@ test('a database failure returns 500 rather than a missing-project response', as
 
 test('an admin can save a project without a nonexistent createdBy relationship', async () => {
   let saved
+  Project.collection.findOne = async () => existing
   Project.collection.findOneAndUpdate = async (filter, update) => {
     saved = update.$set
     return { ...existing, ...saved }

@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import RSVP from "@/models/RSVP"
 import { eventForResponse } from "@/lib/event-dates"
-import mongoose from "mongoose"
+import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -71,11 +71,28 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (!validatedData.rsvpDeadline) unset.rsvpDeadline = 1
     if (validatedData.maxAttendees === undefined) unset.maxAttendees = 1
 
-    const event = await Event.findByIdAndUpdate(
-      id,
-      { $set: eventUpdate, ...(Object.keys(unset).length ? { $unset: unset } : {}) },
-      { new: true, runValidators: true },
-    ).populate("createdBy", "name")
+    const event = await runAuditedMutation(session, request, async (databaseSession) => {
+      const before = await Event.findById(id).session(databaseSession)
+      if (!before) return { value: null, logs: [] }
+
+      const updated = await Event.findByIdAndUpdate(
+        id,
+        { $set: eventUpdate, ...(Object.keys(unset).length ? { $unset: unset } : {}) },
+        { new: true, runValidators: true, session: databaseSession },
+      ).populate("createdBy", "name")
+      const changes = diffAuditFields(before, updated, ["title", "description", "date", "venue", "image", "maxAttendees", "rsvpDeadline"])
+      return {
+        value: updated,
+        logs: changes.length ? [{
+          action: "update",
+          entityType: "event",
+          entityId: id,
+          entityLabel: updated?.title || before.title,
+          summary: `Updated event “${updated?.title || before.title}”`,
+          changes,
+        }] : [],
+      }
+    })
 
     if (!event) {
       return NextResponse.json({ error: "Event not found" }, { status: 404 })
@@ -101,12 +118,22 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     await connectDB()
 
-    let deleted = false
-    await mongoose.connection.transaction(async (transaction) => {
-      const event = await Event.findByIdAndDelete(id, { session: transaction })
-      if (!event) return
-      await RSVP.deleteMany({ event: id }, { session: transaction })
-      deleted = true
+    const deleted = await runAuditedMutation(session, request, async (databaseSession) => {
+      const event = await Event.findByIdAndDelete(id, { session: databaseSession })
+      if (!event) return { value: false, logs: [] }
+      const rsvpResult = await RSVP.deleteMany({ event: id }, { session: databaseSession })
+      return {
+        value: true,
+        logs: [{
+          action: "delete",
+          entityType: "event",
+          entityId: id,
+          entityLabel: event.title,
+          summary: `Deleted event “${event.title}”`,
+          changes: diffAuditFields(event, {}, ["title", "description", "date", "venue", "image", "maxAttendees", "rsvpDeadline"]),
+          sideEffects: { deletedRsvps: rsvpResult.deletedCount },
+        }],
+      }
     })
 
     if (!deleted) {
