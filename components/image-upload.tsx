@@ -7,15 +7,17 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Upload, X, ImageIcon } from "lucide-react"
 import { toast } from "sonner"
+import type { MediaPurpose } from "@/lib/cloudinary-media"
 
 interface ImageUploadProps {
   value: string
   onChange: (url: string) => void
   label?: string
   disabled?: boolean
+  purpose?: Exclude<MediaPurpose, "team">
 }
 
-export function ImageUpload({ value, onChange, label = "Image", disabled = false }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, label = "Image", disabled = false, purpose = "blog" }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -41,6 +43,7 @@ export function ImageUpload({ value, onChange, label = "Image", disabled = false
     try {
       const formData = new FormData()
       formData.append("file", file)
+      formData.append("purpose", purpose)
 
       const response = await fetch("/api/upload", {
         method: "POST",

@@ -8,6 +8,7 @@ import { authOptions } from "@/lib/auth"
 import { escapeRegex } from "@/lib/utils"
 import { eventForResponse } from "@/lib/event-dates"
 import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
+import { ensureMediaStorage, reconcileMediaUrls } from "@/lib/media-assets"
 
 export async function GET(request: NextRequest) {
   try {
@@ -47,6 +48,7 @@ export async function POST(request: NextRequest) {
     const validatedData = eventSchema.parse(body)
 
     await connectDB()
+    await ensureMediaStorage()
 
     // Find the user to get the ObjectId
     const user = await User.findOne({ email: session.user.email })
@@ -66,6 +68,12 @@ export async function POST(request: NextRequest) {
       const populated = await Event.findById(event._id)
         .populate("createdBy", "name")
         .session(databaseSession)
+      await reconcileMediaUrls({
+        beforeUrls: [],
+        afterUrls: [event.image],
+        reason: `Attached to event ${event._id}`,
+        session: databaseSession,
+      })
       return {
         value: populated,
         logs: [{

@@ -173,6 +173,7 @@ export default function NewProjectPage() {
               <ImageUpload
                 value={formData.image}
                 onChange={(url) => setFormData({ ...formData, image: url })}
+                purpose="project"
                 label="Project Image"
                 disabled={loading}
               />

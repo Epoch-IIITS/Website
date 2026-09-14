@@ -5,6 +5,11 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { gallerySchema } from "@/lib/validations"
 import { countChange, diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
+import {
+  attemptMediaCleanup,
+  ensureMediaStorage,
+  reconcileMediaUrls,
+} from "@/lib/media-assets"
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -42,7 +47,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const body = gallerySchema.parse(await request.json())
 
     await connectDB()
+    await ensureMediaStorage()
 
+    const cleanupPublicIds = new Set<string>()
     const gallery = await runAuditedMutation(session, request, async (databaseSession) => {
       const before = await Gallery.findById(id).session(databaseSession)
       if (!before) return { value: null, logs: [] }
@@ -50,12 +57,23 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       const updated = await Gallery.findByIdAndUpdate(
         id,
         { $set: { ...body, eventDate: new Date(body.eventDate) } },
-        { new: true, runValidators: true, session: databaseSession },
+        {
+          returnDocument: "after",
+          runValidators: true,
+          session: databaseSession,
+        },
       )
       const changes = [
         ...diffAuditFields(before, updated, ["eventName", "eventDate", "description"]),
         ...countChange("images", before.images, updated?.images || []),
       ]
+      const queued = await reconcileMediaUrls({
+        beforeUrls: before.images.map((image: { url: string }) => image.url),
+        afterUrls: (updated?.images || []).map((image: { url: string }) => image.url),
+        reason: `Image removed from gallery ${id}`,
+        session: databaseSession,
+      })
+      queued.forEach((publicId) => cleanupPublicIds.add(publicId))
       return {
         value: updated,
         logs: changes.length ? [{
@@ -65,6 +83,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           entityLabel: updated?.eventName || before.eventName,
           summary: `Updated gallery “${updated?.eventName || before.eventName}”`,
           changes,
+          sideEffects: queued.length ? { cloudinaryImagesQueued: queued.length } : undefined,
         }] : [],
       }
     })
@@ -72,6 +91,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Gallery not found" }, { status: 404 })
     }
 
+    await attemptMediaCleanup([...cleanupPublicIds])
     return NextResponse.json(gallery)
   } catch (error: any) {
     console.error("Gallery update error:", error)
@@ -91,9 +111,18 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     const { id } = await params
     await connectDB()
+    await ensureMediaStorage()
 
+    const cleanupPublicIds = new Set<string>()
     const gallery = await runAuditedMutation(session, request, async (databaseSession) => {
       const deleted = await Gallery.findByIdAndDelete(id, { session: databaseSession })
+      const queued = deleted ? await reconcileMediaUrls({
+        beforeUrls: deleted.images.map((image: { url: string }) => image.url),
+        afterUrls: [],
+        reason: `Deleted gallery ${id}`,
+        session: databaseSession,
+      }) : []
+      queued.forEach((publicId) => cleanupPublicIds.add(publicId))
       return {
         value: deleted,
         logs: deleted ? [{
@@ -106,6 +135,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
             ...diffAuditFields(deleted, {}, ["eventName", "eventDate", "description"]),
             ...countChange("images", deleted.images, []),
           ],
+          sideEffects: queued.length ? { cloudinaryImagesQueued: queued.length } : undefined,
         }] : [],
       }
     })
@@ -113,6 +143,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Gallery not found" }, { status: 404 })
     }
 
+    await attemptMediaCleanup([...cleanupPublicIds])
     return NextResponse.json({ message: "Gallery deleted successfully" })
   } catch (error) {
     console.error("Gallery delete error:", error)

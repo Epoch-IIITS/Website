@@ -229,6 +229,7 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
                     onChange={(url) => updateImage(index, "url", url)}
                     label={`Image ${index + 1}`}
                     disabled={loading}
+                    purpose="gallery"
                   />
 
                   <div className="space-y-2">

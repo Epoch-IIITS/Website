@@ -241,6 +241,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
               <ImageUpload
                 value={formData.image}
                 onChange={(url) => setFormData({ ...formData, image: url })}
+                purpose="project"
                 label="Project Image"
                 disabled={loading}
               />

@@ -5,6 +5,11 @@ import { projectSchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
+import {
+  attemptMediaCleanup,
+  ensureMediaStorage,
+  reconcileMediaUrls,
+} from "@/lib/media-assets"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -36,7 +41,9 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const validatedData = projectSchema.parse(body)
 
     await connectDB()
+    await ensureMediaStorage()
 
+    const cleanupPublicIds = new Set<string>()
     const project = await runAuditedMutation(session, request, async (databaseSession) => {
       const before = await Project.findById(id).session(databaseSession)
       if (!before) return { value: null, logs: [] }
@@ -47,6 +54,13 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         { returnDocument: "after", runValidators: true, session: databaseSession },
       )
       const changes = diffAuditFields(before, updated, ["title", "description", "techStack", "githubUrl", "liveUrl", "image", "featured"])
+      const queued = await reconcileMediaUrls({
+        beforeUrls: [before.image],
+        afterUrls: [updated?.image],
+        reason: `Image removed from project ${id}`,
+        session: databaseSession,
+      })
+      queued.forEach((publicId) => cleanupPublicIds.add(publicId))
       return {
         value: updated,
         logs: changes.length ? [{
@@ -56,6 +70,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
           entityLabel: updated?.title || before.title,
           summary: `Updated project “${updated?.title || before.title}”`,
           changes,
+          sideEffects: queued.length ? { cloudinaryImagesQueued: queued.length } : undefined,
         }] : [],
       }
     })
@@ -64,6 +79,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: "Project not found" }, { status: 404 })
     }
 
+    await attemptMediaCleanup([...cleanupPublicIds])
     return NextResponse.json(project)
   } catch (error) {
     if (error instanceof Error) {
@@ -83,9 +99,18 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     await connectDB()
+    await ensureMediaStorage()
 
+    const cleanupPublicIds = new Set<string>()
     const project = await runAuditedMutation(session, request, async (databaseSession) => {
       const deleted = await Project.findByIdAndDelete(id, { session: databaseSession })
+      const queued = deleted ? await reconcileMediaUrls({
+        beforeUrls: [deleted.image],
+        afterUrls: [],
+        reason: `Deleted project ${id}`,
+        session: databaseSession,
+      }) : []
+      queued.forEach((publicId) => cleanupPublicIds.add(publicId))
       return {
         value: deleted,
         logs: deleted ? [{
@@ -95,6 +120,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
           entityLabel: deleted.title,
           summary: `Deleted project “${deleted.title}”`,
           changes: diffAuditFields(deleted, {}, ["title", "description", "techStack", "githubUrl", "liveUrl", "image", "featured"]),
+          sideEffects: queued.length ? { cloudinaryImagesQueued: queued.length } : undefined,
         }] : [],
       }
     })
@@ -103,6 +129,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       return NextResponse.json({ error: "Project not found" }, { status: 404 })
     }
 
+    await attemptMediaCleanup([...cleanupPublicIds])
     return NextResponse.json({ message: "Project deleted successfully" })
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete project" }, { status: 500 })

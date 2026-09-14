@@ -31,7 +31,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       const updated = await User.findByIdAndUpdate(
         id,
         { role },
-        { new: true, runValidators: true, session: databaseSession },
+        {
+          returnDocument: "after",
+          runValidators: true,
+          session: databaseSession,
+        },
       ).select("name email role")
       const changes = diffAuditFields(before, updated, ["role"])
       return {

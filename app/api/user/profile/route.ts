@@ -20,7 +20,11 @@ export async function PUT(request: NextRequest) {
 
     await connectDB()
 
-    const user = await User.findOneAndUpdate({ email: session.user.email }, { name: name.trim() }, { new: true })
+    const user = await User.findOneAndUpdate(
+      { email: session.user.email },
+      { name: name.trim() },
+      { returnDocument: "after" },
+    )
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })

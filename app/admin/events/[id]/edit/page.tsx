@@ -222,6 +222,7 @@ export default function EditEventPage({ params }: { params: Promise<{ id: string
               <ImageUpload
                 value={formData.image}
                 onChange={(url) => setFormData({ ...formData, image: url })}
+                purpose="event"
                 label="Event Image"
                 disabled={loading}
               />

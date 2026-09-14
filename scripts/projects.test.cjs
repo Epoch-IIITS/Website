@@ -35,6 +35,11 @@ function route(session = null) {
       diffAuditFields: () => [{ field: 'title', before: null, after: 'changed' }],
       runAuditedMutation: async (_session, _request, mutation) => (await mutation('audit-session')).value,
     },
+    '@/lib/media-assets': {
+      ensureMediaStorage: async () => {},
+      reconcileMediaUrls: async () => [],
+      attemptMediaCleanup: async () => {},
+    },
   })
 }
 

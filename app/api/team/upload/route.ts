@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { v2 as cloudinary } from "cloudinary";
+import connectDB from "@/lib/mongodb";
+import { destroyManagedImage, uploadManagedImage } from "@/lib/cloudinary-media";
+import { registerUploadedMedia } from "@/lib/media-assets";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -21,26 +23,28 @@ export async function POST(req: NextRequest) {
         { error: "Use a JPG, PNG or WebP photo under 5 MB" },
         { status: 400 },
       );
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
     const buffer = Buffer.from(await file.arrayBuffer());
-    const result = await new Promise<any>((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream(
-          {
-            folder: "epoch-team",
-            resource_type: "image",
-            transformation: [{ width: 1200, height: 1200, crop: "limit" }],
-            format: "jpg",
-          },
-          (error, value) => (error ? reject(error) : resolve(value)),
-        )
-        .end(buffer);
+    const result = await uploadManagedImage(buffer, "team", {
+      transformation: [{ width: 1200, height: 1200, crop: "limit" }],
+      format: "jpg",
     });
-    return NextResponse.json({ url: result.secure_url });
+    try {
+      await connectDB();
+      await registerUploadedMedia(result, "team", String(session.user.id));
+    } catch (storageError) {
+      try {
+        await destroyManagedImage(result.publicId);
+      } catch (cleanupError) {
+        console.error("Unable to roll back untracked team upload:", cleanupError);
+      }
+      throw storageError;
+    }
+    return NextResponse.json({
+      url: result.url,
+      publicId: result.publicId,
+      assetId: result.assetId,
+      resourceType: result.resourceType,
+    });
   } catch {
     return NextResponse.json(
       { error: "Photo upload failed. Please try again." },

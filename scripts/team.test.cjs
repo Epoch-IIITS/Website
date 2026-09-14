@@ -90,6 +90,11 @@ function adminRoute(models = {}, role = "admin", transaction) {
         runTransaction(async (databaseSession) =>
           (await mutation(databaseSession)).value),
     },
+    "@/lib/media-assets": {
+      ensureMediaStorage: async () => {},
+      reconcileMediaUrls: async () => [],
+      attemptMediaCleanup: async () => {},
+    },
     mongoose: {
       connection: { transaction: runTransaction },
     },
@@ -321,6 +326,10 @@ function requestRoute(
     "@/lib/mongodb": async () => {},
     "@/models/Team": { TeamRequest: model, ensureTeamStorage: async () => {} },
     "@/lib/team-validation": schemas,
+    "@/lib/media-assets": {
+      ensureMediaStorage: async () => {},
+      attachMediaUrls: async () => {},
+    },
   });
 }
 test("applicant identity is server-owned and submitted status cannot self-approve", async () => {

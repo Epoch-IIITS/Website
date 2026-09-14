@@ -1,155 +1,45 @@
-# Club Website Backend
+<p align="center">
+  <img src="public/epoch_logo_with_name.png" alt="Epoch" width="360" />
+</p>
 
-A comprehensive backend for a club website built with Next.js App Router, MongoDB, and NextAuth.
+# Epoch Website
 
-## Features
+The community platform for Epoch at IIIT Sri City. It brings the club's writing, projects, events, photo galleries, and team history together in one place, with member accounts and a dedicated admin workspace for running the community.
 
-- **Authentication**: Google OAuth with NextAuth
-- **Blog System**: Create, read, update, delete blog posts with Markdown support
-- **Project Showcase**: Manage and display club projects
-- **Event Management**: Create events with RSVP functionality and ticket generation
-- **Gallery**: Upload and organize event photos
-- **Admin Panel**: Role-based access control for content management
-- **Admin Workspace**: Responsive sidebar navigation and a contact queries inbox
-- **Contact Form**: Saves messages to MongoDB for admin review
+## What you can do
 
-## Tech Stack
+- Read community blogs and discover featured projects.
+- Browse upcoming events, register online, and download a PDF ticket with a QR code.
+- Explore event photo galleries with a full-image viewer.
+- Meet the current team and browse previous academic years.
+- Create a stable, shareable profile card for published team members.
+- Sign in to manage your profile, registrations, and team-directory requests.
+- Contact the Epoch team through an authenticated form.
 
-- **Framework**: Next.js 15 with App Router
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: NextAuth with Google Provider
-- **Validation**: Zod for schema validation
-- **File Upload**: Cloudinary integration ready
-- **PDF Generation**: PDFKit for ticket generation
-- **QR Codes**: QRCode library for ticket verification
+Administrators can manage content, users, event registrations, contact queries, team records, and downloadable QR codes from a responsive dashboard. Administrative creates, updates, and deletes are also recorded in a searchable audit log.
 
-## Getting Started
+## Built with
 
-### Prerequisites
+- [Next.js](https://nextjs.org/) App Router, React, and TypeScript
+- [Tailwind CSS](https://tailwindcss.com/) and Radix UI primitives
+- [MongoDB](https://www.mongodb.com/) with Mongoose
+- [NextAuth.js](https://next-auth.js.org/) with Google OAuth
+- [Cloudinary](https://cloudinary.com/) for managed images
+- PDFKit and QRCode for event tickets and admin utilities
 
-- Node.js 18+ 
-- MongoDB database
-- Google OAuth credentials
-- Cloudinary account (optional)
+## Project structure
 
-### Installation
+| Directory | Purpose |
+| --- | --- |
+| `app/` | Public pages, member/admin pages, and API route handlers |
+| `components/` | Shared layouts, interface components, and feature UI |
+| `lib/` | Authentication, validation, database, dates, audit, media, and ticket helpers |
+| `models/` | Mongoose data models |
+| `public/` | Static brand and animation assets |
+| `scripts/` | Automated tests and manual maintenance tools |
 
-1. Clone the repository
-2. Install dependencies:
-   \`\`\`bash
-   npm install
-   \`\`\`
+## Contributing
 
-3. Set up environment variables in \`.env.local\`:
-   \`\`\`env
-   MONGODB_URI=your_mongodb_connection_string
-   NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=your_nextauth_secret
-   GOOGLE_CLIENT_ID=your_google_client_id
-   GOOGLE_CLIENT_SECRET=your_google_client_secret
-   ADMIN_EMAILS=admin@example.com,admin2@example.com
-   \`\`\`
+Start with [dev.md](dev.md) for local setup, environment variables, architecture notes, testing, and operational safeguards. Please run the relevant checks before opening a pull request, and discuss substantial behavior or schema changes in an issue first.
 
-4. Run the development server:
-   \`\`\`bash
-   npm run dev
-   \`\`\`
-
-## API Endpoints
-
-### Public Endpoints
-- \`GET /api/blogs\` - Get published blogs
-- \`GET /api/blogs/[id]\` - Get specific blog
-- \`GET /api/projects\` - Get all projects
-- \`GET /api/events\` - Get all events
-- \`GET /api/gallery\` - Get gallery items
-
-### Protected Endpoints (Require Authentication)
-- `POST /api/contact` - Submit a contact message (name, subject, message; email from the signed-in account)
-- \`POST /api/rsvp\` - Create RSVP for event
-- \`GET /api/rsvp\` - Get user's RSVPs
-- \`GET /api/rsvp/[id]/ticket\` - Download ticket PDF
-
-### Admin Endpoints (Require Admin Role)
-- `GET /api/admin/queries?page=1` - Read contact submissions, newest first, 20 per page
-- `DELETE /api/admin/queries/[id]` - Permanently delete a contact query (admin only)
-- \`POST /api/blogs\` - Create blog post
-- \`PUT /api/blogs/[id]\` - Update blog post
-- \`DELETE /api/blogs/[id]\` - Delete blog post
-- \`POST /api/projects\` - Create project
-- \`POST /api/events\` - Create event
-- \`POST /api/gallery\` - Create gallery
-- \`GET /api/admin/stats\` - Get admin dashboard stats
-- \`GET /api/admin/events/[id]/rsvps\` - Get event RSVPs
-
-## Database Models
-
-### User
-- Email, name, image, role (admin/user)
-- Google OAuth integration
-
-### Blog
-- Title, slug, content (Markdown), excerpt
-- Author reference, published status, tags
-
-### Project
-- Title, description, tech stack
-- GitHub/live URLs, featured status
-
-### Event
-- Title, description, date, venue
-- RSVP functionality, max attendees
-
-### RSVP
-- Event and user references
-- Status (attending/not_attending/maybe)
-- Unique ticket ID
-
-### Gallery
-- Event name, date, images with captions
-- Admin-managed photo collections
-
-## Authentication & Authorization
-
-- Google OAuth via NextAuth
-- Role-based access (admin/user)
-- Admin emails configured via environment variables
-- Protected routes with middleware
-- Session-based authentication
-
-## Features
-
-### Blog System
-- Markdown content support
-- SEO-friendly slugs
-- Draft/published states
-- Tag system
-
-### Event Management
-- RSVP system with status tracking
-- PDF ticket generation with QR codes
-- RSVP deadline enforcement
-- Admin RSVP management
-
-### File Upload Ready
-- Cloudinary integration prepared
-- Image validation and processing
-- Gallery photo management
-
-### Admin Dashboard
-- Comprehensive statistics
-- Content management interface
-- User RSVP tracking
-- Role-based permissions
-
-## Security
-
-- Environment variable protection
-- Input validation with Zod
-- Role-based route protection
-- Session-based authentication
-- CORS and security headers
-
-## Deployment
-
-Ready for deployment on Vercel, Netlify, or any Node.js hosting platform. Ensure all environment variables are configured in your deployment environment.
+Never commit credentials, environment files, database exports, or real member/contact data. Report security concerns privately to the repository maintainers rather than posting sensitive details in a public issue.

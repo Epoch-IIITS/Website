@@ -206,6 +206,7 @@ export default function EditBlogPage({ params }: { params: Promise<{ id: string 
               <ImageUpload
                 value={formData.featuredImage}
                 onChange={(url) => setFormData({ ...formData, featuredImage: url })}
+                purpose="blog"
                 label="Featured Image"
                 disabled={loading}
               />
