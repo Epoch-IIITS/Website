@@ -6,6 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
+    "media:cleanup": "node scripts/media-maintenance.mjs cleanup",
+    "media:orphans": "node scripts/media-maintenance.mjs orphans",
     "start": "next start"
   },
   "dependencies": {

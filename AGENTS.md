@@ -6,9 +6,11 @@ Epoch is a full-stack tech club website for sharing blogs, projects, events, and
 
 The app is a single Next.js project: pages and API handlers live together in `app/`. There is no separate backend service in this repository.
 
+`README.md` is the public-facing project overview. `dev.md` is the contributor setup and operational guide, and `.env.example` is the safe environment-variable template.
+
 ## Stack
 
-- Next.js 15.2.8 App Router, React 18, and TypeScript with strict mode.
+- Next.js 15.5.25 App Router, React 18, and TypeScript with strict mode.
 - Tailwind CSS 3, shadcn/ui-style components backed by Radix UI, Lucide icons, and `next-themes`.
 - MongoDB through Mongoose; Zod schemas for content validation.
 - NextAuth v4 with Google OAuth and email/password credentials, using JWT sessions.
@@ -17,9 +19,9 @@ The app is a single Next.js project: pages and API handlers live together in `ap
 
 ## Local setup
 
-1. Install Node.js compatible with the pinned Next.js version. No Node version is pinned in the repository.
-2. Run `npm install`. Both `package-lock.json` and `pnpm-lock.yaml` exist; the README uses npm, while Vercel currently detects `pnpm-lock.yaml` and runs pnpm with a frozen lockfile. Until the repository is standardized on one package manager, dependency changes must keep both lockfiles synchronized.
-3. Configure local environment variables in `.env.local` (Next.js also loads `.env`). Keep credentials out of source control and documentation; `.env*` files are ignored.
+1. Install a Node.js version compatible with Next.js 15; Node.js 20 LTS or newer is recommended. No Node version is pinned in the repository.
+2. Run `npm install`. Both `package-lock.json` and `pnpm-lock.yaml` exist; `dev.md` documents the npm workflow, while Vercel currently detects `pnpm-lock.yaml` and runs pnpm with a frozen lockfile. Until the repository is standardized on one package manager, dependency changes must keep both lockfiles synchronized.
+3. Copy `.env.example` to `.env.local` and replace the placeholders. Next.js also loads `.env`, but `.env.local` is preferred for local secrets. `.env.example` is intentionally tracked; real `.env*` files remain ignored.
 4. Run `npm run dev` and open `http://localhost:3000`.
 
 For local admin access without Google, add an unused email to `ADMIN_EMAILS`, restart the dev server, and open `/auth/signin`. The development-only email/password form supports creating an account and signing in, then opens `/admin`. Existing Google-only accounts have no password; use a separate development account. The credentials provider is not registered in production.
@@ -37,13 +39,14 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 
 | Path | Responsibility |
 | --- | --- |
+| `README.md`, `dev.md`, `.env.example` | Public overview, contributor and deployment guidance, and the tracked environment-variable template. |
 | `app/layout.tsx`, `app/page.tsx` | Root layout, metadata, providers, and homepage content fetching. |
 | `app/blog/`, `app/projects/`, `app/events/`, `app/gallery/` | Public content pages. Blog detail URLs use slugs; event and gallery details use IDs. A gallery detail page uses `components/event-gallery.tsx` for its full-image viewer. |
 | `app/team/`, `app/contact/`, `app/privacy/`, `app/terms/` | Team directory and informational pages. `/about` permanently redirects to `/team`. |
 | `app/auth/`, `app/profile/`, `app/my-rsvps/` | Sign-in/error screens and member pages. |
 | `app/admin/`, `components/admin-shell.tsx` | Sidebar workspace, overview, content CRUD, users, event RSVPs, contact queries, and utilities. The QR generator is at `/admin/utilities/qr-code-generator`. |
 | `app/api/` | HTTP route handlers for content, auth, uploads, profiles, and RSVPs. |
-| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`, `ContactQuery`, `GeneratedQRCode`, `QRCodeScan`, and the append-only `AuditLog`. |
+| `models/` | Mongoose models: `User`, `Blog`, `Project`, `Event`, `Gallery`, `RSVP`, `ContactQuery`, `GeneratedQRCode`, `QRCodeScan`, the append-only `AuditLog`, and the `MediaAsset`/`MediaCleanupJob` image lifecycle records. |
 | `lib/mongodb.ts` | Shared MongoDB connector with a cached connection/promise for reuse across reloads. |
 | `lib/auth.ts`, `types/next-auth.d.ts` | Authentication callbacks and session/JWT types, including user ID and role. |
 | `lib/validations.ts`, `lib/utils.ts` | Shared Zod schemas and helpers such as slug/ticket ID generation and class merging. |
@@ -71,6 +74,8 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 - Prefer existing UI components, Tailwind theme tokens, and `@/` imports. Add `"use client"` where browser APIs, React state/effects, or client session hooks require it; keep database and secret-bearing code on the server.
 - Admins can permanently delete a contact query through `DELETE /api/admin/queries/[id]`. The inbox requires confirmation, refreshes after deletion, and moves back to the last available page if necessary. The endpoint checks the session's admin role and validates the record ID.
 - Successful administrator creates, updates, and deletes are recorded atomically with their domain writes through `lib/audit-log.ts`. The admin-only `/admin/logs` page provides searchable, filterable activity history. Audit values are allowlisted, large blog content and gallery image changes are summarized, and sensitive contact/QR payloads are not copied. Compound team changes share an operation ID; event and QR deletions include cascade counts. `AuditLog` records are immutable and expire automatically six calendar months after creation through a TTL index; the read API also excludes expired records while MongoDB's asynchronous TTL cleanup catches up. Audited mutations require a MongoDB replica set because the domain and audit records share a transaction.
+- Cloudinary uploads are tracked in `MediaAsset`. New general content uploads use purpose-specific folders under `epoch/`; pre-existing URLs and assets in `epoch-blogs` and `epoch-team` remain in place so existing links do not change. Content creates attach managed images in the same MongoDB transaction as their domain write. Replacements, removals, and entity deletes enqueue `MediaCleanupJob` records atomically and attempt Cloudinary deletion only after commit. Deletion rechecks every image-bearing collection and will cancel a job while any document still references the asset. Deleted asset records and completed or cancelled cleanup jobs expire after 30 days; attached assets and unresolved jobs remain. There is no scheduled cleanup or additional secret.
+- Run `npm run media:cleanup` manually to retry failed jobs and remove tracked uploads left unattached for more than 24 hours. Run `npm run media:orphans` for a read-only comparison of the configured Cloudinary account's Epoch folders against all database image references. Review that output before running `npm run media:orphans -- --apply`; apply mode queues candidates and repeats the reference check before deleting them. Both commands load `.env.local` and `.env`, use the existing MongoDB/Cloudinary variables, ignore other Cloudinary accounts and folders, and never move legacy assets.
 - `Project` has no `createdBy` field. Project detail reads and updates must not populate or assign that relationship; doing so makes existing projects fail to load under Mongoose strict population. The project edit page distinguishes a real 404 from other load failures and offers retry for recoverable errors.
 - Several files contain large commented-out earlier implementations. Read the active code before making changes.
 
@@ -86,7 +91,7 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 - Team writes use MongoDB transactions and require a replica set (MongoDB Atlas supports this). Unique indexes are initialized before accepting writes. Admin writes and approval are implemented in `/api/admin/team`; approval atomically creates/links a person, upserts their appointment, and records the review. An already-reviewed request cannot be approved again.
 - Copy hierarchy prepares an unsaved year with the same group headings. Appointments are added individually.
 - `/team/request` requires sign-in and publication consent. `/api/team/requests` records the session's identity, allows one pending request per applicant/year, and returns only that applicant's request status/feedback. Admins can approve or reject with feedback. Existing profiles are preserved when linking a request; edit their current details separately in People.
-- `/api/team/upload` is an authenticated Cloudinary photo upload endpoint for JPG/PNG/WebP up to 5 MB. Team photos use the `epoch-team` folder. It is separate from the existing content upload endpoint.
+- `/api/team/upload` is an authenticated Cloudinary photo upload endpoint for JPG/PNG/WebP up to 5 MB. New team photos use the `epoch/team` folder; existing `epoch-team` links remain supported. It is separate from the content upload endpoint.
 - Profile photo selection opens a square crop dialog with drag, zoom, and keyboard-accessible position sliders. Only the confirmed crop is uploaded; cancelling keeps the previous photo. Adjust crop can reframe the selected source or existing Cloudinary photo. Profile previews, public cards, and share-card portraits use the same square framing.
 - `/team/member/[id]` is the stable public URL for a published appointment. Its `/image` endpoint renders a 1200 × 1200 PNG with `next/og`, used for downloads and social previews. The image centers a compact dark community-profile card with the `public/epoch_logo_with_name.png` brand asset at top right, an infinity-color heatmap, photo or gradient initials, current career details, tagline, and newest-first chips for every appointment that is published under a published AY. A blank POR falls back to that year's hierarchy-group name. The selected appointment and year must also be published; images use no-store responses. Previously downloaded pictures and third-party social caches cannot be revoked. Set `NEXTAUTH_URL` to the public origin for social links.
 - Run `node --test scripts/team.test.cjs` for validation, authorization, hierarchy/publication, approval/rejection, duplicate constraints, and real PNG rendering checks. Tests isolate database/session boundaries and do not write to the live database. Optionally set `TEAM_CARD_PREVIEW` to an absolute PNG output path to inspect the generated test card.
@@ -96,13 +101,15 @@ For local admin access without Google, add an unused email to `ADMIN_EMAILS`, re
 | Command | Purpose / limitation |
 | --- | --- |
 | `npm run dev` | Start the development server. |
-| `npm run build` | Build for production. `next.config.mjs` skips ESLint and TypeScript build errors, so a successful build does not establish type correctness. |
+| `npm run build` | Build for production. ESLint is skipped, while Next.js still performs framework type validation; keep the standalone TypeScript check in the workflow. |
 | `npm start` | Run an existing production build. |
 | `npx tsc --noEmit --incremental false` | Run TypeScript checking separately without writing incremental build metadata. |
-| `npm run lint` | Invokes `next lint`. No ESLint configuration or direct ESLint dependency is present, so expect an initial setup prompt rather than a ready-to-run unattended check. |
+| `npm run lint` | Invokes `next lint`. No ESLint configuration or direct ESLint dependency is present, so this is not currently a ready-to-run unattended check. |
+| `npm run media:cleanup` | Manually retry queued Cloudinary deletions and clean tracked uploads that have remained unattached for 24 hours. This changes Cloudinary and MongoDB state. |
+| `npm run media:orphans` | Dry-run report of unreferenced images in managed legacy/current Epoch Cloudinary folders. Add `-- --apply` only after reviewing the report. |
 
 Run `node --test scripts/*.test.cjs` for audit retention/authorization/transaction behavior, contact validation, authenticated submission behavior, inbox authorization/pagination/deletion, and project read/update regression tests using isolated database/session boundaries. Project tests use the real Mongoose schema and query handling with database I/O stubbed out. There is no package-level `test` script. `scripts/test-db.js` is a diagnostic script that imports `.js` paths for source files stored as `.ts`; it is not a ready-to-run test harness.
 
 For application changes, run relevant available checks and manually exercise the affected pages/API flows. Check signed-out, member, and admin behavior when changing access control; check responsive layout and both themes for UI changes. Report existing failures separately from regressions. Documentation-only changes do not require an application build.
 
-The README is useful background but has stale details: credentials authentication and Cloudinary uploads are implemented, and the RSVP model has no attendance-status field. Treat current source as authoritative. Keep this root `AGENTS.md` as the single project starting guide, and update it when setup or architecture changes.
+Keep this root `AGENTS.md` as the single agent-oriented project starting guide. Keep it synchronized with `README.md`, `dev.md`, and `.env.example` whenever setup or architecture changes, and never place real credentials in public documentation. Treat current source as authoritative if documentation and implementation diverge.

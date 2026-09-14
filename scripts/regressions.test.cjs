@@ -94,9 +94,11 @@ test("the general upload and RSVP-admin APIs reject anonymous requests before st
   const cloudinary = { config() {}, uploader: {} }
   const upload = load("app/api/upload/route.ts", {
     "next/server": next,
-    cloudinary: { v2: cloudinary },
     "next-auth": { getServerSession: async () => null },
     "@/lib/auth": { authOptions: {} },
+    "@/lib/mongodb": async () => {},
+    "@/lib/cloudinary-media": {},
+    "@/lib/media-assets": {},
   })
   assert.equal((await upload.POST({ formData: async () => { throw new Error("must not parse") } })).status, 401)
 
@@ -111,6 +113,51 @@ test("the general upload and RSVP-admin APIs reject anonymous requests before st
   const response = await rsvps.GET({}, { params: Promise.resolve({ id: "507f1f77bcf86cd799439011" }) })
   assert.equal(response.status, 401)
   assert.equal(connected, false)
+})
+
+test("general uploads are registered with their validated content purpose", async () => {
+  const next = {
+    NextResponse: {
+      json: (body, options = {}) => ({ body, status: options.status || 200 }),
+    },
+  }
+  let uploadedPurpose
+  let registered
+  const result = {
+    url: "https://res.cloudinary.com/epoch/image/upload/v1/epoch/gallery/photo.jpg",
+    publicId: "epoch/gallery/photo",
+    assetId: "asset-1",
+    resourceType: "image",
+    folder: "epoch/gallery",
+    format: "jpg",
+    bytes: 3,
+  }
+  const upload = load("app/api/upload/route.ts", {
+    "next/server": next,
+    "next-auth": { getServerSession: async () => ({ user: { id: "admin-1", role: "admin" } }) },
+    "@/lib/auth": { authOptions: {} },
+    "@/lib/mongodb": async () => {},
+    "@/lib/cloudinary-media": {
+      isMediaPurpose: (value) => ["blog", "project", "event", "gallery", "team"].includes(value),
+      uploadManagedImage: async (_buffer, purpose) => { uploadedPurpose = purpose; return result },
+      destroyManagedImage: async () => {},
+    },
+    "@/lib/media-assets": {
+      registerUploadedMedia: async (...args) => { registered = args },
+    },
+  })
+  const form = new Map([
+    ["file", { type: "image/jpeg", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer }],
+    ["purpose", "gallery"],
+  ])
+  const response = await upload.POST({ formData: async () => form })
+
+  assert.equal(response.status, 200)
+  assert.equal(uploadedPurpose, "gallery")
+  assert.equal(registered[0].publicId, "epoch/gallery/photo")
+  assert.equal(registered[1], "gallery")
+  assert.equal(registered[2], "admin-1")
+  assert.equal(response.body.url, result.url)
 })
 
 test("RSVP capacity slots have a per-event unique index", () => {

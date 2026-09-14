@@ -165,6 +165,7 @@ export default function NewEventPage() {
               <ImageUpload
                 value={formData.image}
                 onChange={(url) => setFormData({ ...formData, image: url })}
+                purpose="event"
                 label="Event Image"
                 disabled={loading}
               />

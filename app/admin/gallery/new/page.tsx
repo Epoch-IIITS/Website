@@ -43,6 +43,7 @@ export default function NewGalleryPage() {
     for (const file of Array.from(files)) {
       const formData = new FormData()
       formData.append("file", file)
+      formData.append("purpose", "gallery")
 
       try {
         const response = await fetch("/api/upload", {

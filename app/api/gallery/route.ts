@@ -5,6 +5,7 @@ import { gallerySchema } from "@/lib/validations"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { countChange, diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
+import { ensureMediaStorage, reconcileMediaUrls } from "@/lib/media-assets"
 
 export async function GET() {
   try {
@@ -31,9 +32,16 @@ export async function POST(request: NextRequest) {
     const validatedData = gallerySchema.parse(body)
 
     await connectDB()
+    await ensureMediaStorage()
 
     const gallery = await runAuditedMutation(session, request, async (databaseSession) => {
       const [created] = await Gallery.create([validatedData], { session: databaseSession })
+      await reconcileMediaUrls({
+        beforeUrls: [],
+        afterUrls: created.images.map((image: { url: string }) => image.url),
+        reason: `Attached to gallery ${created._id}`,
+        session: databaseSession,
+      })
       return {
         value: created,
         logs: [{

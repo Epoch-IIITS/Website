@@ -8,6 +8,11 @@ import {
   type AuditDraft,
 } from "@/lib/audit-log";
 import {
+  attemptMediaCleanup,
+  ensureMediaStorage,
+  reconcileMediaUrls,
+} from "@/lib/media-assets";
+import {
   TeamAppointment,
   TeamPerson,
   TeamRequest,
@@ -75,8 +80,10 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     await connectDB();
     await ensureTeamStorage();
+    await ensureMediaStorage();
     if (body.id) idSchema.parse(body.id);
     // All related writes share a transaction, including their audit records.
+    const cleanupPublicIds = new Set<string>();
     await runAuditedMutation(admin, req, async (session) => {
       const options = { session, runValidators: true };
       const logs: AuditDraft[] = [];
@@ -103,7 +110,7 @@ export async function POST(req: NextRequest) {
           const updated = await TeamYear.findByIdAndUpdate(
             body.id,
             value,
-            { ...options, new: true },
+            { ...options, returnDocument: "after" },
           );
           const changes = diffAuditFields(before, updated, [
             "year",
@@ -141,7 +148,7 @@ export async function POST(req: NextRequest) {
         const updated = await TeamSettings.findOneAndUpdate(
           { _id: "team" },
           { $set: { currentYearId: year._id } },
-          { ...options, upsert: true, new: true },
+          { ...options, upsert: true, returnDocument: "after" },
         );
         const changes = diffAuditFields(before, updated, ["currentYearId"]);
         if (changes.length)
@@ -162,8 +169,15 @@ export async function POST(req: NextRequest) {
           const updated = await TeamPerson.findByIdAndUpdate(
             body.id,
             value,
-            { ...options, new: true },
+            { ...options, returnDocument: "after" },
           );
+          const queued = await reconcileMediaUrls({
+            beforeUrls: [before.photo],
+            afterUrls: [updated?.photo],
+            reason: `Photo removed from team profile ${body.id}`,
+            session,
+          });
+          queued.forEach((publicId) => cleanupPublicIds.add(publicId));
           const changes = diffAuditFields(before, updated, [
             "name",
             "linkedin",
@@ -180,9 +194,18 @@ export async function POST(req: NextRequest) {
               entityLabel: updated?.name || before.name,
               summary: `Updated team profile “${updated?.name || before.name}”`,
               changes,
+              sideEffects: queued.length
+                ? { cloudinaryImagesQueued: queued.length }
+                : undefined,
             });
         } else {
           const created = (await TeamPerson.create([value], { session }))[0];
+          await reconcileMediaUrls({
+            beforeUrls: [],
+            afterUrls: [created.photo],
+            reason: `Attached to team profile ${created._id}`,
+            session,
+          });
           logs.push({
             action: "create",
             entityType: "team-person",
@@ -217,7 +240,7 @@ export async function POST(req: NextRequest) {
           const updated = await TeamAppointment.findByIdAndUpdate(
             body.id,
             value,
-            { ...options, new: true },
+            { ...options, returnDocument: "after" },
           );
           const changes = diffAuditFields(before, updated, [
             "personId",
@@ -283,7 +306,7 @@ export async function POST(req: NextRequest) {
         const updated = await TeamSettings.findOneAndUpdate(
           { _id: "team" },
           { $set: settingsSchema.parse(body.value) },
-          { ...options, upsert: true, new: true },
+          { ...options, upsert: true, returnDocument: "after" },
         );
         const changes = diffAuditFields(before, updated, [
           "title",
@@ -329,6 +352,12 @@ export async function POST(req: NextRequest) {
             const createdPerson = (
               await TeamPerson.create([profile], { session })
             )[0];
+            await reconcileMediaUrls({
+              beforeUrls: [],
+              afterUrls: [createdPerson.photo],
+              reason: `Attached while approving team request ${request._id}`,
+              session,
+            });
             personId = createdPerson._id.toString();
             logs.push({
               action: "create",
@@ -360,7 +389,7 @@ export async function POST(req: NextRequest) {
           const appointment = await TeamAppointment.findOneAndUpdate(
             { personId, yearId: value.yearId },
             { $set: value },
-            { ...options, upsert: true, new: true },
+            { ...options, upsert: true, returnDocument: "after" },
           );
           request.status = "approved";
           request.appointmentId = appointment._id;
@@ -398,6 +427,7 @@ export async function POST(req: NextRequest) {
       } else throw new TeamInputError("Unknown action");
       return { value: true, logs };
     });
+    await attemptMediaCleanup([...cleanupPublicIds]);
     return NextResponse.json({ success: true });
   } catch (error: any) {
     const message =

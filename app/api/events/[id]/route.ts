@@ -8,6 +8,11 @@ import { authOptions } from "@/lib/auth"
 import RSVP from "@/models/RSVP"
 import { eventForResponse } from "@/lib/event-dates"
 import { diffAuditFields, runAuditedMutation } from "@/lib/audit-log"
+import {
+  attemptMediaCleanup,
+  ensureMediaStorage,
+  reconcileMediaUrls,
+} from "@/lib/media-assets"
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -39,6 +44,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const validatedData = eventSchema.parse(body)
 
     await connectDB()
+    await ensureMediaStorage()
 
     // Find the user to get the ObjectId
     const user = await User.findOne({ email: session.user.email })
@@ -71,6 +77,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     if (!validatedData.rsvpDeadline) unset.rsvpDeadline = 1
     if (validatedData.maxAttendees === undefined) unset.maxAttendees = 1
 
+    const cleanupPublicIds = new Set<string>()
     const event = await runAuditedMutation(session, request, async (databaseSession) => {
       const before = await Event.findById(id).session(databaseSession)
       if (!before) return { value: null, logs: [] }
@@ -78,9 +85,20 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       const updated = await Event.findByIdAndUpdate(
         id,
         { $set: eventUpdate, ...(Object.keys(unset).length ? { $unset: unset } : {}) },
-        { new: true, runValidators: true, session: databaseSession },
+        {
+          returnDocument: "after",
+          runValidators: true,
+          session: databaseSession,
+        },
       ).populate("createdBy", "name")
       const changes = diffAuditFields(before, updated, ["title", "description", "date", "venue", "image", "maxAttendees", "rsvpDeadline"])
+      const queued = await reconcileMediaUrls({
+        beforeUrls: [before.image],
+        afterUrls: [updated?.image],
+        reason: `Image removed from event ${id}`,
+        session: databaseSession,
+      })
+      queued.forEach((publicId) => cleanupPublicIds.add(publicId))
       return {
         value: updated,
         logs: changes.length ? [{
@@ -90,6 +108,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
           entityLabel: updated?.title || before.title,
           summary: `Updated event “${updated?.title || before.title}”`,
           changes,
+          sideEffects: queued.length ? { cloudinaryImagesQueued: queued.length } : undefined,
         }] : [],
       }
     })
@@ -98,6 +117,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: "Event not found" }, { status: 404 })
     }
 
+    await attemptMediaCleanup([...cleanupPublicIds])
     return NextResponse.json(eventForResponse(event))
   } catch (error) {
     if (error instanceof Error) {
@@ -117,11 +137,20 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     await connectDB()
+    await ensureMediaStorage()
 
+    const cleanupPublicIds = new Set<string>()
     const deleted = await runAuditedMutation(session, request, async (databaseSession) => {
       const event = await Event.findByIdAndDelete(id, { session: databaseSession })
       if (!event) return { value: false, logs: [] }
       const rsvpResult = await RSVP.deleteMany({ event: id }, { session: databaseSession })
+      const queued = await reconcileMediaUrls({
+        beforeUrls: [event.image],
+        afterUrls: [],
+        reason: `Deleted event ${id}`,
+        session: databaseSession,
+      })
+      queued.forEach((publicId) => cleanupPublicIds.add(publicId))
       return {
         value: true,
         logs: [{
@@ -131,7 +160,10 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
           entityLabel: event.title,
           summary: `Deleted event “${event.title}”`,
           changes: diffAuditFields(event, {}, ["title", "description", "date", "venue", "image", "maxAttendees", "rsvpDeadline"]),
-          sideEffects: { deletedRsvps: rsvpResult.deletedCount },
+          sideEffects: {
+            deletedRsvps: rsvpResult.deletedCount,
+            ...(queued.length ? { cloudinaryImagesQueued: queued.length } : {}),
+          },
         }],
       }
     })
@@ -140,6 +172,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       return NextResponse.json({ error: "Event not found" }, { status: 404 })
     }
 
+    await attemptMediaCleanup([...cleanupPublicIds])
     return NextResponse.json({ message: "Event deleted successfully" })
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete event" }, { status: 500 })

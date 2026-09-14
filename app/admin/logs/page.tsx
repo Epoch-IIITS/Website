@@ -51,6 +51,7 @@ const fieldLabels: Record<string, string> = {
   currentYearId: "Current academic year",
   currentRole: "Current role",
   featuredImage: "Featured image",
+  cloudinaryImagesQueued: "Cloudinary images queued",
   githubUrl: "GitHub URL",
   liveUrl: "Live URL",
   maxAttendees: "Maximum attendees",

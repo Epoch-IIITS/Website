@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import { TeamRequest, ensureTeamStorage } from "@/models/Team";
 import { requestSchema } from "@/lib/team-validation";
+import { attachMediaUrls, ensureMediaStorage } from "@/lib/media-assets";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -34,11 +35,19 @@ export async function POST(req: NextRequest) {
     const value = requestSchema.parse(await req.json());
     await connectDB();
     await ensureTeamStorage();
-    await TeamRequest.create({
+    await ensureMediaStorage();
+    const created = await TeamRequest.create({
       ...value,
       userId: session.user.id,
       email: session.user.email,
     });
+    // The request is already durable at this point. A registry failure must not
+    // make the user resubmit; reference checks still protect its saved photo.
+    try {
+      await attachMediaUrls([created.photo]);
+    } catch (error) {
+      console.error("Unable to mark team request photo as attached:", error);
+    }
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(

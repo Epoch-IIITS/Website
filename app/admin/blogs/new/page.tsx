@@ -160,6 +160,7 @@ export default function NewBlogPage() {
               <ImageUpload
                 value={formData.featuredImage}
                 onChange={(url) => setFormData({ ...formData, featuredImage: url })}
+                purpose="blog"
                 label="Featured Image"
                 disabled={loading}
               />

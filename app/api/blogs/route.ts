@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { escapeRegex } from "@/lib/utils"
 import { diffAuditFields, runAuditedMutation, textContentChange } from "@/lib/audit-log"
+import { ensureMediaStorage, reconcileMediaUrls } from "@/lib/media-assets"
 import sanitizeHtml from "sanitize-html"
 
 // Helper function to generate slug from title
@@ -93,6 +94,7 @@ export async function POST(request: NextRequest) {
     const validatedData = blogSchema.parse(body)
 
     await connectDB()
+    await ensureMediaStorage()
 
     // Find the user to get the ObjectId
     const user = await User.findOne({ email: session.user.email })
@@ -119,6 +121,12 @@ export async function POST(request: NextRequest) {
       const populated = await Blog.findById(blog._id)
         .populate("author", "name")
         .session(databaseSession)
+      await reconcileMediaUrls({
+        beforeUrls: [],
+        afterUrls: [blog.featuredImage, blog.content],
+        reason: `Attached to blog ${blog._id}`,
+        session: databaseSession,
+      })
       return {
         value: populated,
         logs: [{
