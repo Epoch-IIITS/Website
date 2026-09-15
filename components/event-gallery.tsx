@@ -14,16 +14,40 @@ interface EventPhoto {
 
 function FullPhoto({ photo, alt }: { photo: EventPhoto; alt: string }) {
   const [failed, setFailed] = useState(false)
+  const [aspectRatio, setAspectRatio] = useState(1)
   return (
-    <div className="relative min-h-0 flex-1 overflow-hidden rounded-md bg-black">
-      {failed || !photo.url ? (
-        <div role="status" className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center text-white/70">
-          <ImageOff className="h-8 w-8" />
-          <p>This image couldn’t be loaded. You can still browse the other photos.</p>
-        </div>
-      ) : (
-        <Image src={photo.url} alt={alt} fill sizes="96vw" className="object-contain" onError={() => setFailed(true)} unoptimized />
-      )}
+    <div className="relative grid min-h-0 flex-1 place-items-center overflow-hidden rounded-md bg-black [container-type:size]">
+      {/* Match the overlay to the contained photo, including on narrow screens. */}
+      <div
+        className="relative"
+        style={{ width: `min(100cqw, ${100 * aspectRatio}cqh)`, height: `min(100cqh, ${100 / aspectRatio}cqw)` }}
+      >
+        {failed || !photo.url ? (
+          <div role="status" className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center text-white/70">
+            <ImageOff className="h-8 w-8" />
+            <p>This image couldn’t be loaded. You can still browse the other photos.</p>
+          </div>
+        ) : (
+          <Image
+            src={photo.url}
+            alt={alt}
+            fill
+            sizes="96vw"
+            className="object-contain"
+            onLoad={event => {
+              const { naturalWidth, naturalHeight } = event.currentTarget
+              if (naturalWidth && naturalHeight) setAspectRatio(naturalWidth / naturalHeight)
+            }}
+            onError={() => setFailed(true)}
+            unoptimized
+          />
+        )}
+        {photo.caption && (
+          <p className="absolute inset-x-0 bottom-0 max-h-[40%] overflow-y-auto break-words bg-black/60 p-3 text-center text-sm leading-relaxed text-white sm:p-4">
+            {photo.caption}
+          </p>
+        )}
+      </div>
     </div>
   )
 }
@@ -47,14 +71,18 @@ export function EventGallery({ images, eventName }: { images: EventPhoto[]; even
             type="button"
             aria-label={`Open photo ${index + 1} of ${images.length}${photo.caption ? `: ${photo.caption}` : ""}`}
             aria-haspopup="dialog"
-            className="group block w-full break-inside-avoid overflow-hidden rounded-lg border bg-card text-left transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="group relative block w-full break-inside-avoid overflow-hidden rounded-lg border bg-card text-left transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             onClick={event => {
               opener.current = event.currentTarget
               setActiveIndex(index)
             }}
           >
             <GalleryImage src={photo.url || "/placeholder.svg"} alt={photo.caption || `${eventName} — photo ${index + 1}`} aspect="aspect-[4/3]" />
-            {photo.caption && <span className="block p-4 text-sm leading-relaxed text-muted-foreground">{photo.caption}</span>}
+            {photo.caption && (
+              <span className="absolute inset-x-0 bottom-0 break-words bg-black/60 p-3 text-sm leading-relaxed text-white">
+                <span className="line-clamp-3">{photo.caption}</span>
+              </span>
+            )}
           </button>
         ))}
       </div>
@@ -82,7 +110,6 @@ export function EventGallery({ images, eventName }: { images: EventPhoto[]; even
             <>
               <FullPhoto key={`${activePhoto.url}-${activeIndex}`} photo={activePhoto} alt={activePhoto.caption || `${eventName} — photo ${activeIndex + 1}`} />
               <div className="shrink-0 space-y-3">
-                {activePhoto.caption && <p className="max-h-20 overflow-y-auto break-words text-center text-sm">{activePhoto.caption}</p>}
                 <div className="flex items-center justify-between gap-3">
                   <Button variant="outline" disabled={images.length < 2} onClick={() => move(-1)} aria-label="Previous image"><ChevronLeft className="h-4 w-4 sm:mr-2" /><span className="hidden sm:inline">Previous</span></Button>
                   <p aria-live="polite" aria-atomic="true" className="text-sm tabular-nums text-muted-foreground">Photo {activeIndex + 1} of {images.length}</p>
