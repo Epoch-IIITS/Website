@@ -132,14 +132,14 @@ When changing access control, manually check signed-out, ordinary-member, and ad
 
 ## Audit logging
 
-- Successful administrator creates, updates, and deletes are written with their domain changes through `runAuditedMutation`.
+- Successful administrator creates, updates, and deletes, plus member-initiated updates to their linked team profile, are written with their domain changes through `runAuditedMutation`.
 - The domain write and audit entry share one MongoDB transaction, which is why a replica set is required.
 - Logs start recording only after this feature is deployed; historical actions are not backfilled.
 - Logs expire six calendar months after creation. The read API hides expired entries immediately, while MongoDB's TTL process removes them asynchronously.
 - Audit data is allowlisted. Do not copy passwords, tokens, contact-message bodies, QR contents, or other sensitive payloads into logs.
 - Large blog bodies and gallery image lists should remain summarized rather than duplicated into audit records.
 
-The admin log viewer is available at `/admin/logs`.
+The admin-only log viewer is available at `/admin/logs`. Member profile entries use the signed-in member as the actor and include only changed public profile fields; the private account email and internal user link are excluded from change values.
 
 ## Cloudinary image lifecycle
 
@@ -200,6 +200,8 @@ Deleted asset records and completed or cancelled cleanup jobs expire after 30 da
 - Academic-year groups and appointments are year-specific.
 - Only published appointments belonging to published years can appear publicly.
 - One person can have at most one appointment per academic year.
+- An approved listing request links the applicant's account email to one shared person profile. Linked members can edit that profile from `/profile`; academic years, groups, positions, order, and publication remain admin-managed.
+- Older approved requests are resolved by user ID or normalized account email and acquire the direct account link on the member's first profile update. For manually created people, set the private Account email in the People editor to enable self-service editing.
 - The current year must be changed before it can be unpublished.
 - Members must be moved before a populated hierarchy group is removed.
 - Team approval and admin changes are transactional and therefore also require the MongoDB replica set.

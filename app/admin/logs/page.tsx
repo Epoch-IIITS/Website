@@ -152,7 +152,7 @@ export default function ActivityLogsPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Activity logs</h1>
-          <p className="mt-2 text-muted-foreground">Review administrator changes from the last six months.</p>
+          <p className="mt-2 text-muted-foreground">Review administrator and member profile changes from the last six months.</p>
         </div>
         <Button variant="outline" disabled={loading} onClick={() => setRevision(value => value + 1)}>
           <RefreshCw className={cn("mr-2 h-4 w-4", loading && "animate-spin")} />Refresh
@@ -164,7 +164,7 @@ export default function ActivityLogsPage() {
           Search
           <span className="relative mt-2 block">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input value={search} maxLength={100} onChange={(event) => { setSearch(event.target.value); setPage(1) }} placeholder="Administrator or resource" className="pl-9" />
+            <Input value={search} maxLength={100} onChange={(event) => { setSearch(event.target.value); setPage(1) }} placeholder="Actor or resource" className="pl-9" />
           </span>
         </Label>
         <Label className="min-w-[13rem] flex-1">
@@ -199,12 +199,12 @@ export default function ActivityLogsPage() {
       ) : loading ? (
         <div role="status" className="flex min-h-80 items-center justify-center rounded-xl border bg-card text-muted-foreground">Loading activity…</div>
       ) : !data?.logs.length ? (
-        <div className="flex min-h-80 flex-col items-center justify-center rounded-xl border bg-card px-6 text-center"><ScrollText className="mb-4 h-10 w-10 text-muted-foreground" /><h2 className="text-lg font-semibold">No matching activity</h2><p className="mt-2 text-sm text-muted-foreground">New administrator changes will appear here.</p></div>
+        <div className="flex min-h-80 flex-col items-center justify-center rounded-xl border bg-card px-6 text-center"><ScrollText className="mb-4 h-10 w-10 text-muted-foreground" /><h2 className="text-lg font-semibold">No matching activity</h2><p className="mt-2 text-sm text-muted-foreground">New recorded changes will appear here.</p></div>
       ) : (
         <div className="overflow-hidden rounded-xl border bg-card">
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader><TableRow><TableHead>When</TableHead><TableHead>Action</TableHead><TableHead>Resource</TableHead><TableHead>Administrator</TableHead><TableHead className="text-right">Details</TableHead></TableRow></TableHeader>
+              <TableHeader><TableRow><TableHead>When</TableHead><TableHead>Action</TableHead><TableHead>Resource</TableHead><TableHead>Actor</TableHead><TableHead className="text-right">Details</TableHead></TableRow></TableHeader>
               <TableBody>
                 {data.logs.map((log) => (
                   <TableRow key={log._id}>

@@ -24,6 +24,7 @@ import {
   appointmentSchema,
   defaultSettings,
   idSchema,
+  personSchema,
   profileSchema,
   settingsSchema,
   yearSchema,
@@ -46,7 +47,7 @@ export async function GET() {
     const [years, people, appointments, requests, settings] = await Promise.all(
       [
         TeamYear.find().sort({ year: -1 }).lean(),
-        TeamPerson.find().sort({ name: 1 }).lean(),
+        TeamPerson.find().select("+email").sort({ name: 1 }).lean(),
         TeamAppointment.find().sort({ order: 1 }).lean(),
         TeamRequest.find().sort({ createdAt: -1 }).lean(),
         TeamSettings.findById("team").lean(),
@@ -161,14 +162,23 @@ export async function POST(req: NextRequest) {
             changes,
           });
       } else if (body.action === "person") {
-        const value = profileSchema.parse(body.value);
+        const value = personSchema.parse(body.value);
+        const { email, ...profile } = value;
         if (body.id) {
-          const before = await TeamPerson.findById(body.id).session(session);
+          const before = await TeamPerson.findById(body.id)
+            .select("+email +userId")
+            .session(session);
           if (!before)
             throw new TeamInputError("Person not found");
+          const emailChanged = (before.email || "") !== email;
           const updated = await TeamPerson.findByIdAndUpdate(
             body.id,
-            value,
+            {
+              $set: { ...profile, ...(email ? { email } : {}) },
+              ...(emailChanged || !email
+                ? { $unset: { userId: 1, ...(!email ? { email: 1 } : {}) } }
+                : {}),
+            },
             { ...options, returnDocument: "after" },
           );
           const queued = await reconcileMediaUrls({
@@ -186,6 +196,12 @@ export async function POST(req: NextRequest) {
             "photo",
             "tagline",
           ]);
+          if (emailChanged)
+            changes.push({
+              field: "accountLink",
+              before: before.email ? "linked" : null,
+              after: email ? "linked" : null,
+            });
           if (changes.length)
             logs.push({
               action: "update",
@@ -199,7 +215,12 @@ export async function POST(req: NextRequest) {
                 : undefined,
             });
         } else {
-          const created = (await TeamPerson.create([value], { session }))[0];
+          const created = (
+            await TeamPerson.create(
+              [{ ...profile, ...(email ? { email } : {}) }],
+              { session },
+            )
+          )[0];
           await reconcileMediaUrls({
             beforeUrls: [],
             afterUrls: [created.photo],
@@ -219,7 +240,11 @@ export async function POST(req: NextRequest) {
               "organization",
               "photo",
               "tagline",
-            ]),
+            ]).concat(
+              email
+                ? [{ field: "accountLink", before: null, after: "linked" }]
+                : [],
+            ),
           });
         }
       } else if (body.action === "appointment") {
@@ -343,14 +368,55 @@ export async function POST(req: NextRequest) {
           request.reason = reason;
         } else if (body.decision === "approve") {
           const profile = profileSchema.parse(body.profile);
-          let personId = body.personId;
+          const requestEmail = String(request.email || "").trim().toLowerCase();
+          const accountPerson = await TeamPerson.findOne({
+            $or: [{ userId: request.userId }, { email: requestEmail }],
+          })
+            .select("_id")
+            .session(session);
+          if (
+            accountPerson &&
+            body.personId &&
+            accountPerson._id.toString() !== body.personId
+          )
+            throw new TeamInputError(
+              "This account is already linked to another team profile",
+            );
+          let personId = accountPerson?._id.toString() || body.personId;
           if (personId) {
             idSchema.parse(personId);
-            if (!(await TeamPerson.exists({ _id: personId }).session(session)))
-              throw new TeamInputError("Person not found");
+            const linkedPerson = await TeamPerson.findOneAndUpdate(
+              {
+                _id: personId,
+                $or: [
+                  { userId: request.userId },
+                  { email: requestEmail },
+                  { userId: { $exists: false } },
+                  { userId: "" },
+                ],
+              },
+              { $set: { userId: request.userId, email: requestEmail } },
+              { new: true, runValidators: true, session },
+            );
+            if (!linkedPerson) {
+              if (!(await TeamPerson.exists({ _id: personId }).session(session)))
+                throw new TeamInputError("Person not found");
+              throw new TeamInputError(
+                "Person is already linked to another account",
+              );
+            }
           } else {
             const createdPerson = (
-              await TeamPerson.create([profile], { session })
+              await TeamPerson.create(
+                [
+                  {
+                    ...profile,
+                    userId: request.userId,
+                    email: requestEmail,
+                  },
+                ],
+                { session },
+              )
             )[0];
             await reconcileMediaUrls({
               beforeUrls: [],
@@ -430,8 +496,13 @@ export async function POST(req: NextRequest) {
     await attemptMediaCleanup([...cleanupPublicIds]);
     return NextResponse.json({ success: true });
   } catch (error: any) {
+    const duplicateAccountLink =
+      error?.code === 11000 &&
+      (error?.keyPattern?.email || error?.keyPattern?.userId);
     const message =
-      error?.code === 11000
+      duplicateAccountLink
+        ? "This account email is already linked to another team profile"
+        : error?.code === 11000
         ? "This year or person’s appointment already exists"
         : error?.issues?.[0]?.message ||
           (error instanceof TeamInputError

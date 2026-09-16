@@ -26,6 +26,7 @@ const blankAppointment = {
   order: 0,
   published: false,
 };
+const emptyPersonProfile = { ...emptyProfile, email: "" };
 type Workspace = {
   years: TeamYearData[];
   people: TeamProfile[];
@@ -60,7 +61,7 @@ export default function TeamAdmin() {
     ],
   });
   const [personId, setPersonId] = useState("");
-  const [profile, setProfile] = useState(emptyProfile);
+  const [profile, setProfile] = useState(emptyPersonProfile);
   const [appointmentId, setAppointmentId] = useState("");
   const [appointment, setAppointment] = useState(blankAppointment);
   const [settings, setSettings] = useState(defaultSettings);
@@ -115,7 +116,7 @@ export default function TeamAdmin() {
   }
   function editPerson(person?: TeamProfile) {
     setPersonId(person?._id || "");
-    setProfile(person || emptyProfile);
+    setProfile(person ? { ...emptyPersonProfile, ...person } : emptyPersonProfile);
   }
   function editAppointment(
     value?: TeamAppointmentData,
@@ -609,8 +610,28 @@ export default function TeamAdmin() {
                   </p>
                   <ProfileFields
                     value={profile}
-                    onChange={setProfile}
+                    onChange={(value) =>
+                      setProfile((current) => ({ ...current, ...value }))
+                    }
                     onUploadingChange={setPhotoUploading}
+                    beforeTagline={
+                      <Label className="block">
+                        Account email
+                        <Input
+                          className="mt-2"
+                          type="email"
+                          maxLength={320}
+                          value={profile.email}
+                          onChange={(event) =>
+                            setProfile({ ...profile, email: event.target.value })
+                          }
+                          placeholder="member@example.com"
+                        />
+                        <span className="mt-2 block text-xs font-normal text-muted-foreground">
+                          Used privately to show this member the profile editor after sign-in.
+                        </span>
+                      </Label>
+                    }
                   />
                   <Button>{busy ? "Saving…" : "Save profile"}</Button>
                   {profile.name && (
@@ -896,7 +917,9 @@ export default function TeamAdmin() {
                   ) : (
                     <ProfileFields
                       value={profile}
-                      onChange={setProfile}
+                      onChange={(value) =>
+                        setProfile((current) => ({ ...current, ...value }))
+                      }
                       onUploadingChange={setPhotoUploading}
                     />
                   )}

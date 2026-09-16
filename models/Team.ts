@@ -17,7 +17,24 @@ const year = new mongoose.Schema(
   { timestamps: true },
 );
 const person = new mongoose.Schema(
-  profileFields,
+  {
+    userId: {
+      type: String,
+      trim: true,
+      unique: true,
+      sparse: true,
+      select: false,
+    },
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      unique: true,
+      sparse: true,
+      select: false,
+    },
+    ...profileFields,
+  },
   { timestamps: true },
 );
 const appointment = new mongoose.Schema(

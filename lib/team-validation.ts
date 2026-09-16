@@ -27,6 +27,16 @@ export const profileSchema = z.object({
     "Upload a profile photo",
   ),
 });
+export const personSchema = profileSchema.extend({
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Use a valid account email")
+    .max(320)
+    .or(z.literal(""))
+    .default(""),
+});
 export const yearSchema = z
   .object({
     year: z.number().int().min(2000).max(2200),
@@ -75,7 +85,7 @@ export const defaultSettings = {
   ctaText:
     "Current members and alumni: share your details and help us complete our team directory.",
 };
-export type TeamProfile = z.infer<typeof profileSchema> & { _id: string };
+export type TeamProfile = z.infer<typeof personSchema> & { _id: string };
 export type TeamYearData = z.infer<typeof yearSchema> & { _id: string };
 export type TeamAppointmentData = z.infer<typeof appointmentSchema> & {
   _id: string;

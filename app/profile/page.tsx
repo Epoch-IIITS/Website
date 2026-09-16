@@ -6,61 +6,79 @@ import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { ProfileFields, emptyProfile } from "@/components/team/profile-fields"
 import { toast } from "sonner"
 import { User, Mail, Shield, Calendar } from "lucide-react"
 
 export default function ProfilePage() {
-  const { data: session, status, update } = useSession()
-  const [loading, setLoading] = useState(false)
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  })
+  const { data: session, status } = useSession()
+  const [teamProfile, setTeamProfile] = useState(emptyProfile)
+  const [isTeamMember, setIsTeamMember] = useState(false)
+  const [teamProfileLoading, setTeamProfileLoading] = useState(true)
+  const [teamProfileSaving, setTeamProfileSaving] = useState(false)
+  const [teamPhotoUploading, setTeamPhotoUploading] = useState(false)
+  const [teamProfileError, setTeamProfileError] = useState("")
 
   useEffect(() => {
-    if (session?.user) {
-      setFormData({
-        name: session.user.name || "",
-        email: session.user.email || "",
-      })
+    if (status !== "authenticated") return
+
+    let cancelled = false
+    const loadTeamProfile = async () => {
+      setTeamProfileLoading(true)
+      setTeamProfileError("")
+      try {
+        const response = await fetch("/api/team/profile", { cache: "no-store" })
+        const result = await response.json().catch(() => ({}))
+        if (!response.ok) {
+          throw new Error(result.error || "Unable to load your team profile")
+        }
+        if (cancelled) return
+        setIsTeamMember(Boolean(result.member))
+        if (result.member && result.profile) setTeamProfile(result.profile)
+      } catch (error) {
+        if (!cancelled) {
+          setTeamProfileError(
+            error instanceof Error ? error.message : "Unable to load your team profile",
+          )
+        }
+      } finally {
+        if (!cancelled) setTeamProfileLoading(false)
+      }
     }
-  }, [session])
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
+    void loadTeamProfile()
+    return () => {
+      cancelled = true
+    }
+  }, [status])
+
+  const handleUpdateTeamProfile = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!session?.user) return
+    setTeamProfileSaving(true)
+    setTeamProfileError("")
 
-    setLoading(true)
     try {
-      const response = await fetch("/api/user/profile", {
+      const response = await fetch("/api/team/profile", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(teamProfile),
       })
-
+      const result = await response.json().catch(() => ({}))
       if (!response.ok) {
-        throw new Error("Failed to update profile")
+        throw new Error(result.error || "Unable to update your team profile")
       }
 
-      await update({
-        ...session,
-        user: {
-          ...session.user,
-          name: formData.name,
-        },
-      })
-
-      toast.success("Profile updated successfully!")
+      setTeamProfile(result.profile)
+      toast.success("Team profile updated successfully!")
     } catch (error) {
-      toast.error("Failed to update profile")
+      const message =
+        error instanceof Error ? error.message : "Unable to update your team profile"
+      setTeamProfileError(message)
+      toast.error(message)
     } finally {
-      setLoading(false)
+      setTeamProfileSaving(false)
     }
   }
 
@@ -90,7 +108,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
+    <div className="container mx-auto px-4 py-8 max-w-3xl">
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-4">Profile</h1>
         <p className="text-muted-foreground">Manage your account settings and preferences</p>
@@ -146,38 +164,77 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
 
-        {/* Edit Profile */}
-        <Card>
-          {/* <CardHeader>
-            <CardTitle>Edit Profile</CardTitle>
-            <CardDescription>Update your personal information</CardDescription>
-          </CardHeader> */}
-          <CardContent>
-            <form onSubmit={handleUpdateProfile} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Enter your name"
-                  disabled className="bg-muted"
-                  // disabled={loading}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" value={formData.email} disabled className="bg-muted" />
-                {/* <p className="text-xs text-muted-foreground">
-                  Email cannot be changed. Contact support if you need to update your email.
-                </p> */}
-              </div>
-              {/* <Button type="submit" disabled={loading}>
-                {loading ? "Updating..." : "Update Profile"}
-              </Button> */}
-            </form>
-          </CardContent>
-        </Card>
+        {teamProfileLoading && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Team directory profile</CardTitle>
+              <CardDescription>Checking for a team listing linked to your account…</CardDescription>
+            </CardHeader>
+          </Card>
+        )}
+
+        {!teamProfileLoading && isTeamMember && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Team directory profile</CardTitle>
+              <CardDescription>
+                These shared details appear in every academic year where you are listed.
+                Team years and positions remain managed by administrators.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleUpdateTeamProfile} className="space-y-6">
+                <fieldset
+                  disabled={teamProfileSaving || teamPhotoUploading}
+                  className="space-y-6 disabled:opacity-70"
+                >
+                  <ProfileFields
+                    value={teamProfile}
+                    onChange={setTeamProfile}
+                    onUploadingChange={setTeamPhotoUploading}
+                  />
+                  {teamProfileError && (
+                    <p role="alert" className="text-sm text-destructive">
+                      {teamProfileError}
+                    </p>
+                  )}
+                  <Button type="submit">
+                    {teamPhotoUploading
+                      ? "Uploading photo…"
+                      : teamProfileSaving
+                        ? "Saving…"
+                        : "Save team profile"}
+                  </Button>
+                </fieldset>
+              </form>
+            </CardContent>
+          </Card>
+        )}
+
+        {!teamProfileLoading && !isTeamMember && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Team directory profile</CardTitle>
+              <CardDescription>
+                No team listing is linked to {session.user.email || "this account"}.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p
+                role={teamProfileError ? "alert" : "status"}
+                className={teamProfileError ? "text-sm text-destructive" : "text-sm text-muted-foreground"}
+              >
+                {teamProfileError ||
+                  "If you already appear on the Team page, an administrator needs to add this account email to your person profile."}
+              </p>
+              {session.user.role === "admin" && !teamProfileError && (
+                <Button asChild variant="outline">
+                  <a href="/admin/team">Open team administration</a>
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   )

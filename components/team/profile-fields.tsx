@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { PhotoCropDialog } from "@/components/team/photo-crop-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,10 +19,12 @@ export function ProfileFields({
   value,
   onChange,
   onUploadingChange,
+  beforeTagline,
 }: {
   value: typeof emptyProfile;
   onChange: (value: typeof emptyProfile) => void;
   onUploadingChange?: (busy: boolean) => void;
+  beforeTagline?: ReactNode;
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -43,10 +46,9 @@ export function ProfileFields({
             ["linkedin", "LinkedIn profile URL", 300],
             ["currentRole", "Current job role / study", 120],
             ["organization", "Current organization / institute", 120],
-            ["tagline", "Tagline", 180],
           ] as const
         ).map(([key, label, max]) => (
-          <Label key={key} className={key === "tagline" ? "sm:col-span-2" : ""}>
+          <Label key={key}>
             {label}
             <Input
               className="mt-2"
@@ -58,6 +60,16 @@ export function ProfileFields({
             />
           </Label>
         ))}
+        {beforeTagline && <div className="sm:col-span-2">{beforeTagline}</div>}
+        <Label className="sm:col-span-2">
+          Tagline
+          <Input
+            className="mt-2"
+            value={value.tagline}
+            maxLength={180}
+            onChange={(e) => onChange({ ...value, tagline: e.target.value })}
+          />
+        </Label>
       </div>
       <Label className="block">
         Profile photo
