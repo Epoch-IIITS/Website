@@ -36,6 +36,7 @@ const next = {
     json: (body, options = {}) => ({
       body: JSON.parse(JSON.stringify(body)),
       status: options.status || 200,
+      headers: { set() {} },
     }),
   },
 };
@@ -103,6 +104,14 @@ function adminRoute(models = {}, role = "admin", transaction) {
 const req = (value) => ({ json: async () => value });
 
 test("team validation rejects unsafe URLs, invalid years, duplicate group identifiers, and missing consent", () => {
+  assert.equal(
+    schemas.personSchema.safeParse({ ...profile, email: "not-an-email" }).success,
+    false,
+  );
+  assert.equal(
+    schemas.personSchema.parse({ ...profile, email: " ADA@Example.COM " }).email,
+    "ada@example.com",
+  );
   assert.equal(
     schemas.profileSchema.safeParse({
       ...profile,
@@ -227,12 +236,40 @@ test("appointment must reference an existing person and a group belonging to its
   );
 });
 
+test("admins can privately link an existing person profile by account email", async () => {
+  let savedUpdate;
+  const before = { _id: personId, ...profile, email: "", userId: "old-user" };
+  const route = adminRoute({
+    TeamPerson: {
+      findById: () => query(before),
+      findByIdAndUpdate: async (_id, update) => {
+        savedUpdate = update;
+        return { ...before, ...update.$set };
+      },
+    },
+  });
+  const response = await route.POST(
+    req({
+      action: "person",
+      id: personId,
+      value: { ...profile, email: " Member@Example.com " },
+    }),
+  );
+  assert.equal(response.status, 200);
+  assert.equal(savedUpdate.$set.email, "member@example.com");
+  assert.equal(savedUpdate.$unset.userId, 1);
+});
+
 test("request approval is transactional, preserves an existing profile, and cannot repeat", async () => {
   let savedAppointment,
+    linkedFilter,
+    linkedUpdate,
     reviews = 0,
     txCount = 0;
   const record = {
     _id: id,
+    userId: id,
+    email: "real@example.com",
     status: "pending",
     name: "Ada Lovelace",
     toObject() { return { status: this.status, name: this.name }; },
@@ -247,6 +284,12 @@ test("request approval is transactional, preserves an existing profile, and cann
       },
       TeamPerson: {
         exists: () => query(true),
+        findOne: () => query(null),
+        findOneAndUpdate: async (filter, update) => {
+          linkedFilter = filter;
+          linkedUpdate = update;
+          return { _id: personId, name: "Ada Lovelace", userId: id };
+        },
         findById: () => query({ name: "Ada Lovelace" }),
       },
       TeamYear: { findById: () => query({ year: 2026, groups: [{ id: "domain" }] }) },
@@ -275,6 +318,10 @@ test("request approval is transactional, preserves an existing profile, and cann
   assert.equal((await route.POST(req(body))).status, 200);
   assert.equal(savedAppointment.filter.personId, personId);
   assert.equal(savedAppointment.filter.yearId, yearId);
+  assert.equal(linkedFilter._id, personId);
+  assert.equal(linkedFilter.$or[0].userId, id);
+  assert.equal(linkedFilter.$or[1].email, "real@example.com");
+  assert.equal(linkedUpdate.$set.email, "real@example.com");
   assert.equal(record.status, "approved");
   assert.equal((await route.POST(req(body))).status, 400);
   assert.equal(reviews, 1);
@@ -392,6 +439,215 @@ test("request history is scoped to the authenticated applicant", async () => {
   assert.equal(filter.userId, id);
 });
 
+function memberProfileRoute({
+  models = {},
+  session = { user: { id, email: "real@example.com" } },
+  transaction = async (fn) => fn({}),
+  media = {},
+  audit = {},
+} = {}) {
+  return load("app/api/team/profile/route.ts", {
+    "next/server": next,
+    "next-auth": { getServerSession: async () => session },
+    "@/lib/auth": { authOptions: {} },
+    "@/lib/mongodb": async () => {},
+    "@/models/Team": { ...models, ensureTeamStorage: async () => {} },
+    "@/lib/team-validation": schemas,
+    "@/lib/audit-log": {
+      diffAuditFields: (before, after, fields) =>
+        fields.flatMap((field) =>
+          before?.[field] === after?.[field]
+            ? []
+            : [{ field, before: before?.[field] || null, after: after?.[field] || null }],
+        ),
+      runAuditedMutation: async (actor, request, mutation) =>
+        transaction(async (databaseSession) => {
+          const result = await mutation(databaseSession);
+          audit.capture?.({ actor, request, logs: result.logs });
+          return result.value;
+        }),
+    },
+    "@/lib/media-assets": {
+      ensureMediaStorage: async () => {},
+      reconcileMediaUrls: async () => [],
+      attemptMediaCleanup: async () => {},
+      ...media,
+    },
+    mongoose: { connection: { transaction } },
+  });
+}
+
+test("team profile endpoint is private and hidden from signed-in nonmembers", async () => {
+  let storageTouched = false;
+  const anonymous = memberProfileRoute({
+    session: null,
+    transaction: async () => {
+      storageTouched = true;
+    },
+  });
+  assert.equal((await anonymous.GET()).status, 401);
+  assert.equal((await anonymous.PUT(req(profile))).status, 401);
+  assert.equal(storageTouched, false);
+
+  const nonmember = memberProfileRoute({
+    models: {
+      TeamPerson: { findOne: () => query(null) },
+      TeamRequest: { findOne: () => query(null) },
+    },
+  });
+  const read = await nonmember.GET();
+  assert.equal(read.status, 200);
+  assert.equal(read.body.member, false);
+  assert.equal((await nonmember.PUT(req(profile))).status, 403);
+});
+
+test("a linked team member can update only their shared profile fields", async () => {
+  const oldPhoto =
+    "https://res.cloudinary.com/demo/image/upload/v1/epoch/team/old.jpg";
+  const newPhoto =
+    "https://res.cloudinary.com/demo/image/upload/v1/epoch/team/new.jpg";
+  const person = {
+    _id: personId,
+    userId: "previous-account-id",
+    email: "real@example.com",
+    ...profile,
+    photo: oldPhoto,
+  };
+  let updateFilter,
+    updateValue,
+    reconciled,
+    cleaned,
+    auditRecord;
+  const route = memberProfileRoute({
+    models: {
+      TeamPerson: {
+        findOne: (filter) => {
+          assert.equal(filter.email, "real@example.com");
+          return query(person);
+        },
+        findOneAndUpdate: async (filter, update) => {
+          updateFilter = filter;
+          updateValue = update;
+          return { ...person, ...update.$set };
+        },
+      },
+      TeamAppointment: { exists: () => query(true) },
+      TeamRequest: { findOne: () => { throw new Error("legacy lookup not expected"); } },
+    },
+    media: {
+      reconcileMediaUrls: async (value) => {
+        reconciled = value;
+        return ["epoch/team/old"];
+      },
+      attemptMediaCleanup: async (value) => {
+        cleaned = value;
+      },
+    },
+    audit: {
+      capture: (value) => {
+        auditRecord = value;
+      },
+    },
+  });
+
+  const read = await route.GET();
+  assert.equal(read.body.member, true);
+  assert.equal(read.body.profile.name, profile.name);
+
+  const changed = {
+    ...profile,
+    name: "Ada Byron",
+    currentRole: "Principal Researcher",
+    photo: newPhoto,
+    email: "forged@example.com",
+    userId: "forged-user",
+    personId: "forged-person",
+    por: "Forged position",
+    published: false,
+  };
+  const response = await route.PUT(req(changed));
+  assert.equal(response.status, 200);
+  assert.equal(response.body.profile.name, "Ada Byron");
+  assert.equal(updateFilter._id, personId);
+  assert.equal(updateFilter.userId, undefined);
+  assert.equal(updateValue.$set.currentRole, "Principal Researcher");
+  assert.equal(updateValue.$set.userId, id);
+  assert.equal(updateValue.$set.email, "real@example.com");
+  assert.equal(updateValue.$set.personId, undefined);
+  assert.equal(updateValue.$set.por, undefined);
+  assert.equal(updateValue.$set.published, undefined);
+  assert.equal(auditRecord.actor.user.id, id);
+  assert.equal(auditRecord.logs.length, 1);
+  assert.equal(auditRecord.logs[0].entityType, "team-person");
+  assert.match(auditRecord.logs[0].summary, /Updated own team profile/);
+  assert.ok(auditRecord.logs[0].changes.some((change) => change.field === "name"));
+  assert.ok(!auditRecord.logs[0].changes.some((change) => change.field === "email"));
+  assert.equal(reconciled.beforeUrls[0], oldPhoto);
+  assert.equal(reconciled.afterUrls[0], newPhoto);
+  assert.equal(cleaned.length, 1);
+  assert.equal(cleaned[0], "epoch/team/old");
+});
+
+test("an older approved request is resolved without exposing or claiming another account", async () => {
+  const legacyPerson = { _id: personId, ...profile };
+  const calls = [];
+  let requestFilter;
+  const route = memberProfileRoute({
+    models: {
+      TeamPerson: {
+        findOne: () => query(null),
+        findById: () => query(legacyPerson),
+        findOneAndUpdate: async (filter, update) => {
+          calls.push({ filter, update });
+          return { ...legacyPerson, userId: id, ...update.$set };
+        },
+      },
+      TeamRequest: {
+        findOne: (filter) => {
+          requestFilter = filter;
+          return query({ appointmentId: id });
+        },
+      },
+      TeamAppointment: { findById: () => query({ personId }) },
+    },
+  });
+
+  const read = await route.GET();
+  assert.equal(read.body.member, true);
+  assert.equal(calls.length, 0);
+  assert.equal(requestFilter.$or[1].email, "real@example.com");
+
+  const response = await route.PUT(req({ ...profile, tagline: "Updated" }));
+  assert.equal(response.status, 200);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].filter._id, personId);
+  assert.equal(calls[0].update.$set.userId, id);
+  assert.equal(calls[0].update.$set.email, "real@example.com");
+
+  let crossAccountMutation = false;
+  const alreadyClaimed = memberProfileRoute({
+    models: {
+      TeamPerson: {
+        findOne: () => query(null),
+        findById: () =>
+          query({
+            ...legacyPerson,
+            userId: "another-user",
+            email: "another@example.com",
+          }),
+        findOneAndUpdate: () => {
+          crossAccountMutation = true;
+        },
+      },
+      TeamRequest: { findOne: () => query({ appointmentId: id }) },
+      TeamAppointment: { findById: () => query({ personId }) },
+    },
+  });
+  assert.equal((await alreadyClaimed.GET()).body.member, false);
+  assert.equal((await alreadyClaimed.PUT(req(profile))).status, 403);
+  assert.equal(crossAccountMutation, false);
+});
+
 test("public member lookup hides draft appointments and draft years", async () => {
   let returnedAppointment = null,
     returnedYear = null,
@@ -464,6 +720,22 @@ test("public member lookup hides draft appointments and draft years", async () =
 
 test("real Mongoose indexes prevent duplicate person/year appointments and pending requests", () => {
   const models = load("models/Team.ts");
+  assert.ok(
+    models.TeamPerson.schema
+      .indexes()
+      .some(
+        ([fields, options]) =>
+          fields.userId && options.unique && options.sparse,
+      ),
+  );
+  assert.ok(
+    models.TeamPerson.schema
+      .indexes()
+      .some(
+        ([fields, options]) =>
+          fields.email && options.unique && options.sparse,
+      ),
+  );
   assert.ok(
     models.TeamAppointment.schema
       .indexes()
