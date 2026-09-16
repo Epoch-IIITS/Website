@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Badge } from "@/components/ui/badge"
 import { ImageUpload } from "@/components/image-upload"
-import { ArrowLeft, X, Plus } from "lucide-react"
+import { ArrowLeft, X, Plus, Star } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
 
@@ -28,6 +29,7 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
     eventName: "",
     eventDate: "",
     description: "",
+    coverImage: "",
     images: [] as GalleryImage[],
   })
 
@@ -51,6 +53,7 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
           eventName: gallery.eventName || "",
           eventDate: eventDate.toISOString().slice(0, 10),
           description: gallery.description || "",
+          coverImage: gallery.coverImage || gallery.images?.[0]?.url || "",
           images: gallery.images || [],
         })
       } else {
@@ -72,15 +75,30 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
   }
 
   const updateImage = (index: number, field: keyof GalleryImage, value: string) => {
-    const updatedImages = [...formData.images]
-    updatedImages[index] = { ...updatedImages[index], [field]: value }
-    setFormData({ ...formData, images: updatedImages })
+    setFormData((prev) => {
+      const previousUrl = prev.images[index]?.url
+      const images = [...prev.images]
+      images[index] = { ...images[index], [field]: value }
+      const fallback = images.find((image) => image.url.trim())?.url || ""
+      return {
+        ...prev,
+        images,
+        coverImage: field === "url" && previousUrl === prev.coverImage ? value || fallback : prev.coverImage,
+      }
+    })
   }
 
   const removeImage = (index: number) => {
-    setFormData({
-      ...formData,
-      images: formData.images.filter((_, i) => i !== index),
+    setFormData((prev) => {
+      const removed = prev.images[index]
+      const images = prev.images.filter((_, i) => i !== index)
+      return {
+        ...prev,
+        coverImage: removed?.url === prev.coverImage
+          ? images.find((image) => image.url.trim())?.url || ""
+          : prev.coverImage,
+        images,
+      }
     })
   }
 
@@ -102,6 +120,9 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
       const submitData = {
         ...formData,
         eventDate: new Date(formData.eventDate).toISOString(),
+        coverImage: validImages.some((image) => image.url === formData.coverImage)
+          ? formData.coverImage
+          : validImages[0].url,
         images: validImages,
       }
 
@@ -211,8 +232,16 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
             <CardContent className="space-y-6">
               {formData.images.map((image, index) => (
                 <div key={index} className="border rounded-lg p-4 space-y-4">
-                  <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Image {index + 1}</h4>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-medium">Image {index + 1}</h4>
+                      {image.url && image.url === formData.coverImage && (
+                        <Badge>
+                          <Star className="mr-1 h-3 w-3 fill-current" />
+                          Cover
+                        </Badge>
+                      )}
+                    </div>
                     <Button
                       type="button"
                       variant="outline"
@@ -231,6 +260,19 @@ export default function EditGalleryPage({ params }: { params: Promise<{ id: stri
                     disabled={loading}
                     purpose="gallery"
                   />
+
+                  {image.url && (
+                    <Button
+                      type="button"
+                      variant={image.url === formData.coverImage ? "secondary" : "outline"}
+                      size="sm"
+                      onClick={() => setFormData((prev) => ({ ...prev, coverImage: image.url }))}
+                      disabled={loading || image.url === formData.coverImage}
+                    >
+                      <Star className="mr-2 h-4 w-4" />
+                      {image.url === formData.coverImage ? "Cover image" : "Set as cover"}
+                    </Button>
+                  )}
 
                   <div className="space-y-2">
                     <Label htmlFor={`caption-${index}`}>Caption</Label>

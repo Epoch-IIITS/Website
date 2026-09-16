@@ -4,6 +4,7 @@ import { PhotoCropDialog } from "@/components/team/photo-crop-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { IMAGE_UPLOAD_MAX_LABEL, TEAM_IMAGE_TYPES, uploadImage, validateImageUpload } from "@/lib/image-upload";
 
 export const emptyProfile = {
   name: "",
@@ -63,20 +64,15 @@ export function ProfileFields({
         <input
           className="mt-2 block w-full text-sm"
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept={TEAM_IMAGE_TYPES.join(",")}
           disabled={uploading}
           onChange={(e) => {
             const file = e.target.files?.[0];
             e.target.value = "";
             if (!file) return;
-            if (
-              !["image/jpeg", "image/png", "image/webp"].includes(file.type)
-            ) {
-              setError("Choose a JPG, PNG or WebP photo.");
-              return;
-            }
-            if (file.size > 5 * 1024 * 1024) {
-              setError("Photo must be under 5 MB");
+            const validation = validateImageUpload(file, "team");
+            if (validation) {
+              setError(validation.error);
               return;
             }
             setError("");
@@ -89,7 +85,7 @@ export function ProfileFields({
       <p className="text-xs text-muted-foreground">
         {uploading
           ? "Uploading photo… Wait for the preview before saving."
-          : "JPG, PNG or WebP, up to 5 MB. Choose the visible area before uploading."}
+          : `JPG, PNG or WebP, up to ${IMAGE_UPLOAD_MAX_LABEL}. Choose the visible area before uploading.`}
       </p>
       {value.photo && (
         <div className="flex flex-wrap items-center gap-3">
@@ -129,17 +125,7 @@ export function ProfileFields({
             onUploadingChange?.(true);
             setError("");
             try {
-              const body = new FormData();
-              body.append("file", photo, "profile.jpg");
-              const response = await fetch("/api/team/upload", {
-                method: "POST",
-                body,
-              });
-              const data = await response.json();
-              if (!response.ok)
-                throw new Error(
-                  data.error || "Photo upload failed. Please try again.",
-                );
+              const data = await uploadImage(photo, "team", "profile.jpg");
               onChange({ ...value, photo: data.url });
               setCropOpen(false);
             } finally {

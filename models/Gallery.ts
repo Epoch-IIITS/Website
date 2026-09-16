@@ -13,6 +13,10 @@ const gallerySchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    coverImage: {
+      type: String,
+      default: "",
+    },
     images: [
       {
         url: {

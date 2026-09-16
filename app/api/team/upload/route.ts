@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import { destroyManagedImage, uploadManagedImage } from "@/lib/cloudinary-media";
 import { registerUploadedMedia } from "@/lib/media-assets";
+import { validateImageUpload } from "@/lib/image-upload";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -13,16 +14,21 @@ export async function POST(req: NextRequest) {
       { status: 401 },
     );
   try {
-    const file = (await req.formData()).get("file");
-    if (
-      !(file instanceof File) ||
-      file.size > 5 * 1024 * 1024 ||
-      !["image/jpeg", "image/png", "image/webp"].includes(file.type)
-    )
+    let formData: FormData;
+    try {
+      formData = await req.formData();
+    } catch {
       return NextResponse.json(
-        { error: "Use a JPG, PNG or WebP photo under 5 MB" },
+        { error: "Could not read the upload. Select a photo and try again." },
         { status: 400 },
       );
+    }
+    const file = formData.get("file");
+    if (!(file instanceof File))
+      return NextResponse.json({ error: "No photo received" }, { status: 400 });
+    const validation = validateImageUpload(file, "team");
+    if (validation)
+      return NextResponse.json({ error: validation.error }, { status: validation.status });
     const buffer = Buffer.from(await file.arrayBuffer());
     const result = await uploadManagedImage(buffer, "team", {
       transformation: [{ width: 1200, height: 1200, crop: "limit" }],

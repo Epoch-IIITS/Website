@@ -64,7 +64,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         },
       )
       const changes = [
-        ...diffAuditFields(before, updated, ["eventName", "eventDate", "description"]),
+        ...diffAuditFields(before, updated, ["eventName", "eventDate", "description", "coverImage"]),
         ...countChange("images", before.images, updated?.images || []),
       ]
       const queued = await reconcileMediaUrls({
@@ -132,7 +132,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
           entityLabel: deleted.eventName,
           summary: `Deleted gallery “${deleted.eventName}”`,
           changes: [
-            ...diffAuditFields(deleted, {}, ["eventName", "eventDate", "description"]),
+            ...diffAuditFields(deleted, {}, ["eventName", "eventDate", "description", "coverImage"]),
             ...countChange("images", deleted.images, []),
           ],
           sideEffects: queued.length ? { cloudinaryImagesQueued: queued.length } : undefined,

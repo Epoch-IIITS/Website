@@ -10,7 +10,7 @@ import { ensureMediaStorage, reconcileMediaUrls } from "@/lib/media-assets"
 export async function GET() {
   try {
     await connectDB()
-    const galleries = await Gallery.find().sort({ createdAt: -1 })
+    const galleries = await Gallery.find().sort({ eventDate: -1, createdAt: -1, _id: -1 })
     return NextResponse.json(galleries)
   } catch (error) {
     console.error("Gallery fetch error:", error)
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
           entityLabel: created.eventName,
           summary: `Created gallery “${created.eventName}”`,
           changes: [
-            ...diffAuditFields({}, created, ["eventName", "eventDate", "description"]),
+            ...diffAuditFields({}, created, ["eventName", "eventDate", "description", "coverImage"]),
             ...countChange("images", [], created.images),
           ],
         }],

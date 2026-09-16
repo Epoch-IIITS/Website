@@ -11,7 +11,7 @@ async function getGallery(id: string) {
       `${process.env.NEXTAUTH_URL}/api/gallery/${id}`,
       {
         cache: "no-store",
-      }
+      },
     );
     if (!response.ok) {
       if (response.status === 404) return null;
@@ -55,7 +55,11 @@ export default async function GalleryDetailPage({ params }: PageProps) {
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
                   <span>
-                    {new Date(gallery.eventDate).toLocaleDateString()}
+                    {new Date(gallery.eventDate).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -85,12 +89,16 @@ export default async function GalleryDetailPage({ params }: PageProps) {
             <div className="text-center">
               <h2 className="text-2xl font-semibold mb-2">Event Photos</h2>
               <p className="text-muted-foreground">
-                Browse through {gallery.images.length} photos from this event. Click a photo to view it in full.
+                Browse through {gallery.images.length} photos from this event.
+                Click a photo to view it in full.
               </p>
             </div>
 
             {/* Masonry Grid */}
-            <EventGallery images={gallery.images} eventName={gallery.eventName} />
+            <EventGallery
+              images={gallery.images}
+              eventName={gallery.eventName}
+            />
 
             {/* Gallery Stats */}
             <Card>

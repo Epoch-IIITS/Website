@@ -11,12 +11,15 @@ The community platform for Epoch at IIIT Sri City. It brings the club's writing,
 - Read community blogs and discover featured projects.
 - Browse upcoming events, register online, and download a PDF ticket with a QR code.
 - Explore event photo galleries with a full-image viewer.
+- Browse newest event galleries first, with event details over each admin-selected cover photo.
 - Meet the current team and browse previous academic years.
 - Create a stable, shareable profile card for published team members.
 - Sign in to manage your profile, registrations, and team-directory requests.
 - Contact the Epoch team through an authenticated form.
 
 Administrators can manage content, users, event registrations, contact queries, team records, and downloadable QR codes from a responsive dashboard. Administrative creates, updates, and deletes are also recorded in a searchable audit log.
+
+Image uploads support files up to 4 MB each, with clear failure messages and individual file results for gallery uploads.
 
 ## Built with
 

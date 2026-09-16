@@ -23,6 +23,7 @@ function load(file, mocks = {}, globals = {}) {
     RegExp,
     Set,
     Buffer,
+    File,
     process,
     ...globals,
   }
@@ -83,6 +84,45 @@ test("content validation rejects executable URL schemes", () => {
     eventDate: "2026-09-11",
     images: [{ url: "javascript:alert(1)" }],
   }).success, false)
+  assert.equal(gallerySchema.safeParse({
+    eventName: "Gallery",
+    eventDate: "2026-09-11",
+    coverImage: "https://example.com/not-in-gallery.jpg",
+    images: [{ url: "https://example.com/gallery.jpg" }],
+  }).success, false)
+  assert.equal(gallerySchema.safeParse({
+    eventName: "Gallery",
+    eventDate: "2026-09-11",
+    coverImage: "https://example.com/gallery.jpg",
+    images: [{ url: "https://example.com/gallery.jpg" }],
+  }).success, true)
+})
+
+test("gallery listings are sorted by event date with stable recent-first tie breakers", async () => {
+  let sorting
+  const galleries = [{ eventName: "Recent event" }]
+  const route = load("app/api/gallery/route.ts", {
+    "next/server": { NextResponse: { json: (body, options = {}) => ({ body, status: options.status || 200 }) } },
+    "@/lib/mongodb": async () => {},
+    "@/models/Gallery": {
+      find: () => ({
+        sort: async (value) => {
+          sorting = value
+          return galleries
+        },
+      }),
+    },
+    "@/lib/validations": {},
+    "next-auth": { getServerSession: async () => null },
+    "@/lib/auth": { authOptions: {} },
+    "@/lib/audit-log": {},
+    "@/lib/media-assets": {},
+  })
+
+  const response = await route.GET()
+  assert.equal(response.status, 200)
+  assert.equal(response.body, galleries)
+  assert.equal(JSON.stringify(sorting), JSON.stringify({ eventDate: -1, createdAt: -1, _id: -1 }))
 })
 
 test("the general upload and RSVP-admin APIs reject anonymous requests before storage access", async () => {
@@ -99,6 +139,7 @@ test("the general upload and RSVP-admin APIs reject anonymous requests before st
     "@/lib/mongodb": async () => {},
     "@/lib/cloudinary-media": {},
     "@/lib/media-assets": {},
+    "@/lib/image-upload": load("lib/image-upload.ts"),
   })
   assert.equal((await upload.POST({ formData: async () => { throw new Error("must not parse") } })).status, 401)
 
@@ -145,9 +186,10 @@ test("general uploads are registered with their validated content purpose", asyn
     "@/lib/media-assets": {
       registerUploadedMedia: async (...args) => { registered = args },
     },
+    "@/lib/image-upload": load("lib/image-upload.ts"),
   })
   const form = new Map([
-    ["file", { type: "image/jpeg", size: 3, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer }],
+    ["file", new File([new Uint8Array([1, 2, 3])], "photo.jpg", { type: "image/jpeg" })],
     ["purpose", "gallery"],
   ])
   const response = await upload.POST({ formData: async () => form })
