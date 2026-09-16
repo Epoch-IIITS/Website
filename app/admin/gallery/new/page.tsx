@@ -1,17 +1,19 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { ArrowLeft, Upload, X, Calendar, ImageIcon } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { ArrowLeft, Upload, X, Calendar, ImageIcon, Star } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
 import Image from "next/image"
+import { CONTENT_IMAGE_TYPES, IMAGE_UPLOAD_MAX_LABEL, imageUploadErrorMessage, uploadImage } from "@/lib/image-upload"
 
 interface ImageData {
   url: string
@@ -22,10 +24,13 @@ export default function NewGalleryPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [uploadFailures, setUploadFailures] = useState<{ name: string; message: string }[]>([])
+  const uploadInProgress = useRef(false)
   const [formData, setFormData] = useState({
     eventName: "",
     eventDate: "",
     description: "",
+    coverImage: "",
     images: [] as ImageData[],
   })
 
@@ -34,57 +39,57 @@ export default function NewGalleryPage() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleFileUpload = async (files: FileList) => {
-    if (!files.length) return
+  const handleFileUpload = async (files: File[]) => {
+    if (!files.length || loading || uploadInProgress.current) return
 
+    uploadInProgress.current = true
     setUploading(true)
+    setUploadFailures([])
     const uploadedImages: ImageData[] = []
+    const failures: { name: string; message: string }[] = []
 
-    for (const file of Array.from(files)) {
-      const formData = new FormData()
-      formData.append("file", file)
-      formData.append("purpose", "gallery")
-
-      try {
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        })
-
-        if (!response.ok) {
-          const error = await response.json()
-          throw new Error(error.error || "Upload failed")
+    try {
+      for (const file of files) {
+        try {
+          const result = await uploadImage(file, "gallery")
+          uploadedImages.push({ url: result.url, caption: "" })
+        } catch (error) {
+          failures.push({ name: file.name, message: imageUploadErrorMessage(error) })
         }
-
-        const result = await response.json()
-        uploadedImages.push({ url: result.url, caption: "" })
-      } catch (error) {
-        console.error("Upload error:", error)
-        toast.error(`Failed to upload ${file.name}`)
       }
-    }
 
-    if (uploadedImages.length > 0) {
-      setFormData((prev) => ({
-        ...prev,
-        images: [...prev.images, ...uploadedImages],
-      }))
-      toast.success(`${uploadedImages.length} image(s) uploaded successfully`)
+      if (uploadedImages.length > 0) {
+        setFormData((prev) => {
+          const images = [...prev.images, ...uploadedImages]
+          return {
+            ...prev,
+            coverImage: prev.coverImage || images[0]?.url || "",
+            images,
+          }
+        })
+      }
+      setUploadFailures(failures)
+      if (failures.length > 0) {
+        toast.error(`${uploadedImages.length} of ${files.length} images uploaded. Review the failed files below.`)
+      } else {
+        toast.success(`${uploadedImages.length} image(s) uploaded successfully`)
+      }
+    } finally {
+      uploadInProgress.current = false
+      setUploading(false)
     }
-
-    setUploading(false)
   }
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
-    const files = e.dataTransfer.files
+    const files = Array.from(e.dataTransfer.files)
     handleFileUpload(files)
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      handleFileUpload(e.target.files)
-    }
+    const files = Array.from(e.target.files || [])
+    e.target.value = ""
+    handleFileUpload(files)
   }
 
   const updateImageCaption = (index: number, caption: string) => {
@@ -95,14 +100,20 @@ export default function NewGalleryPage() {
   }
 
   const removeImage = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index),
-    }))
+    setFormData((prev) => {
+      const removed = prev.images[index]
+      const images = prev.images.filter((_, i) => i !== index)
+      return {
+        ...prev,
+        coverImage: removed?.url === prev.coverImage ? images[0]?.url || "" : prev.coverImage,
+        images,
+      }
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (loading || uploadInProgress.current) return
 
     if (!formData.eventName || !formData.eventDate || formData.images.length === 0) {
       toast.error("Please fill in all required fields and upload at least one image")
@@ -205,7 +216,7 @@ export default function NewGalleryPage() {
                 <ImageIcon className="h-5 w-5" />
                 Event Photos
               </CardTitle>
-              <CardDescription>Upload photos from the event (max 5MB each)</CardDescription>
+              <CardDescription>Upload photos from the event (max {IMAGE_UPLOAD_MAX_LABEL} each)</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Upload Area */}
@@ -230,7 +241,7 @@ export default function NewGalleryPage() {
                 <input
                   type="file"
                   multiple
-                  accept="image/*"
+                  accept={CONTENT_IMAGE_TYPES.join(",")}
                   onChange={handleFileSelect}
                   className="hidden"
                   id="file-upload"
@@ -245,9 +256,23 @@ export default function NewGalleryPage() {
                   Select Images
                 </Button>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Supported formats: JPEG, PNG, GIF, WebP (max 5MB each)
+                  Supported formats: JPEG, PNG, GIF, WebP (max {IMAGE_UPLOAD_MAX_LABEL} each)
                 </p>
               </div>
+
+              {uploadFailures.length > 0 && (
+                <div role="alert" className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm">
+                  <p className="font-medium text-destructive">{uploadFailures.length} image(s) could not be uploaded.</p>
+                  <ul className="mt-2 space-y-2">
+                    {uploadFailures.map((failure, index) => (
+                      <li key={index} className="break-words">
+                        <span className="font-medium">{failure.name}:</span> {failure.message}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-3 text-muted-foreground">Successfully uploaded images are kept. Select the failed files again to retry.</p>
+                </div>
+              )}
 
               {/* Image Grid */}
               {formData.images.length > 0 && (
@@ -257,8 +282,8 @@ export default function NewGalleryPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {formData.images.map((image, index) => (
-                      <div key={index} className="group relative">
-                        <div className="aspect-square bg-muted rounded-lg overflow-hidden">
+                      <div key={index} className="space-y-2">
+                        <div className="group relative aspect-square overflow-hidden rounded-lg bg-muted">
                           <Image
                             src={image.url || "/placeholder.svg"}
                             alt={`Upload ${index + 1}`}
@@ -266,6 +291,12 @@ export default function NewGalleryPage() {
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
+                          {image.url === formData.coverImage && (
+                            <Badge className="absolute left-2 top-2 bg-primary text-primary-foreground hover:bg-primary">
+                              <Star className="mr-1 h-3 w-3 fill-current" />
+                              Cover
+                            </Badge>
+                          )}
                           <Button
                             type="button"
                             variant="destructive"
@@ -276,7 +307,18 @@ export default function NewGalleryPage() {
                             <X className="h-4 w-4" />
                           </Button>
                         </div>
-                        <div className="mt-2">
+                        <Button
+                          type="button"
+                          variant={image.url === formData.coverImage ? "secondary" : "outline"}
+                          size="sm"
+                          className="w-full"
+                          onClick={() => setFormData((prev) => ({ ...prev, coverImage: image.url }))}
+                          disabled={loading || uploading || image.url === formData.coverImage}
+                        >
+                          <Star className="mr-2 h-4 w-4" />
+                          {image.url === formData.coverImage ? "Cover image" : "Set as cover"}
+                        </Button>
+                        <div>
                           <Input
                             placeholder="Add caption (optional)"
                             value={image.caption}

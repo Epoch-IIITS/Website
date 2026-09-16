@@ -8,6 +8,7 @@ import {
   uploadManagedImage,
 } from "@/lib/cloudinary-media"
 import { registerUploadedMedia } from "@/lib/media-assets"
+import { validateImageUpload } from "@/lib/image-upload"
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,31 +17,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Admin access required" }, { status: session ? 403 : 401 })
     }
 
-    const formData = await request.formData()
-    const file = formData.get("file") as File
+    let formData: FormData
+    try {
+      formData = await request.formData()
+    } catch {
+      return NextResponse.json({ error: "Could not read the upload. Select an image and try again." }, { status: 400 })
+    }
+    const file = formData.get("file")
     const requestedPurpose = formData.get("purpose")
     // Keep blog as the fallback so an already-open admin form remains compatible
     // while new forms explicitly select their resource-specific folder.
     const purpose = requestedPurpose === null ? "blog" : requestedPurpose
 
-    if (!file) {
+    if (!(file instanceof File)) {
       return NextResponse.json({ error: "No file received" }, { status: 400 })
     }
     if (!isMediaPurpose(purpose) || purpose === "team") {
       return NextResponse.json({ error: "Invalid upload purpose" }, { status: 400 })
     }
 
-    // Validate file type
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
-    if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json({ error: "Invalid file type. Only images are allowed." }, { status: 400 })
-    }
-
-    // Validate file size (5MB limit)
-    const maxSize = 5 * 1024 * 1024
-    if (file.size > maxSize) {
-      return NextResponse.json({ error: "File too large. Maximum size is 5MB." }, { status: 400 })
-    }
+    const validation = validateImageUpload(file)
+    if (validation) return NextResponse.json({ error: validation.error }, { status: validation.status })
 
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)

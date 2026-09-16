@@ -68,6 +68,7 @@ export const gallerySchema = z.object({
   eventName: z.string().min(1, "Event name is required"),
   eventDate: z.string().min(1, "Event date is required").refine((value) => !Number.isNaN(Date.parse(value)), "Invalid event date"),
   description: z.string().optional(),
+  coverImage: httpUrl.optional().or(z.literal("")),
   images: z
     .array(
       z.object({
@@ -76,6 +77,14 @@ export const gallerySchema = z.object({
       }),
     )
     .min(1, "At least one image is required"),
+}).superRefine((value, context) => {
+  if (value.coverImage && !value.images.some((image) => image.url === value.coverImage)) {
+    context.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["coverImage"],
+      message: "Cover image must be one of the gallery images",
+    })
+  }
 })
 
 export const rsvpSchema = z.object({

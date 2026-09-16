@@ -143,6 +143,8 @@ The admin log viewer is available at `/admin/logs`.
 
 ## Cloudinary image lifecycle
 
+Image uploads accept files up to 4 MB each. `lib/image-upload.ts` shares file validation between the forms and API handlers and handles upload responses without assuming errors are JSON. This leaves room for multipart overhead under the hosting request limit. Content images support JPEG, PNG, GIF, and WebP; team photos support JPG, PNG, and WebP, with validation before cropping and before sending the confirmed crop. Failed gallery uploads are listed by filename and reason; successful uploads are kept when retrying failed files. Run `node --test scripts/uploads.test.cjs` for upload validation, response handling, and API regression checks.
+
 New uploads are recorded in `MediaAsset`. Content creates attach those records, while replacements, removals, and entity deletions create durable `MediaCleanupJob` entries inside the same transaction as the content change. Cloudinary deletion happens only after the MongoDB transaction commits.
 
 Before deleting an asset, cleanup checks blogs, projects, events, galleries, team profiles and requests, user images, and Cloudinary URLs embedded in blog content. If anything still references the asset, deletion is cancelled. External URLs, another Cloudinary account, and assets outside managed Epoch folders are ignored.
@@ -158,6 +160,8 @@ New uploads use these folders:
 | Team | `epoch/team` |
 
 Existing assets in `epoch-blogs` and `epoch-team` are not moved, so previously published links continue to work.
+
+Gallery records may store a `coverImage` URL selected from their own `images` array. Existing records without one use their first image. Changing the cover does not reorder event photos. Gallery list queries sort by `eventDate` descending, followed by creation time and ID for stable ordering.
 
 ### Manual cleanup
 

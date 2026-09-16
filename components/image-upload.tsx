@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Upload, X, ImageIcon } from "lucide-react"
 import { toast } from "sonner"
 import type { MediaPurpose } from "@/lib/cloudinary-media"
+import { CONTENT_IMAGE_TYPES, IMAGE_UPLOAD_MAX_LABEL, imageUploadErrorMessage, uploadImage } from "@/lib/image-upload"
 
 interface ImageUploadProps {
   value: string
@@ -20,47 +21,26 @@ interface ImageUploadProps {
 export function ImageUpload({ value, onChange, label = "Image", disabled = false, purpose = "blog" }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
+  const [error, setError] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const uploadInProgress = useRef(false)
 
   const handleFileUpload = async (file: File) => {
-    if (!file) return
+    if (!file || disabled || uploadInProgress.current) return
 
-    // Validate file type
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
-    if (!allowedTypes.includes(file.type)) {
-      toast.error("Invalid file type. Only images are allowed.")
-      return
-    }
-
-    // Validate file size (5MB limit)
-    const maxSize = 5 * 1024 * 1024 // 5MB
-    if (file.size > maxSize) {
-      toast.error("File too large. Maximum size is 5MB.")
-      return
-    }
-
+    uploadInProgress.current = true
     setUploading(true)
+    setError("")
     try {
-      const formData = new FormData()
-      formData.append("file", file)
-      formData.append("purpose", purpose)
-
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        onChange(data.url)
-        toast.success("Image uploaded successfully!")
-      } else {
-        const error = await response.json()
-        throw new Error(error.error || "Failed to upload image")
-      }
+      const data = await uploadImage(file, purpose)
+      onChange(data.url)
+      toast.success("Image uploaded successfully!")
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to upload image")
+      const message = `${file.name}: ${imageUploadErrorMessage(error)}`
+      setError(message)
+      toast.error(message)
     } finally {
+      uploadInProgress.current = false
       setUploading(false)
     }
   }
@@ -86,12 +66,13 @@ export function ImageUpload({ value, onChange, label = "Image", disabled = false
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      handleFileUpload(e.target.files[0])
-    }
+    const file = e.target.files?.[0]
+    e.target.value = ""
+    if (file) handleFileUpload(file)
   }
 
   const removeImage = () => {
+    setError("")
     onChange("")
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
@@ -115,7 +96,7 @@ export function ImageUpload({ value, onChange, label = "Image", disabled = false
             size="sm"
             className="absolute top-2 right-2"
             onClick={removeImage}
-            disabled={disabled}
+            disabled={disabled || uploading}
           >
             <X className="h-4 w-4" />
           </Button>
@@ -124,29 +105,31 @@ export function ImageUpload({ value, onChange, label = "Image", disabled = false
         <div
           className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
             dragActive ? "border-primary bg-primary/5" : "border-muted-foreground/25"
-          } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+          } ${disabled || uploading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
-          onClick={() => !disabled && fileInputRef.current?.click()}
+          onClick={() => !disabled && !uploading && fileInputRef.current?.click()}
         >
           <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
           <p className="text-sm text-muted-foreground mb-2">
             {uploading ? "Uploading..." : "Drag and drop an image here, or click to select"}
           </p>
-          <p className="text-xs text-muted-foreground">Supports: JPEG, PNG, GIF, WebP (max 5MB)</p>
+          <p className="text-xs text-muted-foreground">Supports: JPEG, PNG, GIF, WebP (max {IMAGE_UPLOAD_MAX_LABEL})</p>
         </div>
       )}
 
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept={CONTENT_IMAGE_TYPES.join(",")}
         onChange={handleFileSelect}
         className="hidden"
         disabled={disabled || uploading}
       />
+
+      {error && <p role="alert" className="break-words text-sm text-destructive">{error}</p>}
 
       <div className="flex gap-2">
         <Button
