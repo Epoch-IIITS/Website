@@ -52,6 +52,7 @@
     "input-otp": "1.4.1",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.454.0",
+    "marked": "^18.0.13",
     "mongoose": "latest",
     "next": "^15.5.25",
     "next-auth": "^4.24.7",
