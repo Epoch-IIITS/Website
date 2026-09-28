@@ -23,7 +23,7 @@ const outsider = "507f1f77bcf86cd799439013"
 const request = body => ({ json: async () => body })
 const params = { params: Promise.resolve({ id }) }
 
-function detailRoute({ actor = { id, admin: false }, initiative = {
+function detailRoute({ actor = { id, admin: false, eligible: true }, initiative = {
   _id: id, title: "UG1 Recruitment", status: "active", participants: [{ toString: () => id }, { toString: () => other }],
   createdBy: { toString: () => id },
 }, models = {}, audit } = {}) {
@@ -56,6 +56,14 @@ test("initiative access rejects signed-out users and users outside a workspace",
   const excluded = detailRoute({ initiative: null })
   assert.equal((await excluded.route.PATCH(request({ action: "task.comment.create", taskId: other, body: "Hello", mentions: [] }), params)).status, 404)
   assert.equal(signedOut.calls.writes + excluded.calls.writes, 0)
+})
+
+test("a signed-in nonmember cannot use an invited initiative through its API", async () => {
+  const excluded = detailRoute({ actor: { id, admin: false, eligible: false } })
+  const response = await excluded.route.PATCH(request({ action: "task.comment.create", taskId: other, body: "Hello", mentions: [] }), params)
+  assert.equal(response.status, 403)
+  assert.equal(response.body.error, "Team membership required")
+  assert.equal(excluded.calls.writes, 0)
 })
 
 test("completed initiatives reject participant writes", async () => {
@@ -154,7 +162,7 @@ test("only admins may archive and audited admin writes share the mutation", asyn
   }
   const member = detailRoute({ initiative })
   assert.equal((await member.route.PATCH(request({ action: "status", status: "completed" }), params)).status, 403)
-  const admin = detailRoute({ actor: { id, admin: true }, initiative })
+  const admin = detailRoute({ actor: { id, admin: true, eligible: true }, initiative })
   assert.equal((await admin.route.PATCH(request({ action: "status", status: "completed" }), params)).status, 200)
   assert.equal(initiative.status, "completed")
   assert.equal(admin.calls.logs[0].entityType, "initiative")
@@ -180,7 +188,7 @@ test("only admins can delete an initiative and deletion cascades through its con
   const member = detailRoute({ initiative, models })
   assert.equal((await member.route.DELETE(request({}), params)).status, 403)
   assert.equal(removed.length, 0)
-  const admin = detailRoute({ actor: { id, admin: true }, initiative, models })
+  const admin = detailRoute({ actor: { id, admin: true, eligible: true }, initiative, models })
   assert.equal((await admin.route.DELETE(request({}), params)).status, 200)
   assert.deepEqual(removed, ["tasks", "comments", "blocks", "replies", "initiative"])
   assert.equal(admin.calls.logs[0].action, "delete")
@@ -195,7 +203,7 @@ test("initiative creation is restricted to admins", async () => {
     "@/lib/audit-log": { runAuditedMutation: async () => { throw new Error("unexpected") } },
     "@/models/User": {},
     "@/models/Initiative": {},
-    "@/lib/initiatives/access": { initiativeActor: async () => ({ id, admin: false }) },
+    "@/lib/initiatives/access": { initiativeActor: async () => ({ id, admin: false, eligible: true }) },
     "@/lib/initiatives/validation": validation,
   })
   assert.equal((await route.POST(request({ title: "UG1 Recruitment" }))).status, 403)
@@ -220,7 +228,7 @@ test("the participant directory groups Team appointments by year and linked acco
   ]
   const sorted = value => ({ select: () => ({ sort: () => ({ lean: async () => value }) }) })
   const selected = value => ({ select: () => ({ lean: async () => value }) })
-  let actor = { id, admin: false }
+  let actor = { id, admin: false, eligible: true }
   const route = load("app/api/initiatives/people/route.ts", {
     "next/server": json,
     "@/models/User": { find: () => sorted(people) },
@@ -232,7 +240,7 @@ test("the participant directory groups Team appointments by year and linked acco
     "@/lib/initiatives/access": { initiativeActor: async () => actor },
   })
   assert.equal((await route.GET()).status, 403)
-  actor = { id, admin: true }
+  actor = { id, admin: true, eligible: true }
   const response = await route.GET()
   assert.equal(response.status, 200)
   assert.deepEqual(response.body.teamYears[0].groups[0].userIds, [id, other])
@@ -247,6 +255,26 @@ test("a deleted account cannot retain initiative access through an old session",
     "@/lib/mongodb": async () => {},
     "@/models/Initiative": { Initiative: {} },
     "@/models/User": { findById: () => ({ select: () => ({ lean: async () => null }) }) },
+    "@/lib/team-membership": { findMemberProfile: async () => null, normalizeTeamEmail: email => email },
   })
   assert.equal(await access.initiativeActor(), null)
+})
+
+test("initiative eligibility follows historical team membership and admins bypass it", async () => {
+  let memberProfile = { _id: other }
+  let role = "user"
+  const access = load("lib/initiatives/access.ts", {
+    mongoose: { isValidObjectId: () => true },
+    "next-auth": { getServerSession: async () => ({ user: { id } }) },
+    "@/lib/auth": { authOptions: {} },
+    "@/lib/mongodb": async () => {},
+    "@/models/Initiative": { Initiative: {} },
+    "@/models/User": { findById: () => ({ select: () => ({ lean: async () => ({ role, email: "member@example.com" }) }) }) },
+    "@/lib/team-membership": { findMemberProfile: async () => memberProfile, normalizeTeamEmail: email => email },
+  })
+  assert.equal((await access.initiativeActor()).eligible, true)
+  memberProfile = null
+  assert.equal((await access.initiativeActor()).eligible, false)
+  role = "admin"
+  assert.equal((await access.initiativeActor()).eligible, true)
 })

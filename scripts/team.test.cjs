@@ -446,11 +446,15 @@ function memberProfileRoute({
   media = {},
   audit = {},
 } = {}) {
+  const membership = load("lib/team-membership.ts", {
+    "@/models/Team": models,
+  });
   return load("app/api/team/profile/route.ts", {
     "next/server": next,
     "next-auth": { getServerSession: async () => session },
     "@/lib/auth": { authOptions: {} },
     "@/lib/mongodb": async () => {},
+    "@/lib/team-membership": membership,
     "@/models/Team": { ...models, ensureTeamStorage: async () => {} },
     "@/lib/team-validation": schemas,
     "@/lib/audit-log": {

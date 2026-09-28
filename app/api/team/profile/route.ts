@@ -1,4 +1,3 @@
-import type { ClientSession } from "mongoose"
 import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 import { ZodError } from "zod"
@@ -11,87 +10,13 @@ import {
 } from "@/lib/media-assets"
 import connectDB from "@/lib/mongodb"
 import { profileSchema } from "@/lib/team-validation"
+import { findMemberProfile, normalizeTeamEmail } from "@/lib/team-membership"
 import {
   ensureTeamStorage,
-  TeamAppointment,
   TeamPerson,
-  TeamRequest,
 } from "@/models/Team"
 
 export const dynamic = "force-dynamic"
-
-type MemberProfile = {
-  person: any
-}
-
-function normalizeEmail(value: unknown) {
-  return typeof value === "string" ? value.trim().toLowerCase() : ""
-}
-
-function withSession<T extends { session: (session: ClientSession) => T }>(
-  query: T,
-  session?: ClientSession,
-) {
-  return session ? query.session(session) : query
-}
-
-async function findMemberProfile(
-  userId: string,
-  email: string,
-  session?: ClientSession,
-): Promise<MemberProfile | null> {
-  if (email) {
-    const emailPersonQuery = TeamPerson.findOne({ email }).select("+userId +email")
-    const emailPerson = await withSession(emailPersonQuery, session)
-    if (emailPerson) {
-      const membershipQuery = TeamAppointment.exists({ personId: emailPerson._id })
-      if (await withSession(membershipQuery, session)) {
-        return { person: emailPerson }
-      }
-    }
-  }
-
-  const ownedPersonQuery = TeamPerson.findOne({ userId }).select("+userId +email")
-  const ownedPerson = await withSession(ownedPersonQuery, session)
-
-  if (
-    ownedPerson &&
-    (!ownedPerson.email || normalizeEmail(ownedPerson.email) === email)
-  ) {
-    const membershipQuery = TeamAppointment.exists({ personId: ownedPerson._id })
-    const hasMembership = await withSession(membershipQuery, session)
-    if (hasMembership) {
-      return { person: ownedPerson }
-    }
-  }
-
-  // Requests approved before TeamPerson stored account ownership can still be
-  // resolved safely through their saved appointment.
-  const requestQuery = TeamRequest.findOne({
-    status: "approved",
-    appointmentId: { $ne: null },
-    $or: [{ userId }, ...(email ? [{ email }] : [])],
-  })
-    .sort({ reviewedAt: -1, createdAt: -1 })
-    .select("appointmentId")
-  const approvedRequest = await withSession(requestQuery, session)
-  if (!approvedRequest?.appointmentId) return null
-
-  const appointmentQuery = TeamAppointment.findById(
-    approvedRequest.appointmentId,
-  ).select("personId")
-  const appointment = await withSession(appointmentQuery, session)
-  if (!appointment?.personId) return null
-
-  const personQuery = TeamPerson.findById(appointment.personId).select(
-    "+userId +email",
-  )
-  const person = await withSession(personQuery, session)
-  if (!person) return null
-  if (person.email && normalizeEmail(person.email) !== email) return null
-
-  return { person }
-}
 
 function serializeProfile(person: any) {
   return {
@@ -114,12 +39,12 @@ export async function GET() {
     await connectDB()
     const membership = await findMemberProfile(
       session.user.id,
-      normalizeEmail(session.user.email),
+      normalizeTeamEmail(session.user.email),
     )
     const response = membership
       ? NextResponse.json({
           member: true,
-          profile: serializeProfile(membership.person),
+          profile: serializeProfile(membership),
         })
       : NextResponse.json({ member: false })
 
@@ -148,7 +73,7 @@ export async function PUT(request: NextRequest) {
 
     let updatedPerson: any = null
     const cleanupIds = new Set<string>()
-    const email = normalizeEmail(session.user.email)
+    const email = normalizeTeamEmail(session.user.email)
 
     await runAuditedMutation(session, request, async (dbSession) => {
       const membership = await findMemberProfile(
@@ -159,7 +84,7 @@ export async function PUT(request: NextRequest) {
       if (!membership) throw new TeamProfileAccessError()
 
       updatedPerson = await TeamPerson.findOneAndUpdate(
-        { _id: membership.person._id },
+        { _id: membership._id },
         {
           $set: {
             ...value,
@@ -172,14 +97,14 @@ export async function PUT(request: NextRequest) {
       if (!updatedPerson) throw new TeamProfileAccessError()
 
       const removedIds = await reconcileMediaUrls({
-        beforeUrls: [membership.person.photo],
+        beforeUrls: [membership.photo],
         afterUrls: [updatedPerson.photo],
         reason: `Updated by team member ${session.user.id}`,
         session: dbSession,
       })
       removedIds.forEach((publicId) => cleanupIds.add(publicId))
 
-      const changes = diffAuditFields(membership.person, updatedPerson, [
+      const changes = diffAuditFields(membership, updatedPerson, [
         "name",
         "linkedin",
         "currentRole",

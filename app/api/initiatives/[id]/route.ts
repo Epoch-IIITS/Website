@@ -18,6 +18,7 @@ export async function GET(_request: NextRequest, { params }: Context) {
   try {
     const actor = await initiativeActor()
     if (!actor) return NextResponse.json({ error: "Sign in required" }, { status: 401 })
+    if (!actor.eligible) return NextResponse.json({ error: "Team membership required" }, { status: 403 })
     const initiative = await accessibleInitiative((await params).id, actor)
     if (!initiative) return NextResponse.json({ error: "Initiative not found" }, { status: 404 })
     const [tasks, comments, blocks, replies] = await Promise.all([
@@ -40,6 +41,7 @@ export async function PATCH(request: NextRequest, { params }: Context) {
   try {
     const actor = await initiativeActor()
     if (!actor) return NextResponse.json({ error: "Sign in required" }, { status: 401 })
+    if (!actor.eligible) return NextResponse.json({ error: "Team membership required" }, { status: 403 })
     const actorId = actor.id
     const isAdmin = actor.admin
     const initiative = await accessibleInitiative((await params).id, actor)
@@ -175,6 +177,7 @@ export async function DELETE(request: NextRequest, { params }: Context) {
   try {
     const actor = await initiativeActor()
     if (!actor) return NextResponse.json({ error: "Sign in required" }, { status: 401 })
+    if (!actor.eligible) return NextResponse.json({ error: "Team membership required" }, { status: 403 })
     if (!actor.admin) return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     const initiative = await accessibleInitiative((await params).id, actor)
     if (!initiative) return NextResponse.json({ error: "Initiative not found" }, { status: 404 })

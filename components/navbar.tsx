@@ -39,6 +39,23 @@ const navigation = [
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session, status } = useSession();
+  const [teamEligibleFor, setTeamEligibleFor] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (status !== "authenticated" || session?.user?.role === "admin") {
+      setTeamEligibleFor(null);
+      return;
+    }
+    let cancelled = false;
+    setTeamEligibleFor(null);
+    fetch("/api/team/profile", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((result) => { if (!cancelled) setTeamEligibleFor(result?.member ? session.user.id : null); })
+      .catch(() => { if (!cancelled) setTeamEligibleFor(null); });
+    return () => { cancelled = true; };
+  }, [status, session?.user?.id, session?.user?.role]);
+
+  const showInitiatives = session?.user?.role === "admin" || (Boolean(session?.user?.id) && teamEligibleFor === session?.user?.id);
 
   // Close mobile menu when clicking outside or on escape
   useEffect(() => {
@@ -172,12 +189,12 @@ export function Navbar() {
                       Profile
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
+                  {showInitiatives && <DropdownMenuItem asChild>
                     <Link href="/initiatives">
                       <Layers3 className="mr-2 h-4 w-4" />
                       Initiatives
                     </Link>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem>}
                   {session.user?.role !== "admin" && (
                     <DropdownMenuItem asChild>
                       <Link href="/my-rsvps">
@@ -306,13 +323,13 @@ export function Navbar() {
                         Profile
                       </Link>
 
-                      <Link
+                      {showInitiatives && <Link
                         href="/initiatives"
                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                         onClick={handleMenuClose}
                       >
                         Initiatives
-                      </Link>
+                      </Link>}
 
                       {session.user?.role !== "admin" && (
                         <Link

@@ -11,6 +11,7 @@ export async function GET() {
   try {
     const actor = await initiativeActor()
     if (!actor) return NextResponse.json({ error: "Sign in required" }, { status: 401 })
+    if (!actor.eligible) return NextResponse.json({ error: "Team membership required" }, { status: 403 })
     const filter = actor.admin ? {} : { participants: actor.id }
     const initiatives = await Initiative.find(filter)
       .select("-description")
@@ -48,6 +49,7 @@ export async function POST(request: NextRequest) {
   try {
     const actor = await initiativeActor()
     if (!actor) return NextResponse.json({ error: "Sign in required" }, { status: 401 })
+    if (!actor.eligible) return NextResponse.json({ error: "Team membership required" }, { status: 403 })
     if (!actor.admin) return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     const parsed = initiativeCreate.safeParse(await request.json())
     if (!parsed.success) return NextResponse.json({ error: parsed.error.issues[0]?.message || "Invalid initiative" }, { status: 400 })
