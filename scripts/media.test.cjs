@@ -86,6 +86,7 @@ test("new uploads use resource-specific folders", () => {
   assert.equal(helper.folderForMediaPurpose("event"), "epoch/events")
   assert.equal(helper.folderForMediaPurpose("gallery"), "epoch/gallery")
   assert.equal(helper.folderForMediaPurpose("team"), "epoch/team")
+  assert.equal(helper.folderForMediaPurpose("initiative"), "epoch/initiatives")
 })
 
 test("orphan scans read archived team profile photos from the Mongoose collection", async () => {
@@ -174,6 +175,7 @@ test("reconciliation queues only removed managed assets in the MongoDB session",
   const helper = load("lib/media-assets.ts", {
     "@/models/Blog": emptyReferenceModel,
     "@/models/Event": emptyReferenceModel,
+    "@/models/Initiative": { InitiativeBlock: emptyReferenceModel },
     "@/models/Gallery": emptyReferenceModel,
     "@/models/MediaAsset": mediaModel,
     "@/models/MediaCleanupJob": jobModel,
@@ -227,6 +229,7 @@ test("cleanup cancels deletion when another document still references the asset"
   const helper = load("lib/media-assets.ts", {
     "@/models/Blog": referencedModel,
     "@/models/Event": emptyModel,
+    "@/models/Initiative": { InitiativeBlock: emptyModel },
     "@/models/Gallery": emptyModel,
     "@/models/MediaAsset": assets,
     "@/models/MediaCleanupJob": jobs,

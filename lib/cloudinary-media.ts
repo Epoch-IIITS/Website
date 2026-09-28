@@ -1,6 +1,6 @@
 import { v2 as cloudinary, type UploadApiOptions, type UploadApiResponse } from "cloudinary"
 
-export const mediaPurposes = ["blog", "project", "event", "gallery", "team"] as const
+export const mediaPurposes = ["blog", "project", "event", "gallery", "team", "initiative"] as const
 export type MediaPurpose = (typeof mediaPurposes)[number]
 
 const folders: Record<MediaPurpose, string> = {
@@ -9,6 +9,7 @@ const folders: Record<MediaPurpose, string> = {
   event: "epoch/events",
   gallery: "epoch/gallery",
   team: "epoch/team",
+  initiative: "epoch/initiatives",
 }
 
 const managedFolderPrefixes = [
@@ -19,6 +20,7 @@ const managedFolderPrefixes = [
   "epoch/events/",
   "epoch/gallery/",
   "epoch/team/",
+  "epoch/initiatives/",
 ] as const
 
 export interface ManagedMediaIdentifier {

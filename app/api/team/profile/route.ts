@@ -167,7 +167,7 @@ export async function PUT(request: NextRequest) {
             ...(email ? { email } : {}),
           },
         },
-        { new: true, runValidators: true, session: dbSession },
+        { returnDocument: "after", runValidators: true, session: dbSession },
       )
       if (!updatedPerson) throw new TeamProfileAccessError()
 

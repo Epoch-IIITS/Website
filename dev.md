@@ -110,6 +110,7 @@ For current Atlas UI and connection details, see MongoDB's guides for [creating 
 | `app/team/` | Current team, archives, requests, and share cards |
 | `app/auth/`, `app/profile/`, `app/my-rsvps/` | Authentication and member experiences |
 | `app/admin/` | Admin workspace and content management UI |
+| `app/initiatives/`, `app/api/initiatives/` | Private initiative workspaces and their authenticated API |
 | `app/api/` | Content, account, RSVP, admin, upload, and utility handlers |
 | `components/admin-shell.tsx` | Admin navigation and responsive shell |
 | `lib/mongodb.ts` | Cached Mongoose connection |
@@ -127,6 +128,7 @@ The `@/*` TypeScript alias resolves from the repository root.
 - Middleware covers `/api/admin/:path*` and `/api/rsvp/:path*`; content mutation handlers still perform their own admin checks.
 - Sessions use JWTs, but role data is reread from MongoDB so role changes take effect without waiting for a new sign-in.
 - Member-owned endpoints must derive identity and email from the server session, never from submitted request fields.
+- Initiative workspaces are independent of public Events and Projects. Admins create, archive, and permanently delete them; invited user accounts can collaborate. Every initiative API action checks the server session and initiative participants. The participant picker can bulk add linked accounts from Team academic-year groups; Team profiles without matching accounts are shown as unavailable. The workspace shows To-Do beside Canvas on desktop, with tasks above the canvas on narrow screens. Tasks have comments with participant @mentions; the canvas holds notes, question boards, and references. Canvas card positions and optional dimensions persist through version checked updates.
 
 When changing access control, manually check signed-out, ordinary-member, and administrator behavior.
 
@@ -147,7 +149,7 @@ Image uploads accept files up to 4 MB each. `lib/image-upload.ts` shares file va
 
 New uploads are recorded in `MediaAsset`. Content creates attach those records, while replacements, removals, and entity deletions create durable `MediaCleanupJob` entries inside the same transaction as the content change. Cloudinary deletion happens only after the MongoDB transaction commits.
 
-Before deleting an asset, cleanup checks blogs, projects, events, galleries, team profiles and requests, user images, and Cloudinary URLs embedded in blog content. If anything still references the asset, deletion is cancelled. External URLs, another Cloudinary account, and assets outside managed Epoch folders are ignored.
+Before deleting an asset, cleanup checks blogs, projects, events, initiative canvas references, galleries, team profiles and requests, user images, and Cloudinary URLs embedded in blog content. If anything still references the asset, deletion is cancelled. External URLs, another Cloudinary account, and assets outside managed Epoch folders are ignored.
 
 New uploads use these folders:
 
@@ -158,6 +160,7 @@ New uploads use these folders:
 | Event | `epoch/events` |
 | Gallery | `epoch/gallery` |
 | Team | `epoch/team` |
+| Initiative canvas | `epoch/initiatives` |
 
 Existing assets in `epoch-blogs` and `epoch-team` are not moved, so previously published links continue to work.
 
