@@ -23,6 +23,7 @@ import {
   Settings,
   LogOut,
   Shield,
+  Layers3,
 } from "lucide-react";
 
 const navigation = [
@@ -171,6 +172,12 @@ export function Navbar() {
                       Profile
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/initiatives">
+                      <Layers3 className="mr-2 h-4 w-4" />
+                      Initiatives
+                    </Link>
+                  </DropdownMenuItem>
                   {session.user?.role !== "admin" && (
                     <DropdownMenuItem asChild>
                       <Link href="/my-rsvps">
@@ -297,6 +304,14 @@ export function Navbar() {
                         onClick={handleMenuClose}
                       >
                         Profile
+                      </Link>
+
+                      <Link
+                        href="/initiatives"
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                        onClick={handleMenuClose}
+                      >
+                        Initiatives
                       </Link>
 
                       {session.user?.role !== "admin" && (

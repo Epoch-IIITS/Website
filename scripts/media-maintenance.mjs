@@ -17,6 +17,7 @@ const MANAGED_PREFIXES = [
   "epoch/events/",
   "epoch/gallery/",
   "epoch/team/",
+  "epoch/initiatives/",
 ];
 const CLOUDINARY_LIST_PREFIXES = ["epoch-blogs/", "epoch-team/", "epoch/"];
 const RESOLVED_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;

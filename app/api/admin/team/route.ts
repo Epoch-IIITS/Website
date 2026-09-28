@@ -396,7 +396,7 @@ export async function POST(req: NextRequest) {
                 ],
               },
               { $set: { userId: request.userId, email: requestEmail } },
-              { new: true, runValidators: true, session },
+              { returnDocument: "after", runValidators: true, session },
             );
             if (!linkedPerson) {
               if (!(await TeamPerson.exists({ _id: personId }).session(session)))

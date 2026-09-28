@@ -16,6 +16,7 @@ The community platform for Epoch at IIIT Sri City. It brings the club's writing,
 - Create a stable, shareable profile card for published team members.
 - Sign in to manage your account, registrations, and team-directory requests. Linked team members can also update the photo, name, LinkedIn link, role, institute, and tagline shared across their team listings.
 - Contact the Epoch team through an authenticated form.
+- Collaborate on private Initiatives in a shared workspace with a task panel and canvas side by side. Tasks have comments with @mentions; the canvas holds movable, resizable notes, question boards, and image/link references. Card positions and sizes persist. Admins add existing accounts individually or by academic-year Team committee, archive completed work, and can permanently delete initiatives.
 
 Administrators can manage content, users, event registrations, contact queries, team records, and downloadable QR codes from a responsive dashboard. Administrative changes and member-initiated team profile updates are recorded in a searchable audit log.
 
@@ -44,5 +45,7 @@ Image uploads support files up to 4 MB each, with clear failure messages and ind
 ## Contributing
 
 Start with [dev.md](dev.md) for local setup, environment variables, architecture notes, testing, and operational safeguards. Please run the relevant checks before opening a pull request, and discuss substantial behavior or schema changes in an issue first.
+
+Administrators can use [admin.md](admin.md) for day-to-day workflows, feature limits, and image-maintenance instructions.
 
 Never commit credentials, environment files, database exports, or real member/contact data. Report security concerns privately to the repository maintainers rather than posting sensitive details in a public issue.

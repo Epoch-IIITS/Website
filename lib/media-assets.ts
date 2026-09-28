@@ -1,6 +1,7 @@
 import type { ClientSession } from "mongoose"
 import Blog from "@/models/Blog"
 import Event from "@/models/Event"
+import { InitiativeBlock } from "@/models/Initiative"
 import Gallery from "@/models/Gallery"
 import MediaAsset from "@/models/MediaAsset"
 import MediaCleanupJob from "@/models/MediaCleanupJob"
@@ -154,6 +155,7 @@ export async function collectReferencedMedia() {
     Blog.distinct("content", { content: /res\.cloudinary\.com/i }),
     Project.distinct("image", { image: { $type: "string", $ne: "" } }),
     Event.distinct("image", { image: { $type: "string", $ne: "" } }),
+    InitiativeBlock.distinct("url", { url: { $type: "string", $ne: "" } }),
     Gallery.distinct("images.url", { "images.url": { $type: "string", $ne: "" } }),
     TeamPerson.distinct("photo", { photo: { $type: "string", $ne: "" } }),
     TeamRequest.distinct("photo", { photo: { $type: "string", $ne: "" } }),

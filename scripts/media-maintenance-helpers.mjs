@@ -12,6 +12,7 @@ export const MEDIA_REFERENCE_LOCATIONS = [
   ["blogs", "content"],
   ["projects", "image"],
   ["events", "image"],
+  ["initiativeblocks", "url"],
   ["galleries", "images.url"],
   // Mongoose pluralizes the TeamPerson model name to `teampeople`.
   ["teampeople", "photo"],
