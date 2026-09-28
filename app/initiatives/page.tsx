@@ -30,8 +30,9 @@ export default function InitiativesPage() {
   const load = useCallback(async () => {
     try {
       const response = await fetch("/api/initiatives", { cache: "no-store" })
-      if (!response.ok) throw new Error("Unable to load initiatives")
-      setItems(await response.json())
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || "Unable to load initiatives")
+      setItems(result)
       setError("")
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to load initiatives")

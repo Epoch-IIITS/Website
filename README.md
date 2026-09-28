@@ -16,7 +16,7 @@ The community platform for Epoch at IIIT Sri City. It brings the club's writing,
 - Create a stable, shareable profile card for published team members.
 - Sign in to manage your account, registrations, and team-directory requests. Linked team members can also update the photo, name, LinkedIn link, role, institute, and tagline shared across their team listings.
 - Contact the Epoch team through an authenticated form.
-- Collaborate on private Initiatives in a shared workspace with a task panel and canvas side by side. Tasks have comments with @mentions; the canvas holds movable, resizable notes, question boards, and image/link references. Card positions and sizes persist. Admins add existing accounts individually or by academic-year Team committee, archive completed work, and can permanently delete initiatives.
+- Current or former Team members invited to private Initiatives can collaborate in a shared workspace with a task panel and canvas side by side. Tasks have comments with @mentions; the canvas holds movable, resizable notes, question boards, and image/link references. Card positions and sizes persist. Admins can always access Initiatives, add existing accounts individually or by academic-year Team committee, archive completed work, and permanently delete initiatives.
 
 Administrators can manage content, users, event registrations, contact queries, team records, and downloadable QR codes from a responsive dashboard. Administrative changes and member-initiated team profile updates are recorded in a searchable audit log.
 

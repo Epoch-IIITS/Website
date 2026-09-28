@@ -8,6 +8,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   try {
     const actor = await initiativeActor()
     if (!actor) return NextResponse.json({ error: "Sign in required" }, { status: 401 })
+    if (!actor.eligible) return NextResponse.json({ error: "Team membership required" }, { status: 403 })
     const initiative = await accessibleInitiative((await params).id, actor)
     if (!initiative) return NextResponse.json({ error: "Initiative not found" }, { status: 404 })
     if (initiative.status === "completed") return NextResponse.json({ error: "Reopen this initiative before uploading" }, { status: 409 })

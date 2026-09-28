@@ -89,7 +89,7 @@ Saved tracked codes show total scans and an **estimated** unique count in Analyt
 
 ## Initiatives: private coordination
 
-Open **Initiatives** from your avatar menu. An admin creates an initiative with a name such as *UG1 Recruitment* or *Ganesh Chaturthi Event* and invites existing accounts. Participants can be selected individually or from an academic-year Team group; the group picker matches Team profiles to existing site accounts and reports profiles it cannot match. Initiatives do not create public Events, RSVPs, or Gallery entries.
+Open **Initiatives** from your avatar menu. The menu item appears for admins and for signed-in people with a Team appointment in any year, including former members. A person profile without an appointment does not qualify. An admin creates an initiative with a name such as *UG1 Recruitment* or *Ganesh Chaturthi Event* and invites existing accounts. Participants can be selected individually or from an academic-year Team group; the group picker matches Team profiles to existing site accounts and reports profiles it cannot match. An invited account without a Team appointment will not see or open the workspace until an appointment is added. Initiatives do not create public Events, RSVPs, or Gallery entries.
 
 The initiative list shows active work by default, with pending and overdue task counts and open questions. Use **Archive** to see completed initiatives. Inside each initiative:
 
@@ -127,6 +127,6 @@ Apply mode can delete Cloudinary images. It repeats the database reference check
 
 - Preview public content after saving, especially event times, Team publication, gallery cover photos, and QR destinations.
 - Export data you need before deleting events, initiatives, contact queries, or tracked QR codes. These deletions are permanent in the product.
-- Initiative membership is separate from an account's site-wide Admin/User role. Adding someone to Team does not automatically give them an Epoch account or initiative access.
+- Initiative membership is separate from an account's site-wide Admin/User role. A Team appointment makes an existing account eligible to see Initiatives, but that person still needs an invitation to see a specific initiative. Admins can see all initiatives.
 - The admin and Team write paths use MongoDB transactions; the database must support transactions (for example, MongoDB Atlas). If a save fails, check the database connection before retrying.
 - For technical setup, environment variables, and test commands, use [dev.md](dev.md). Never place real credentials or member data in this guide.

@@ -8,6 +8,7 @@ export async function GET() {
   try {
     const actor = await initiativeActor()
     if (!actor) return NextResponse.json({ error: "Sign in required" }, { status: 401 })
+    if (!actor.eligible) return NextResponse.json({ error: "Team membership required" }, { status: 403 })
     if (!actor.admin) return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     const [users, years] = await Promise.all([
       User.find().select("name email image").sort({ name: 1 }).lean(),
