@@ -1,0 +1,73 @@
+{
+  "id": "PY-22",
+  "slug": "guessing-game-feedback",
+  "title": "Guessing Game Feedback",
+  "topic": "python",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-21"
+  ],
+  "prerequisite_slugs": [
+    "safe-divide"
+  ],
+  "learning_objectives": [
+    "Write a loop with early termination",
+    "Model game state deterministically",
+    "Validate inputs and limits"
+  ],
+  "concept_tags": [
+    "loops",
+    "break",
+    "state-machines",
+    "validation"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "guess_feedback(target, guesses, max_attempts=7)",
+  "hints": [
+    "Loop over `guesses[:max_attempts]`.",
+    "Compare with `<`, `>`, `==` and append the right string.",
+    "Set `won = True` and `break` on a correct guess; attempts = len(feedback)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_win",
+      "advice": "Stop the loop with `break` after a correct guess."
+    },
+    {
+      "test": "test_win_on_last_allowed",
+      "advice": "Check your attempt-limit comparison: max_attempts guesses are allowed, not max_attempts-1."
+    },
+    {
+      "test": "test_correct_after_limit_ignored",
+      "advice": "Only the first max_attempts guesses may be processed."
+    },
+    {
+      "test": "test_bad_limit",
+      "advice": "Validate max_attempts before looping."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

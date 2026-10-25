@@ -1,0 +1,74 @@
+{
+  "id": "ST-03",
+  "slug": "percentiles",
+  "title": "Percentiles by Linear Interpolation",
+  "topic": "statistics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-02"
+  ],
+  "prerequisite_slugs": [
+    "median-mode"
+  ],
+  "learning_objectives": [
+    "Compute percentiles with linear interpolation",
+    "Compute the IQR",
+    "Apply Tukey's fences for outliers"
+  ],
+  "concept_tags": [
+    "percentiles",
+    "quantiles",
+    "iqr",
+    "robust-statistics"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S010",
+    "S007"
+  ],
+  "entry_point": "percentile(data, q); iqr(data); tukey_outliers(data, k=1.5)",
+  "hints": [
+    "`s = sorted(data)`, `r = q / 100 * (len(s) - 1)`.",
+    "`i = math.floor(r)`, `f = r - i`; if `i + 1 < len(s)` interpolate, else return `s[i]`.",
+    "Fences: `lo = p25 - k * iqr`, `hi = p75 + k * iqr`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_interp",
+      "advice": "Use rank r = q/100·(n−1) and interpolate between s[i] and s[i+1]."
+    },
+    {
+      "test": "test_ends",
+      "advice": "q = 100 gives the maximum; guard against indexing s[n]."
+    },
+    {
+      "test": "test_known_values",
+      "advice": "Make sure you sort the data first."
+    },
+    {
+      "test": "test_tukey",
+      "advice": "Return the outlying values (sorted), not their indices."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

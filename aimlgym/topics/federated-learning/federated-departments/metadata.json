@@ -1,0 +1,54 @@
+{
+  "id": "FL-P1",
+  "slug": "federated-departments",
+  "title": "Federated Training across Departments",
+  "topic": "federated-learning",
+  "kind": "project",
+  "concept_tags": [
+    "federated-learning",
+    "non-iid",
+    "flower"
+  ],
+  "uses": [
+    {
+      "slug": "label-skew-partition",
+      "id": "FL-04",
+      "title": "Label-Skewed (non-IID) Partition"
+    },
+    {
+      "slug": "fl-torch-local-training",
+      "id": "FL-05",
+      "title": "Client Training with a PyTorch Model"
+    },
+    {
+      "slug": "fl-torch-fedavg",
+      "id": "FL-11",
+      "title": "FedAvg with PyTorch state_dicts"
+    },
+    {
+      "slug": "dp-aggregation",
+      "id": "FL-13",
+      "title": "Differentially Private Aggregation"
+    },
+    {
+      "slug": "fedprox",
+      "id": "FL-14",
+      "title": "FedProx Local Objective"
+    }
+  ],
+  "brief": "Simulate several college departments that want a shared model (for example, predicting which students\nneed extra support) without pooling their records. Compare federated training with central training,\nand see how uneven, non-IID data across departments affects the result.\n",
+  "milestones": [
+    "Generate or load a tabular dataset and split it into 4–6 'departments' with different label mixes.",
+    "Train a central model on all data as the reference.",
+    "Run FedAvg with the PyTorch steps and plot global accuracy per round.",
+    "Vary local epochs and client sampling and record how many rounds each setting needs.",
+    "Add update clipping and noise (differential privacy) and measure the accuracy cost."
+  ],
+  "stretch": [
+    "Implement FedProx in PyTorch and compare on the most uneven split.",
+    "Run the same experiment with the Flower framework, with clients as separate processes.",
+    "Personalise: fine-tune the global model on each department and report per-department accuracy."
+  ],
+  "data": "Synthetic data from `sklearn.datasets.make_classification` works well; split it by a feature to create\nnon-IID departments. See the [Flower framework documentation](https://flower.ai/docs/framework/) for\nrunning real federated clients.\n",
+  "setup": "```bash\npip install torch scikit-learn flwr\npython simulate.py --clients 5 --rounds 30\n```\n"
+}

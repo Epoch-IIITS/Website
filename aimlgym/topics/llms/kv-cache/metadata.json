@@ -1,0 +1,78 @@
+{
+  "id": "LM-15",
+  "slug": "kv-cache",
+  "title": "Incremental Decoding with a KV Cache",
+  "topic": "llms",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-08",
+    "LM-10"
+  ],
+  "prerequisite_slugs": [
+    "causal-mask",
+    "multi-head-attention"
+  ],
+  "learning_objectives": [
+    "Cache keys and values of past tokens",
+    "Compute attention for one new token at a time",
+    "Prove the cached result equals full causal attention"
+  ],
+  "concept_tags": [
+    "kv-cache",
+    "inference",
+    "efficiency",
+    "causal-attention"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S019",
+    "S022"
+  ],
+  "entry_point": "class KVCache(Wq, Wk, Wv): step(x_t); full_causal_attention(X, Wq, Wk, Wv)",
+  "hints": [
+    "Full: scores `Q @ K.T / sqrt(d)`, mask with `np.tril`, softmax rows, multiply V.",
+    "Cache init: `self.K = np.zeros((0, d))`; append with `np.vstack([self.K, k_t])`.",
+    "Step: `s = self.K @ q_t / sqrt(d)`; softmax over s; `w @ self.V`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_matches_full",
+      "advice": "Each step must attend over all cached keys including the new one, scaled by sqrt(d)."
+    },
+    {
+      "test": "test_cache_growth",
+      "advice": "Start with zero-row arrays of shape (0, d) and append one row per step."
+    },
+    {
+      "test": "test_first_token_is_own_value",
+      "advice": "With one cached token the softmax weight is 1, so output = its value."
+    },
+    {
+      "test": "test_full_causal_property",
+      "advice": "Mask future keys with np.tril in the full version."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

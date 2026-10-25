@@ -1,0 +1,77 @@
+{
+  "id": "DL-27",
+  "slug": "torch-debugging",
+  "title": "Debugging Training",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-26"
+  ],
+  "prerequisite_slugs": [
+    "torch-save-load"
+  ],
+  "learning_objectives": [
+    "Check a model and loss by overfitting a single small batch",
+    "Recognise diverging, stuck and healthy loss curves",
+    "Measure gradient norms and tame exploding gradients with clipping"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "debugging",
+    "gradient-clipping",
+    "learning-rate",
+    "training-dynamics"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S111",
+    "S106"
+  ],
+  "entry_point": "diagnose(losses); overfit_one_batch(model, X, y, steps=200, lr=0.01); train_with_clipping(model, X, y, lr, steps, max_norm=None)",
+  "hints": [
+    "`diagnose`: check `math.isfinite` for every loss first, then compare the last loss with the first.",
+    "Both training functions use the usual cycle: zero_grad, loss, backward, (clip), step.",
+    "`torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm)` goes after `loss.backward()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_diagnose_patterns",
+      "advice": "Check for non-finite values first, then last > 2 × first, then last > 0.95 × first."
+    },
+    {
+      "test": "test_overfit_tiny_batch",
+      "advice": "Train with CrossEntropyLoss and Adam for the given steps and return the final loss."
+    },
+    {
+      "test": "test_clipping_keeps_training_stable",
+      "advice": "Call clip_grad_norm_ after backward() and before step()."
+    },
+    {
+      "test": "test_high_lr_diverges_without_clipping",
+      "advice": "Record each loss before the update, using MSELoss and SGD."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "FA-06",
+  "slug": "asyncio-basics",
+  "title": "async and await with asyncio",
+  "topic": "fastapi",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-05"
+  ],
+  "prerequisite_slugs": [
+    "manual-router"
+  ],
+  "learning_objectives": [
+    "Define coroutines with async def and run them with asyncio.run",
+    "Run coroutines concurrently with asyncio.gather and see how await yields control",
+    "Limit concurrency with a Semaphore",
+    "Stop slow work with asyncio.wait_for"
+  ],
+  "concept_tags": [
+    "asyncio",
+    "async-await",
+    "concurrency",
+    "timeouts",
+    "semaphore"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S061",
+    "S077"
+  ],
+  "entry_point": "run_in_order(log); run_together(log); gather_in_order(values); limited(factories, limit); with_timeout(coro, seconds)",
+  "hints": [
+    "`async def main(): return list(await asyncio.gather(step(\"a\", log), step(\"b\", log)))`.",
+    "Inside `gather_in_order`, define `async def handle(v): for _ in range(v): await asyncio.sleep(0)` then `return v * 10`.",
+    "In `limited`, create the semaphore inside the async main; wrap each call as `async with sem: return await f()`. For the timeout, catch `asyncio.TimeoutError`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_concurrent",
+      "advice": "Use `asyncio.gather` so both coroutines start before either finishes."
+    },
+    {
+      "test": "test_gather_keeps_input_order",
+      "advice": "gather returns results in the order the coroutines were passed."
+    },
+    {
+      "test": "test_limited",
+      "advice": "Guard each call with `async with sem:` where `sem = asyncio.Semaphore(limit)`."
+    },
+    {
+      "test": "test_limited_unbounded",
+      "advice": "Start all guarded coroutines together with gather; don't await them one by one."
+    },
+    {
+      "test": "test_timeout",
+      "advice": "Wrap the coroutine in `asyncio.wait_for` and catch `asyncio.TimeoutError`."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

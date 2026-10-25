@@ -1,0 +1,44 @@
+{
+  "id": "DL-P1",
+  "slug": "digit-recogniser",
+  "title": "Handwritten Digit Recogniser",
+  "topic": "deep-learning",
+  "kind": "project",
+  "concept_tags": [
+    "image-classification",
+    "pytorch",
+    "mlp"
+  ],
+  "uses": [
+    {
+      "slug": "torch-mlp-module",
+      "id": "DL-06",
+      "title": "Models with nn.Module"
+    },
+    {
+      "slug": "torch-datasets",
+      "id": "DL-17",
+      "title": "Datasets and DataLoader"
+    },
+    {
+      "slug": "torch-training-loop",
+      "id": "DL-18",
+      "title": "A Full Training Loop"
+    }
+  ],
+  "brief": "Train a neural network that recognises handwritten digits, then try it on digits you draw\nyourself. Start with the small 8×8 digits that ship with scikit-learn, then move to MNIST's 28×28\nimages.\n",
+  "milestones": [
+    "Load the 8×8 digits with sklearn.datasets.load_digits, scale pixels to [0, 1] and split train/validation/test.",
+    "Train an MLP with the training loop from the course and plot train and validation loss per epoch.",
+    "Report test accuracy and a confusion matrix; look at the ten worst mistakes.",
+    "Switch to MNIST through torchvision and train the same model on 28×28 images.",
+    "Write a predict(image) function and test it on digits you draw yourself (scaled to the same size)."
+  ],
+  "stretch": [
+    "Add dropout and compare validation curves; save the best model with its state_dict.",
+    "Replace the MLP with a small CNN (see the Computer Vision topic).",
+    "Make a tiny web page or FastAPI endpoint where you draw a digit and get a prediction."
+  ],
+  "data": "* 1,797 8×8 digits bundled with scikit-learn (no download):\n  [`sklearn.datasets.load_digits`](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html).\n* MNIST, 70,000 28×28 digits, downloaded by\n  [`torchvision.datasets.MNIST`](https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.MNIST.html).\n",
+  "setup": "```bash\npip install torch torchvision scikit-learn matplotlib\npython train_digits.py\n```\nA CPU is enough: an MLP on MNIST trains in a few minutes.\n"
+}

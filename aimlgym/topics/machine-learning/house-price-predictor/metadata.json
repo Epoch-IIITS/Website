@@ -1,0 +1,49 @@
+{
+  "id": "ML-P1",
+  "slug": "house-price-predictor",
+  "title": "House-Price Predictor",
+  "topic": "machine-learning",
+  "kind": "project",
+  "concept_tags": [
+    "regression",
+    "pipelines",
+    "feature-engineering"
+  ],
+  "uses": [
+    {
+      "slug": "sklearn-estimator-api",
+      "id": "ML-02",
+      "title": "The scikit-learn Estimator API"
+    },
+    {
+      "slug": "sklearn-train-test-split",
+      "id": "ML-04",
+      "title": "Splitting Data with scikit-learn"
+    },
+    {
+      "slug": "sklearn-cross-validation",
+      "id": "ML-16",
+      "title": "Cross-Validation with scikit-learn"
+    },
+    {
+      "slug": "sklearn-column-transformer",
+      "id": "ML-18",
+      "title": "Pipelines and ColumnTransformer"
+    }
+  ],
+  "brief": "Build a model that estimates house prices from a table of homes, and an error analysis that shows\nwhere it is wrong. Someone pricing a home should be able to see the estimate, a typical error, and\nwhich kinds of homes the model struggles with.\n",
+  "milestones": [
+    "Load the data with pandas, look at missing values and the distribution of prices.",
+    "Split once into train and test, and fit a mean baseline and a LinearRegression pipeline.",
+    "Build a ColumnTransformer for numeric and categorical columns and compare models with 5-fold cross-validation.",
+    "Try predicting log(price) and engineered features (age of house, price per room) and keep what helps.",
+    "Evaluate once on the test set and list the 20 largest errors to look for patterns."
+  ],
+  "stretch": [
+    "Tune a Ridge or gradient-boosting model with GridSearchCV.",
+    "Report a prediction interval (for example from quantile regression) instead of a single number.",
+    "Save the pipeline with joblib and load it in a separate script."
+  ],
+  "data": "* California housing (20,640 districts, numeric features): `sklearn.datasets.fetch_california_housing()`\n  downloads it the first time — see the\n  [dataset page](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_california_housing.html).\n* Ames house prices with many categorical columns: the\n  [Kaggle competition data](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)\n  (free account needed).\n",
+  "setup": "```bash\npip install numpy pandas scikit-learn\npython train.py\n```\nKeep notebooks for exploration, but put the final pipeline in a script you can rerun from scratch.\n"
+}

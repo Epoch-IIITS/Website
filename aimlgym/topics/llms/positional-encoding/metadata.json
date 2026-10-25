@@ -1,0 +1,75 @@
+{
+  "id": "LM-09",
+  "slug": "positional-encoding",
+  "title": "Sinusoidal Positional Encoding",
+  "topic": "llms",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-07"
+  ],
+  "prerequisite_slugs": [
+    "scaled-dot-attention"
+  ],
+  "learning_objectives": [
+    "Implement the sinusoidal encoding from the Transformer paper",
+    "Explain why attention needs positional information",
+    "Check bounded values and relative-position structure"
+  ],
+  "concept_tags": [
+    "positional-encoding",
+    "transformers",
+    "sinusoids"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S019",
+    "S013"
+  ],
+  "entry_point": "positional_encoding(T, d)",
+  "hints": [
+    "`pos = np.arange(T)[:, None]`; `i = np.arange(d // 2)[None, :]`.",
+    "`angles = pos / 10000 ** (2 * i / d)`.",
+    "`pe[:, 0::2] = np.sin(angles)`; `pe[:, 1::2] = np.cos(angles)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_pos1",
+      "advice": "Exponent is 2i/d with i indexing dimension *pairs*."
+    },
+    {
+      "test": "test_pos0",
+      "advice": "Sines go in even columns, cosines in odd columns."
+    },
+    {
+      "test": "test_relative_rotation",
+      "advice": "Use the exact frequencies 1/10000^(2i/d)."
+    },
+    {
+      "test": "test_errors",
+      "advice": "Reject odd d."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

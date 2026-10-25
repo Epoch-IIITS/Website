@@ -1,0 +1,49 @@
+{
+  "id": "LM-P2",
+  "slug": "course-faq-chatbot",
+  "title": "Course FAQ Chatbot",
+  "topic": "llms",
+  "kind": "project",
+  "concept_tags": [
+    "rag",
+    "chatbot",
+    "langchain"
+  ],
+  "uses": [
+    {
+      "slug": "nlp-tfidf-retrieval",
+      "id": "NL-10",
+      "title": "Search with TfidfVectorizer and Cosine Similarity"
+    },
+    {
+      "slug": "lm-chat-prompt-langchain",
+      "id": "LM-17",
+      "title": "Chat Prompts and Messages with LangChain"
+    },
+    {
+      "slug": "lm-structured-output",
+      "id": "LM-19",
+      "title": "Structured Output with Pydantic and Retries"
+    },
+    {
+      "slug": "lm-langchain-rag",
+      "id": "LM-20",
+      "title": "Retrieval-Augmented Generation with LangChain"
+    }
+  ],
+  "brief": "Build a chatbot that answers questions about this course — what a step covers, how Run and Submit\ndiffer, which step to do next — using RAG over the course's lesson text, and that cites the lessons it\nused. It should say \"I don't know\" when the answer is not in the material.\n",
+  "milestones": [
+    "Split lesson texts into passages of a few paragraphs, each with an id and its lesson title.",
+    "Index the passages with TF-IDF or a sentence-embedding model and test retrieval on 20 questions.",
+    "Connect a chat model (a local model through Ollama or a hosted API) with a prompt that requires citations.",
+    "Return structured answers (answer, cited ids, confidence) and reject ungrounded ones.",
+    "Build a tiny evaluation set of question/expected-lesson pairs and report retrieval and answer accuracy."
+  ],
+  "stretch": [
+    "Keep conversation history so follow-up questions work.",
+    "Serve it with FastAPI and add a chat box to a web page.",
+    "Log questions the bot could not answer to find gaps in the lessons."
+  ],
+  "data": "Use the lesson articles of this course (each step's lesson) or notes from your own classes. For a local\nmodel without API keys, install [Ollama](https://ollama.com/) and pull a small model.\n",
+  "setup": "```bash\npip install langchain-core langchain-ollama scikit-learn\npython faq_bot.py\n```\n"
+}

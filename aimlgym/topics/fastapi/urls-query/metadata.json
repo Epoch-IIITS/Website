@@ -1,0 +1,84 @@
+{
+  "id": "FA-03",
+  "slug": "urls-query",
+  "title": "URLs, Paths and Query Strings",
+  "topic": "fastapi",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-02"
+  ],
+  "prerequisite_slugs": [
+    "http-responses"
+  ],
+  "learning_objectives": [
+    "Split a URL into scheme, host, port, path, query and fragment",
+    "Decode percent-encoding and '+' in query strings",
+    "Represent repeated query parameters as lists",
+    "Compare a manual parser with urllib.parse"
+  ],
+  "concept_tags": [
+    "urls",
+    "query-strings",
+    "percent-encoding",
+    "parsing"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S065",
+    "S063",
+    "S067"
+  ],
+  "entry_point": "split_url(url); percent_decode(text, plus_as_space=True); parse_query(qs); build_query(params)",
+  "hints": [
+    "`scheme, sep, rest = url.partition(\"://\")`; then split off `#fragment`, then `?query`, then the first `/` separates host[:port] from the path.",
+    "Build a `bytearray`: for `%` append `int(text[i+1:i+3], 16)`, for `+` append a space, otherwise `out += ch.encode(\"utf-8\")`; finally `out.decode(\"utf-8\")`.",
+    "In `build_query`, encode each value with `.encode(\"utf-8\")` and loop over the bytes: `chr(b) in SAFE_CHARS` → literal, `b == 32` → `+`, else `f\"%{b:02X}\"`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_split_full",
+      "advice": "Remove the fragment first, then the query, then split host and port at ':'."
+    },
+    {
+      "test": "test_split_defaults",
+      "advice": "Use port 80/443 when missing and '/' for an empty path; reject other schemes."
+    },
+    {
+      "test": "test_percent_decode",
+      "advice": "Collect raw bytes and decode them together with UTF-8; reject a lone '%'."
+    },
+    {
+      "test": "test_parse_query",
+      "advice": "Skip empty pieces, keep every value of repeated keys in a list, and decode both sides."
+    },
+    {
+      "test": "test_value_with_equals",
+      "advice": "Split each pair at the first '=' only."
+    },
+    {
+      "test": "test_build_round_trip",
+      "advice": "Encode spaces as '+', unsafe bytes as upper-case %XX."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

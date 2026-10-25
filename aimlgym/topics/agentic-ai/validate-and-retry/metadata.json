@@ -1,0 +1,76 @@
+{
+  "id": "AG-15",
+  "slug": "validate-and-retry",
+  "title": "Validate-and-Retry Tool Calls",
+  "topic": "agentic-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "AG-02",
+    "AG-06"
+  ],
+  "prerequisite_slugs": [
+    "parse-tool-call",
+    "react-loop"
+  ],
+  "learning_objectives": [
+    "Validate structured output against a schema (types, required fields, enums, ranges)",
+    "Feed precise errors back to the model and retry",
+    "Bound retries and report every attempt"
+  ],
+  "concept_tags": [
+    "structured-output",
+    "validation",
+    "retries",
+    "self-correction"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S037",
+    "S036"
+  ],
+  "entry_point": "validate(obj, schema); call_with_retries(model, prompt, schema, max_attempts=3)",
+  "hints": [
+    "Loop `for f in sorted(schema)`; use `continue` after the first error for a field.",
+    "Type check: reject bools when the type is int/float; accept ints for float.",
+    "Retry loop: on failure append the raw text and the feedback string to messages."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_messages",
+      "advice": "Check fields in sorted order; report only the first failing check per field; unexpected fields last."
+    },
+    {
+      "test": "test_feedback_sent",
+      "advice": "Append the model's text and 'Your output was invalid: ' + '; '.join(errors)."
+    },
+    {
+      "test": "test_retry_success",
+      "advice": "Stop at the first valid attempt and report attempts used."
+    },
+    {
+      "test": "test_exhausted",
+      "advice": "Give up after max_attempts and return all error lists."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

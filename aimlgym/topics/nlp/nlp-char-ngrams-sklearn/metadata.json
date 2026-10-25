@@ -1,0 +1,77 @@
+{
+  "id": "NL-05",
+  "slug": "nlp-char-ngrams-sklearn",
+  "title": "Character n-grams with CountVectorizer",
+  "topic": "nlp",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-03"
+  ],
+  "prerequisite_slugs": [
+    "nlp-countvectorizer"
+  ],
+  "learning_objectives": [
+    "Extract character n-grams with analyzer='char_wb'",
+    "Compare strings that differ by typos with cosine similarity of n-gram counts",
+    "Choose an ngram_range"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "character-ngrams",
+    "fuzzy-matching",
+    "cosine-similarity"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S126",
+    "S012"
+  ],
+  "entry_point": "char_ngrams(texts, n_min=2, n_max=3); char_similarity(a, b, n=3)",
+  "hints": [
+    "Validate the n-gram sizes before building the vectorizer.",
+    "`vec = CountVectorizer(analyzer=\"char_wb\", ngram_range=(n_min, n_max))`.",
+    "`X = vec.fit_transform([a, b])`; `float(cosine_similarity(X[0], X[1])[0, 0])`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_cat_bigrams",
+      "advice": "Use analyzer='char_wb', which pads words with spaces."
+    },
+    {
+      "test": "test_range_includes_both_sizes",
+      "advice": "ngram_range=(n_min, n_max)."
+    },
+    {
+      "test": "test_typo_closer_than_unrelated",
+      "advice": "Fit one vectorizer on both strings and use cosine_similarity."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject n_min < 1, n_min > n_max and n < 1."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "ML-26",
+  "slug": "kmeans",
+  "title": "k-Means Clustering by Hand",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-13"
+  ],
+  "prerequisite_slugs": [
+    "knn-classifier"
+  ],
+  "learning_objectives": [
+    "Alternate assignment and update steps",
+    "Handle empty clusters and convergence",
+    "Compute inertia (within-cluster sum of squares)"
+  ],
+  "concept_tags": [
+    "clustering",
+    "kmeans",
+    "unsupervised-learning",
+    "lloyd-algorithm"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012"
+  ],
+  "entry_point": "kmeans(X, init_centroids, max_iter=100, tol=1e-9)",
+  "hints": [
+    "Distances: `((X[:, None, :] - C[None, :, :]) ** 2).sum(-1)`; labels = `argmin(axis=1)`.",
+    "New centroid j = `X[labels == j].mean(axis=0)` if any points, else old `C[j]`.",
+    "After the loop, recompute labels and inertia for the final centroids."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_1d",
+      "advice": "Assign with the current centroids, then move each centroid to its members' mean."
+    },
+    {
+      "test": "test_empty_cluster_kept",
+      "advice": "If no points are assigned, keep the old centroid."
+    },
+    {
+      "test": "test_inertia_matches",
+      "advice": "Recompute labels and inertia after the final update."
+    },
+    {
+      "test": "test_n_iter",
+      "advice": "Count iterations and stop when the max squared shift <= tol."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "PY-P2",
+  "slug": "quiz-game",
+  "title": "Quiz Game with High Scores",
+  "topic": "python",
+  "kind": "project",
+  "concept_tags": [
+    "games",
+    "classes",
+    "testing"
+  ],
+  "uses": [
+    {
+      "slug": "standard-library",
+      "id": "PY-15",
+      "title": "Importing the Standard Library"
+    },
+    {
+      "slug": "files-and-json",
+      "id": "PY-23",
+      "title": "Files, CSV and JSON"
+    },
+    {
+      "slug": "bank-account",
+      "id": "PY-25",
+      "title": "Classes: A Bank Account"
+    },
+    {
+      "slug": "shapes-inheritance",
+      "id": "PY-26",
+      "title": "Inheritance, Special Methods and Dataclasses"
+    },
+    {
+      "slug": "unit-testing",
+      "id": "PY-27",
+      "title": "Writing Unit Tests"
+    }
+  ],
+  "brief": "Build a quiz game that loads questions from a file, asks them in random order, keeps score with time\nbonuses, and stores a high-score table — with unit tests for the scoring rules.\n",
+  "milestones": [
+    "Store questions (text, options, answer, category) in a JSON file and load them into Question objects.",
+    "Ask ten random questions, check answers and show the score.",
+    "Add a Player class and a high-score table saved to a file, keeping the top five.",
+    "Give multiple-choice and true/false questions their own subclasses with a shared check() method.",
+    "Write unittest tests for scoring, loading and the high-score table."
+  ],
+  "stretch": [
+    "Add difficulty levels that choose questions by category or score.",
+    "Download questions once from the Open Trivia Database and cache them in your file.",
+    "Make a two-player mode that alternates turns."
+  ],
+  "data": "Write 20–30 questions yourself, or fetch some from the [Open Trivia Database](https://opentdb.com/)\nand save them to your JSON file (the game itself should not need the network).\n",
+  "setup": "```bash\npython quiz.py\npython -m unittest -v\n```\n"
+}

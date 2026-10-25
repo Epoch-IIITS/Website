@@ -1,0 +1,81 @@
+{
+  "id": "AG-14",
+  "slug": "ag-validate-retry",
+  "title": "Validating Tool Arguments and Retrying",
+  "topic": "agentic-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-13",
+    "AG-09",
+    "LM-19"
+  ],
+  "prerequisite_slugs": [
+    "task-dag-plan",
+    "ag-message-memory",
+    "lm-structured-output"
+  ],
+  "learning_objectives": [
+    "Give a tool a Pydantic argument schema with constraints",
+    "Return validation errors to the model as tool messages",
+    "Retry a fixed number of times and stop cleanly"
+  ],
+  "concept_tags": [
+    "langchain",
+    "validation",
+    "pydantic",
+    "tool-calling",
+    "retries"
+  ],
+  "permitted_packages": [
+    "langchain-core"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S134",
+    "S140"
+  ],
+  "entry_point": "class BookingArgs(BaseModel); book_room; call_with_validation(model, tool, messages, max_attempts=3)",
+  "hints": [
+    "Copy the conversation first: `history = list(messages)`.",
+    "Inside the loop: `call = reply.tool_calls[0]`, then `tool.invoke(call[\"args\"])` in a try block.",
+    "On ValidationError: `history += [reply, ToolMessage(content=..., tool_call_id=call[\"id\"], status=\"error\")]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_schema",
+      "advice": "Use Field(pattern=r'^R\\d{3}$') for room and Field(ge=9, le=17) for hour, and @tool(args_schema=BookingArgs)."
+    },
+    {
+      "test": "test_retry_with_feedback",
+      "advice": "Append the reply and an error ToolMessage listing each invalid field."
+    },
+    {
+      "test": "test_gives_up",
+      "advice": "Stop after max_attempts and return (None, max_attempts)."
+    },
+    {
+      "test": "test_caller_messages_unchanged",
+      "advice": "Work on a copy of messages."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

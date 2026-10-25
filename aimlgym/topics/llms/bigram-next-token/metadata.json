@@ -1,0 +1,75 @@
+{
+  "id": "LM-02",
+  "slug": "bigram-next-token",
+  "title": "Next-Token Probabilities (Add-k)",
+  "topic": "llms",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-01",
+    "NL-02"
+  ],
+  "prerequisite_slugs": [
+    "token-ids",
+    "tokenize-normalize"
+  ],
+  "learning_objectives": [
+    "Frame language modelling as next-token prediction",
+    "Apply add-k smoothing",
+    "Return a full distribution over the vocabulary"
+  ],
+  "concept_tags": [
+    "language-modeling",
+    "next-token",
+    "smoothing",
+    "n-grams"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S017"
+  ],
+  "entry_point": "next_token_dist(bigrams, prev, vocab, k=1.0)",
+  "hints": [
+    "Context total: `sum(bigrams.get((prev, w), 0) for w in vocab)`.",
+    "Denominator: `total + k * len(vocab)`.",
+    "`{w: (bigrams.get((prev, w), 0) + k) / denom for w in vocab}`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Denominator is total + k·V."
+    },
+    {
+      "test": "test_full_vocab",
+      "advice": "Return a probability for every vocabulary word."
+    },
+    {
+      "test": "test_unseen_context_uniform",
+      "advice": "An unseen context with k > 0 gives 1/V for each word."
+    },
+    {
+      "test": "test_mle_unseen_raises",
+      "advice": "With k = 0 and no counts the distribution is undefined — raise ValueError."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

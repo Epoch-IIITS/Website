@@ -1,0 +1,80 @@
+{
+  "id": "FA-02",
+  "slug": "http-responses",
+  "title": "HTTP Responses and Status Codes",
+  "topic": "fastapi",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-01"
+  ],
+  "prerequisite_slugs": [
+    "http-requests"
+  ],
+  "learning_objectives": [
+    "Read and write the status line, headers and body of a response",
+    "Choose status codes by class: 1xx–5xx",
+    "Know the common codes an API returns",
+    "Compare a hand-written table with http.HTTPStatus"
+  ],
+  "concept_tags": [
+    "http",
+    "responses",
+    "status-codes",
+    "content-type"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S066",
+    "S067",
+    "S062"
+  ],
+  "entry_point": "status_class(code); reason(code); build_response(status, body='', content_type='text/plain; charset=utf-8'); parse_response(raw)",
+  "hints": [
+    "`status_class` can index a list with `code // 100 - 1` after checking the range.",
+    "Content-Length is `len(body.encode(\"utf-8\"))`; for 204 the head is only the status line.",
+    "Status line: `version, code, phrase = line.split(\" \", 2)` keeps spaces inside the phrase."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_classes",
+      "advice": "Map `code // 100` to the five classes and reject codes outside 100–599."
+    },
+    {
+      "test": "test_reasons",
+      "advice": "Fill `REASONS` with every code listed in the task."
+    },
+    {
+      "test": "test_build_bytes_and_type",
+      "advice": "Content-Length counts UTF-8 bytes, and Content-Type uses the given value."
+    },
+    {
+      "test": "test_no_content",
+      "advice": "204 responses have only the status line; reject a body."
+    },
+    {
+      "test": "test_parse_round_trip",
+      "advice": "Split the status line with `split(\" \", 2)` and lowercase header names."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

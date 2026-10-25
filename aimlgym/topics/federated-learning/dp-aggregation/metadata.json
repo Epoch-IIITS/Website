@@ -1,0 +1,78 @@
+{
+  "id": "FL-13",
+  "slug": "dp-aggregation",
+  "title": "Differentially Private Aggregation",
+  "topic": "federated-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-09",
+    "FL-02"
+  ],
+  "prerequisite_slugs": [
+    "update-clipping",
+    "weighted-fedavg"
+  ],
+  "learning_objectives": [
+    "Clip per-client updates and average them",
+    "Add calibrated Gaussian noise (noise multiplier × clip / m)",
+    "Measure the privacy–utility trade-off empirically"
+  ],
+  "concept_tags": [
+    "differential-privacy",
+    "gaussian-mechanism",
+    "clipping",
+    "dp-fedavg"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S031",
+    "S032"
+  ],
+  "entry_point": "dp_mean(deltas, clip_norm, noise_multiplier, rng)",
+  "hints": [
+    "Clip: `d * min(1, C / ‖d‖)` (guard the zero vector).",
+    "`clipped_mean = np.mean(clipped, axis=0)`; `sigma = z * C / len(deltas)`.",
+    "Only call `rng.normal` when `sigma > 0`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_sigma",
+      "advice": "sigma = noise_multiplier × clip_norm / m (number of participating clients)."
+    },
+    {
+      "test": "test_noise_recipe",
+      "advice": "Add rng.normal(0, sigma, size=dim) to the clipped mean (one draw)."
+    },
+    {
+      "test": "test_sensitivity_bound",
+      "advice": "Clip each update before averaging."
+    },
+    {
+      "test": "test_no_noise",
+      "advice": "With noise_multiplier = 0 return the clipped mean exactly."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "ST-15",
+  "slug": "chi-square-scipy",
+  "title": "Chi-Square Test with SciPy",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-14"
+  ],
+  "prerequisite_slugs": [
+    "scipy-stats-intro"
+  ],
+  "learning_objectives": [
+    "Run a goodness-of-fit test with scipy.stats.chisquare",
+    "Interpret a p-value and compare it with a significance level",
+    "Relate the p-value to the chi-square distribution's upper tail"
+  ],
+  "concept_tags": [
+    "scipy",
+    "hypothesis-testing",
+    "chi-square",
+    "p-value"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scipy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S101",
+    "S011"
+  ],
+  "entry_point": "chi_square_test(observed, probs, alpha=0.05)",
+  "hints": [
+    "Validate the inputs as in the hand-written test, plus `0 < alpha < 1`.",
+    "`expected = [total * p for p in probs]`; then `result = stats.chisquare(observed, f_exp=expected)`.",
+    "Return `float(result.statistic)`, `float(result.pvalue)`, `len(observed) - 1` and the comparison with alpha."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_die",
+      "advice": "Pass expected counts (total × p), not probabilities, as f_exp."
+    },
+    {
+      "test": "test_stricter_alpha",
+      "advice": "reject is p_value < alpha."
+    },
+    {
+      "test": "test_plain_types",
+      "advice": "Convert NumPy results with float(...); the comparison gives a bool."
+    },
+    {
+      "test": "test_invalid_inputs",
+      "advice": "Validate before calling SciPy, including alpha."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

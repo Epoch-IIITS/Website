@@ -1,0 +1,48 @@
+{
+  "id": "NL-P1",
+  "slug": "review-sentiment-analyser",
+  "title": "Review Sentiment Analyser",
+  "topic": "nlp",
+  "kind": "project",
+  "concept_tags": [
+    "sentiment-analysis",
+    "text-classification"
+  ],
+  "uses": [
+    {
+      "slug": "nlp-countvectorizer",
+      "id": "NL-03",
+      "title": "Counting Words with Counter and CountVectorizer"
+    },
+    {
+      "slug": "nlp-tfidf-retrieval",
+      "id": "NL-10",
+      "title": "Search with TfidfVectorizer and Cosine Similarity"
+    },
+    {
+      "slug": "nlp-text-classifier",
+      "id": "NL-15",
+      "title": "A Text Classification Pipeline"
+    },
+    {
+      "slug": "sklearn-cross-validation",
+      "id": "ML-16",
+      "title": "Cross-Validation with scikit-learn"
+    }
+  ],
+  "brief": "Build a sentiment analyser for product or movie reviews that predicts positive or negative, explains\nits decision with the words that mattered, and reports honestly where it fails (negation, sarcasm,\nmixed reviews).\n",
+  "milestones": [
+    "Load a labelled review dataset and look at the class balance and typical review length.",
+    "Train the TF-IDF + logistic regression pipeline and report cross-validated accuracy and F1.",
+    "List the top positive and negative phrases and check that they make sense.",
+    "Write an explain(review) function that shows each word's contribution to the score.",
+    "Collect 30 misclassified reviews and group them by cause (negation, sarcasm, wrong label, ...)."
+  ],
+  "stretch": [
+    "Compare with the embedding-bag model in PyTorch.",
+    "Add a third class for neutral or mixed reviews.",
+    "Serve the model with FastAPI as in the 'Serve your model' project."
+  ],
+  "data": "* IMDB movie reviews (50,000, balanced): on [Hugging Face](https://huggingface.co/datasets/stanfordnlp/imdb)\n  or [Kaggle](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews).\n* Or write 100 short reviews of things you own and label them yourself.\n",
+  "setup": "```bash\npip install scikit-learn pandas datasets\npython sentiment.py\n```\n"
+}

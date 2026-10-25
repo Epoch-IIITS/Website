@@ -1,0 +1,77 @@
+{
+  "id": "RL-04",
+  "slug": "rl-gymnasium-env",
+  "title": "Gymnasium Environments",
+  "topic": "reinforcement-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-03"
+  ],
+  "prerequisite_slugs": [
+    "env-interface"
+  ],
+  "learning_objectives": [
+    "Write an environment as a gymnasium.Env subclass with observation and action spaces",
+    "Use the seeded self.np_random generator through super().reset(seed=seed)",
+    "Add a time limit with the TimeLimit wrapper and validate the environment with check_env"
+  ],
+  "concept_tags": [
+    "gymnasium",
+    "environments",
+    "spaces",
+    "wrappers"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "gymnasium"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S099",
+    "S035"
+  ],
+  "entry_point": "class LineWorldEnv(gym.Env); make_lineworld(n=5, slip=0.0, max_steps=20)",
+  "hints": [
+    "Validate the arguments, then create the two `spaces.Discrete` objects.",
+    "`self.action_space.contains(action)` checks the action; draw the slip with `self.np_random.random()`.",
+    "`min(max(self.state + step, 0), self.n - 1)` keeps the state on the line."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_check_env",
+      "advice": "Subclass gym.Env, define both spaces and return (obs, info) from reset."
+    },
+    {
+      "test": "test_time_limit_truncates",
+      "advice": "Wrap the environment with TimeLimit(env, max_episode_steps=max_steps)."
+    },
+    {
+      "test": "test_seeded_slip_reproducible",
+      "advice": "Call super().reset(seed=seed) and draw slips from self.np_random."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Validate the constructor arguments and reject actions outside the action space."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

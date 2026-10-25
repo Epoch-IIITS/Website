@@ -1,0 +1,76 @@
+{
+  "id": "ST-18",
+  "slug": "welch-t",
+  "title": "Welch's t-statistic by Hand",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ST-12"
+  ],
+  "prerequisite_slugs": [
+    "sampling-distribution"
+  ],
+  "learning_objectives": [
+    "Compute the standard error of a mean difference",
+    "Compute Welch's t and Welch–Satterthwaite df",
+    "Explain why Welch is preferred when variances differ"
+  ],
+  "concept_tags": [
+    "hypothesis-testing",
+    "t-test",
+    "two-sample",
+    "standard-error"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S011",
+    "S010"
+  ],
+  "entry_point": "welch_t(x, y)",
+  "hints": [
+    "Write `_mean_var(a)` returning the mean and sample variance.",
+    "`vx = sx2 / nx`, `vy = sy2 / ny`, `t = (mx - my) / math.sqrt(vx + vy)`.",
+    "`df = (vx + vy) ** 2 / (vx ** 2 / (nx - 1) + vy ** 2 / (ny - 1))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_symmetric_example",
+      "advice": "Use sample variances (n − 1) divided by each sample size."
+    },
+    {
+      "test": "test_unequal",
+      "advice": "Do not pool variances; Welch keeps them separate."
+    },
+    {
+      "test": "test_one_zero_variance_ok",
+      "advice": "Only raise when *both* variances are zero."
+    },
+    {
+      "test": "test_too_small",
+      "advice": "Each sample needs n ≥ 2."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "ML-06",
+  "slug": "classification-metrics",
+  "title": "Confusion Matrix, Precision, Recall, F1",
+  "topic": "machine-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-01"
+  ],
+  "prerequisite_slugs": [
+    "ml-baselines"
+  ],
+  "learning_objectives": [
+    "Build a multi-class confusion matrix",
+    "Compute per-class precision, recall and F1",
+    "Handle zero-division and macro averaging"
+  ],
+  "concept_tags": [
+    "metrics",
+    "confusion-matrix",
+    "precision",
+    "recall",
+    "f1"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012"
+  ],
+  "entry_point": "confusion_matrix(y_true, y_pred, n_classes); classification_report(y_true, y_pred, n_classes)",
+  "hints": [
+    "`C = np.zeros((K, K), dtype=int); np.add.at(C, (yt, yp), 1)`.",
+    "TP = `np.diag(C)`, predicted totals = `C.sum(axis=0)`, true totals = `C.sum(axis=1)`.",
+    "Safe division: `np.divide(a, b, out=np.zeros_like(a, dtype=float), where=b > 0)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_cm",
+      "advice": "Rows are true labels, columns predicted labels."
+    },
+    {
+      "test": "test_precision_recall",
+      "advice": "Precision divides by column sums, recall by row sums."
+    },
+    {
+      "test": "test_unused_class",
+      "advice": "Use 0 when a denominator is 0 instead of NaN."
+    },
+    {
+      "test": "test_cm_total",
+      "advice": "Use np.add.at so repeated (true, pred) pairs all count."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "id": "ML-14",
+  "slug": "sklearn-polynomial-validation",
+  "title": "Polynomial Features and Validation Curves",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-12",
+    "ML-10"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-knn",
+    "linreg-gradient-descent"
+  ],
+  "learning_objectives": [
+    "Build polynomial models with PolynomialFeatures in a pipeline",
+    "Compute training and validation error for each degree with validation_curve",
+    "Recognise underfitting and overfitting in a validation curve"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "overfitting",
+    "model-complexity",
+    "validation-curve"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S090",
+    "S091"
+  ],
+  "entry_point": "degree_curve(x, y, degrees, n_splits=5, seed=0)",
+  "hints": [
+    "Reshape the feature to a column: `X = np.asarray(x, dtype=float).reshape(-1, 1)`.",
+    "`train, val = validation_curve(model, X, y, param_name=..., param_range=degrees, cv=..., scoring=...)`.",
+    "MSE per degree is `-scores.mean(axis=1)`; pick the degree with the smallest validation MSE."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_quadratic_best_degree",
+      "advice": "Pick the degree with the smallest mean validation MSE."
+    },
+    {
+      "test": "test_underfit_line",
+      "advice": "Negate the neg_mean_squared_error scores to get MSE."
+    },
+    {
+      "test": "test_degree_one_matches_manual_cv",
+      "advice": "Use KFold(n_splits, shuffle=True, random_state=seed) and include_bias=False."
+    },
+    {
+      "test": "test_types_and_lengths",
+      "advice": "Return plain floats in the order of degrees."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "LM-10",
+  "slug": "multi-head-attention",
+  "title": "Multi-Head Attention",
+  "topic": "llms",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-07",
+    "LM-08"
+  ],
+  "prerequisite_slugs": [
+    "scaled-dot-attention",
+    "causal-mask"
+  ],
+  "learning_objectives": [
+    "Project inputs to queries, keys and values",
+    "Split into heads, attend in parallel and concatenate",
+    "Apply the output projection and optional causal mask"
+  ],
+  "concept_tags": [
+    "multi-head-attention",
+    "transformers",
+    "reshaping",
+    "self-attention"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S019",
+    "S013"
+  ],
+  "entry_point": "split_heads(X, h); merge_heads(Xh); multi_head_attention(X, Wq, Wk, Wv, Wo, h, causal=False)",
+  "hints": [
+    "`X.reshape(T, h, d // h).transpose(1, 0, 2)`.",
+    "Merge: `Xh.transpose(1, 0, 2).reshape(T, h * dh)`.",
+    "Batched scores: `Qh @ Kh.transpose(0, 2, 1) / np.sqrt(dh)` → shape `(h, T, T)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_split",
+      "advice": "Reshape to (T, h, d_h) and then transpose to (h, T, d_h)."
+    },
+    {
+      "test": "test_h2_manual",
+      "advice": "Scale each head's scores by sqrt(d_h), not sqrt(d_model)."
+    },
+    {
+      "test": "test_h1_equals_single",
+      "advice": "Remember the output projection Wo."
+    },
+    {
+      "test": "test_causal",
+      "advice": "Apply the causal mask to every head's scores."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

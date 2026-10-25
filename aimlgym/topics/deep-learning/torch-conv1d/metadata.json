@@ -1,0 +1,78 @@
+{
+  "id": "DL-24",
+  "slug": "torch-conv1d",
+  "title": "1-D Convolution with nn.Conv1d",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-22",
+    "NP-14"
+  ],
+  "prerequisite_slugs": [
+    "torch-batchnorm",
+    "moving-average"
+  ],
+  "learning_objectives": [
+    "Use F.conv1d and nn.Conv1d with (batch, channels, length) tensors",
+    "Compute output lengths from kernel size, stride and padding",
+    "Recognise that deep-learning convolution is cross-correlation"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "convolution",
+    "conv1d",
+    "signals"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S114",
+    "S093"
+  ],
+  "entry_point": "conv1d_layer(x, weight, bias=None, stride=1, padding=0)",
+  "hints": [
+    "Convert x and weight (and bias if given) to float32 tensors.",
+    "Check `x.ndim == 3`, `weight.ndim == 3`, `x.shape[1] == weight.shape[1]` and `x.shape[2] + 2 * padding >= weight.shape[2]`.",
+    "`F.conv1d(x, weight, bias, stride=stride, padding=padding)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Shapes are (batch, channels, length); call F.conv1d."
+    },
+    {
+      "test": "test_not_flipped",
+      "advice": "Do not flip the kernel: PyTorch computes cross-correlation."
+    },
+    {
+      "test": "test_channels_stride_bias",
+      "advice": "Pass bias, stride and padding through to F.conv1d."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Check dimensions, channel counts, bias length and that the kernel fits."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

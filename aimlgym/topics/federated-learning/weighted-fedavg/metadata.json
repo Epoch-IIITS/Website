@@ -1,0 +1,74 @@
+{
+  "id": "FL-02",
+  "slug": "weighted-fedavg",
+  "title": "Weighted Federated Averaging",
+  "topic": "federated-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-01"
+  ],
+  "prerequisite_slugs": [
+    "iid-partition"
+  ],
+  "learning_objectives": [
+    "Aggregate client models weighted by dataset size",
+    "Handle parameter dictionaries",
+    "Validate shapes and weights"
+  ],
+  "concept_tags": [
+    "fedavg",
+    "aggregation",
+    "weighted-average"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S028"
+  ],
+  "entry_point": "fedavg(client_params, sizes)",
+  "hints": [
+    "`N = sum(sizes)`; weights `n_k / N`.",
+    "Check `set(p) == set(client_params[0])` and shapes for every client.",
+    "`{k: sum(wt * p[k] for wt, p in zip(weights, client_params)) for k in keys}`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_not_plain_mean",
+      "advice": "Weight each client by n_k / N, not 1/K."
+    },
+    {
+      "test": "test_multiple_keys",
+      "advice": "Average every parameter tensor separately."
+    },
+    {
+      "test": "test_zero_size_client",
+      "advice": "Clients with zero samples get weight zero."
+    },
+    {
+      "test": "test_errors",
+      "advice": "Validate keys, shapes and the total size."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

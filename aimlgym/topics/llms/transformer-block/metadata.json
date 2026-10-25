@@ -1,0 +1,87 @@
+{
+  "id": "LM-12",
+  "slug": "transformer-block",
+  "title": "A Pre-Norm Transformer Block by Hand",
+  "topic": "llms",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "LM-10",
+    "LM-09"
+  ],
+  "prerequisite_slugs": [
+    "multi-head-attention",
+    "positional-encoding"
+  ],
+  "learning_objectives": [
+    "Implement layer normalisation over the feature axis",
+    "Write the position-wise feed-forward network",
+    "Assemble attention and feed-forward sub-layers with residual connections",
+    "Verify causality: earlier outputs do not depend on later tokens"
+  ],
+  "concept_tags": [
+    "transformer",
+    "layer-norm",
+    "residual-connections",
+    "feed-forward",
+    "pre-norm"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S019",
+    "S096",
+    "S013"
+  ],
+  "entry_point": "layer_norm(x, gamma, beta, eps=1e-5); feed_forward(x, W1, b1, W2, b2); transformer_block(x, params, h)",
+  "hints": [
+    "`mu = x.mean(axis=-1, keepdims=True)`, `var = x.var(axis=-1, keepdims=True)`, then `gamma * (x - mu) / np.sqrt(var + eps) + beta`.",
+    "`np.maximum(x @ W1 + b1, 0) @ W2 + b2`.",
+    "`a = layer_norm(x, p[\"ln1_g\"], p[\"ln1_b\"])`; `h1 = x + multi_head_attention(a, p[\"Wq\"], ..., h, causal=True)`; then the same pattern with LN2 and the FFN."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_layer_norm_stats",
+      "advice": "Normalise along the last axis with the population variance (`x.var(axis=-1)`)."
+    },
+    {
+      "test": "test_feed_forward",
+      "advice": "Apply ReLU between the two linear maps."
+    },
+    {
+      "test": "test_zero_sublayers_identity",
+      "advice": "Add each sub-layer's output to its input (residual connections)."
+    },
+    {
+      "test": "test_shape_and_reference",
+      "advice": "Pre-norm: normalise *before* each sub-layer and use causal attention."
+    },
+    {
+      "test": "test_causal",
+      "advice": "Pass `causal=True` to the attention so later tokens cannot affect earlier outputs."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "CV-05",
+  "slug": "flip-rotate",
+  "title": "Flip and Rotate",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "CV-01"
+  ],
+  "prerequisite_slugs": [
+    "image-arrays"
+  ],
+  "learning_objectives": [
+    "Flip images with negative-step slicing",
+    "Rotate by 90° using transpose + flip",
+    "Use flips/rotations as data augmentation"
+  ],
+  "concept_tags": [
+    "geometric-transforms",
+    "augmentation",
+    "slicing"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S006",
+    "S013"
+  ],
+  "entry_point": "flip_horizontal(img); flip_vertical(img); rotate90_cw(img, k=1)",
+  "hints": [
+    "Slicing: `img[:, ::-1]` and `img[::-1]`.",
+    "One clockwise step: `np.swapaxes(img, 0, 1)[:, ::-1]`.",
+    "Use `k % 4` repetitions."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_cw",
+      "advice": "Clockwise = swap spatial axes, then flip horizontally."
+    },
+    {
+      "test": "test_matches_rot90_negative",
+      "advice": "np.rot90 is counter-clockwise; use k % 4 steps of your own rotation."
+    },
+    {
+      "test": "test_color",
+      "advice": "Only swap axes 0 and 1 so channels stay last (don't use .T on 3-D arrays)."
+    },
+    {
+      "test": "test_flips",
+      "advice": "Horizontal flip reverses columns: img[:, ::-1]."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

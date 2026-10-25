@@ -1,0 +1,78 @@
+{
+  "id": "DL-25",
+  "slug": "conv1d",
+  "title": "1D Convolution by Hand (valid, stride)",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "DL-04",
+    "NP-14"
+  ],
+  "prerequisite_slugs": [
+    "dense-forward",
+    "moving-average"
+  ],
+  "learning_objectives": [
+    "Implement deep-learning style convolution (cross-correlation)",
+    "Apply padding and stride",
+    "Compute the output length formula"
+  ],
+  "concept_tags": [
+    "convolution",
+    "cnn",
+    "stride",
+    "padding"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S015",
+    "S013"
+  ],
+  "entry_point": "conv1d(x, kernel, stride=1, padding=0, bias=0.0); conv_output_length(n, k, stride, padding)",
+  "hints": [
+    "`(n + 2 * padding - k) // stride + 1`.",
+    "Pad with `np.pad(x, padding)`.",
+    "Window i starts at `i * stride`: `xp[i*stride : i*stride + k] @ kernel + bias`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_no_flip",
+      "advice": "Don't flip the kernel; DL 'convolution' is cross-correlation."
+    },
+    {
+      "test": "test_padding",
+      "advice": "Pad both ends with zeros using np.pad(x, padding)."
+    },
+    {
+      "test": "test_stride",
+      "advice": "Window i starts at i * stride."
+    },
+    {
+      "test": "test_output_length",
+      "advice": "n_out = floor((n + 2p − k)/s) + 1."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

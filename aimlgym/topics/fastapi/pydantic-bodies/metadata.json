@@ -1,0 +1,84 @@
+{
+  "id": "FA-10",
+  "slug": "pydantic-bodies",
+  "title": "Request Bodies with Pydantic",
+  "topic": "fastapi",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-09",
+    "FA-04"
+  ],
+  "prerequisite_slugs": [
+    "fastapi-params",
+    "json-bodies"
+  ],
+  "learning_objectives": [
+    "Describe a JSON body as a Pydantic model with typed, constrained fields",
+    "Forbid unknown fields and choose strict types where coercion would hide errors",
+    "Receive a validated model in a POST endpoint",
+    "Compare Pydantic validation with the hand-written validator"
+  ],
+  "concept_tags": [
+    "pydantic",
+    "request-body",
+    "validation",
+    "basemodel",
+    "fastapi"
+  ],
+  "permitted_packages": [
+    "fastapi"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S080",
+    "S073"
+  ],
+  "entry_point": "class Item(BaseModel); parse_item(data); app with POST /items",
+  "hints": [
+    "`model_config = ConfigDict(extra=\"forbid\", str_strip_whitespace=True)` goes in the class body.",
+    "`price: float = Field(ge=0, strict=True)` and `quantity: int = Field(default=0, ge=0, strict=True)`.",
+    "`@app.post(\"/items\")` above `def create_item(item: Item):`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_parse_and_defaults",
+      "advice": "Strip whitespace via model_config and give tags and quantity defaults."
+    },
+    {
+      "test": "test_errors_listed",
+      "advice": "Use `extra=\"forbid\"`, `min_length=1` on name and a strict float price."
+    },
+    {
+      "test": "test_strict_types",
+      "advice": "Strict numbers reject booleans and floats for ints; list[str] checks every tag; limit name to 50 characters."
+    },
+    {
+      "test": "test_post_ok",
+      "advice": "The endpoint takes `item: Item` and returns the dumped model and price * quantity."
+    },
+    {
+      "test": "test_post_422",
+      "advice": "FastAPI reports body errors with loc ['body', field] when the model is the only body parameter."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

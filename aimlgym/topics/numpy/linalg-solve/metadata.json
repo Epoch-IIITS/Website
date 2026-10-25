@@ -1,0 +1,77 @@
+{
+  "id": "NP-12",
+  "slug": "linalg-solve",
+  "title": "Solve Linear Systems Safely",
+  "topic": "numpy",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-06",
+    "MA-08"
+  ],
+  "prerequisite_slugs": [
+    "matmul-dot",
+    "solve-2x2-cramer"
+  ],
+  "learning_objectives": [
+    "Solve Ax=b with np.linalg.solve",
+    "Detect ill-conditioned systems with np.linalg.cond",
+    "Fit least squares with np.linalg.lstsq"
+  ],
+  "concept_tags": [
+    "linear-algebra",
+    "conditioning",
+    "least-squares"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S007",
+    "S009"
+  ],
+  "entry_point": "solve(A, b, max_cond=1e12); residual_norm(A, x, b); fit_line(x, y)",
+  "hints": [
+    "Check `A.ndim == 2 and A.shape[0] == A.shape[1] == len(b)`.",
+    "Compute `np.linalg.cond(A)` before calling `np.linalg.solve`.",
+    "`X = np.column_stack([np.ones(len(x)), x]); w, *_ = np.linalg.lstsq(X, y, rcond=None)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_singular",
+      "advice": "Check np.linalg.cond(A) (inf or huge for singular matrices) before solving."
+    },
+    {
+      "test": "test_fit_line",
+      "advice": "Include a column of ones for the intercept; return (intercept, slope)."
+    },
+    {
+      "test": "test_fit_line_noisy",
+      "advice": "Use np.linalg.lstsq(X, y, rcond=None)."
+    },
+    {
+      "test": "test_residual",
+      "advice": "Residual is the 2-norm of A@x − b, as a Python float."
+    }
+  ],
+  "test_count": 10,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      }
+    }
+  }
+}

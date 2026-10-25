@@ -1,0 +1,83 @@
+{
+  "id": "AG-20",
+  "slug": "agent-evaluation",
+  "title": "Evaluating Agents",
+  "topic": "agentic-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-06",
+    "AG-18"
+  ],
+  "prerequisite_slugs": [
+    "react-loop",
+    "ag-approval-guardrails"
+  ],
+  "learning_objectives": [
+    "Define pass/fail criteria for an agent task: answer, budget and forbidden actions",
+    "Normalise answers before comparing them",
+    "Run a suite of tasks, isolating crashes so one failure does not stop the run",
+    "Compare two agent versions and list regressions"
+  ],
+  "concept_tags": [
+    "evaluation",
+    "agents",
+    "regression-testing",
+    "metrics",
+    "safety"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S037",
+    "S102",
+    "S002"
+  ],
+  "entry_point": "normalize_answer(text); evaluate(agent, tasks); regressions(old_report, new_report)",
+  "hints": [
+    "`\" \".join(text.lower().split()).rstrip(\".!\").strip()` normalises.",
+    "Wrap only the agent call in `try/except Exception as e:` and record `f\"error: {type(e).__name__}\"`.",
+    "For regressions build `{r[\"id\"]: r[\"passed\"] for r in report[\"results\"]}` for both reports."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_normalize",
+      "advice": "Lowercase, collapse whitespace, then strip trailing '.' and '!'."
+    },
+    {
+      "test": "test_reasons",
+      "advice": "Check status, answer, budget and forbidden tools in that order; an exception gives only an error reason."
+    },
+    {
+      "test": "test_summary",
+      "advice": "Average tool calls only over tasks that returned a result."
+    },
+    {
+      "test": "test_calls_agent_once_per_task",
+      "advice": "Call the agent exactly once per task, in order."
+    },
+    {
+      "test": "test_regressions",
+      "advice": "A regression passed before and fails (or is missing) now; return ids sorted."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

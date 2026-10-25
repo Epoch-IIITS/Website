@@ -1,0 +1,72 @@
+{
+  "id": "PY-12",
+  "slug": "filter-evens",
+  "title": "Filter Even Numbers",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-11"
+  ],
+  "prerequisite_slugs": [
+    "sum-and-mean"
+  ],
+  "learning_objectives": [
+    "Use the modulo operator",
+    "Write a list comprehension with a condition",
+    "Preserve order while filtering"
+  ],
+  "concept_tags": [
+    "list-comprehension",
+    "modulo",
+    "filtering"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "evens(nums)",
+  "hints": [
+    "A number is even when `x % 2 == 0`.",
+    "A list comprehension can include `if` at the end.",
+    "`return [x for x in nums if x % 2 == 0]`"
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_mixed",
+      "advice": "Is 0 included? It is even."
+    },
+    {
+      "test": "test_all_even_order",
+      "advice": "Do not sort — keep the original order."
+    },
+    {
+      "test": "test_not_modified",
+      "advice": "Build a new list; don't call `.remove()` on the input."
+    },
+    {
+      "test": "test_duplicates_kept",
+      "advice": "Filtering keeps duplicates; don't convert to a set."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

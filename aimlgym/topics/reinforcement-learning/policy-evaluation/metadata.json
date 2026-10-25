@@ -1,0 +1,78 @@
+{
+  "id": "RL-08",
+  "slug": "policy-evaluation",
+  "title": "Iterative Policy Evaluation",
+  "topic": "reinforcement-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-02",
+    "RL-01"
+  ],
+  "prerequisite_slugs": [
+    "gridworld-step",
+    "discounted-return"
+  ],
+  "learning_objectives": [
+    "Apply the Bellman expectation backup",
+    "Iterate to convergence with a tolerance",
+    "Handle terminal transitions correctly"
+  ],
+  "concept_tags": [
+    "dynamic-programming",
+    "bellman-equation",
+    "policy-evaluation",
+    "mdp"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033",
+    "S034"
+  ],
+  "entry_point": "policy_evaluation(P, policy, gamma=0.9, theta=1e-10, max_iter=10000)",
+  "hints": [
+    "`V = np.zeros(n_states)`; each sweep build `new = np.zeros_like(V)`.",
+    "`new[s] += policy[s, a] * p * (r + gamma * (0 if done else V[s2]))`.",
+    "Stop when `np.max(np.abs(new - V)) < theta`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_corridor",
+      "advice": "Don't bootstrap from transitions with done=True."
+    },
+    {
+      "test": "test_stochastic_policy",
+      "advice": "Weight each action's backup by π(a|s)."
+    },
+    {
+      "test": "test_stochastic_transitions",
+      "advice": "Weight each outcome by its probability p."
+    },
+    {
+      "test": "test_bellman_fixed_point",
+      "advice": "Keep sweeping until the max change is below θ."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

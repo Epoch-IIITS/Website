@@ -1,0 +1,59 @@
+{
+  "id": "PY-P3",
+  "slug": "text-adventure-engine",
+  "title": "Text Adventure Engine",
+  "topic": "python",
+  "kind": "project",
+  "concept_tags": [
+    "games",
+    "object-oriented-design",
+    "parsing"
+  ],
+  "uses": [
+    {
+      "slug": "string-basics",
+      "id": "PY-06",
+      "title": "Strings: Indexing, Slicing and Methods"
+    },
+    {
+      "slug": "vowel-counter",
+      "id": "PY-13",
+      "title": "Vowel Counter"
+    },
+    {
+      "slug": "files-and-json",
+      "id": "PY-23",
+      "title": "Files, CSV and JSON"
+    },
+    {
+      "slug": "bank-account",
+      "id": "PY-25",
+      "title": "Classes: A Bank Account"
+    },
+    {
+      "slug": "shapes-inheritance",
+      "id": "PY-26",
+      "title": "Inheritance, Special Methods and Dataclasses"
+    },
+    {
+      "slug": "unit-testing",
+      "id": "PY-27",
+      "title": "Writing Unit Tests"
+    }
+  ],
+  "brief": "Build a small engine for text adventures: rooms, exits, items and simple puzzles described in a data\nfile, a command parser (\"go north\", \"take lamp\", \"use key on door\"), and saved games — then write a\nshort adventure with it.\n",
+  "milestones": [
+    "Model Room, Item and Player as classes; describe a three-room world in a JSON file.",
+    "Write a parser that turns commands into (verb, object) pairs and rejects unknown verbs politely.",
+    "Implement go, look, take, drop and inventory.",
+    "Add locked doors and items that unlock them.",
+    "Save and load the game state to a file; test the parser and the save format with unittest."
+  ],
+  "stretch": [
+    "Add characters that respond to `talk` with a small dialogue tree.",
+    "Load several adventures from a folder and let the player choose.",
+    "Add a scoring system and an ending condition."
+  ],
+  "data": "You write the world file yourself; keep it small at first (three rooms, two items, one puzzle).\n",
+  "setup": "```bash\npython adventure.py worlds/castle.json\n```\n"
+}

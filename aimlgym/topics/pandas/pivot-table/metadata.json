@@ -1,0 +1,76 @@
+{
+  "id": "PD-14",
+  "slug": "pivot-table",
+  "title": "Pivot Tables",
+  "topic": "pandas",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-08"
+  ],
+  "prerequisite_slugs": [
+    "groupby-agg"
+  ],
+  "learning_objectives": [
+    "Reshape long data to wide with pivot_table",
+    "Fill missing cells",
+    "Melt wide data back to long"
+  ],
+  "concept_tags": [
+    "pivot",
+    "melt",
+    "reshaping",
+    "tidy-data"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "sales_pivot(df); to_long(wide)",
+  "hints": [
+    "`pd.pivot_table(df, index='region', columns='quarter', values='sales', aggfunc='sum', fill_value=0)`.",
+    "`.rename_axis(columns=None)` drops the 'quarter' label above the columns.",
+    "`wide.reset_index().melt(id_vars='region', var_name='quarter', value_name='sales')`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_values",
+      "advice": "Use aggfunc='sum' so duplicate pairs are added, and fill_value=0."
+    },
+    {
+      "test": "test_axes",
+      "advice": "Sort index/columns and remove the columns name with rename_axis(columns=None)."
+    },
+    {
+      "test": "test_long",
+      "advice": "Melt with id_vars='region', var_name='quarter', value_name='sales', then sort."
+    },
+    {
+      "test": "test_int_dtype",
+      "advice": "fill_value=0 keeps integer dtype; NaN would force floats."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

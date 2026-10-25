@@ -1,0 +1,75 @@
+{
+  "id": "PD-02",
+  "slug": "dataframe-basics",
+  "title": "Build and Describe a DataFrame",
+  "topic": "pandas",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-01"
+  ],
+  "prerequisite_slugs": [
+    "series-basics"
+  ],
+  "learning_objectives": [
+    "Create a DataFrame from a dict of columns",
+    "Inspect shape, columns and dtypes",
+    "Identify numeric columns"
+  ],
+  "concept_tags": [
+    "dataframe",
+    "dtypes",
+    "inspection"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "make_df(data); describe_df(df)",
+  "hints": [
+    "Check `len(set(len(v) for v in data.values())) == 1`.",
+    "`pd.DataFrame(data)` builds the table.",
+    "`list(df.select_dtypes(include='number').columns)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_describe",
+      "advice": "Return plain lists/ints; use select_dtypes(include='number')."
+    },
+    {
+      "test": "test_unequal",
+      "advice": "Check every column list has the same length."
+    },
+    {
+      "test": "test_bool_not_numeric",
+      "advice": "Booleans are not selected by include='number'."
+    },
+    {
+      "test": "test_make",
+      "advice": "Return pd.DataFrame(data)."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

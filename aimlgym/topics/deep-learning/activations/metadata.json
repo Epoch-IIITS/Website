@@ -1,0 +1,76 @@
+{
+  "id": "DL-01",
+  "slug": "activations",
+  "title": "Activation Functions",
+  "topic": "deep-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-11"
+  ],
+  "prerequisite_slugs": [
+    "logistic-regression"
+  ],
+  "learning_objectives": [
+    "Implement ReLU, leaky ReLU and tanh",
+    "Implement their derivatives",
+    "Explain why non-linear activations are necessary"
+  ],
+  "concept_tags": [
+    "activations",
+    "relu",
+    "tanh",
+    "derivatives"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013",
+    "S016"
+  ],
+  "entry_point": "relu, relu_grad, leaky_relu, leaky_relu_grad, tanh, tanh_grad",
+  "hints": [
+    "`np.maximum(z, 0.0)` for ReLU; `(z > 0).astype(float)` for its gradient.",
+    "`np.where(z > 0, z, alpha * z)` and `np.where(z > 0, 1.0, alpha)`.",
+    "`t = np.tanh(z); 1 - t ** 2`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_relu",
+      "advice": "relu_grad(0) must be 0 — use z > 0, not z >= 0."
+    },
+    {
+      "test": "test_leaky",
+      "advice": "Leaky gradient is alpha for z <= 0."
+    },
+    {
+      "test": "test_numeric_grads",
+      "advice": "tanh′(z) = 1 − tanh(z)², not 1 − z²."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Return new arrays; don't assign into z."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

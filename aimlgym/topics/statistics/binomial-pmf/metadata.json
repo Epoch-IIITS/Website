@@ -1,0 +1,77 @@
+{
+  "id": "ST-08",
+  "slug": "binomial-pmf",
+  "title": "Binomial Probabilities",
+  "topic": "statistics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-06",
+    "MA-07"
+  ],
+  "prerequisite_slugs": [
+    "probability-basics",
+    "binomial-coefficient"
+  ],
+  "learning_objectives": [
+    "Apply the binomial PMF",
+    "Compute cumulative and tail probabilities",
+    "Check that probabilities sum to 1"
+  ],
+  "concept_tags": [
+    "probability",
+    "binomial-distribution",
+    "bernoulli-trials"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S010",
+    "S011"
+  ],
+  "entry_point": "binom_pmf(k, n, p); binom_cdf(k, n, p); prob_at_least(k, n, p)",
+  "hints": [
+    "Write a `_check(n, p)` helper that raises ValueError.",
+    "pmf: `math.comb(n, k) * p**k * (1 - p)**(n - k)` for 0 ≤ k ≤ n.",
+    "cdf sums pmf for j = 0..min(k, n); at_least = 1 − cdf(k − 1)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_pmf",
+      "advice": "Include the C(n, k) factor."
+    },
+    {
+      "test": "test_at_least",
+      "advice": "P(X ≥ k) = 1 − P(X ≤ k − 1), not 1 − P(X ≤ k)."
+    },
+    {
+      "test": "test_out_of_range_k",
+      "advice": "Return 0.0 when k is outside 0..n."
+    },
+    {
+      "test": "test_bad_p",
+      "advice": "Validate 0 ≤ p ≤ 1."
+    }
+  ],
+  "test_count": 10,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "CV-26",
+  "slug": "connected-components",
+  "title": "Connected Components Labeling by Hand",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "CV-07"
+  ],
+  "prerequisite_slugs": [
+    "threshold-binary"
+  ],
+  "learning_objectives": [
+    "Label connected foreground regions with BFS",
+    "Compare 4- and 8-connectivity",
+    "Report component sizes deterministically"
+  ],
+  "concept_tags": [
+    "segmentation",
+    "connected-components",
+    "bfs",
+    "graphs"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S006",
+    "S023"
+  ],
+  "entry_point": "label_components(mask, connectivity=4)",
+  "hints": [
+    "Offsets: 4 → `[(-1,0),(1,0),(0,-1),(0,1)]`; 8 adds the four diagonals.",
+    "Raster scan; when `mask[r, c] and labels[r, c] == 0`, assign a new label and BFS.",
+    "Set the label when *pushing* a pixel onto the queue to avoid duplicates."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_diagonal",
+      "advice": "8-connectivity includes diagonal neighbours; 4 does not."
+    },
+    {
+      "test": "test_raster_order",
+      "advice": "Assign labels in order of first pixel in a row-by-row scan."
+    },
+    {
+      "test": "test_large_no_recursion",
+      "advice": "Use an explicit queue (deque) instead of recursion."
+    },
+    {
+      "test": "test_example",
+      "advice": "Label pixels when pushing them so each is counted once."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

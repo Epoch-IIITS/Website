@@ -1,0 +1,77 @@
+{
+  "id": "DL-13",
+  "slug": "gradient-check",
+  "title": "Gradient Checking by Hand",
+  "topic": "deep-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "DL-11",
+    "MA-14"
+  ],
+  "prerequisite_slugs": [
+    "dense-backward",
+    "numerical-gradient"
+  ],
+  "learning_objectives": [
+    "Compare analytic and numerical gradients",
+    "Use relative error with a safe denominator",
+    "Locate the parameter with the worst mismatch"
+  ],
+  "concept_tags": [
+    "gradient-checking",
+    "debugging",
+    "finite-differences"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S016",
+    "S013"
+  ],
+  "entry_point": "relative_error(a, b); grad_check(f, grad, x, h=1e-5)",
+  "hints": [
+    "`np.abs(a - b) / np.maximum(np.abs(a) + np.abs(b), 1e-12)`.",
+    "Iterate with `np.ndindex(x.shape)`; perturb a copy of x at that index.",
+    "`worst = np.unravel_index(np.argmax(rel), x.shape)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_rel_error",
+      "advice": "Floor the denominator at 1e-12 so 0 vs 0 gives 0."
+    },
+    {
+      "test": "test_worst_index_2d",
+      "advice": "Support any shape with np.ndindex and report a tuple index."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Perturb copies of x, never x itself."
+    },
+    {
+      "test": "test_buggy",
+      "advice": "Relative error = |a − b| / (|a| + |b|)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

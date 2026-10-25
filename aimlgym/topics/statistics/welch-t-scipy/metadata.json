@@ -1,0 +1,79 @@
+{
+  "id": "ST-17",
+  "slug": "welch-t-scipy",
+  "title": "Welch's t-test with SciPy",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-15",
+    "ST-12"
+  ],
+  "prerequisite_slugs": [
+    "chi-square-scipy",
+    "sampling-distribution"
+  ],
+  "learning_objectives": [
+    "Compare two means with scipy.stats.ttest_ind(equal_var=False)",
+    "Choose a two-sided or one-sided alternative",
+    "Report the mean difference alongside the p-value"
+  ],
+  "concept_tags": [
+    "scipy",
+    "hypothesis-testing",
+    "t-test",
+    "two-sample"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scipy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S101",
+    "S011"
+  ],
+  "entry_point": "compare_means(x, y, alternative=\"two-sided\", alpha=0.05)",
+  "hints": [
+    "Check the sizes, the alternative and alpha; compute each sample's variance to reject the all-constant case.",
+    "`result = stats.ttest_ind(x, y, equal_var=False, alternative=alternative)`.",
+    "`result.df` holds the Welch degrees of freedom; convert everything with float()."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_symmetric_example",
+      "advice": "Call ttest_ind with equal_var=False; read t, df and p from the result."
+    },
+    {
+      "test": "test_one_sided_halves_p",
+      "advice": "Pass alternative through to SciPy."
+    },
+    {
+      "test": "test_welch_not_student",
+      "advice": "equal_var=False gives Welch's test; the default pools variances."
+    },
+    {
+      "test": "test_invalid_inputs",
+      "advice": "Raise ValueError for tiny or constant samples, a bad alternative or alpha."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

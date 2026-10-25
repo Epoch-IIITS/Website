@@ -1,0 +1,78 @@
+{
+  "id": "XA-11",
+  "slug": "exact-shapley",
+  "title": "Exact Shapley Values",
+  "topic": "explainable-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-07",
+    "XA-01"
+  ],
+  "prerequisite_slugs": [
+    "binomial-coefficient",
+    "linear-contributions"
+  ],
+  "learning_objectives": [
+    "Define a coalition value function with a baseline",
+    "Compute exact Shapley values by enumerating subsets",
+    "Verify efficiency, symmetry and dummy properties"
+  ],
+  "concept_tags": [
+    "shapley-values",
+    "shap",
+    "game-theory",
+    "feature-attribution"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S026",
+    "S024"
+  ],
+  "entry_point": "coalition_value(predict, x, baseline, subset); shapley_values(predict, x, baseline)",
+  "hints": [
+    "`z = baseline.copy(); z[list(subset)] = x[list(subset)]`; `float(predict(z[None, :])[0])`.",
+    "Loop j; for size in 0..d−1 and each `S` in `combinations(others, size)`.",
+    "Weight = `math.factorial(len(S)) * math.factorial(d - len(S) - 1) / math.factorial(d)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_efficiency",
+      "advice": "Use weights |S|!(d−|S|−1)!/d! and include the empty coalition."
+    },
+    {
+      "test": "test_interaction_split",
+      "advice": "Average marginal contributions over all coalitions of the other features."
+    },
+    {
+      "test": "test_coalition_value",
+      "advice": "Take x on coalition indices and the baseline elsewhere; call predict on shape (1, d)."
+    },
+    {
+      "test": "test_linear_matches_xa01",
+      "advice": "For linear models Shapley values equal w·(x − baseline)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

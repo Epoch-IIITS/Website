@@ -1,0 +1,75 @@
+{
+  "id": "PD-05",
+  "slug": "derived-columns",
+  "title": "Derived Columns",
+  "topic": "pandas",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-04"
+  ],
+  "prerequisite_slugs": [
+    "select-filter"
+  ],
+  "learning_objectives": [
+    "Create columns from vectorised arithmetic",
+    "Handle division by zero as NaN",
+    "Return a new DataFrame with assign"
+  ],
+  "concept_tags": [
+    "feature-engineering",
+    "assign",
+    "missing-values"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "add_features(df)",
+  "hints": [
+    "`total = df['a'] + df['b']`.",
+    "`ratio = (df['a'] / df['b']).where(df['b'] != 0)`.",
+    "Use `df.assign(total=..., ratio=..., passed=...)`; compute passed from total."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_ratio_nan",
+      "advice": "Mask the ratio where b == 0 using .where(df['b'] != 0)."
+    },
+    {
+      "test": "test_no_inf",
+      "advice": "Division by zero gives inf — replace it with NaN."
+    },
+    {
+      "test": "test_not_mutated",
+      "advice": "Use df.assign (returns a new frame) instead of df['x'] = ..."
+    },
+    {
+      "test": "test_passed",
+      "advice": "passed is total >= 50 (inclusive)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

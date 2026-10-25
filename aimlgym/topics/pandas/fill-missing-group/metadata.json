@@ -1,0 +1,76 @@
+{
+  "id": "PD-09",
+  "slug": "fill-missing-group",
+  "title": "Fill Missing Values by Group",
+  "topic": "pandas",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-08"
+  ],
+  "prerequisite_slugs": [
+    "groupby-agg"
+  ],
+  "learning_objectives": [
+    "Detect missing values",
+    "Impute with group means via transform",
+    "Fall back to a global statistic"
+  ],
+  "concept_tags": [
+    "missing-values",
+    "imputation",
+    "transform",
+    "groupby"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "impute_group_mean(df, group, col)",
+  "hints": [
+    "`group_mean = df.groupby(group)[col].transform('mean')`.",
+    "`filled = df[col].fillna(group_mean).fillna(df[col].mean())`.",
+    "Use `df.assign(**{col: filled, f'{col}_was_missing': df[col].isna()})`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_values",
+      "advice": "Use groupby().transform('mean') then fall back to the overall mean."
+    },
+    {
+      "test": "test_group_mean_not_global",
+      "advice": "Fill with the group's mean, not the global mean."
+    },
+    {
+      "test": "test_indicator",
+      "advice": "Compute the indicator from the original column before filling."
+    },
+    {
+      "test": "test_input_unchanged",
+      "advice": "Return df.assign(...) rather than modifying df."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

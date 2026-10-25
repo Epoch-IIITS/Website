@@ -1,0 +1,86 @@
+{
+  "id": "PY-23",
+  "slug": "files-and-json",
+  "title": "Files, CSV and JSON",
+  "topic": "python",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-22"
+  ],
+  "prerequisite_slugs": [
+    "guessing-game-feedback"
+  ],
+  "learning_objectives": [
+    "Read and write text files safely with with open(...)",
+    "Build paths with pathlib.Path",
+    "Read CSV rows with csv.DictReader",
+    "Save and load structured data with json"
+  ],
+  "concept_tags": [
+    "files",
+    "with",
+    "pathlib",
+    "csv",
+    "json"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S041",
+    "S054",
+    "S055",
+    "S056"
+  ],
+  "entry_point": "write_lines(path, lines); read_lines(path); load_scores_csv(path); save_json(path, data); load_json(path); summarize_scores(csv_path, json_path)",
+  "hints": [
+    "`with open(path, \"w\", encoding=\"utf-8\") as fh:` then `fh.write(line + \"\\n\")` in a loop.",
+    "`fh.read().splitlines()` drops newlines; open CSV files with `newline=\"\"` and use `csv.DictReader(fh)`.",
+    "For `top`, keep the first maximum: loop and update only when `score > best_score`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_write_and_read_lines",
+      "advice": "Write `line + \"\\n\"` for each line and read with `splitlines()`."
+    },
+    {
+      "test": "test_write_replaces",
+      "advice": "Open with mode `\"w\"`, which replaces the file, not `\"a\"`."
+    },
+    {
+      "test": "test_load_scores_csv",
+      "advice": "Use `csv.DictReader` (it handles the quoted comma) and convert scores with `int`."
+    },
+    {
+      "test": "test_json_roundtrip",
+      "advice": "Pass `indent=2, sort_keys=True` to `json.dump`."
+    },
+    {
+      "test": "test_summary",
+      "advice": "Round the mean to 2 decimals and keep the first name with the highest score."
+    },
+    {
+      "test": "test_summary_empty",
+      "advice": "With no rows, mean and top are None."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

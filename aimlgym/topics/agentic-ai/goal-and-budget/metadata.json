@@ -1,0 +1,74 @@
+{
+  "id": "AG-05",
+  "slug": "goal-and-budget",
+  "title": "Goal Tests and Step Budgets",
+  "topic": "agentic-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-04"
+  ],
+  "prerequisite_slugs": [
+    "reflex-agent-loop"
+  ],
+  "learning_objectives": [
+    "Stop an agent when its goal is reached",
+    "Enforce step and cost budgets",
+    "Report why a run ended"
+  ],
+  "concept_tags": [
+    "agents",
+    "termination",
+    "budgets",
+    "goal-test"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S038",
+    "S037"
+  ],
+  "entry_point": "run_with_budget(state, policy, transition, goal_test, max_steps, max_cost=None)",
+  "hints": [
+    "Initialise `actions, total = [], 0.0`.",
+    "Inside the loop: goal test first, then act, then add cost and check `total > max_cost`.",
+    "After the loop, check the goal once more before returning step_limit."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_already_done",
+      "advice": "Test the goal before taking the first action."
+    },
+    {
+      "test": "test_success_on_last_step",
+      "advice": "Check the goal once more after the loop."
+    },
+    {
+      "test": "test_cost_exceeded",
+      "advice": "Add the step's cost, then compare total > max_cost."
+    },
+    {
+      "test": "test_exact_budget_ok",
+      "advice": "Spending exactly max_cost is allowed."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

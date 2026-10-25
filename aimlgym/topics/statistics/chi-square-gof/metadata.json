@@ -1,0 +1,75 @@
+{
+  "id": "ST-16",
+  "slug": "chi-square-gof",
+  "title": "Chi-Square Goodness of Fit by Hand",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ST-08"
+  ],
+  "prerequisite_slugs": [
+    "binomial-pmf"
+  ],
+  "learning_objectives": [
+    "Compute expected counts from probabilities",
+    "Compute the chi-square statistic and degrees of freedom",
+    "Make a decision with a critical value"
+  ],
+  "concept_tags": [
+    "hypothesis-testing",
+    "chi-square",
+    "categorical-data"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S011",
+    "S010"
+  ],
+  "entry_point": "chi_square_gof(observed, probs, critical=None)",
+  "hints": [
+    "Validate inputs, then `N = sum(observed)` and `expected = [N * p for p in probs]`.",
+    "`stat = sum((o - e) ** 2 / e for o, e in zip(observed, expected))`.",
+    "`df = len(observed) - 1`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_die",
+      "advice": "Divide each squared difference by the expected count, and df = k − 1."
+    },
+    {
+      "test": "test_unequal_probs",
+      "advice": "Expected counts are N × p_i for each category."
+    },
+    {
+      "test": "test_bad_probs",
+      "advice": "Check that probs sum to 1 (within 1e-9)."
+    },
+    {
+      "test": "test_not_reject",
+      "advice": "reject is statistic > critical."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

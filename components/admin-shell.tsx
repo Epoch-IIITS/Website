@@ -4,7 +4,7 @@ import { type ReactNode, useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
-import { LayoutDashboard, FileText, FolderOpen, Calendar, ImageIcon, Users, Inbox, ArrowUpRight, LogOut, X, Wrench, ScrollText, ChevronDown } from "lucide-react"
+import { LayoutDashboard, FileText, FolderOpen, Calendar, ImageIcon, Users, Inbox, ArrowUpRight, LogOut, X, Wrench, ScrollText, ChevronDown, GraduationCap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { SheetTitle, SheetDescription } from "@/components/ui/sheet"
@@ -23,6 +23,7 @@ const navigation = [
   { label: "People", icon: Users, children: [
     { label: "Team", href: "/admin/team", icon: Users },
     { label: "Users", href: "/admin/users", icon: Users },
+    { label: "Learners", href: "/admin/learners", icon: GraduationCap },
   ] },
   { label: "Inbox", href: "/admin/queries", icon: Inbox },
   { label: "Tools", icon: Wrench, children: [

@@ -1,0 +1,78 @@
+{
+  "id": "XA-09",
+  "slug": "occlusion-saliency",
+  "title": "Occlusion Saliency Map",
+  "topic": "explainable-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-13",
+    "XA-04"
+  ],
+  "prerequisite_slugs": [
+    "cv-pooling-torch",
+    "ice-curve"
+  ],
+  "learning_objectives": [
+    "Occlude image patches with a baseline value",
+    "Measure the drop in class score per patch",
+    "Build a saliency heat-map at patch resolution"
+  ],
+  "concept_tags": [
+    "saliency",
+    "occlusion",
+    "image-explanations",
+    "perturbation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S024",
+    "S015"
+  ],
+  "entry_point": "occlusion_map(score_fn, img, patch=2, baseline=0.0)",
+  "hints": [
+    "`Hp = -(-H // patch)` is ceil division.",
+    "For each (pi, pj): `occ = img.copy(); occ[pi*patch:(pi+1)*patch, pj*patch:(pj+1)*patch] = baseline`.",
+    "`sal[pi, pj] = base - score_fn(occ)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_edge_patches",
+      "advice": "Use ceil division for the map shape; edge patches are smaller."
+    },
+    {
+      "test": "test_linear_model",
+      "advice": "Saliency = original score − occluded score."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Occlude a copy of the image for every patch."
+    },
+    {
+      "test": "test_baseline_value",
+      "advice": "Fill occluded pixels with the baseline value."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

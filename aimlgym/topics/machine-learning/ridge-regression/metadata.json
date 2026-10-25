@@ -1,0 +1,80 @@
+{
+  "id": "ML-20",
+  "slug": "ridge-regression",
+  "title": "Ridge Regression (Closed Form)",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-17",
+    "ML-08"
+  ],
+  "prerequisite_slugs": [
+    "k-fold-cv",
+    "standard-scaler"
+  ],
+  "learning_objectives": [
+    "Add L2 regularisation to least squares",
+    "Leave the intercept unpenalised via centring",
+    "Observe shrinkage and stability with collinear features"
+  ],
+  "concept_tags": [
+    "regularisation",
+    "ridge",
+    "l2",
+    "bias-variance"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012",
+    "S009"
+  ],
+  "entry_point": "class Ridge(alpha=1.0): fit, predict",
+  "hints": [
+    "`xm, ym = X.mean(axis=0), y.mean()`; `Xc, yc = X - xm, y - ym`.",
+    "`A = Xc.T @ Xc + alpha * np.eye(d)`; `w = np.linalg.solve(A, Xc.T @ yc)`.",
+    "`intercept = ym - xm @ w`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_intercept_not_penalised",
+      "advice": "Centre X and y; compute the intercept from the means."
+    },
+    {
+      "test": "test_shrinkage",
+      "advice": "Add alpha·I to Xcᵀ Xc (not to the whole design matrix with a bias column)."
+    },
+    {
+      "test": "test_collinear",
+      "advice": "Use np.linalg.solve on (XcᵀXc + αI)."
+    },
+    {
+      "test": "test_alpha0_is_ols",
+      "advice": "With alpha = 0 you should recover ordinary least squares."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

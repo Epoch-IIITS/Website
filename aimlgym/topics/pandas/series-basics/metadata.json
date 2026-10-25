@@ -1,0 +1,78 @@
+{
+  "id": "PD-01",
+  "slug": "series-basics",
+  "title": "Series: Labelled Columns",
+  "topic": "pandas",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-04"
+  ],
+  "prerequisite_slugs": [
+    "boolean-mask"
+  ],
+  "learning_objectives": [
+    "Create a Series from a dict and read values by label",
+    "Explain index alignment in arithmetic between Series",
+    "Filter with boolean masks and summarise with mean, nlargest and value_counts",
+    "Compare each Series operation with the equivalent dict code"
+  ],
+  "concept_tags": [
+    "series",
+    "index",
+    "alignment",
+    "value-counts"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S084",
+    "S008"
+  ],
+  "entry_point": "make_series(data); add_aligned(a, b); above_mean(s); top_labels(s, k); count_values(items)",
+  "hints": [
+    "`a.add(b, fill_value=0).sort_index()`.",
+    "`s[s > s.mean()].index.tolist()`.",
+    "`counts = pd.Series(items).value_counts()`; build `{k: int(v) for k, v in counts.items()}`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_add_aligned",
+      "advice": "Use `a.add(b, fill_value=0)` so labels in only one Series are not NaN, then `sort_index()`."
+    },
+    {
+      "test": "test_above_mean",
+      "advice": "Select with `s[s > s.mean()]` and return its index as a list."
+    },
+    {
+      "test": "test_top_labels",
+      "advice": "`s.nlargest(k).index.tolist()` keeps the largest-first order."
+    },
+    {
+      "test": "test_count_values",
+      "advice": "Convert the counts to plain ints in a dict."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

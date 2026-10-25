@@ -1,0 +1,78 @@
+{
+  "id": "PD-16",
+  "slug": "rolling-features",
+  "title": "Rolling-Window Features",
+  "topic": "pandas",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-13",
+    "NP-14"
+  ],
+  "prerequisite_slugs": [
+    "resample-weekly",
+    "moving-average"
+  ],
+  "learning_objectives": [
+    "Compute per-entity rolling statistics",
+    "Avoid target leakage with shift",
+    "Combine groupby, sort and transform"
+  ],
+  "concept_tags": [
+    "rolling",
+    "lag-features",
+    "leakage",
+    "groupby-transform"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "add_history_features(df, window=3)",
+  "hints": [
+    "`out = df.assign(date=pd.to_datetime(df['date'])).sort_values(['store', 'date']).reset_index(drop=True)`.",
+    "`g = out.groupby('store')['sales']`; `lag1 = g.shift(1)`.",
+    "`g.transform(lambda s: s.shift(1).rolling(window, min_periods=1).mean())`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_past_mean",
+      "advice": "Shift by one before rolling so the current sale is excluded."
+    },
+    {
+      "test": "test_lag",
+      "advice": "Compute the lag within each store (groupby('store'))."
+    },
+    {
+      "test": "test_order",
+      "advice": "Sort by store, then date, and reset the index."
+    },
+    {
+      "test": "test_no_leakage",
+      "advice": "past_mean must never include the current row's value."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

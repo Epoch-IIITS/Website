@@ -1,0 +1,73 @@
+{
+  "id": "AG-04",
+  "slug": "reflex-agent-loop",
+  "title": "Perceive-Act Loop",
+  "topic": "agentic-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-01"
+  ],
+  "prerequisite_slugs": [
+    "tool-registry"
+  ],
+  "learning_objectives": [
+    "Model an environment with percepts, actions and a performance measure",
+    "Implement a simple reflex agent",
+    "Run and log an agent–environment loop"
+  ],
+  "concept_tags": [
+    "agents",
+    "environments",
+    "reflex-agent",
+    "performance-measure"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S038"
+  ],
+  "entry_point": "reflex_vacuum_agent(percept); class VacuumWorld(dirt, location); run(agent, env, steps)",
+  "hints": [
+    "Agent: `loc, status = percept`.",
+    "`execute`: Suck sets `dirt[loc] = False`; Left → 'A'; Right → 'B'.",
+    "Score after each step: `sum(not d for d in env.dirt.values()) - (1 if action in ('Left', 'Right') else 0)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_run",
+      "advice": "Score after each action: clean squares minus 1 for movement."
+    },
+    {
+      "test": "test_percepts_logged",
+      "advice": "Log the percept seen *before* the action."
+    },
+    {
+      "test": "test_input_dict_not_mutated",
+      "advice": "Copy the dirt dict inside VacuumWorld."
+    },
+    {
+      "test": "test_clean_world_oscillates",
+      "advice": "A simple reflex agent keeps moving even when everything is clean."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

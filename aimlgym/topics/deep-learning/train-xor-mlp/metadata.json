@@ -1,0 +1,79 @@
+{
+  "id": "DL-19",
+  "slug": "train-xor-mlp",
+  "title": "Train an MLP on XOR",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "DL-11",
+    "DL-14"
+  ],
+  "prerequisite_slugs": [
+    "dense-backward",
+    "sgd-momentum"
+  ],
+  "learning_objectives": [
+    "Implement full backpropagation for a 2-layer network",
+    "Train with gradient descent until XOR is solved",
+    "Explain why a linear model cannot solve XOR"
+  ],
+  "concept_tags": [
+    "backpropagation",
+    "training-loop",
+    "xor",
+    "mlp"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S014",
+    "S016",
+    "S013"
+  ],
+  "entry_point": "init_params(n_hidden, seed); forward_backward(X, y, params); train_xor(n_hidden=8, lr=1.0, epochs=3000, seed=0)",
+  "hints": [
+    "Forward: `h = np.tanh(X @ W1 + b1)`, `p = sigmoid(h @ W2 + b2)[:, 0]`.",
+    "`d2 = ((p - y) / n)[:, None]`; `d1 = (d2 @ W2.T) * (1 - h ** 2)`.",
+    "Grads: `W2: h.T @ d2`, `b2: d2.sum(0)`, `W1: X.T @ d1`, `b1: d1.sum(0)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_gradients_numeric",
+      "advice": "Check δ1 = (δ2 W2ᵀ) ⊙ (1 − h²) and that δ2 is divided by n."
+    },
+    {
+      "test": "test_init_recipe",
+      "advice": "Draw W1 then W2 from one default_rng(seed); biases are zeros."
+    },
+    {
+      "test": "test_trains",
+      "advice": "Compute all gradients first, then update every parameter with lr."
+    },
+    {
+      "test": "test_initial_loss_value",
+      "advice": "With zero weights p = 0.5 everywhere, so the loss is log 2."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

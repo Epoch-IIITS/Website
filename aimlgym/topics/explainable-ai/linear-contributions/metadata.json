@@ -1,0 +1,75 @@
+{
+  "id": "XA-01",
+  "slug": "linear-contributions",
+  "title": "Linear Model Contributions",
+  "topic": "explainable-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-09"
+  ],
+  "prerequisite_slugs": [
+    "least-squares-line"
+  ],
+  "learning_objectives": [
+    "Attribute a linear prediction to features relative to a baseline",
+    "Verify that contributions sum to prediction − baseline prediction",
+    "Explain why the baseline choice matters"
+  ],
+  "concept_tags": [
+    "feature-attribution",
+    "linear-models",
+    "baseline",
+    "local-explanation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S024"
+  ],
+  "entry_point": "contributions(w, b, x, baseline)",
+  "hints": [
+    "Convert all inputs with `np.asarray(..., float)` and compare shapes.",
+    "`phi = w * (x - baseline)`.",
+    "`prediction = float(w @ x + b)`; baseline prediction similarly."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_efficiency",
+      "advice": "Contributions must be w * (x − baseline) so they sum to f(x) − f(baseline)."
+    },
+    {
+      "test": "test_example",
+      "advice": "Return prediction and baseline_prediction as floats including the bias."
+    },
+    {
+      "test": "test_at_baseline_zero",
+      "advice": "At the baseline every contribution is zero."
+    },
+    {
+      "test": "test_mismatch",
+      "advice": "Validate that all vectors have the same length."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

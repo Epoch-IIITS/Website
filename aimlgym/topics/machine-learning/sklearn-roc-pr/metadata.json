@@ -1,0 +1,80 @@
+{
+  "id": "ML-24",
+  "slug": "sklearn-roc-pr",
+  "title": "Thresholds, ROC and Precision–Recall Curves",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-23",
+    "ML-06"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-gradient-boosting",
+    "classification-metrics"
+  ],
+  "learning_objectives": [
+    "Summarise a classifier's scores with ROC AUC and average precision",
+    "Read precision and recall at every threshold with precision_recall_curve",
+    "Choose a decision threshold that meets a recall target"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "roc-auc",
+    "precision-recall",
+    "thresholds",
+    "imbalanced-data"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S091",
+    "S012"
+  ],
+  "entry_point": "threshold_report(y_true, scores, min_recall)",
+  "hints": [
+    "Validate: `set(y_true) == {0, 1}`, equal lengths, `0 < min_recall <= 1`.",
+    "`precision, recall, thresholds = precision_recall_curve(y_true, scores)`; only the first `len(thresholds)` points have thresholds.",
+    "Among indices i with `recall[i] >= min_recall`, take the one with the largest `thresholds[i]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Pick the highest threshold whose recall still reaches min_recall."
+    },
+    {
+      "test": "test_auc_is_pairwise_ranking",
+      "advice": "roc_auc_score takes scores, not thresholded labels."
+    },
+    {
+      "test": "test_recall_target_met",
+      "advice": "precision[i], recall[i] belong to thresholds[i]; ignore the final extra point."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Require both classes, equal lengths and 0 < min_recall <= 1."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

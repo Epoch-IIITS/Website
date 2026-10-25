@@ -1,0 +1,80 @@
+{
+  "id": "PY-26",
+  "slug": "shapes-inheritance",
+  "title": "Inheritance, Special Methods and Dataclasses",
+  "topic": "python",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-25"
+  ],
+  "prerequisite_slugs": [
+    "bank-account"
+  ],
+  "learning_objectives": [
+    "Create subclasses that reuse and override base-class methods",
+    "Call the parent initialiser with super()",
+    "Implement special methods such as __eq__ and __lt__",
+    "Generate boilerplate with @dataclass"
+  ],
+  "concept_tags": [
+    "inheritance",
+    "polymorphism",
+    "super",
+    "dunder-methods",
+    "dataclasses"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S046",
+    "S057"
+  ],
+  "entry_point": "Shape, Rectangle(width, height), Square(side), Circle(radius), total_area(shapes), Point(x, y)",
+  "hints": [
+    "`class Square(Rectangle):` with `def __init__(self, side): super().__init__(side, side)`.",
+    "In `__eq__`, start with `if not isinstance(other, Shape): return NotImplemented`.",
+    "`@dataclass` above `class Point:` with `x: float` and `y: float`; use `math.hypot` for the distance."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_square_inherits",
+      "advice": "Subclass `Rectangle` and call `super().__init__(side, side)`; set `name = \"square\"`."
+    },
+    {
+      "test": "test_circle",
+      "advice": "Use `math.pi * r ** 2` for the area and `2 * math.pi * r` for the perimeter."
+    },
+    {
+      "test": "test_equality_and_sorting",
+      "advice": "Define `__eq__` and `__lt__` on `Shape` using areas; return `NotImplemented` for non-shapes."
+    },
+    {
+      "test": "test_point_dataclass",
+      "advice": "Decorate `Point` with `@dataclass` and declare `x: float` and `y: float`."
+    },
+    {
+      "test": "test_total_area",
+      "advice": "Sum `s.area()` over the shapes; an empty list gives 0."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

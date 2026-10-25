@@ -1,0 +1,78 @@
+{
+  "id": "AG-07",
+  "slug": "ag-langgraph-basics",
+  "title": "LangGraph Basics: State, Nodes and Edges",
+  "topic": "agentic-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-06",
+    "AG-03"
+  ],
+  "prerequisite_slugs": [
+    "react-loop",
+    "ag-langchain-tools"
+  ],
+  "learning_objectives": [
+    "Describe a workflow as a StateGraph with a typed state",
+    "Write nodes that return partial state updates and use a reducer to accumulate lists",
+    "Route between nodes with conditional edges, including loops"
+  ],
+  "concept_tags": [
+    "langgraph",
+    "state-machines",
+    "workflows",
+    "graphs"
+  ],
+  "permitted_packages": [
+    "langgraph"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S136",
+    "S139"
+  ],
+  "entry_point": "build_cleaner(max_words)",
+  "hints": [
+    "Each node is a small function returning a dict, e.g. `lambda s: {\"text\": s[\"text\"].lower(), \"steps\": [\"lower\"]}`.",
+    "`route = lambda s: \"shorten\" if len(s[\"text\"].split()) > max_words else END`.",
+    "Add the nodes, the fixed edges, `add_conditional_edges(\"check\", route)` and `add_edge(\"shorten\", \"check\")`, then `compile()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_worked_example",
+      "advice": "Route from check to shorten while there are more than max_words words; shorten loops back to check."
+    },
+    {
+      "test": "test_reducer_keeps_existing_steps",
+      "advice": "Annotate steps with operator.add and return only new steps from each node."
+    },
+    {
+      "test": "test_nodes",
+      "advice": "Name the nodes strip, lower, check and shorten."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Raise ValueError when max_words < 1."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

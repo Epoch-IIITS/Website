@@ -1,0 +1,76 @@
+{
+  "id": "DL-20",
+  "slug": "torch-dropout",
+  "title": "Dropout with train() and eval()",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-18"
+  ],
+  "prerequisite_slugs": [
+    "torch-training-loop"
+  ],
+  "learning_objectives": [
+    "Add nn.Dropout to a model and explain inverted dropout scaling",
+    "Get deterministic predictions with model.eval() and torch.no_grad()",
+    "Restore a model's previous mode after evaluation"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "dropout",
+    "regularisation",
+    "train-eval"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S113",
+    "S104"
+  ],
+  "entry_point": "class DropoutMLP(nn.Module); predict_proba(model, x)",
+  "hints": [
+    "Validate p before building the layers; remember `super().__init__()`.",
+    "Save `was_training = model.training`, call `model.eval()`, compute under `torch.no_grad()`.",
+    "`torch.softmax(logits, dim=1)`; finally `model.train(was_training)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_training_outputs_vary",
+      "advice": "Put nn.Dropout(p) between the ReLU and the last Linear layer."
+    },
+    {
+      "test": "test_predictions_deterministic",
+      "advice": "Switch to model.eval() before predicting and return softmax probabilities."
+    },
+    {
+      "test": "test_mode_restored",
+      "advice": "Remember model.training and call model.train(was_training) at the end."
+    },
+    {
+      "test": "test_no_gradients_tracked",
+      "advice": "Compute predictions inside torch.no_grad()."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "FA-14",
+  "slug": "fastapi-async",
+  "title": "Async Endpoints and External Services",
+  "topic": "fastapi",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-13",
+    "FA-06"
+  ],
+  "prerequisite_slugs": [
+    "fastapi-dependencies",
+    "asyncio-basics"
+  ],
+  "learning_objectives": [
+    "Write async def endpoints that await an external service",
+    "Call several services concurrently with asyncio.gather",
+    "Map timeouts and upstream failures to 504 and 502",
+    "Test with fake async services injected as dependencies — no network"
+  ],
+  "concept_tags": [
+    "fastapi",
+    "async",
+    "timeouts",
+    "mocking",
+    "concurrency"
+  ],
+  "permitted_packages": [
+    "fastapi"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S077",
+    "S061",
+    "S079"
+  ],
+  "entry_point": "class WeatherService; get_weather(); get_settings(); create_app()",
+  "hints": [
+    "Order the `except` clauses: `asyncio.TimeoutError`, then `LookupError`, then `Exception`.",
+    "For the list endpoint: `coros = [asyncio.wait_for(service.temperature(c), settings.timeout) for c in city]` then `await asyncio.gather(*coros, return_exceptions=True)`.",
+    "Map each result: `isinstance(r, asyncio.TimeoutError)` → \"timeout\", `isinstance(r, LookupError)` → \"unknown city\", other exceptions → \"service error\"."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_single_errors",
+      "advice": "Wrap the call in asyncio.wait_for and catch TimeoutError (504), LookupError (404), then Exception (502)."
+    },
+    {
+      "test": "test_many_in_order",
+      "advice": "Return one entry per requested city, in request order."
+    },
+    {
+      "test": "test_many_runs_concurrently",
+      "advice": "Start all calls together with asyncio.gather instead of awaiting them in a loop."
+    },
+    {
+      "test": "test_many_partial_failures",
+      "advice": "Use `return_exceptions=True` and turn each exception into an error entry."
+    },
+    {
+      "test": "test_requires_city",
+      "advice": "Declare `city: Annotated[list[str], Query(min_length=1)]`."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

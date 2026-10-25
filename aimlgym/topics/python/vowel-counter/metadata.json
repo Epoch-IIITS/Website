@@ -1,0 +1,73 @@
+{
+  "id": "PY-13",
+  "slug": "vowel-counter",
+  "title": "Vowel Counter",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-12"
+  ],
+  "prerequisite_slugs": [
+    "filter-evens"
+  ],
+  "learning_objectives": [
+    "Iterate over characters of a string",
+    "Use dictionaries as counters",
+    "Normalise case before comparing"
+  ],
+  "concept_tags": [
+    "strings",
+    "dictionaries",
+    "counting",
+    "membership"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "count_vowels(text)",
+  "hints": [
+    "Create `counts = {v: 0 for v in 'aeiou'}` so every key exists.",
+    "Loop over `text.lower()` and test `if ch in counts`.",
+    "`total = sum(counts.values())`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_uppercase",
+      "advice": "Lower-case the text before counting."
+    },
+    {
+      "test": "test_keys_exact",
+      "advice": "All five vowel keys must be present, even with count 0."
+    },
+    {
+      "test": "test_no_vowels",
+      "advice": "'y' is not counted in this problem."
+    },
+    {
+      "test": "test_total_matches",
+      "advice": "`total` must equal the sum of the dictionary values."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

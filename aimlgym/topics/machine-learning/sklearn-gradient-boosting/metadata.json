@@ -1,0 +1,78 @@
+{
+  "id": "ML-23",
+  "slug": "sklearn-gradient-boosting",
+  "title": "Gradient Boosting",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-22"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-trees-forests"
+  ],
+  "learning_objectives": [
+    "Train HistGradientBoostingClassifier and explain how boosting adds trees",
+    "Track validation log-loss as trees are added",
+    "Choose the number of boosting iterations from a validation curve"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "gradient-boosting",
+    "ensembles",
+    "early-stopping",
+    "log-loss"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S091"
+  ],
+  "entry_point": "boosting_curve(X_train, y_train, X_val, y_val, max_iter=100, learning_rate=0.1, seed=0)",
+  "hints": [
+    "Validate the arguments, then fit the classifier with `early_stopping=False`.",
+    "`[float(log_loss(y_val, p, labels=[0, 1])) for p in model.staged_predict_proba(X_val)]`.",
+    "`best_iteration = val_loss.index(min(val_loss)) + 1`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_curve_lengths",
+      "advice": "Use staged_predict_proba to get one probability set per tree."
+    },
+    {
+      "test": "test_validation_overfits_late",
+      "advice": "best_iteration is the 1-based position of the smallest validation loss."
+    },
+    {
+      "test": "test_final_accuracy",
+      "advice": "Fit with early_stopping=False and random_state=seed; score the validation set."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject max_iter < 1 and learning_rate <= 0."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

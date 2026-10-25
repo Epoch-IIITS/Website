@@ -1,0 +1,77 @@
+{
+  "id": "NP-10",
+  "slug": "seeded-generator",
+  "title": "Seeded Random Generators",
+  "topic": "numpy",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-09",
+    "ST-10"
+  ],
+  "prerequisite_slugs": [
+    "fancy-indexing",
+    "dice-lln"
+  ],
+  "learning_objectives": [
+    "Use np.random.default_rng with a seed",
+    "Generate synthetic regression data",
+    "Create reproducible shuffled train/test indices"
+  ],
+  "concept_tags": [
+    "random",
+    "reproducibility",
+    "synthetic-data",
+    "Generator"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S007"
+  ],
+  "entry_point": "make_regression(n, seed, noise=0.1); split_indices(n, test_frac, seed)",
+  "hints": [
+    "`rng = np.random.default_rng(seed)` once at the top of each function.",
+    "Draw x before the noise so the order of draws is as specified.",
+    "`perm = rng.permutation(n); k = round(n * test_frac); return perm[k:], perm[:k]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_draw_order",
+      "advice": "Create one default_rng(seed); draw x = uniform first, then normal noise."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "Don't use the global np.random functions."
+    },
+    {
+      "test": "test_split_disjoint_cover",
+      "advice": "Use rng.permutation(n) and split it; the two parts must not overlap."
+    },
+    {
+      "test": "test_noise_free",
+      "advice": "y = 2x + 1 + noise exactly."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

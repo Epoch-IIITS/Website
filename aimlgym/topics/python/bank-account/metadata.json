@@ -1,0 +1,80 @@
+{
+  "id": "PY-25",
+  "slug": "bank-account",
+  "title": "Classes: A Bank Account",
+  "topic": "python",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-24"
+  ],
+  "prerequisite_slugs": [
+    "text-stats-stdin"
+  ],
+  "learning_objectives": [
+    "Define a class with __init__, attributes and methods",
+    "Protect an object's state by validating in methods",
+    "Distinguish class attributes from instance attributes",
+    "Give objects a readable __repr__"
+  ],
+  "concept_tags": [
+    "classes",
+    "objects",
+    "methods",
+    "state",
+    "repr"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S046",
+    "S044"
+  ],
+  "entry_point": "class BankAccount(owner, balance=0)",
+  "hints": [
+    "Create `self.history = []` in `__init__` and check the start balance there.",
+    "In `withdraw`, raise before changing anything: `if amount <= 0 or amount > self.balance: raise ValueError(...)`.",
+    "`transfer_to` can call `self.withdraw(amount)` then `other.deposit(amount)`; `!r` in an f-string adds quotes."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_init_and_repr",
+      "advice": "Create `self.history = []` in `__init__` and format `__repr__` with `{self.owner!r}`."
+    },
+    {
+      "test": "test_invalid_amounts_change_nothing",
+      "advice": "Raise ValueError before modifying balance or history."
+    },
+    {
+      "test": "test_separate_histories",
+      "advice": "Do not make `history` a class attribute; create it in `__init__`."
+    },
+    {
+      "test": "test_transfer",
+      "advice": "Withdraw first; if it raises, the deposit never happens."
+    },
+    {
+      "test": "test_interest",
+      "advice": "Define `interest_rate = 0.02` in the class body and deposit the rounded interest."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

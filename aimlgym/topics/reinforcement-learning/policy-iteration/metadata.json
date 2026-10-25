@@ -1,0 +1,77 @@
+{
+  "id": "RL-10",
+  "slug": "policy-iteration",
+  "title": "Policy Iteration",
+  "topic": "reinforcement-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-08",
+    "RL-09"
+  ],
+  "prerequisite_slugs": [
+    "policy-evaluation",
+    "value-iteration"
+  ],
+  "learning_objectives": [
+    "Alternate policy evaluation and greedy improvement",
+    "Detect policy stability",
+    "Verify agreement with value iteration"
+  ],
+  "concept_tags": [
+    "policy-iteration",
+    "dynamic-programming",
+    "policy-improvement"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033",
+    "S034"
+  ],
+  "entry_point": "policy_iteration(P, gamma=0.9, theta=1e-10, max_iter=100)",
+  "hints": [
+    "Deterministic policy matrix: `pm = np.zeros((nS, nA)); pm[np.arange(nS), pi] = 1`.",
+    "Evaluate synchronously until max change < theta; compute Q from V.",
+    "`new_pi = Q.argmax(axis=1)`; stop when `np.array_equal(new_pi, pi)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_matches_value_iteration",
+      "advice": "Evaluate the current policy fully before improving."
+    },
+    {
+      "test": "test_stochastic",
+      "advice": "Lookahead must weight outcomes by probability and stop bootstrapping at done."
+    },
+    {
+      "test": "test_already_optimal_one_cycle",
+      "advice": "Count the final cycle in which the policy did not change."
+    },
+    {
+      "test": "test_grid",
+      "advice": "Improvement is argmax over actions of Q computed from V^π."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

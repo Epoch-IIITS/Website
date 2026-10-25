@@ -1,0 +1,49 @@
+{
+  "id": "LM-P3",
+  "slug": "prompt-playground",
+  "title": "Prompt Playground",
+  "topic": "llms",
+  "kind": "project",
+  "concept_tags": [
+    "prompting",
+    "decoding",
+    "evaluation"
+  ],
+  "uses": [
+    {
+      "slug": "temperature-softmax",
+      "id": "LM-03",
+      "title": "Logits, Temperature and Softmax"
+    },
+    {
+      "slug": "top-k-top-p",
+      "id": "LM-13",
+      "title": "Top-k and Top-p Filtering"
+    },
+    {
+      "slug": "beam-search",
+      "id": "LM-14",
+      "title": "Beam Search"
+    },
+    {
+      "slug": "lm-chat-prompt-langchain",
+      "id": "LM-17",
+      "title": "Chat Prompts and Messages with LangChain"
+    }
+  ],
+  "brief": "Build a small tool that sends the same task to a model with different prompts and decoding settings,\nshows the outputs side by side, and scores them — so you can see what temperature, top-p, system\nmessages and few-shot examples actually change.\n",
+  "milestones": [
+    "Define three tasks (summarise, classify, extract fields) with a few test inputs each.",
+    "Write prompt variants: plain, with a system message, with two few-shot examples.",
+    "Run each variant at temperatures 0, 0.7 and 1.2 and store the outputs in a table.",
+    "Score outputs automatically where possible (exact match for classification, valid JSON for extraction).",
+    "Summarise which settings work best per task, with examples of failures."
+  ],
+  "stretch": [
+    "Repeat each setting five times to measure variability.",
+    "Use your tiny GPT for the decoding experiments and a chat model for the prompting ones.",
+    "Turn the table into an HTML report."
+  ],
+  "data": "Write your own small task inputs (10–20 per task). A local model through [Ollama](https://ollama.com/)\navoids API costs.\n",
+  "setup": "```bash\npip install langchain-core langchain-ollama pandas\npython playground.py\n```\n"
+}

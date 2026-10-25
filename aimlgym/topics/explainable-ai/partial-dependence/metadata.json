@@ -1,0 +1,76 @@
+{
+  "id": "XA-06",
+  "slug": "partial-dependence",
+  "title": "Partial Dependence by Hand",
+  "topic": "explainable-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "XA-04"
+  ],
+  "prerequisite_slugs": [
+    "ice-curve"
+  ],
+  "learning_objectives": [
+    "Average ICE curves over a dataset to get partial dependence",
+    "Centre curves at the first grid point",
+    "Detect interactions via ICE spread"
+  ],
+  "concept_tags": [
+    "pdp",
+    "partial-dependence",
+    "global-explanation",
+    "model-agnostic"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S024",
+    "S012"
+  ],
+  "entry_point": "partial_dependence(predict, X, feature, grid); ice_spread(predict, X, feature, grid)",
+  "hints": [
+    "Write `_ice_matrix` returning shape `(n, m)`: for each grid value g, copy X, set column, predict.",
+    "PD = `ice.mean(axis=0)`.",
+    "Centred: `ice - ice[:, [0]]`; spread = `centred.std(axis=0).mean()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_interaction_flat",
+      "advice": "PD averages predictions over instances with the feature fixed at each grid value."
+    },
+    {
+      "test": "test_spread",
+      "advice": "Centre each ICE curve at grid[0], then take the std across instances and average over the grid."
+    },
+    {
+      "test": "test_additive_no_spread",
+      "advice": "Additive effects give parallel ICE curves, hence zero spread."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Copy X before overwriting the feature column."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

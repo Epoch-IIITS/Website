@@ -1,0 +1,78 @@
+{
+  "id": "AG-03",
+  "slug": "ag-langchain-tools",
+  "title": "Tools and Tool Calling with LangChain",
+  "topic": "agentic-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-02",
+    "LM-17"
+  ],
+  "prerequisite_slugs": [
+    "parse-tool-call",
+    "lm-chat-prompt-langchain"
+  ],
+  "learning_objectives": [
+    "Define tools with the @tool decorator, a docstring and type hints",
+    "Read tool calls from an AIMessage and answer them with ToolMessages",
+    "Turn tool errors into messages the model can read instead of crashes"
+  ],
+  "concept_tags": [
+    "langchain",
+    "tools",
+    "tool-calling",
+    "function-calling"
+  ],
+  "permitted_packages": [
+    "langchain-core"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S134",
+    "S130"
+  ],
+  "entry_point": "word_count; to_fahrenheit; run_tool_calls(message, tools)",
+  "hints": [
+    "Put `@tool` on a normal function with type hints and a one-line docstring.",
+    "Build `by_name = {t.name: t for t in tools}` and loop over `message.tool_calls`.",
+    "Wrap `by_name[name].invoke(call[\"args\"])` in try/except Exception and always pass `tool_call_id=call[\"id\"]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_tool_metadata",
+      "advice": "Decorate the functions with @tool and give them the exact docstrings."
+    },
+    {
+      "test": "test_run_two_calls",
+      "advice": "Return one ToolMessage per call with content=str(result) and tool_call_id=call['id']."
+    },
+    {
+      "test": "test_unknown_tool",
+      "advice": "Unknown tools become error ToolMessages, not exceptions."
+    },
+    {
+      "test": "test_bad_arguments",
+      "advice": "Catch exceptions from tool.invoke and report them with status='error'."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "id": "ST-20",
+  "slug": "permutation-test",
+  "title": "Permutation Test for a Mean Difference by Hand",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ST-13",
+    "ST-18"
+  ],
+  "prerequisite_slugs": [
+    "bootstrap-ci",
+    "welch-t"
+  ],
+  "learning_objectives": [
+    "State a null hypothesis as exchangeability",
+    "Implement a seeded Fisher–Yates shuffle",
+    "Compute a two-sided permutation p-value with the +1 correction"
+  ],
+  "concept_tags": [
+    "hypothesis-testing",
+    "permutation-test",
+    "p-value",
+    "shuffling"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S010",
+    "S004"
+  ],
+  "entry_point": "fisher_yates(items, rng); permutation_test(x, y, n_perm=5000, seed=0)",
+  "hints": [
+    "Copy first: `a = list(items)`, then loop `for i in range(len(a) - 1, 0, -1)`.",
+    "`j = int(rng.random() * (i + 1))`; `a[i], a[j] = a[j], a[i]`.",
+    "Split each shuffled pool into `p[:nx]` and `p[nx:]` and compare absolute differences."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_fy_recipe",
+      "advice": "Loop i from n−1 down to 1 and use j = int(rng.random()*(i+1))."
+    },
+    {
+      "test": "test_fy_uniform_first_position",
+      "advice": "A biased shuffle (j over the whole list) fails this check."
+    },
+    {
+      "test": "test_identical_groups",
+      "advice": "Use abs(d) >= abs(d_obs) − 1e-12 so ties count."
+    },
+    {
+      "test": "test_p_never_zero",
+      "advice": "Use (hits + 1) / (n_perm + 1)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

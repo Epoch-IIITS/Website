@@ -1,0 +1,72 @@
+{
+  "id": "MA-04",
+  "slug": "dot-product",
+  "title": "Dot Product",
+  "topic": "mathematics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-01"
+  ],
+  "prerequisite_slugs": [
+    "summation"
+  ],
+  "learning_objectives": [
+    "Compute a dot product",
+    "Validate equal lengths",
+    "Interpret the sign of a dot product geometrically"
+  ],
+  "concept_tags": [
+    "vectors",
+    "dot-product",
+    "linear-algebra"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009"
+  ],
+  "entry_point": "dot(u, v)",
+  "hints": [
+    "Compare `len(u)` and `len(v)` first.",
+    "`zip(u, v)` pairs up corresponding elements.",
+    "Accumulate `total += a * b` starting from 0."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_mismatch",
+      "advice": "zip stops at the shorter list — check lengths explicitly."
+    },
+    {
+      "test": "test_empty",
+      "advice": "Start the accumulator at 0, not at u[0]*v[0]."
+    },
+    {
+      "test": "test_floats",
+      "advice": "Floats are compared with tolerance 1e-12; return a number."
+    },
+    {
+      "test": "test_example",
+      "advice": "Multiply corresponding elements and add them up."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

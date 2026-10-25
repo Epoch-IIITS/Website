@@ -1,0 +1,78 @@
+{
+  "id": "DL-02",
+  "slug": "stable-softmax",
+  "title": "Numerically Stable Softmax",
+  "topic": "deep-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-01",
+    "MA-02"
+  ],
+  "prerequisite_slugs": [
+    "activations",
+    "exp-log"
+  ],
+  "learning_objectives": [
+    "Compute softmax along an axis",
+    "Use the max-subtraction trick to avoid overflow",
+    "Compute log-softmax stably"
+  ],
+  "concept_tags": [
+    "softmax",
+    "numerical-stability",
+    "log-sum-exp"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S013"
+  ],
+  "entry_point": "softmax(z, axis=-1); log_softmax(z, axis=-1)",
+  "hints": [
+    "`m = z.max(axis=axis, keepdims=True)`; work with `z - m`.",
+    "`e = np.exp(z - m); e / e.sum(axis=axis, keepdims=True)`.",
+    "`(z - m) - np.log(np.exp(z - m).sum(axis=axis, keepdims=True))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_large",
+      "advice": "Subtract the max before exponentiating."
+    },
+    {
+      "test": "test_axis0",
+      "advice": "Use keepdims=True with the given axis for max and sum."
+    },
+    {
+      "test": "test_log_softmax",
+      "advice": "Don't compute log(softmax(z)); use shifted logits minus log-sum-exp."
+    },
+    {
+      "test": "test_rows",
+      "advice": "Each row must sum to 1 when axis=-1."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

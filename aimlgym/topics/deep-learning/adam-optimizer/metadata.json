@@ -1,0 +1,83 @@
+{
+  "id": "DL-16",
+  "slug": "adam-optimizer",
+  "title": "The Adam Optimiser",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "DL-14"
+  ],
+  "prerequisite_slugs": [
+    "sgd-momentum"
+  ],
+  "learning_objectives": [
+    "Maintain first- and second-moment estimates of the gradient",
+    "Apply bias correction for the early steps",
+    "Explain why Adam's step size is roughly lr regardless of gradient scale",
+    "Use the same params/grads dictionary interface as Momentum"
+  ],
+  "concept_tags": [
+    "optimisers",
+    "adam",
+    "adaptive-learning-rate",
+    "bias-correction"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S095",
+    "S013"
+  ],
+  "entry_point": "class Adam(lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8); Adam.step(params, grads)",
+  "hints": [
+    "Validate in `__init__`; in `step`, compare `set(params) != set(grads)` and each pair of shapes.",
+    "Increment `self.t` once at the start of `step`, then loop over keys; create zeros with `np.zeros_like(p)` the first time a key is seen.",
+    "`m_hat = m / (1 - beta1 ** t)`, `v_hat = v / (1 - beta2 ** t)`, `p - lr * m_hat / (np.sqrt(v_hat) + eps)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_first_step_is_lr_sign",
+      "advice": "With bias correction the first step is about `lr * sign(g)`."
+    },
+    {
+      "test": "test_matches_reference_recurrence",
+      "advice": "Check both moment updates, the bias corrections with the shared `t`, and where eps goes."
+    },
+    {
+      "test": "test_scale_invariance",
+      "advice": "Divide by `sqrt(v_hat) + eps`, which cancels the gradient's scale."
+    },
+    {
+      "test": "test_does_not_mutate_and_counts_once",
+      "advice": "Increment `t` once per step call, not once per parameter, and return new arrays."
+    },
+    {
+      "test": "test_validation",
+      "advice": "Validate the hyperparameters and the keys/shapes of params and grads."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

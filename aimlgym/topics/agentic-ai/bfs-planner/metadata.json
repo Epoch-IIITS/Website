@@ -1,0 +1,73 @@
+{
+  "id": "AG-11",
+  "slug": "bfs-planner",
+  "title": "BFS Planner",
+  "topic": "agentic-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-05"
+  ],
+  "prerequisite_slugs": [
+    "goal-and-budget"
+  ],
+  "learning_objectives": [
+    "Formulate planning as graph search",
+    "Find a shortest action sequence with breadth-first search",
+    "Reconstruct plans from parent pointers"
+  ],
+  "concept_tags": [
+    "planning",
+    "search",
+    "bfs",
+    "shortest-path"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S038"
+  ],
+  "entry_point": "bfs_plan(start, goal_test, successors)",
+  "hints": [
+    "`queue = deque([start]); parent = {start: None}`.",
+    "When enqueuing `nxt` not in parent: `parent[nxt] = (state, action)`.",
+    "Rebuild: walk parents from the goal to the start, then reverse both lists."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_rooms",
+      "advice": "Expand successors in the given order and stop when a dequeued state is a goal."
+    },
+    {
+      "test": "test_cycles",
+      "advice": "Mark states as visited when enqueued so cycles don't loop forever."
+    },
+    {
+      "test": "test_start_is_goal",
+      "advice": "If the start is a goal, return an empty plan."
+    },
+    {
+      "test": "test_unreachable",
+      "advice": "Return None when the queue empties."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

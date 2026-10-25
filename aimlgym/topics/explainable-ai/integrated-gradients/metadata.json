@@ -1,0 +1,78 @@
+{
+  "id": "XA-14",
+  "slug": "integrated-gradients",
+  "title": "Integrated Gradients",
+  "topic": "explainable-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "XA-11",
+    "DL-10"
+  ],
+  "prerequisite_slugs": [
+    "exact-shapley",
+    "neuron-backprop"
+  ],
+  "learning_objectives": [
+    "Integrate gradients along the straight path from a baseline",
+    "Approximate the integral with a midpoint Riemann sum",
+    "Check the completeness axiom"
+  ],
+  "concept_tags": [
+    "integrated-gradients",
+    "gradient-attribution",
+    "completeness",
+    "deep-learning-explanations"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S027",
+    "S024"
+  ],
+  "entry_point": "integrated_gradients(grad_fn, x, baseline, steps=50)",
+  "hints": [
+    "`alphas = (np.arange(steps) + 0.5) / steps`.",
+    "`points = baseline + alphas[:, None] * (x - baseline)`.",
+    "`ig = (x - baseline) * grad_fn(points).mean(axis=0)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_alphas_midpoint",
+      "advice": "Midpoint rule: alpha_k = (k + 0.5) / steps."
+    },
+    {
+      "test": "test_completeness",
+      "advice": "Multiply the averaged gradient by (x − baseline)."
+    },
+    {
+      "test": "test_single_call",
+      "advice": "Build all path points and call grad_fn once."
+    },
+    {
+      "test": "test_saturation_vs_gradient",
+      "advice": "IG captures effects even where the local gradient is ~0."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

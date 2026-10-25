@@ -1,0 +1,81 @@
+{
+  "id": "FA-07",
+  "slug": "asgi-app",
+  "title": "A Minimal ASGI Application",
+  "topic": "fastapi",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-06"
+  ],
+  "prerequisite_slugs": [
+    "asyncio-basics"
+  ],
+  "learning_objectives": [
+    "Describe the ASGI interface: scope, receive and send",
+    "Write an async application that sends a start message and a body message",
+    "Read a request body from receive() events",
+    "Call an ASGI app in-process, as a test client does"
+  ],
+  "concept_tags": [
+    "asgi",
+    "async",
+    "http",
+    "test-client",
+    "frameworks"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S069",
+    "S061",
+    "S077"
+  ],
+  "entry_point": "async app(scope, receive, send); call_asgi(app, method, path, query_string=b'', body=b'', headers=None)",
+  "hints": [
+    "Read the body with a loop: `chunks = []; more = True; while more: event = await receive(); chunks.append(event.get(\"body\", b\"\")); more = event.get(\"more_body\", False)`.",
+    "Keep a dict of path → allowed methods to decide between 404 and 405.",
+    "In `call_asgi`, define `async def receive(): return {\"type\": \"http.request\", \"body\": body, \"more_body\": False}` and a `send` that appends events to a list."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_root_events",
+      "advice": "Send exactly one start event (status + headers) and then one body event."
+    },
+    {
+      "test": "test_sum_chunked",
+      "advice": "Keep calling `receive()` while `more_body` is true and join the chunks."
+    },
+    {
+      "test": "test_errors",
+      "advice": "Unknown path → 404; known path with the wrong method → 405; bad bodies → 400."
+    },
+    {
+      "test": "test_call_asgi_client",
+      "advice": "Build the scope, run the app with asyncio.run, and decode the recorded events."
+    },
+    {
+      "test": "test_call_asgi_with_other_app",
+      "advice": "Join every body event, and decode header byte pairs into strings."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

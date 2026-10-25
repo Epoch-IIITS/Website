@@ -1,0 +1,79 @@
+{
+  "id": "CV-21",
+  "slug": "cv-small-cnn",
+  "title": "A Small CNN in PyTorch",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-20",
+    "DL-18"
+  ],
+  "prerequisite_slugs": [
+    "cv-contours",
+    "torch-training-loop"
+  ],
+  "learning_objectives": [
+    "Stack Conv2d, ReLU and MaxPool2d layers into a CNN",
+    "Compute the flattened feature size before the classifier layer",
+    "Train the CNN on generated images and evaluate it on new ones"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "cnn",
+    "image-classification",
+    "conv2d"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S124",
+    "S093"
+  ],
+  "entry_point": "class SmallCNN(nn.Module); train_cnn(images, labels, epochs=8, lr=0.01, seed=0)",
+  "hints": [
+    "Write a helper `to_tensor(images)` returning `torch.as_tensor(np.asarray(images), dtype=torch.float32)[:, None] / 255`.",
+    "The classifier is `nn.Linear(16 * (size // 4) ** 2, n_classes)`; forward flattens with `torch.flatten(x, 1)`.",
+    "The training loop is the one from the training-loop step, with the epoch loss weighted by batch size."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_shapes_through_network",
+      "advice": "Two padded 3×3 convolutions with 2×2 max pooling; classifier input 16 * (size // 4) ** 2."
+    },
+    {
+      "test": "test_learns_shapes",
+      "advice": "Scale pixels to [0, 1], add the channel axis and train with Adam and CrossEntropyLoss."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "Seed before building the model and pass a seeded generator to the DataLoader."
+    },
+    {
+      "test": "test_eval_mode_and_types",
+      "advice": "Call model.eval() and return predictions as a list of ints."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

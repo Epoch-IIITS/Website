@@ -1,0 +1,76 @@
+{
+  "id": "LM-14",
+  "slug": "beam-search",
+  "title": "Beam Search",
+  "topic": "llms",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-04"
+  ],
+  "prerequisite_slugs": [
+    "greedy-decoding"
+  ],
+  "learning_objectives": [
+    "Keep the B best partial sequences by total log-probability",
+    "Handle finished hypotheses (EOS)",
+    "See why beam search can beat greedy decoding"
+  ],
+  "concept_tags": [
+    "beam-search",
+    "decoding",
+    "log-probabilities",
+    "search"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013",
+    "S022"
+  ],
+  "entry_point": "beam_search(next_logprobs, prompt, vocab, beam_width=2, max_new=5, eos='</s>')",
+  "hints": [
+    "Store beams as `(tokens_list, score)`; finished beams are carried over unchanged.",
+    "Sort candidates with `key=lambda c: (-c[1], c[0])` and keep `[:beam_width]`.",
+    "Break when every beam's last token is `eos`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_beats_greedy",
+      "advice": "Keep the top beam_width candidates by summed log-probability."
+    },
+    {
+      "test": "test_finished_not_extended",
+      "advice": "Carry finished (EOS) beams forward without calling the model."
+    },
+    {
+      "test": "test_tie_break",
+      "advice": "Sort with key (-score, tokens) for deterministic ties."
+    },
+    {
+      "test": "test_max_new_limit",
+      "advice": "Stop after max_new expansion steps."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

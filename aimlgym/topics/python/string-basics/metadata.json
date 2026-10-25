@@ -1,0 +1,74 @@
+{
+  "id": "PY-06",
+  "slug": "string-basics",
+  "title": "Strings: Indexing, Slicing and Methods",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [
+    "PY-05"
+  ],
+  "prerequisite_slugs": [
+    "arithmetic-operators"
+  ],
+  "learning_objectives": [
+    "Index characters with positive and negative indices",
+    "Slice substrings, including with a step",
+    "Use len(), upper(), lower(), strip(), replace() and the in operator"
+  ],
+  "concept_tags": [
+    "strings",
+    "indexing",
+    "slicing",
+    "string-methods"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S040",
+    "S049"
+  ],
+  "entry_point": "program (reads stdin, prints to stdout)",
+  "hints": [
+    "`word[0]` is the first character and `word[-1]` the last.",
+    "`word[:3]` never fails even if the word is shorter; `word[::-1]` reverses it.",
+    "`'th' in word` gives True or False; print it inside an f-string."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_short_word",
+      "advice": "Use a slice `word[:3]`; slices stop at the end of the string without errors."
+    },
+    {
+      "test": "test_strip",
+      "advice": "Strip the input before measuring its length."
+    },
+    {
+      "test": "test_contains_false",
+      "advice": "The test is case-sensitive: use `'th' in word` on the original word."
+    },
+    {
+      "test": "test_single_character",
+      "advice": "Use `word[-1]` for the last character and `word[::-1]` to reverse."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

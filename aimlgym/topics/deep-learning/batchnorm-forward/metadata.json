@@ -1,0 +1,76 @@
+{
+  "id": "DL-23",
+  "slug": "batchnorm-forward",
+  "title": "Batch Normalization by Hand (train/eval)",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "DL-21"
+  ],
+  "prerequisite_slugs": [
+    "inverted-dropout"
+  ],
+  "learning_objectives": [
+    "Normalise activations with batch statistics",
+    "Maintain running averages for evaluation",
+    "Apply learnable scale and shift"
+  ],
+  "concept_tags": [
+    "batch-normalization",
+    "normalisation",
+    "running-statistics"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S013"
+  ],
+  "entry_point": "class BatchNorm1d(n_features, momentum=0.1, eps=1e-5): forward(x, training=True)",
+  "hints": [
+    "`mu = x.mean(0)`, `var = x.var(0)` (population) for normalisation.",
+    "Unbiased: `var * n / (n - 1)` for the running variance update.",
+    "Eval: `(x - running_mean) / sqrt(running_var + eps)` then scale/shift."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_running_stats",
+      "advice": "Running var uses the unbiased batch variance (× n/(n−1)) with momentum 0.1."
+    },
+    {
+      "test": "test_eval_uses_running",
+      "advice": "In eval mode use running statistics and do not update them."
+    },
+    {
+      "test": "test_normalised_stats",
+      "advice": "Normalise per feature over axis 0 (the batch)."
+    },
+    {
+      "test": "test_gamma_beta",
+      "advice": "Output is gamma * x_hat + beta."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

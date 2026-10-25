@@ -1,0 +1,54 @@
+{
+  "id": "CV-P3",
+  "slug": "object-counter",
+  "title": "Simple Object Counter",
+  "topic": "computer-vision",
+  "kind": "project",
+  "concept_tags": [
+    "segmentation",
+    "counting",
+    "connected-components"
+  ],
+  "uses": [
+    {
+      "slug": "cv-threshold-otsu",
+      "id": "CV-06",
+      "title": "Thresholding and Otsu's Method"
+    },
+    {
+      "slug": "cv-contours",
+      "id": "CV-20",
+      "title": "Contours and Bounding Boxes"
+    },
+    {
+      "slug": "iou",
+      "id": "CV-23",
+      "title": "Intersection over Union"
+    },
+    {
+      "slug": "non-max-suppression",
+      "id": "CV-24",
+      "title": "Non-Maximum Suppression"
+    },
+    {
+      "slug": "cv-connected-components",
+      "id": "CV-25",
+      "title": "Connected Components with OpenCV"
+    }
+  ],
+  "brief": "Count objects in images — coins on a table or cell nuclei under a microscope — and report their\nsizes. Compare your counts with the ground truth and find out which images are hard and why.\n",
+  "milestones": [
+    "Load an image, convert to greyscale, blur and threshold with Otsu.",
+    "Clean the mask with morphological opening (cv2.morphologyEx) to remove speckles.",
+    "Count objects with connectedComponentsWithStats and filter by area.",
+    "Draw numbered bounding boxes and save an annotated image.",
+    "On a labelled dataset, compare counts with the ground truth and report the mean absolute error."
+  ],
+  "stretch": [
+    "Separate touching objects with the distance transform and watershed.",
+    "Match predicted boxes to ground-truth boxes with IoU and report precision and recall.",
+    "Measure object sizes in millimetres using a reference object of known size."
+  ],
+  "data": "* [BBBC039](https://bbbc.broadinstitute.org/BBBC039): fluorescent nuclei images with ground-truth\n  masks (Broad Bioimage Benchmark Collection).\n* A coins image ships with scikit-image: `skimage.data.coins()`\n  ([data module](https://scikit-image.org/docs/stable/api/skimage.data.html)), or photograph coins yourself.\n",
+  "setup": "```bash\npip install opencv-python numpy scikit-image\npython count.py image.png\n```\n"
+}

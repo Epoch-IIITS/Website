@@ -1,0 +1,72 @@
+{
+  "id": "MA-05",
+  "slug": "vector-norm-unit",
+  "title": "Vector Norm and Unit Vector",
+  "topic": "mathematics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-04"
+  ],
+  "prerequisite_slugs": [
+    "dot-product"
+  ],
+  "learning_objectives": [
+    "Compute L1, L2 and L∞ norms",
+    "Normalise a vector to unit length",
+    "Handle the zero vector"
+  ],
+  "concept_tags": [
+    "vectors",
+    "norms",
+    "normalisation"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009"
+  ],
+  "entry_point": "norm(v, p=2); unit(v)",
+  "hints": [
+    "L1: `sum(abs(x) for x in v)`; L∞: `max(abs(x) for x in v)` (watch the empty case).",
+    "L2: `math.sqrt(sum(x * x for x in v))`.",
+    "In `unit`, compute `n = norm(v)` once and raise if `n == 0`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_linf",
+      "advice": "Take the maximum of absolute values, not of raw values."
+    },
+    {
+      "test": "test_l1",
+      "advice": "Use abs() on each element."
+    },
+    {
+      "test": "test_unit_zero",
+      "advice": "Raise ValueError before dividing by a zero norm."
+    },
+    {
+      "test": "test_empty",
+      "advice": "Return 0.0 for an empty vector (max() of an empty list raises)."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

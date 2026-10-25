@@ -1,0 +1,80 @@
+{
+  "id": "NP-11",
+  "slug": "pairwise-distances",
+  "title": "Vectorized Pairwise Distances",
+  "topic": "numpy",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-07",
+    "NP-06"
+  ],
+  "prerequisite_slugs": [
+    "broadcast-center",
+    "matmul-dot"
+  ],
+  "learning_objectives": [
+    "Compute all pairwise squared distances with broadcasting",
+    "Use the expansion ‖a−b‖² = ‖a‖² + ‖b‖² − 2a·b",
+    "Find nearest neighbours with argmin"
+  ],
+  "concept_tags": [
+    "distances",
+    "broadcasting",
+    "vectorisation",
+    "nearest-neighbour"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S007",
+    "S006"
+  ],
+  "entry_point": "pairwise_sq_dists(A, B); nearest(A, B)",
+  "hints": [
+    "Row norms: `(A ** 2).sum(axis=1)`, shaped `(m, 1)` and `(1, n)`.",
+    "`D = aa + bb - 2 * A @ B.T`, then `np.maximum(D, 0)`.",
+    "`D.argmin(axis=1)` returns the first index on ties."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_against_loops",
+      "advice": "Check the sign of the −2·A@B.T term and the transpose."
+    },
+    {
+      "test": "test_self_zero_diag_nonneg",
+      "advice": "Clip with np.maximum(D, 0) to remove rounding negatives."
+    },
+    {
+      "test": "test_nearest",
+      "advice": "argmin along axis=1 gives the nearest B row for each A row."
+    },
+    {
+      "test": "test_dim_mismatch",
+      "advice": "Feature dimensions (columns) must match."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

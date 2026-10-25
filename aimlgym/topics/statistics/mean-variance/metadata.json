@@ -1,0 +1,73 @@
+{
+  "id": "ST-01",
+  "slug": "mean-variance",
+  "title": "Mean and Variance (Population vs Sample)",
+  "topic": "statistics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-01"
+  ],
+  "prerequisite_slugs": [
+    "summation"
+  ],
+  "learning_objectives": [
+    "Compute mean and variance",
+    "Distinguish population (N) and sample (N−1) variance",
+    "Relate variance and standard deviation"
+  ],
+  "concept_tags": [
+    "descriptive-statistics",
+    "variance",
+    "bessel-correction"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S003",
+    "S010"
+  ],
+  "entry_point": "mean_variance(data, sample=False)",
+  "hints": [
+    "Validate the length first, depending on `sample`.",
+    "Pass 1: `m = sum(data) / n`. Pass 2: `ss = sum((x - m) ** 2 for x in data)`.",
+    "Divide `ss` by `n - 1` if sample else `n`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_sample",
+      "advice": "Sample variance divides by n − 1."
+    },
+    {
+      "test": "test_large_offset_stable",
+      "advice": "Use the two-pass method; E[x²] − E[x]² loses precision for large values."
+    },
+    {
+      "test": "test_single_sample_error",
+      "advice": "Sample variance of one value is undefined — raise ValueError."
+    },
+    {
+      "test": "test_population",
+      "advice": "Return the mean as a float and divide by n for population variance."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

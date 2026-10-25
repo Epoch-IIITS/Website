@@ -1,0 +1,79 @@
+{
+  "id": "LM-20",
+  "slug": "lm-langchain-rag",
+  "title": "Retrieval-Augmented Generation with LangChain",
+  "topic": "llms",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-19",
+    "NL-10"
+  ],
+  "prerequisite_slugs": [
+    "lm-structured-output",
+    "nlp-tfidf-retrieval"
+  ],
+  "learning_objectives": [
+    "Implement the Embeddings interface and index documents in InMemoryVectorStore",
+    "Retrieve context for a question and build a grounded prompt with source ids",
+    "Check that an answer cites only the retrieved sources"
+  ],
+  "concept_tags": [
+    "langchain",
+    "rag",
+    "retrieval",
+    "vector-store",
+    "citations"
+  ],
+  "permitted_packages": [
+    "langchain-core"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S133",
+    "S130"
+  ],
+  "entry_point": "class KeywordEmbeddings(Embeddings); build_store(docs, vocabulary); rag_answer(store, model, question, k=2)",
+  "hints": [
+    "Count words with a dict over the vocabulary; the norm is `math.sqrt(sum(v * v for v in counts))`.",
+    "`store = InMemoryVectorStore(KeywordEmbeddings(vocabulary))`; `store.add_texts(list(docs.values()), ids=list(docs))`.",
+    "Citations: `re.findall(r\"\\[([\\w-]+)\\]\", answer)`, keeping the first occurrence of each."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_embeddings",
+      "advice": "Count vocabulary words, L2-normalise, and keep an all-zero vector as zeros."
+    },
+    {
+      "test": "test_retrieval_order",
+      "advice": "Add the texts with ids=list(docs) and search with similarity_search."
+    },
+    {
+      "test": "test_grounded_answer",
+      "advice": "Grounded means at least one citation and every cited id was retrieved."
+    },
+    {
+      "test": "test_repeated_citations_once",
+      "advice": "List each cited id once, in order of first appearance."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

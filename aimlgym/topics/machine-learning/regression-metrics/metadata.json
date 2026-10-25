@@ -1,0 +1,78 @@
+{
+  "id": "ML-03",
+  "slug": "regression-metrics",
+  "title": "Regression Metrics",
+  "topic": "machine-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-01"
+  ],
+  "prerequisite_slugs": [
+    "ml-baselines"
+  ],
+  "learning_objectives": [
+    "Compute MSE, RMSE, MAE and R²",
+    "Interpret R² relative to a mean baseline",
+    "Handle degenerate targets"
+  ],
+  "concept_tags": [
+    "metrics",
+    "mse",
+    "mae",
+    "r2",
+    "evaluation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012"
+  ],
+  "entry_point": "regression_report(y_true, y_pred)",
+  "hints": [
+    "`e = y_true - y_pred` with float arrays.",
+    "`mse = np.mean(e ** 2)`, `mae = np.mean(np.abs(e))`.",
+    "`ss_tot = np.sum((y_true - y_true.mean()) ** 2)`; raise if it is 0."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Use the mean of squared and absolute residuals; R² = 1 − SS_res/SS_tot."
+    },
+    {
+      "test": "test_negative_r2",
+      "advice": "Don't clip R² at 0 — worse-than-mean models have negative R²."
+    },
+    {
+      "test": "test_constant_target",
+      "advice": "Raise ValueError when y_true has zero variance."
+    },
+    {
+      "test": "test_types",
+      "advice": "Return plain Python floats."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

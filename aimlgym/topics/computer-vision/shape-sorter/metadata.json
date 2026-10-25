@@ -1,0 +1,54 @@
+{
+  "id": "CV-P2",
+  "slug": "shape-sorter",
+  "title": "Shape and Colour Sorter",
+  "topic": "computer-vision",
+  "kind": "project",
+  "concept_tags": [
+    "cnn",
+    "augmentation",
+    "image-classification"
+  ],
+  "uses": [
+    {
+      "slug": "cv-opencv-basics",
+      "id": "CV-03",
+      "title": "OpenCV Basics: BGR, dtypes and Indexing"
+    },
+    {
+      "slug": "cv-resize",
+      "id": "CV-18",
+      "title": "Resizing with cv2.resize"
+    },
+    {
+      "slug": "cv-small-cnn",
+      "id": "CV-21",
+      "title": "A Small CNN in PyTorch"
+    },
+    {
+      "slug": "cv-augmentation",
+      "id": "CV-22",
+      "title": "Data Augmentation"
+    },
+    {
+      "slug": "torch-training-loop",
+      "id": "DL-18",
+      "title": "A Full Training Loop"
+    }
+  ],
+  "brief": "Train a CNN that sorts photos of simple objects — for example coloured blocks, coins or bottle caps —\ninto classes, and test it with your webcam or new photos taken in different light.\n",
+  "milestones": [
+    "Collect 30–50 photos per class (or generate synthetic shapes) and resize them to 64×64.",
+    "Split into train, validation and test folders and write a Dataset that loads them with OpenCV.",
+    "Train the small CNN, adapted to 3 colour channels and 64×64 inputs.",
+    "Add augmentation (flips, shifts, brightness) and compare validation accuracy with and without it.",
+    "Classify frames from a webcam with cv2.VideoCapture and show the predicted label on screen."
+  ],
+  "stretch": [
+    "Fine-tune a pretrained torchvision model (for example ResNet-18) and compare.",
+    "Add a confidence threshold that answers 'unknown' for low-probability predictions.",
+    "Export the model with TorchScript or ONNX."
+  ],
+  "data": "Take your own photos with a phone or webcam. For a synthetic start, draw coloured circles, squares and\ntriangles with `cv2.circle`, `cv2.rectangle` and `cv2.fillPoly` at random positions and sizes.\n",
+  "setup": "```bash\npip install torch opencv-python numpy\npython train_sorter.py data/\n```\n"
+}

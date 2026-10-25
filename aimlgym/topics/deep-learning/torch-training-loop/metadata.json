@@ -1,0 +1,77 @@
+{
+  "id": "DL-18",
+  "slug": "torch-training-loop",
+  "title": "A Full Training Loop",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-17"
+  ],
+  "prerequisite_slugs": [
+    "torch-datasets"
+  ],
+  "learning_objectives": [
+    "Train a classifier with a DataLoader, CrossEntropyLoss and an optimiser",
+    "Switch between train() and eval() and evaluate under torch.no_grad()",
+    "Record the loss per epoch and make training reproducible with a seed"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "training-loop",
+    "cross-entropy",
+    "classification"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S106",
+    "S039"
+  ],
+  "entry_point": "train_classifier(X, y, n_hidden=16, epochs=100, lr=0.05, batch_size=16, seed=0)",
+  "hints": [
+    "Convert once: `X = torch.as_tensor(X, dtype=torch.float32)`, `y = torch.as_tensor(y, dtype=torch.long)`; seed before building the model.",
+    "Per batch: `opt.zero_grad()`, `loss = loss_fn(model(xb), yb)`, `loss.backward()`, `opt.step()`, `total += loss.item() * len(yb)`.",
+    "`predict`: `model.eval()`, then `with torch.no_grad(): return model(X).argmax(dim=1).tolist()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_learns_xor",
+      "advice": "Use CrossEntropyLoss on logits and run zero_grad / backward / step for every batch."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "Seed with torch.manual_seed(seed) before building the model and pass a seeded generator to the DataLoader."
+    },
+    {
+      "test": "test_eval_mode_and_shapes",
+      "advice": "Call model.eval() before returning; the last layer has max(y) + 1 outputs."
+    },
+    {
+      "test": "test_loss_falls",
+      "advice": "Record the size-weighted mean loss once per epoch."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

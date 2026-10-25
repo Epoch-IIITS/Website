@@ -1,0 +1,80 @@
+{
+  "id": "ML-22",
+  "slug": "sklearn-trees-forests",
+  "title": "Decision Trees and Random Forests",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-21",
+    "ML-19"
+  ],
+  "prerequisite_slugs": [
+    "decision-stump-gini",
+    "sklearn-grid-search"
+  ],
+  "learning_objectives": [
+    "Train a DecisionTreeClassifier and limit its depth",
+    "Train a RandomForestClassifier and read feature_importances_",
+    "Explain why averaging many randomised trees reduces variance"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "decision-trees",
+    "random-forest",
+    "ensembles",
+    "feature-importance"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S089"
+  ],
+  "entry_point": "compare_tree_forest(X_train, y_train, X_test, y_test, max_depth=None, n_estimators=100, seed=0)",
+  "hints": [
+    "Fit both models with the same `random_state=seed`.",
+    "`model.score(X, y)` is accuracy for classifiers.",
+    "`importances = [float(v) for v in forest.feature_importances_]`; `top_feature = importances.index(max(importances))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_unlimited_tree_memorises",
+      "advice": "With max_depth=None the tree grows until its leaves are pure."
+    },
+    {
+      "test": "test_depth_limit",
+      "advice": "Pass max_depth to both models."
+    },
+    {
+      "test": "test_importances",
+      "advice": "Use the forest's feature_importances_ as floats and the index of the largest."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "Use random_state=seed for both models."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

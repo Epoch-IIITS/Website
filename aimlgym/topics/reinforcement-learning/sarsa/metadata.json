@@ -1,0 +1,75 @@
+{
+  "id": "RL-15",
+  "slug": "sarsa",
+  "title": "SARSA",
+  "topic": "reinforcement-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-13"
+  ],
+  "prerequisite_slugs": [
+    "q-learning"
+  ],
+  "learning_objectives": [
+    "Implement the on-policy SARSA update",
+    "Choose the next action before updating",
+    "Contrast SARSA's safer behaviour with Q-learning on a risky path"
+  ],
+  "concept_tags": [
+    "sarsa",
+    "on-policy",
+    "control",
+    "tabular-rl"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033"
+  ],
+  "entry_point": "sarsa_update(Q, s, a, r, s2, a2, done, alpha, gamma); sarsa(env_step, start, n_states, n_actions, episodes, alpha, gamma, epsilon, seed, max_steps=100)",
+  "hints": [
+    "`target = r + (0 if done else gamma * Q[s2, a2])`.",
+    "Write an inner `eps(state)` using the shared rng.",
+    "Choose `a2` before calling `sarsa_update`, then set `s, a = s2, a2`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_update",
+      "advice": "SARSA's target uses Q(s', a') for the next action actually chosen, not the max."
+    },
+    {
+      "test": "test_update_terminal",
+      "advice": "No bootstrapping when done."
+    },
+    {
+      "test": "test_cliff_safe_path_vs_qlearning",
+      "advice": "Choose a' with ε-greedy before updating and carry it forward; SARSA should learn the safe path."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "Use one seeded generator for all action choices."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

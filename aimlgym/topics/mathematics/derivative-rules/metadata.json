@@ -1,0 +1,81 @@
+{
+  "id": "MA-11",
+  "slug": "derivative-rules",
+  "title": "Derivative Rules and the Chain Rule",
+  "topic": "mathematics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-10",
+    "MA-03"
+  ],
+  "prerequisite_slugs": [
+    "central-difference",
+    "sigmoid-function"
+  ],
+  "learning_objectives": [
+    "Apply the power, sum, product and chain rules",
+    "Represent a function together with its derivative as a pair",
+    "Verify an analytic derivative against a central-difference estimate"
+  ],
+  "concept_tags": [
+    "derivatives",
+    "chain-rule",
+    "product-rule",
+    "calculus",
+    "backpropagation"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009",
+    "S016"
+  ],
+  "entry_point": "power_rule(n); sum_rule(f, df, g, dg); product_rule(f, df, g, dg); chain_rule(f, df, g, dg); sigmoid_of_linear(a, b)",
+  "hints": [
+    "Each rule returns two lambdas, e.g. `(lambda x: f(x) + g(x)), (lambda x: df(x) + dg(x))`.",
+    "Chain rule: `dh = lambda x: df(g(x)) * dg(x)` — the outer derivative is evaluated at g(x).",
+    "The sigmoid's derivative is `lambda u: sigmoid(u) * (1 - sigmoid(u))`; the linear pair is `(lambda x: a * x + b, lambda x: a)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_sum",
+      "advice": "Return the sum of the functions and the sum of their derivatives."
+    },
+    {
+      "test": "test_product",
+      "advice": "Product rule: `df(x) * g(x) + f(x) * dg(x)`."
+    },
+    {
+      "test": "test_chain",
+      "advice": "Evaluate the outer derivative at `g(x)` and multiply by `dg(x)`."
+    },
+    {
+      "test": "test_sigmoid_of_linear",
+      "advice": "Build the pair with `chain_rule(sigmoid, dsigmoid, linear, dlinear)`."
+    },
+    {
+      "test": "test_sigmoid_of_linear_stable",
+      "advice": "Use the stable sigmoid from the starter for both the value and the derivative."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

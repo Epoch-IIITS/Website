@@ -1,0 +1,78 @@
+{
+  "id": "DL-04",
+  "slug": "dense-forward",
+  "title": "Dense Layer Forward Pass",
+  "topic": "deep-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-01",
+    "NP-06"
+  ],
+  "prerequisite_slugs": [
+    "activations",
+    "matmul-dot"
+  ],
+  "learning_objectives": [
+    "Compute XW + b for a batch",
+    "Check layer shapes",
+    "Count parameters and initialise weights"
+  ],
+  "concept_tags": [
+    "dense-layer",
+    "fully-connected",
+    "initialisation",
+    "shapes"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013",
+    "S014"
+  ],
+  "entry_point": "dense(X, W, b); n_params(layer_sizes); he_init(fan_in, fan_out, rng)",
+  "hints": [
+    "Validate all three shapes, then `X @ W + b`.",
+    "`sum((a + 1) * c for a, c in zip(sizes[:-1], sizes[1:]))`.",
+    "`rng.normal(0.0, np.sqrt(2.0 / fan_in), size=(fan_in, fan_out))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_forward",
+      "advice": "Compute X @ W + b (row-vector convention)."
+    },
+    {
+      "test": "test_shape_errors",
+      "advice": "Check W rows == X columns and b length == W columns."
+    },
+    {
+      "test": "test_n_params",
+      "advice": "Each layer has (fan_in + 1) * fan_out parameters."
+    },
+    {
+      "test": "test_he_stats",
+      "advice": "Standard deviation is sqrt(2 / fan_in)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

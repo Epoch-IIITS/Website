@@ -1,0 +1,74 @@
+{
+  "id": "NL-02",
+  "slug": "tokenize-normalize",
+  "title": "Tokenize and Normalize",
+  "topic": "nlp",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-01"
+  ],
+  "prerequisite_slugs": [
+    "regex-text"
+  ],
+  "learning_objectives": [
+    "Normalise Unicode text (case, accents)",
+    "Tokenise with a regular expression",
+    "Keep contractions and numbers as single tokens"
+  ],
+  "concept_tags": [
+    "tokenization",
+    "normalization",
+    "regex",
+    "unicode"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S017",
+    "S018"
+  ],
+  "entry_point": "normalize(text); tokenize(text)",
+  "hints": [
+    "`unicodedata.normalize('NFKD', text)`.",
+    "`''.join(ch for ch in s if not unicodedata.combining(ch)).lower()`.",
+    "Apply the given regex with `re.findall` to the normalised text."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_normalize",
+      "advice": "Use NFKD and drop characters where unicodedata.combining(ch) is non-zero."
+    },
+    {
+      "test": "test_tokens",
+      "advice": "Normalise before applying the lowercase regex."
+    },
+    {
+      "test": "test_contraction",
+      "advice": "Keep the optional (?:'[a-z]+) group in the regex."
+    },
+    {
+      "test": "test_accent_mid_word",
+      "advice": "Accented letters must become plain letters, not separators."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

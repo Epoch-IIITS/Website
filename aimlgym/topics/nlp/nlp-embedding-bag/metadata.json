@@ -1,0 +1,78 @@
+{
+  "id": "NL-19",
+  "slug": "nlp-embedding-bag",
+  "title": "Word Embeddings in PyTorch",
+  "topic": "nlp",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-18",
+    "DL-18"
+  ],
+  "prerequisite_slugs": [
+    "embedding-analogy",
+    "torch-training-loop"
+  ],
+  "learning_objectives": [
+    "Map tokens to integer ids with a vocabulary that has an unknown token",
+    "Average learned word embeddings with nn.EmbeddingBag and offsets",
+    "Train an embedding-bag classifier end to end"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "embeddings",
+    "text-classification",
+    "embedding-bag"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S127",
+    "S039"
+  ],
+  "entry_point": "build_vocab(texts, min_count=1); encode(texts, vocab); class BagClassifier(nn.Module); train_bag(texts, labels, dim=16, epochs=30, lr=0.05, seed=0)",
+  "hints": [
+    "Vocabulary: `Counter` over all words, keep those with enough counts, sort by `(-count, word)`, and number from 1.",
+    "Encode: extend one list of ids per text, recording `len(ids)` before each text as its offset.",
+    "Training: one forward pass on all texts per epoch — `loss = loss_fn(model(ids, offsets), y)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_vocab_order",
+      "advice": "Reserve 0 for <unk>, then number words by (-count, word)."
+    },
+    {
+      "test": "test_encode_offsets_and_unknown",
+      "advice": "Offsets are start positions; unknown words map to 0."
+    },
+    {
+      "test": "test_model_output_and_mean",
+      "advice": "Use nn.EmbeddingBag(vocab_size, dim, mode='mean') followed by nn.Linear."
+    },
+    {
+      "test": "test_reproducible_and_eval",
+      "advice": "Seed before creating the model and finish in eval() mode."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

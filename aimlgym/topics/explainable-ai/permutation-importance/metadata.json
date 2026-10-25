@@ -1,0 +1,79 @@
+{
+  "id": "XA-08",
+  "slug": "permutation-importance",
+  "title": "Permutation Feature Importance by Hand",
+  "topic": "explainable-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "XA-06",
+    "ML-02"
+  ],
+  "prerequisite_slugs": [
+    "partial-dependence",
+    "sklearn-estimator-api"
+  ],
+  "learning_objectives": [
+    "Measure importance as the score drop after permuting a feature",
+    "Repeat permutations with a seeded generator and report mean/std",
+    "Interpret near-zero and negative importances"
+  ],
+  "concept_tags": [
+    "permutation-importance",
+    "global-explanation",
+    "model-agnostic"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S024",
+    "S012"
+  ],
+  "entry_point": "permutation_importance(predict, X, y, score, n_repeats=5, seed=0)",
+  "hints": [
+    "`base = score(y, predict(X))`; `rng = np.random.default_rng(seed)`.",
+    "For each j, r: `Xp = X.copy(); Xp[:, j] = X[rng.permutation(n), j]`.",
+    "Collect drops `base - score(y, predict(Xp))`; take mean and std per feature."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_recipe",
+      "advice": "One default_rng(seed); loop features outer, repeats inner; permute rows of column j only."
+    },
+    {
+      "test": "test_relevant_vs_irrelevant",
+      "advice": "Importance = baseline score − permuted score (don't refit)."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Permute a copy of X, not X itself."
+    },
+    {
+      "test": "test_std_shape",
+      "advice": "Return mean and std arrays with one entry per feature."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

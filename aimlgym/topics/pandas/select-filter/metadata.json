@@ -1,0 +1,76 @@
+{
+  "id": "PD-04",
+  "slug": "select-filter",
+  "title": "Select and Filter Rows",
+  "topic": "pandas",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-03"
+  ],
+  "prerequisite_slugs": [
+    "read-csv-io"
+  ],
+  "learning_objectives": [
+    "Filter rows with boolean masks and isin",
+    "Select columns with .loc",
+    "Reset the index after filtering"
+  ],
+  "concept_tags": [
+    "filtering",
+    "loc",
+    "isin",
+    "boolean-indexing"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "filter_students(df, min_score, cities, cols)",
+  "hints": [
+    "`mask = (df['score'] >= min_score) & df['city'].isin(cities)`.",
+    "`df.loc[mask, cols]`.",
+    "Finish with `.reset_index(drop=True)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Combine masks with & and use isin for the city list."
+    },
+    {
+      "test": "test_inclusive",
+      "advice": "Use >= for min_score."
+    },
+    {
+      "test": "test_index_reset",
+      "advice": "Call reset_index(drop=True)."
+    },
+    {
+      "test": "test_column_order",
+      "advice": "Select columns in the order given by cols."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "NL-15",
+  "slug": "nlp-text-classifier",
+  "title": "A Text Classification Pipeline",
+  "topic": "nlp",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-14",
+    "NL-10"
+  ],
+  "prerequisite_slugs": [
+    "naive-bayes-text",
+    "nlp-tfidf-retrieval"
+  ],
+  "learning_objectives": [
+    "Build a TfidfVectorizer + LogisticRegression pipeline for raw text",
+    "Use word bigrams and sublinear term frequency",
+    "Read the most informative words from the model's coefficients"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "text-classification",
+    "sentiment-analysis",
+    "tf-idf",
+    "logistic-regression"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S126",
+    "S091"
+  ],
+  "entry_point": "train_text_classifier(texts, labels, C=1.0); top_features(pipe, n=5)",
+  "hints": [
+    "Validate `len(texts) == len(labels)` and `len(set(labels)) >= 2`, then build and fit the pipeline.",
+    "`names = pipe.named_steps[\"tfidf\"].get_feature_names_out()`; `weights = pipe.named_steps[\"clf\"].coef_[0]`.",
+    "`order = np.argsort(weights)`: the last n reversed are positive, the first n are negative."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_accuracy_on_new_reviews",
+      "advice": "Fit a Pipeline of TfidfVectorizer and LogisticRegression on the raw texts."
+    },
+    {
+      "test": "test_pipeline_structure",
+      "advice": "Use ngram_range=(1, 2), sublinear_tf=True and the given C."
+    },
+    {
+      "test": "test_top_features_make_sense",
+      "advice": "Positive coefficients point to class 1; sort coef_[0]."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Require matching lengths and at least two classes."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

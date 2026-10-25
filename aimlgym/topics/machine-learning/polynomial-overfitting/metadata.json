@@ -1,0 +1,87 @@
+{
+  "id": "ML-15",
+  "slug": "polynomial-overfitting",
+  "title": "Polynomial Features and Overfitting by Hand",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-09",
+    "ML-05"
+  ],
+  "prerequisite_slugs": [
+    "least-squares-line",
+    "train-test-split"
+  ],
+  "learning_objectives": [
+    "Turn one feature into polynomial features [1, x, x², …]",
+    "Fit polynomial models with least squares",
+    "Show that training error falls with degree while test error eventually rises",
+    "Choose model complexity using held-out data"
+  ],
+  "concept_tags": [
+    "polynomial-regression",
+    "overfitting",
+    "underfitting",
+    "model-selection",
+    "bias-variance"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012",
+    "S090",
+    "S013"
+  ],
+  "entry_point": "poly_features(x, degree); fit_poly(x, y, degree); predict_poly(coef, x); errors_by_degree(x_tr, y_tr, x_te, y_te, degrees); best_degree(errors)",
+  "hints": [
+    "`np.column_stack([x ** k for k in range(degree + 1)])` builds the feature matrix.",
+    "`coef, *_ = np.linalg.lstsq(X, y, rcond=None)`; predictions are `poly_features(x, len(coef) - 1) @ coef`.",
+    "`min(errors, key=lambda d: (errors[d][1], d))` picks the lowest test error, then the smaller degree."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_features",
+      "advice": "Columns must be x**0, x**1, ..., x**degree in that order."
+    },
+    {
+      "test": "test_exact_recovery",
+      "advice": "Fit with `np.linalg.lstsq(X, y, rcond=None)` on the polynomial features."
+    },
+    {
+      "test": "test_training_error_non_increasing",
+      "advice": "Compute the training error on the training points with the coefficients fitted on them."
+    },
+    {
+      "test": "test_overfitting_visible",
+      "advice": "Evaluate each model on the test points too; don't refit on them."
+    },
+    {
+      "test": "test_best_degree",
+      "advice": "Choose by test error (the second value), breaking ties with the smaller degree."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

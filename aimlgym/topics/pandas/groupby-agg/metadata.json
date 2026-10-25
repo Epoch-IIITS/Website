@@ -1,0 +1,77 @@
+{
+  "id": "PD-08",
+  "slug": "groupby-agg",
+  "title": "Group-by Aggregation",
+  "topic": "pandas",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-07",
+    "PY-18"
+  ],
+  "prerequisite_slugs": [
+    "sort-rank",
+    "gradebook-aggregate"
+  ],
+  "learning_objectives": [
+    "Apply split–apply–combine",
+    "Use named aggregations",
+    "Return a tidy, sorted summary table"
+  ],
+  "concept_tags": [
+    "groupby",
+    "aggregation",
+    "split-apply-combine"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "category_summary(df)",
+  "hints": [
+    "`df.groupby('category')` then `.agg(...)` with named aggregations.",
+    "`n=('value', 'size')`, `n_valid=('value', 'count')`.",
+    "`total=('value', 'sum')`, `mean=('value', 'mean')`, then `.reset_index()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_values",
+      "advice": "n uses 'size' (all rows); n_valid uses 'count' (non-missing)."
+    },
+    {
+      "test": "test_columns",
+      "advice": "Use named aggregation and reset_index() so category is a column."
+    },
+    {
+      "test": "test_all_nan_group",
+      "advice": "mean of all-NaN values is NaN; count is 0."
+    },
+    {
+      "test": "test_sorted",
+      "advice": "groupby sorts keys by default; keep sort=True."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

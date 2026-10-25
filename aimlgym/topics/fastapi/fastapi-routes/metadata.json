@@ -1,0 +1,83 @@
+{
+  "id": "FA-08",
+  "slug": "fastapi-routes",
+  "title": "First FastAPI Routes",
+  "topic": "fastapi",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-07"
+  ],
+  "prerequisite_slugs": [
+    "asgi-app"
+  ],
+  "learning_objectives": [
+    "Create a FastAPI application and register path operations with decorators",
+    "Declare typed path parameters and get automatic 422 errors",
+    "Test an app in-process with TestClient",
+    "Relate FastAPI's routing to the router you wrote by hand"
+  ],
+  "concept_tags": [
+    "fastapi",
+    "routing",
+    "path-parameters",
+    "testclient",
+    "openapi"
+  ],
+  "permitted_packages": [
+    "fastapi"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S070",
+    "S071",
+    "S078"
+  ],
+  "entry_point": "app (FastAPI); route_table(app)",
+  "hints": [
+    "`@app.get(\"/items/{item_id}\")` above `def read_item(item_id: int):`.",
+    "Register `/users/me` before `/users/{name}`.",
+    "`sorted((m, r.path) for r in app.routes if isinstance(r, APIRoute) for m in r.methods)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_typed_path_param",
+      "advice": "Annotate `item_id: int` so FastAPI converts it."
+    },
+    {
+      "test": "test_validation_422",
+      "advice": "With an `int` hint, FastAPI rejects 'abc' with 422 automatically — check the hint."
+    },
+    {
+      "test": "test_404_and_405",
+      "advice": "Register GET and DELETE for /items/{item_id}; FastAPI answers other methods with 405."
+    },
+    {
+      "test": "test_route_order",
+      "advice": "Declare `/users/me` before `/users/{name}`."
+    },
+    {
+      "test": "test_route_table_and_openapi",
+      "advice": "Collect `(method, route.path)` for APIRoute objects and sort the list; set the app title."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

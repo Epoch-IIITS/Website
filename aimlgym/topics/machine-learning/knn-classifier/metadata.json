@@ -1,0 +1,80 @@
+{
+  "id": "ML-13",
+  "slug": "knn-classifier",
+  "title": "k-Nearest Neighbors Classifier by Hand",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-06",
+    "NP-11"
+  ],
+  "prerequisite_slugs": [
+    "classification-metrics",
+    "pairwise-distances"
+  ],
+  "learning_objectives": [
+    "Classify by majority vote of the k nearest training points",
+    "Break distance and vote ties deterministically",
+    "See how k trades bias and variance"
+  ],
+  "concept_tags": [
+    "knn",
+    "instance-based-learning",
+    "distance",
+    "classification"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012",
+    "S007"
+  ],
+  "entry_point": "knn_predict(X_train, y_train, X_test, k=3)",
+  "hints": [
+    "Compute the (n_test, n_train) squared-distance matrix with broadcasting (NP-11).",
+    "For each row: `order = np.argsort(d_row, kind='stable')[:k]`; `labels = y_train[order]`.",
+    "Count votes in neighbour order; pick the label with the max count, scanning `labels` left to right for ties."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_k5_majority",
+      "advice": "Vote among the k nearest *training points*, not class means."
+    },
+    {
+      "test": "test_vote_tie_nearest_wins",
+      "advice": "On a vote tie pick the tied label that appears first in neighbour (distance) order."
+    },
+    {
+      "test": "test_distance_tie_index",
+      "advice": "Use np.argsort(..., kind='stable') so equal distances keep training order."
+    },
+    {
+      "test": "test_not_nearest_centroid",
+      "advice": "Nearest centroid would predict differently here — vote among neighbours."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

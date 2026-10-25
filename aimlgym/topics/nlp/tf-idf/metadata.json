@@ -1,0 +1,78 @@
+{
+  "id": "NL-09",
+  "slug": "tf-idf",
+  "title": "TF-IDF",
+  "topic": "nlp",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-07"
+  ],
+  "prerequisite_slugs": [
+    "bag-of-words"
+  ],
+  "learning_objectives": [
+    "Compute document frequency and smoothed IDF",
+    "Weight term frequencies by IDF",
+    "L2-normalise document vectors"
+  ],
+  "concept_tags": [
+    "tf-idf",
+    "information-retrieval",
+    "weighting",
+    "normalisation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S017",
+    "S012"
+  ],
+  "entry_point": "tfidf(counts)",
+  "hints": [
+    "`df = (C > 0).sum(axis=0)`; `n = C.shape[0]`.",
+    "`idf = np.log((1 + n) / (1 + df)) + 1`; `W = C * idf`.",
+    "`norms = np.linalg.norm(W, axis=1, keepdims=True)`; divide where norms > 0."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_idf_formula",
+      "advice": "idf = ln((1 + n)/(1 + df)) + 1 with natural log."
+    },
+    {
+      "test": "test_unit_rows",
+      "advice": "Normalise each row (axis=1) to unit L2 norm."
+    },
+    {
+      "test": "test_empty_doc",
+      "advice": "Guard the division so empty documents stay all-zero."
+    },
+    {
+      "test": "test_example",
+      "advice": "Multiply raw counts by idf before normalising."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

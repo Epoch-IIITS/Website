@@ -16,6 +16,7 @@ The community platform for Epoch at IIIT Sri City. It brings the club's writing,
 - Create a stable, shareable profile card for published team members.
 - Sign in to manage your account, registrations, and team-directory requests. Linked team members can also update the photo, name, LinkedIn link, role, institute, and tagline shared across their team listings.
 - Contact the Epoch team through an authenticated form.
+- Explore Learn at `/learn`: a laptop-first path from zero Python through FastAPI, machine learning and agentic AI, with 15 topics, 250 required Python problems, 41 optional deep dives and 31 ungraded project ideas, concept reading, a Monaco editor, local visible-test practice, and saved progress. Problem pages preload Python in the browser where the pack allows it. Trusted submissions use a separately deployed Python executor with preloaded libraries (including scikit-learn, PyTorch, OpenCV, LangChain and LangGraph); the [VPS setup guide](executor/README.md) covers provider HTTPS, private-IP tunneling, and DuckDNS with Caddy on a routed port.
 - Current or former Team members invited to private Initiatives can collaborate in a shared workspace with a task panel and canvas side by side. Tasks have comments with @mentions; the canvas holds movable, resizable notes, question boards, and image/link references. Card positions and sizes persist. Admins can always access Initiatives, add existing accounts individually or by academic-year Team committee, archive completed work, and permanently delete initiatives.
 
 Administrators can manage content, users, event registrations, contact queries, team records, and downloadable QR codes from a responsive dashboard. Administrative changes and member-initiated team profile updates are recorded in a searchable audit log.
@@ -41,6 +42,8 @@ Image uploads support files up to 4 MB each, with clear failure messages and ind
 | `models/` | Mongoose data models |
 | `public/` | Static brand and animation assets |
 | `scripts/` | Automated tests and manual maintenance tools |
+| `lib/learn/` | Generated curriculum and server-side problem packs |
+| `executor/` | Separate VPS service for isolated Python execution and supplied tests |
 
 ## Contributing
 

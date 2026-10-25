@@ -1,0 +1,79 @@
+{
+  "id": "ML-09",
+  "slug": "least-squares-line",
+  "title": "Least-Squares Line",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-02",
+    "ST-11"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-estimator-api",
+    "covariance-correlation"
+  ],
+  "learning_objectives": [
+    "Derive the closed-form slope and intercept",
+    "Predict with a fitted line",
+    "Relate slope to covariance/variance"
+  ],
+  "concept_tags": [
+    "linear-regression",
+    "least-squares",
+    "closed-form"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S009",
+    "S012"
+  ],
+  "entry_point": "class SimpleLinearRegression: fit(x, y), predict(x), score(x, y)",
+  "hints": [
+    "`dx = x - x.mean()`, `dy = y - y.mean()`; `sxx = (dx**2).sum()`.",
+    "`slope = (dx*dy).sum() / sxx`, `intercept = y.mean() - slope * x.mean()`.",
+    "R² = 1 − SS_res / SS_tot (ML-03)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_fit",
+      "advice": "slope = Σdx·dy / Σdx²; intercept = ȳ − slope·x̄."
+    },
+    {
+      "test": "test_matches_polyfit",
+      "advice": "Centre x and y before multiplying."
+    },
+    {
+      "test": "test_constant_x",
+      "advice": "Raise ValueError when Σdx² = 0."
+    },
+    {
+      "test": "test_not_fitted",
+      "advice": "predict must raise RuntimeError before fit."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

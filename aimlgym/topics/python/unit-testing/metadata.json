@@ -1,0 +1,92 @@
+{
+  "id": "PY-27",
+  "slug": "unit-testing",
+  "title": "Writing Unit Tests",
+  "topic": "python",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-26"
+  ],
+  "prerequisite_slugs": [
+    "shapes-inheritance"
+  ],
+  "learning_objectives": [
+    "Write unittest.TestCase classes with assertEqual and assertRaises",
+    "Choose test cases that cover normal, edge and error behaviour",
+    "Explain how tests catch bugs, using deliberately broken versions (mutants)",
+    "Know when to replace slow or external dependencies with fakes or mocks"
+  ],
+  "concept_tags": [
+    "testing",
+    "unittest",
+    "edge-cases",
+    "mutation-testing",
+    "mocks"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S002",
+    "S064"
+  ],
+  "entry_point": "class SlugifyTests(unittest.TestCase)",
+  "hints": [
+    "Each mutant breaks one rule; write one test per rule from the statement.",
+    "Examples: `\"ABC\"`→`\"abc\"`, `\"a,  b\"`→`\"a-b\"`, `\"--a--\"`→`\"a\"`, `\"r2d2\"`→`\"r2d2\"`.",
+    "Include `self.assertEqual(self.slugify(\"\"), \"\")` and a punctuation case such as `\"a!b\"`→`\"a-b\"`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_at_least_five_tests",
+      "advice": "Add more `test_...` methods to `SlugifyTests`."
+    },
+    {
+      "test": "test_pass_on_correct_version",
+      "advice": "One of your expected values is wrong: check it against the rules in the statement."
+    },
+    {
+      "test": "test_catches_missing_lowercase",
+      "advice": "Add a test with upper-case input."
+    },
+    {
+      "test": "test_catches_missing_collapse",
+      "advice": "Add a test with two or more separators in a row, e.g. `\"a,  b\"`."
+    },
+    {
+      "test": "test_catches_missing_strip",
+      "advice": "Add a test whose input starts or ends with punctuation or spaces."
+    },
+    {
+      "test": "test_catches_digit_bug",
+      "advice": "Add a test containing digits, which must be kept."
+    },
+    {
+      "test": "test_catches_punctuation_bug",
+      "advice": "Add a test with punctuation between letters, such as `\"a!b\"`."
+    },
+    {
+      "test": "test_catches_empty_crash",
+      "advice": "Add a test for the empty string."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

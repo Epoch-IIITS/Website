@@ -1,0 +1,75 @@
+{
+  "id": "NP-14",
+  "slug": "moving-average",
+  "title": "Moving Average with cumsum",
+  "topic": "numpy",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-08"
+  ],
+  "prerequisite_slugs": [
+    "reshape-stack"
+  ],
+  "learning_objectives": [
+    "Compute sliding-window means in O(n) with cumulative sums",
+    "Relate moving averages to convolution",
+    "Build sliding windows with sliding_window_view"
+  ],
+  "concept_tags": [
+    "cumsum",
+    "convolution",
+    "sliding-window",
+    "time-series"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S007"
+  ],
+  "entry_point": "moving_average(x, w); windows(x, w)",
+  "hints": [
+    "`c = np.concatenate([[0.0], np.cumsum(x)])`.",
+    "Window sums are `c[w:] - c[:-w]`.",
+    "`np.lib.stride_tricks.sliding_window_view(x, w)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Prepend 0 to the cumulative sum, then use c[w:] − c[:-w]."
+    },
+    {
+      "test": "test_matches_convolve",
+      "advice": "Return only full ('valid') windows: length n − w + 1."
+    },
+    {
+      "test": "test_bad_w",
+      "advice": "Validate 1 <= w <= len(x)."
+    },
+    {
+      "test": "test_windows",
+      "advice": "Use np.lib.stride_tricks.sliding_window_view(x, w)."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

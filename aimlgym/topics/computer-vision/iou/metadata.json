@@ -1,0 +1,77 @@
+{
+  "id": "CV-23",
+  "slug": "iou",
+  "title": "Intersection over Union",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-01",
+    "NP-07"
+  ],
+  "prerequisite_slugs": [
+    "image-arrays",
+    "broadcast-center"
+  ],
+  "learning_objectives": [
+    "Compute box areas and intersections",
+    "Vectorise pairwise IoU with broadcasting",
+    "Handle non-overlapping and degenerate boxes"
+  ],
+  "concept_tags": [
+    "object-detection",
+    "iou",
+    "bounding-boxes",
+    "broadcasting"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013"
+  ],
+  "entry_point": "box_area(boxes); iou_matrix(A, B)",
+  "hints": [
+    "`(b[:, 2] - b[:, 0]) * (b[:, 3] - b[:, 1])`.",
+    "`ix1 = np.maximum(A[:, None, 0], B[None, :, 0])` … `iw = np.clip(ix2 - ix1, 0, None)`.",
+    "`union = areaA[:, None] + areaB[None, :] - inter`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "IoU = intersection / (areaA + areaB − intersection)."
+    },
+    {
+      "test": "test_touching",
+      "advice": "Clip negative intersection widths/heights to 0."
+    },
+    {
+      "test": "test_contained",
+      "advice": "Use max of the top-left corners and min of the bottom-right corners."
+    },
+    {
+      "test": "test_degenerate",
+      "advice": "Reject boxes with x2 <= x1 or y2 <= y1."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

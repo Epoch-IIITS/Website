@@ -1,0 +1,78 @@
+{
+  "id": "ML-19",
+  "slug": "sklearn-grid-search",
+  "title": "Regularisation and Hyperparameter Search",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-18"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-column-transformer"
+  ],
+  "learning_objectives": [
+    "Regularise a linear model with Ridge and explain how alpha shrinks coefficients",
+    "Search hyperparameters with GridSearchCV over a pipeline",
+    "Read best_params_, best_score_ and cv_results_"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "regularisation",
+    "ridge",
+    "grid-search",
+    "hyperparameters"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S091"
+  ],
+  "entry_point": "tune_ridge(X, y, alphas, n_splits=5, seed=0)",
+  "hints": [
+    "Build the pipeline, then `GridSearchCV(pipe, {\"ridge__alpha\": list(alphas)}, cv=..., scoring=...)` and fit it.",
+    "`-search.cv_results_[\"mean_test_score\"]` gives the MSE for every alpha in grid order.",
+    "For the norms, fit `make_pipeline(StandardScaler(), Ridge(alpha=a))` on all data and take `np.linalg.norm(p[-1].coef_)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_norms_shrink",
+      "advice": "Fit a scaled Ridge(alpha=a) on all data for each alpha and take the coefficient norm."
+    },
+    {
+      "test": "test_mse_matches_cross_val_score",
+      "advice": "Use KFold(n_splits, shuffle=True, random_state=seed) and negate the scores."
+    },
+    {
+      "test": "test_best_model_refit_on_all_data",
+      "advice": "Return search.best_estimator_, which GridSearchCV refits on all data."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Alphas must be a non-empty list of positive numbers."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

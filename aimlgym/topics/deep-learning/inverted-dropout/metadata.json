@@ -1,0 +1,76 @@
+{
+  "id": "DL-21",
+  "slug": "inverted-dropout",
+  "title": "Inverted Dropout",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "DL-19",
+    "NP-10"
+  ],
+  "prerequisite_slugs": [
+    "train-xor-mlp",
+    "seeded-generator"
+  ],
+  "learning_objectives": [
+    "Implement inverted dropout for training and evaluation modes",
+    "Keep expected activations unchanged by rescaling",
+    "Backpropagate through the dropout mask"
+  ],
+  "concept_tags": [
+    "dropout",
+    "regularisation",
+    "train-eval-mode"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013"
+  ],
+  "entry_point": "dropout_forward(x, p, rng, training=True); dropout_backward(grad_out, mask, p)",
+  "hints": [
+    "Validate `0 <= p < 1` first.",
+    "`mask = rng.random(x.shape) >= p`; `y = x * mask / (1 - p)`.",
+    "Backward uses the same mask: `grad_out * mask / (1 - p)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_recipe",
+      "advice": "Mask = rng.random(x.shape) >= p; scale kept values by 1/(1 − p)."
+    },
+    {
+      "test": "test_eval_identity",
+      "advice": "In evaluation mode return x unchanged and mask None."
+    },
+    {
+      "test": "test_backward",
+      "advice": "Reuse the forward mask and the same 1/(1 − p) scale."
+    },
+    {
+      "test": "test_bad_p",
+      "advice": "p must satisfy 0 <= p < 1."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

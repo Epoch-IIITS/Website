@@ -1,0 +1,73 @@
+{
+  "id": "PY-19",
+  "slug": "factorial-validated",
+  "title": "Validated Factorial",
+  "topic": "python",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-18"
+  ],
+  "prerequisite_slugs": [
+    "gradebook-aggregate"
+  ],
+  "learning_objectives": [
+    "Raise exceptions for invalid input",
+    "Use isinstance checks correctly",
+    "Compute a product iteratively"
+  ],
+  "concept_tags": [
+    "exceptions",
+    "validation",
+    "loops",
+    "integers"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "factorial(n)",
+  "hints": [
+    "Check the type first: `isinstance(n, bool) or not isinstance(n, int)`.",
+    "Then check `n < 0` and raise `ValueError`.",
+    "Start `result = 1` and multiply by `k` for `k in range(2, n + 1)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_zero_and_one",
+      "advice": "0! is defined as 1; make sure your loop handles n = 0."
+    },
+    {
+      "test": "test_float",
+      "advice": "Use isinstance(n, int); 3.0 is a float even though it equals 3."
+    },
+    {
+      "test": "test_bool",
+      "advice": "bool is a subclass of int — check for it explicitly."
+    },
+    {
+      "test": "test_negative",
+      "advice": "Raise ValueError (not return) when n < 0."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

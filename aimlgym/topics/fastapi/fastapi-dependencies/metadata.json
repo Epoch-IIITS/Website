@@ -1,0 +1,83 @@
+{
+  "id": "FA-13",
+  "slug": "fastapi-dependencies",
+  "title": "Dependencies and Dependency Overrides",
+  "topic": "fastapi",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-12"
+  ],
+  "prerequisite_slugs": [
+    "response-models"
+  ],
+  "learning_objectives": [
+    "Share setup code between endpoints with Depends",
+    "Authenticate with an API-key header dependency that raises 401",
+    "Write dependencies with cleanup using yield",
+    "Replace dependencies in tests with app.dependency_overrides"
+  ],
+  "concept_tags": [
+    "fastapi",
+    "dependency-injection",
+    "authentication",
+    "testing",
+    "overrides"
+  ],
+  "permitted_packages": [
+    "fastapi"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S076",
+    "S079",
+    "S064"
+  ],
+  "entry_point": "class NoteStore; get_store(); current_user(); pagination(); request_log(); create_app()",
+  "hints": [
+    "`note = {\"id\": len(self.notes) + 1, \"owner\": owner, \"text\": text}`; filter `self.notes` by owner.",
+    "Parameters look like `user: Annotated[str, Depends(current_user)]` and `page: Annotated[dict, Depends(pagination)]`.",
+    "In tests (and for you to try): `app.dependency_overrides[get_store] = lambda: NoteStore()` gives a fresh store."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_auth_required",
+      "advice": "Raise HTTPException(401) with the WWW-Authenticate header when the key is missing or unknown."
+    },
+    {
+      "test": "test_create_and_list_per_user",
+      "advice": "Inject the user and store with Depends; return 201 for creation."
+    },
+    {
+      "test": "test_pagination",
+      "advice": "Declare the limit/offset constraints in the pagination dependency and slice the notes."
+    },
+    {
+      "test": "test_override_isolates_global_store",
+      "advice": "Endpoints must get the store through `Depends(get_store)` so tests can override it."
+    },
+    {
+      "test": "test_yield_cleanup",
+      "advice": "Append 'open', `yield` the list inside try, append 'close' in finally; append 'list' in the endpoint."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "id": "ML-12",
+  "slug": "sklearn-knn",
+  "title": "k-Nearest Neighbours with scikit-learn",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-07",
+    "ML-11"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-scaler-pipeline",
+    "logistic-regression"
+  ],
+  "learning_objectives": [
+    "Fit KNeighborsClassifier inside a scaling pipeline",
+    "Compare test accuracy across values of k",
+    "Explain how k trades variance for bias"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "knn",
+    "hyperparameters",
+    "pipeline"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S091"
+  ],
+  "entry_point": "knn_accuracy_by_k(X_train, y_train, X_test, y_test, ks)",
+  "hints": [
+    "Validate `ks` against `len(X_train)` first.",
+    "Inside the loop build a new pipeline for each k, fit it and call `accuracy_score(y_test, pipe.predict(X_test))`.",
+    "`best_k = min(ks, key=lambda k: (-accuracy[k], k))` picks the highest accuracy, then the smallest k."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_matches_manual_scaled_knn",
+      "advice": "Scale inside the pipeline: make_pipeline(StandardScaler(), KNeighborsClassifier(k))."
+    },
+    {
+      "test": "test_tie_prefers_smaller_k",
+      "advice": "On equal accuracy choose the smallest k."
+    },
+    {
+      "test": "test_float_accuracies",
+      "advice": "Store float(accuracy_score(...)) for every k."
+    },
+    {
+      "test": "test_invalid_k",
+      "advice": "Reject an empty list and any k outside 1..len(X_train)."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

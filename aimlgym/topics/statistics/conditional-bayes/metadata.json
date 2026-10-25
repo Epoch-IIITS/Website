@@ -1,0 +1,79 @@
+{
+  "id": "ST-07",
+  "slug": "conditional-bayes",
+  "title": "Conditional Probability and Bayes' Rule",
+  "topic": "statistics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-06"
+  ],
+  "prerequisite_slugs": [
+    "probability-basics"
+  ],
+  "learning_objectives": [
+    "Compute P(A | B) by restricting the sample space",
+    "Derive and apply Bayes' rule with the law of total probability",
+    "Explain the base-rate effect",
+    "Update a belief after several observations"
+  ],
+  "concept_tags": [
+    "conditional-probability",
+    "bayes-rule",
+    "base-rate",
+    "posterior"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S011",
+    "S010"
+  ],
+  "entry_point": "conditional(space, a, b); posterior(prior, sensitivity, false_positive_rate); update(prior, sensitivity, false_positive_rate, results)",
+  "hints": [
+    "Count outcomes where `b` holds, and among those where `a` also holds; divide.",
+    "`evidence = sensitivity * prior + false_positive_rate * (1 - prior)`; posterior = numerator / evidence.",
+    "For a negative result use `1 - sensitivity` and `1 - false_positive_rate` as the likelihoods."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_conditional_dice",
+      "advice": "Restrict to outcomes where `b` holds, then count `a` among them."
+    },
+    {
+      "test": "test_conditional_zero",
+      "advice": "Raise ValueError when no outcome satisfies the condition."
+    },
+    {
+      "test": "test_posterior_base_rate",
+      "advice": "The denominator must include false positives from the healthy group: `fpr * (1 - prior)`."
+    },
+    {
+      "test": "test_update_two_positives",
+      "advice": "Use each posterior as the prior for the next result."
+    },
+    {
+      "test": "test_update_negative_and_empty",
+      "advice": "For a negative result the likelihoods are `1 - sensitivity` and `1 - false_positive_rate`."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

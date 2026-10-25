@@ -1,0 +1,85 @@
+{
+  "id": "ST-09",
+  "slug": "normal-distribution",
+  "title": "The Normal Distribution",
+  "topic": "statistics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-05",
+    "ST-08"
+  ],
+  "prerequisite_slugs": [
+    "z-scores",
+    "binomial-pmf"
+  ],
+  "learning_objectives": [
+    "Evaluate the normal density and cumulative probability with math.exp and math.erf",
+    "Compute interval probabilities and the 68–95–99.7 rule",
+    "Approximate a binomial probability with a continuity correction",
+    "Compare a manual formula with statistics.NormalDist"
+  ],
+  "concept_tags": [
+    "normal-distribution",
+    "pdf",
+    "cdf",
+    "erf",
+    "normal-approximation"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S011",
+    "S003",
+    "S050"
+  ],
+  "entry_point": "normal_pdf(x, mu, sigma); normal_cdf(x, mu, sigma); prob_between(a, b, mu, sigma); empirical_rule(); binomial_cdf_approx(k, n, p)",
+  "hints": [
+    "pdf: `math.exp(-((x - mu) ** 2) / (2 * sigma ** 2)) / (sigma * math.sqrt(2 * math.pi))`.",
+    "cdf: `0.5 * (1 + math.erf((x - mu) / (sigma * math.sqrt(2))))`.",
+    "The empirical rule is `prob_between(-k, k)` for k = 1, 2, 3."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_pdf",
+      "advice": "Divide by `sigma * sqrt(2*pi)` and square `(x - mu)` inside the exponent."
+    },
+    {
+      "test": "test_cdf",
+      "advice": "Use `0.5 * (1 + math.erf((x - mu) / (sigma * math.sqrt(2))))`."
+    },
+    {
+      "test": "test_empirical_rule",
+      "advice": "Return a dict keyed by 1, 2 and 3 with `prob_between(-k, k)`."
+    },
+    {
+      "test": "test_invalid_sigma",
+      "advice": "Raise ValueError when sigma <= 0."
+    },
+    {
+      "test": "test_binomial_approx_close_to_exact",
+      "advice": "Use mean n*p, standard deviation sqrt(n*p*(1-p)) and evaluate at k + 0.5."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

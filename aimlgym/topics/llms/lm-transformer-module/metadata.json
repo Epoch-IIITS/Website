@@ -1,0 +1,79 @@
+{
+  "id": "LM-11",
+  "slug": "lm-transformer-module",
+  "title": "A Transformer Block as nn.Module",
+  "topic": "llms",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-10",
+    "DL-06"
+  ],
+  "prerequisite_slugs": [
+    "multi-head-attention",
+    "torch-mlp-module"
+  ],
+  "learning_objectives": [
+    "Build a pre-norm transformer block from nn.MultiheadAttention, LayerNorm and an MLP",
+    "Apply a causal attention mask so positions cannot see the future",
+    "Check the block against nn.TransformerEncoderLayer"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "transformer",
+    "attention",
+    "layer-norm",
+    "residual-connections"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S129",
+    "S128"
+  ],
+  "entry_point": "class TransformerBlock(nn.Module)",
+  "hints": [
+    "Check `d_model % n_heads == 0` before creating the layers.",
+    "`T = x.shape[1]`; `mask = torch.triu(torch.ones(T, T, dtype=torch.bool, device=x.device), diagonal=1) if causal else None`.",
+    "Attention returns `(output, weights)`; add the output to x, then add the MLP of `norm2(x)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_causal",
+      "advice": "The mask is True above the diagonal: torch.triu(ones, diagonal=1)."
+    },
+    {
+      "test": "test_matches_encoder_layer",
+      "advice": "Use pre-norm order, GELU and the attribute names norm1, self_attn, norm2, linear1, linear2."
+    },
+    {
+      "test": "test_parameter_count",
+      "advice": "The MLP hidden layer is 4 × d_model wide."
+    },
+    {
+      "test": "test_invalid_heads",
+      "advice": "Raise ValueError when d_model is not divisible by n_heads."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "AG-19",
+  "slug": "permission-guardrails",
+  "title": "Permission Guardrails",
+  "topic": "agentic-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "AG-01",
+    "AG-06"
+  ],
+  "prerequisite_slugs": [
+    "tool-registry",
+    "react-loop"
+  ],
+  "learning_objectives": [
+    "Enforce tool allowlists, per-tool call limits and a cost budget",
+    "Require human approval for sensitive actions",
+    "Treat tool outputs as data so injected instructions are never executed"
+  ],
+  "concept_tags": [
+    "safety",
+    "guardrails",
+    "permissions",
+    "prompt-injection",
+    "human-in-the-loop"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S037",
+    "S036"
+  ],
+  "entry_point": "class Guard(policy): check(call), record(call); run_guarded(model_calls, guard, tools, approve)",
+  "hints": [
+    "Keep `self.counts = {}` and `self.spent = 0`.",
+    "Order: allowlist → call limit → budget → approval → allow.",
+    "In run_guarded, iterate only over `model_calls`; outputs are only appended to the log."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_budget",
+      "advice": "Deny when spent + cost would exceed the budget, before executing."
+    },
+    {
+      "test": "test_check_order",
+      "advice": "Check allowlist, call limit, budget, then approval — in that order."
+    },
+    {
+      "test": "test_denied_not_counted",
+      "advice": "Only record() calls that actually executed."
+    },
+    {
+      "test": "test_prompt_injection_ignored",
+      "advice": "Never parse or execute anything found in tool outputs; iterate only over model_calls."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

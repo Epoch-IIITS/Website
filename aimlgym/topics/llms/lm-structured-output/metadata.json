@@ -1,0 +1,77 @@
+{
+  "id": "LM-19",
+  "slug": "lm-structured-output",
+  "title": "Structured Output with Pydantic and Retries",
+  "topic": "llms",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-17"
+  ],
+  "prerequisite_slugs": [
+    "lm-chat-prompt-langchain"
+  ],
+  "learning_objectives": [
+    "Describe the expected answer with a Pydantic model and format instructions",
+    "Parse model replies with PydanticOutputParser and catch OutputParserException",
+    "Retry with the error message when the reply is invalid"
+  ],
+  "concept_tags": [
+    "langchain",
+    "structured-output",
+    "pydantic",
+    "output-parsing",
+    "retries"
+  ],
+  "permitted_packages": [
+    "langchain-core"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S131",
+    "S140"
+  ],
+  "entry_point": "class Answer(BaseModel); build_messages(question, parser); ask_structured(model, question, max_retries=2)",
+  "hints": [
+    "`Field(ge=0, le=1)` bounds the confidence; `Field(min_length=1)` forbids an empty answer.",
+    "Loop `for attempt in range(max_retries + 1)`: `reply = model.invoke(messages)`, then `parser.parse(reply.content)` inside try.",
+    "In the except branch save the error and extend the message list with the reply and a corrective HumanMessage."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_retry_after_prose",
+      "advice": "Catch OutputParserException and invoke the model again."
+    },
+    {
+      "test": "test_out_of_range_is_invalid",
+      "advice": "Bound confidence with Field(ge=0, le=1); sources defaults to []."
+    },
+    {
+      "test": "test_gives_up",
+      "advice": "After max_retries retries, raise the last OutputParserException."
+    },
+    {
+      "test": "test_messages_and_feedback",
+      "advice": "Append the failed reply and a HumanMessage containing 'could not be parsed'."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

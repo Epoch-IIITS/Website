@@ -1,0 +1,49 @@
+{
+  "id": "NL-P2",
+  "slug": "blog-semantic-search",
+  "title": "Semantic Search for the Club Blog",
+  "topic": "nlp",
+  "kind": "project",
+  "concept_tags": [
+    "search",
+    "embeddings",
+    "retrieval"
+  ],
+  "uses": [
+    {
+      "slug": "nlp-tfidf-retrieval",
+      "id": "NL-10",
+      "title": "Search with TfidfVectorizer and Cosine Similarity"
+    },
+    {
+      "slug": "nlp-char-ngrams-sklearn",
+      "id": "NL-05",
+      "title": "Character n-grams with CountVectorizer"
+    },
+    {
+      "slug": "embedding-analogy",
+      "id": "NL-18",
+      "title": "Word Embedding Analogies"
+    },
+    {
+      "slug": "nlp-embedding-bag",
+      "id": "NL-19",
+      "title": "Word Embeddings in PyTorch"
+    }
+  ],
+  "brief": "Build a search box for a collection of blog posts that finds posts by meaning, not only exact words:\n\"beginner python workshop\" should also find \"Intro to programming session\". Compare keyword (TF-IDF)\nsearch with embedding-based search on the same queries.\n",
+  "milestones": [
+    "Collect 50–200 posts (titles and text) into a JSON file.",
+    "Build TF-IDF search and a small command-line interface that prints the top five results.",
+    "Write 20 test queries with the posts you expect, and measure how often the right post is in the top three.",
+    "Add character n-gram search for typos and compare the scores.",
+    "Add embedding search with a sentence-embedding model and combine it with TF-IDF (for example by averaging ranks)."
+  ],
+  "stretch": [
+    "Add filters (author, date, tag) alongside the text search.",
+    "Highlight the matching sentences in each result.",
+    "Expose the search as a FastAPI endpoint for the website."
+  ],
+  "data": "Use the Epoch blog posts you can access, or any set of articles you write or collect. Sentence-embedding\nmodels such as those in the `sentence-transformers` library download weights the first time they run.\n",
+  "setup": "```bash\npip install scikit-learn numpy sentence-transformers\npython search.py \"beginner python workshop\"\n```\n"
+}

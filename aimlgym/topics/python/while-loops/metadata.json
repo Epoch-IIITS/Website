@@ -1,0 +1,74 @@
+{
+  "id": "PY-08",
+  "slug": "while-loops",
+  "title": "While Loops: Read Until Done",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [
+    "PY-07"
+  ],
+  "prerequisite_slugs": [
+    "conditionals"
+  ],
+  "learning_objectives": [
+    "Repeat work with while",
+    "Stop a loop with a sentinel value and break",
+    "Keep running totals, counts and maxima",
+    "Use None for 'no value yet'"
+  ],
+  "concept_tags": [
+    "while",
+    "break",
+    "sentinel",
+    "accumulator"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S042"
+  ],
+  "entry_point": "program (reads stdin, prints to stdout)",
+  "hints": [
+    "Use `while True:` and read `line = input().strip()` at the top of the loop.",
+    "`if line == \"done\": break` must come before `int(line)`.",
+    "Update the maximum with `if largest is None or x > largest: largest = x`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_negatives",
+      "advice": "Start `largest` at `None`, not 0, so negative maxima work."
+    },
+    {
+      "test": "test_spaces_around_done",
+      "advice": "Strip each line before comparing it with `done`."
+    },
+    {
+      "test": "test_stops_at_done",
+      "advice": "Break as soon as you see `done`; ignore anything after it."
+    },
+    {
+      "test": "test_empty",
+      "advice": "If `done` comes first, print the initial values: 0, 0 and None."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

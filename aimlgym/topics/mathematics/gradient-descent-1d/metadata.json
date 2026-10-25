@@ -1,0 +1,74 @@
+{
+  "id": "MA-13",
+  "slug": "gradient-descent-1d",
+  "title": "Gradient Descent in 1D",
+  "topic": "mathematics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-11"
+  ],
+  "prerequisite_slugs": [
+    "derivative-rules"
+  ],
+  "learning_objectives": [
+    "Implement the gradient-descent update",
+    "Use a convergence tolerance and step cap",
+    "Explain divergence when the learning rate is too large"
+  ],
+  "concept_tags": [
+    "optimisation",
+    "gradient-descent",
+    "learning-rate",
+    "convergence"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009",
+    "S013"
+  ],
+  "entry_point": "gradient_descent(df, x0, lr, max_steps=1000, tol=1e-8)",
+  "hints": [
+    "Validate `lr` and `max_steps` first.",
+    "In the loop: `step = lr * df(x)`, `x = x - step`, append `x`.",
+    "Break when `abs(step) < tol` or `not math.isfinite(x)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_first_iterates",
+      "advice": "Update with x − lr·df(x) (minus sign) and include x0 in history."
+    },
+    {
+      "test": "test_already_at_min",
+      "advice": "When the first step is 0 you should stop after one update."
+    },
+    {
+      "test": "test_max_steps_respected",
+      "advice": "history has max_steps + 1 entries when the cap is hit."
+    },
+    {
+      "test": "test_nonfinite_stops",
+      "advice": "Use math.isfinite to stop on overflow."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

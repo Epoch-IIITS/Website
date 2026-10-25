@@ -1,0 +1,72 @@
+{
+  "id": "NL-12",
+  "slug": "levenshtein",
+  "title": "Levenshtein Edit Distance",
+  "topic": "nlp",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-05"
+  ],
+  "prerequisite_slugs": [
+    "nlp-char-ngrams-sklearn"
+  ],
+  "learning_objectives": [
+    "Fill a dynamic-programming table",
+    "Compute minimum insert/delete/substitute edits",
+    "Build a simple spelling suggester"
+  ],
+  "concept_tags": [
+    "edit-distance",
+    "dynamic-programming",
+    "spelling-correction"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S017"
+  ],
+  "entry_point": "levenshtein(a, b); suggest(word, vocab, max_dist=2)",
+  "hints": [
+    "`prev = list(range(len(b) + 1))` is row 0.",
+    "For each i: `cur = [i]`; append `min(prev[j] + 1, cur[j-1] + 1, prev[j-1] + (a[i-1] != b[j-1]))`.",
+    "`sorted((levenshtein(word, w), w) for w in vocab)` then filter by max_dist."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_classic",
+      "advice": "Substitution cost is 0 when characters match, else 1."
+    },
+    {
+      "test": "test_empty",
+      "advice": "Initialise row 0 as 0..len(b) and column 0 as i."
+    },
+    {
+      "test": "test_suggest_ordering",
+      "advice": "Sort by (distance, word)."
+    },
+    {
+      "test": "test_triangle",
+      "advice": "intention→execution is the textbook example with distance 5."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

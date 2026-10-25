@@ -1,0 +1,79 @@
+{
+  "id": "LM-01",
+  "slug": "token-ids",
+  "title": "Vocabularies and Token IDs",
+  "topic": "llms",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-07"
+  ],
+  "prerequisite_slugs": [
+    "bag-of-words"
+  ],
+  "learning_objectives": [
+    "Build a vocabulary with reserved special tokens",
+    "Encode text to integer IDs with an unknown-token fallback and decode it back",
+    "Pad a batch of sequences and build its attention mask"
+  ],
+  "concept_tags": [
+    "tokenization",
+    "vocabulary",
+    "special-tokens",
+    "padding",
+    "attention-mask"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S022",
+    "S017"
+  ],
+  "entry_point": "build_vocab(texts, min_count=1); encode(text, vocab, add_special=True); decode(ids, vocab, skip_special=True); pad_batch(seqs, pad_id=0)",
+  "hints": [
+    "`counts = Counter(tok for t in texts for tok in t.lower().split())`; sort items with `key=lambda kv: (-kv[1], kv[0])`.",
+    "`vocab.get(tok, vocab[\"<unk>\"])`; decode with an inverse dict `{i: t for t, i in vocab.items()}`.",
+    "`L = max(len(s) for s in seqs)` (0 for an empty batch); `s + [pad_id] * (L - len(s))` and `[1] * len(s) + [0] * (L - len(s))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_vocab_order",
+      "advice": "Put the four specials first, then sort tokens by count descending and alphabetically."
+    },
+    {
+      "test": "test_min_count",
+      "advice": "Skip tokens whose count is below `min_count`."
+    },
+    {
+      "test": "test_encode_unknown",
+      "advice": "Lowercase, map unknown tokens to `<unk>` and wrap with `<bos>`/`<eos>`."
+    },
+    {
+      "test": "test_round_trip",
+      "advice": "Invert the vocabulary for decoding and drop special tokens only when asked."
+    },
+    {
+      "test": "test_pad_batch",
+      "advice": "Pad on the right to the longest sequence; the mask is 1 for real tokens."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

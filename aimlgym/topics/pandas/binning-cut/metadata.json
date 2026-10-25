@@ -1,0 +1,78 @@
+{
+  "id": "PD-15",
+  "slug": "binning-cut",
+  "title": "Binning with pd.cut",
+  "topic": "pandas",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-08",
+    "ST-04"
+  ],
+  "prerequisite_slugs": [
+    "groupby-agg",
+    "histogram-bins"
+  ],
+  "learning_objectives": [
+    "Discretise numbers into labelled bins",
+    "Control interval closure (right=False)",
+    "Count observations per ordered category including empty ones"
+  ],
+  "concept_tags": [
+    "binning",
+    "categorical",
+    "pd.cut",
+    "discretisation"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "age_groups(ages); group_counts(ages)",
+  "hints": [
+    "`pd.cut(pd.Series(ages), bins=EDGES, labels=LABELS, right=False)`.",
+    "`value_counts(sort=False)` keeps category order and includes zeros.",
+    "Convert to a dict with int values: `{k: int(v) for k, v in counts.items()}`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_edges_left_closed",
+      "advice": "Use right=False so 13 is a teen and 65 a senior."
+    },
+    {
+      "test": "test_large",
+      "advice": "The last edge must be np.inf."
+    },
+    {
+      "test": "test_counts_zeros_and_order",
+      "advice": "Use value_counts(sort=False) and include every label."
+    },
+    {
+      "test": "test_groups",
+      "advice": "Negative ages fall outside the bins and become NaN."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

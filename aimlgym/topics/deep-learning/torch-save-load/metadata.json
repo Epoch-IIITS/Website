@@ -1,0 +1,77 @@
+{
+  "id": "DL-26",
+  "slug": "torch-save-load",
+  "title": "Saving, Loading and Reproducibility",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-24"
+  ],
+  "prerequisite_slugs": [
+    "torch-conv1d"
+  ],
+  "learning_objectives": [
+    "Save and restore a model through its state_dict",
+    "Load weights safely with weights_only=True",
+    "Seed Python, NumPy and PyTorch together for reproducible runs"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "checkpoints",
+    "state-dict",
+    "reproducibility"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S108",
+    "S109"
+  ],
+  "entry_point": "set_seed(seed); save_model(model, path); load_model(path, n_in, n_hidden, n_out)",
+  "hints": [
+    "`random.seed(seed)`, `np.random.seed(seed)`, `torch.manual_seed(seed)`.",
+    "`torch.save(model.state_dict(), path)`.",
+    "`model.load_state_dict(torch.load(path, weights_only=True))`, then `model.eval()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_roundtrip_same_outputs",
+      "advice": "Save model.state_dict() and load it into a freshly built MLP."
+    },
+    {
+      "test": "test_file_holds_state_dict",
+      "advice": "torch.save the state_dict, not the model object."
+    },
+    {
+      "test": "test_loaded_model_in_eval",
+      "advice": "Call model.eval() after loading."
+    },
+    {
+      "test": "test_seed_controls_all_generators",
+      "advice": "Seed random, numpy.random and torch."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

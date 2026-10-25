@@ -1,0 +1,75 @@
+{
+  "id": "MA-16",
+  "slug": "power-iteration",
+  "title": "Dominant Eigenvalue by Power Iteration",
+  "topic": "mathematics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-05",
+    "MA-06"
+  ],
+  "prerequisite_slugs": [
+    "vector-norm-unit",
+    "matrix-multiply"
+  ],
+  "learning_objectives": [
+    "Explain eigenvalues and eigenvectors",
+    "Implement power iteration with normalisation",
+    "Use the Rayleigh quotient and a convergence test"
+  ],
+  "concept_tags": [
+    "eigenvalues",
+    "linear-algebra",
+    "iterative-methods",
+    "pca"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S009"
+  ],
+  "entry_point": "power_iteration(A, num_iters=1000, tol=1e-10)",
+  "hints": [
+    "Write helpers `matvec(A, v)` and `dot(u, v)`.",
+    "Normalise: `nrm = math.sqrt(dot(w, w)); b = [x / nrm for x in w]`.",
+    "Track `prev` and compare `abs(lam - prev) < tol`; fix the sign at the end."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_eigen_equation",
+      "advice": "Check A·v ≈ λ·v; normalise b every iteration and use the Rayleigh quotient."
+    },
+    {
+      "test": "test_sign_convention",
+      "advice": "Flip b so its largest-magnitude entry is positive."
+    },
+    {
+      "test": "test_zero_matrix",
+      "advice": "Raise ValueError when A·b has zero norm."
+    },
+    {
+      "test": "test_diagonal_negative",
+      "advice": "λ is the dominant eigenvalue by absolute value; here it is 4."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

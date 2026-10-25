@@ -1,0 +1,73 @@
+{
+  "id": "RL-01",
+  "slug": "discounted-return",
+  "title": "Discounted Return",
+  "topic": "reinforcement-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-14"
+  ],
+  "prerequisite_slugs": [
+    "fibonacci-sequence"
+  ],
+  "learning_objectives": [
+    "Compute the discounted return of a reward sequence",
+    "Compute returns for every time step in one backward pass",
+    "Explain the role of the discount factor γ"
+  ],
+  "concept_tags": [
+    "returns",
+    "discounting",
+    "rewards"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033",
+    "S034"
+  ],
+  "entry_point": "discounted_return(rewards, gamma); returns_to_go(rewards, gamma)",
+  "hints": [
+    "Start `G = 0.0` and loop over `reversed(rewards)`.",
+    "`G = r + gamma * G`.",
+    "Collect G values and reverse the list at the end."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "The first reward is not discounted: G = R1 + γR2 + …"
+    },
+    {
+      "test": "test_gamma_one",
+      "advice": "Use the backward recursion G = r + γG."
+    },
+    {
+      "test": "test_long",
+      "advice": "A single O(T) backward loop is enough."
+    },
+    {
+      "test": "test_bad_gamma",
+      "advice": "Validate 0 ≤ γ ≤ 1."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

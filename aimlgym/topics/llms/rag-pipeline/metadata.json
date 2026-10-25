@@ -1,0 +1,90 @@
+{
+  "id": "LM-21",
+  "slug": "rag-pipeline",
+  "title": "Retrieval-Augmented Generation by Hand",
+  "topic": "llms",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "LM-18",
+    "NL-11"
+  ],
+  "prerequisite_slugs": [
+    "chat-prompt",
+    "cosine-retrieval"
+  ],
+  "learning_objectives": [
+    "Split documents into overlapping chunks",
+    "Retrieve the most relevant chunks with TF-IDF cosine similarity",
+    "Build a prompt that numbers its sources and asks for citations",
+    "Check that a model's answer cites only retrieved sources, using a scripted model"
+  ],
+  "concept_tags": [
+    "rag",
+    "retrieval",
+    "chunking",
+    "grounding",
+    "citations",
+    "tf-idf"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S097",
+    "S017",
+    "S037"
+  ],
+  "entry_point": "chunk_words(text, size, overlap); retrieve(query, chunks, k); build_prompt(question, passages); answer(question, chunks, model, k=2)",
+  "hints": [
+    "Chunking: `step = size - overlap`; loop `start` over `range(0, len(words), step)`, append `words[start:start + size]`, and `break` once `start + size >= len(words)`.",
+    "IDF: `df` counts chunks containing each term; `idf[t] = math.log((1 + N) / (1 + df[t])) + 1`. Build each vector as a dict term → count * idf, then divide by its length.",
+    "Cited numbers: `{int(n) for n in re.findall(r\"\\[(\\d+)\\]\", reply)}`; grounded if non-empty and all between 1 and the number of passages."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_chunking",
+      "advice": "Advance by `size - overlap` and stop after the chunk that reaches the last word."
+    },
+    {
+      "test": "test_retrieve_ranking",
+      "advice": "Use smoothed IDF from the chunks, L2-normalise, and rank by cosine with index as tie-break."
+    },
+    {
+      "test": "test_retrieve_scores_are_cosines",
+      "advice": "Chunks sharing no query term score exactly 0 and keep index order."
+    },
+    {
+      "test": "test_prompt",
+      "advice": "Match the prompt text exactly, numbering passages from 1."
+    },
+    {
+      "test": "test_answer_grounded",
+      "advice": "Call the model exactly once with the prompt built from the retrieved chunks, best first."
+    },
+    {
+      "test": "test_answer_ungrounded",
+      "advice": "An answer is grounded only if it cites something and every citation is in range."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "MA-15",
+  "slug": "taylor-exp",
+  "title": "Taylor Series for exp(x)",
+  "topic": "mathematics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-11",
+    "MA-07"
+  ],
+  "prerequisite_slugs": [
+    "derivative-rules",
+    "binomial-coefficient"
+  ],
+  "learning_objectives": [
+    "Evaluate a truncated Taylor series",
+    "Compute terms recursively to avoid factorials",
+    "Stop based on a tolerance"
+  ],
+  "concept_tags": [
+    "series",
+    "approximation",
+    "taylor",
+    "convergence"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009"
+  ],
+  "entry_point": "exp_taylor(x, n_terms); terms_needed(x, tol)",
+  "hints": [
+    "Start `term = 1.0`, `total = 0.0`; for k in range(n_terms): add term, then update.",
+    "Update rule: `term *= x / (k + 1)`.",
+    "For terms_needed: start n = 0, t = 1.0, and loop while `abs(t) >= tol`: n += 1; t *= x / n."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_five_terms",
+      "advice": "Five terms means k = 0..4, starting with the constant 1."
+    },
+    {
+      "test": "test_terms_needed",
+      "advice": "n counts included terms; stop when the next term t_n is below tol."
+    },
+    {
+      "test": "test_large_terms_no_overflow",
+      "advice": "Build terms recursively; math.factorial(500) * float overflows."
+    },
+    {
+      "test": "test_x_zero",
+      "advice": "With x = 0 only the first term (1) is non-zero."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

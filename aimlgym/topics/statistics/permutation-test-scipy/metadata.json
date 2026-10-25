@@ -1,0 +1,76 @@
+{
+  "id": "ST-19",
+  "slug": "permutation-test-scipy",
+  "title": "Permutation Test with SciPy",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-17"
+  ],
+  "prerequisite_slugs": [
+    "welch-t-scipy"
+  ],
+  "learning_objectives": [
+    "Run scipy.stats.permutation_test with a custom statistic",
+    "Write a vectorised statistic that accepts an axis argument",
+    "Make resampling results reproducible with a seed"
+  ],
+  "concept_tags": [
+    "scipy",
+    "hypothesis-testing",
+    "permutation-test",
+    "resampling"
+  ],
+  "permitted_packages": [
+    "scipy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S101",
+    "S010"
+  ],
+  "entry_point": "permutation_mean_diff(x, y, alternative=\"two-sided\", n_resamples=9999, seed=0)",
+  "hints": [
+    "Define `def mean_diff(a, b, axis): return a.mean(axis=axis) - b.mean(axis=axis)`.",
+    "Call `stats.permutation_test((x, y), mean_diff, permutation_type=\"independent\", ...)`.",
+    "Pass `n_resamples`, `alternative` and `random_state=seed`; return floats."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_exact_small_sample",
+      "advice": "Use permutation_type='independent' and a statistic of mean(x) - mean(y)."
+    },
+    {
+      "test": "test_one_sided",
+      "advice": "Pass the alternative through to permutation_test."
+    },
+    {
+      "test": "test_reproducible_with_seed",
+      "advice": "Pass random_state=seed."
+    },
+    {
+      "test": "test_invalid_inputs",
+      "advice": "Raise ValueError for empty samples and unknown alternatives."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

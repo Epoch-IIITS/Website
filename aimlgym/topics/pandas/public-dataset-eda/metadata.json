@@ -1,0 +1,54 @@
+{
+  "id": "PD-P1",
+  "slug": "public-dataset-eda",
+  "title": "Exploratory Analysis of a Public Dataset",
+  "topic": "pandas",
+  "kind": "project",
+  "concept_tags": [
+    "exploratory-data-analysis",
+    "cleaning",
+    "reporting"
+  ],
+  "uses": [
+    {
+      "slug": "read-csv-io",
+      "id": "PD-03",
+      "title": "Reading and Writing CSV"
+    },
+    {
+      "slug": "select-filter",
+      "id": "PD-04",
+      "title": "Select and Filter Rows"
+    },
+    {
+      "slug": "missing-values",
+      "id": "PD-06",
+      "title": "Finding and Handling Missing Values"
+    },
+    {
+      "slug": "groupby-agg",
+      "id": "PD-08",
+      "title": "Group-by Aggregation"
+    },
+    {
+      "slug": "merge-tables",
+      "id": "PD-10",
+      "title": "Merging Tables"
+    }
+  ],
+  "brief": "Pick a public dataset that interests you and answer three questions about it with pandas: clean it,\ngroup and merge it, chart the findings and write them up as a short report a non-programmer can read.\n",
+  "milestones": [
+    "Choose a dataset and write down three questions before looking at the numbers.",
+    "Load it, inspect dtypes and missing values, and fix types and obvious errors.",
+    "Answer each question with groupby, filtering or a merge with a second table.",
+    "Make one clear chart per question with pandas plotting or matplotlib.",
+    "Write a one-page summary with the answers, the charts and the caveats."
+  ],
+  "stretch": [
+    "Add a time-series view with resampling.",
+    "Turn the analysis into a script that regenerates the report from the raw file.",
+    "Publish the report as an HTML page."
+  ],
+  "data": "* [Bike Sharing dataset](https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset) (UCI): hourly\n  rentals with weather and calendar data.\n* [Our World in Data](https://ourworldindata.org/): many downloadable CSVs on health, energy and more.\n",
+  "setup": "```bash\npip install pandas matplotlib\npython eda.py\n```\nSee the [pandas visualisation guide](https://pandas.pydata.org/docs/user_guide/visualization.html).\n"
+}

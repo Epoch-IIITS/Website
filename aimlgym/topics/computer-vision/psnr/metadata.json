@@ -1,0 +1,77 @@
+{
+  "id": "CV-17",
+  "slug": "psnr",
+  "title": "MSE and PSNR by Hand",
+  "topic": "computer-vision",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "CV-01",
+    "ML-02"
+  ],
+  "prerequisite_slugs": [
+    "image-arrays",
+    "sklearn-estimator-api"
+  ],
+  "learning_objectives": [
+    "Compute image MSE without uint8 overflow",
+    "Compute PSNR in decibels",
+    "Interpret PSNR values"
+  ],
+  "concept_tags": [
+    "image-quality",
+    "psnr",
+    "mse",
+    "metrics"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S023"
+  ],
+  "entry_point": "mse(a, b); psnr(a, b, max_val=255.0)",
+  "hints": [
+    "`a = np.asarray(a, dtype=float)` before subtracting.",
+    "`float(np.mean((a - b) ** 2))`.",
+    "`10 * math.log10(max_val ** 2 / m)`; return `math.inf` if `m == 0`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_overflow",
+      "advice": "Cast to float before subtracting uint8 arrays."
+    },
+    {
+      "test": "test_identical",
+      "advice": "Return math.inf when MSE is 0."
+    },
+    {
+      "test": "test_max_val",
+      "advice": "PSNR = 10·log10(MAX² / MSE)."
+    },
+    {
+      "test": "test_shape",
+      "advice": "Raise ValueError if shapes differ."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

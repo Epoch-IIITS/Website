@@ -1,0 +1,84 @@
+{
+  "id": "ML-01",
+  "slug": "ml-baselines",
+  "title": "Features, Labels and Baseline Models",
+  "topic": "machine-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-05"
+  ],
+  "prerequisite_slugs": [
+    "axis-aggregations"
+  ],
+  "learning_objectives": [
+    "Describe a dataset as a feature matrix X and a label vector y",
+    "Write models as classes with fit and predict methods",
+    "Build mean and majority-class baselines and explain why every model needs one",
+    "Refuse to predict before fitting"
+  ],
+  "concept_tags": [
+    "supervised-learning",
+    "features",
+    "labels",
+    "baselines",
+    "fit-predict"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012",
+    "S089"
+  ],
+  "entry_point": "class MeanRegressor; class MajorityClassifier; mse(y_true, y_pred); accuracy(y_true, y_pred)",
+  "hints": [
+    "Before fitting, the attribute does not exist: check `hasattr(self, \"mean_\")` in `predict`.",
+    "`labels, counts = np.unique(y, return_counts=True)`; `np.unique` sorts labels, so `labels[np.argmax(counts)]` picks the smallest on ties.",
+    "`np.full(len(X), self.mean_)` repeats a value; MSE is `np.mean((y_true - y_pred) ** 2)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_mean_regressor",
+      "advice": "Store the training mean in `self.mean_` and repeat it once per row of X."
+    },
+    {
+      "test": "test_fit_returns_self",
+      "advice": "End `fit` with `return self`."
+    },
+    {
+      "test": "test_predict_before_fit",
+      "advice": "Raise ValueError in `predict` if the model has not been fitted."
+    },
+    {
+      "test": "test_majority_tie_smallest",
+      "advice": "Use `np.unique(..., return_counts=True)` and `np.argmax`, which picks the first (smallest) label on ties."
+    },
+    {
+      "test": "test_metrics",
+      "advice": "Check that lengths match and are non-zero before computing."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

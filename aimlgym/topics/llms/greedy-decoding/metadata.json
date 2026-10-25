@@ -1,0 +1,76 @@
+{
+  "id": "LM-04",
+  "slug": "greedy-decoding",
+  "title": "Greedy Decoding",
+  "topic": "llms",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-03"
+  ],
+  "prerequisite_slugs": [
+    "temperature-softmax"
+  ],
+  "learning_objectives": [
+    "Run an autoregressive generation loop",
+    "Stop on an end-of-sequence token or a length limit",
+    "Recognise repetition loops in greedy output"
+  ],
+  "concept_tags": [
+    "decoding",
+    "greedy",
+    "autoregressive",
+    "generation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013",
+    "S022"
+  ],
+  "entry_point": "greedy_decode(next_logits, prompt, vocab, eos='</s>', max_new=20)",
+  "hints": [
+    "`tokens = list(prompt)`; loop `for _ in range(max_new)`.",
+    "`z = np.asarray(next_logits(tokens))`; `t = vocab[int(np.argmax(z))]` (argmax returns the first max).",
+    "Append, then `break` if `t == eos`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Append the argmax token and stop after appending EOS."
+    },
+    {
+      "test": "test_max_new",
+      "advice": "Generate at most max_new new tokens."
+    },
+    {
+      "test": "test_uses_full_context",
+      "advice": "Pass the whole current sequence to the model."
+    },
+    {
+      "test": "test_prompt_not_mutated",
+      "advice": "Copy the prompt before appending."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

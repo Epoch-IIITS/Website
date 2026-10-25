@@ -1,0 +1,72 @@
+{
+  "id": "ST-05",
+  "slug": "z-scores",
+  "title": "Standardize to z-scores",
+  "topic": "statistics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-01"
+  ],
+  "prerequisite_slugs": [
+    "mean-variance"
+  ],
+  "learning_objectives": [
+    "Standardize data",
+    "Interpret z-scores",
+    "Flag outliers with a |z| threshold"
+  ],
+  "concept_tags": [
+    "standardization",
+    "z-score",
+    "outliers"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S010"
+  ],
+  "entry_point": "z_scores(data, sample=False); outliers(data, threshold=3.0)",
+  "hints": [
+    "Compute mean and variance (n or n−1), then `sd = math.sqrt(var)`.",
+    "Raise ValueError if `sd == 0`.",
+    "`[i for i, z in enumerate(z_scores(data)) if abs(z) > threshold]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Divide by the standard deviation (sqrt of variance), not the variance."
+    },
+    {
+      "test": "test_sample_variant",
+      "advice": "With sample=True use n − 1 in the variance."
+    },
+    {
+      "test": "test_constant",
+      "advice": "Raise ValueError when sd == 0."
+    },
+    {
+      "test": "test_outliers",
+      "advice": "Return indices, not values, and compare abs(z) > threshold."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

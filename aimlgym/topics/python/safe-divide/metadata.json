@@ -1,0 +1,73 @@
+{
+  "id": "PY-21",
+  "slug": "safe-divide",
+  "title": "Safe Division with Exceptions",
+  "topic": "python",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-20"
+  ],
+  "prerequisite_slugs": [
+    "matrix-transpose"
+  ],
+  "learning_objectives": [
+    "Catch specific exceptions with try/except",
+    "Distinguish recoverable and unrecoverable errors",
+    "Process a batch while recording failures"
+  ],
+  "concept_tags": [
+    "exceptions",
+    "try-except",
+    "error-handling",
+    "batch-processing"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "safe_divide(a, b); divide_pairs(pairs)",
+  "hints": [
+    "Wrap only the division in `try:` and catch `except ZeroDivisionError:`.",
+    "Use `enumerate(pairs)` to get each index.",
+    "Append the index to `failed` when the result `is None`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_type_error_propagates",
+      "advice": "Catch only ZeroDivisionError; a bare except hides TypeError."
+    },
+    {
+      "test": "test_zero_numerator_ok",
+      "advice": "0 / 5 is 0.0, a valid result — only a None result counts as failed. Use `is None`, not `not r`."
+    },
+    {
+      "test": "test_pairs",
+      "advice": "Use enumerate to record indices of failures."
+    },
+    {
+      "test": "test_float_zero",
+      "advice": "Plain Python raises ZeroDivisionError for 1.0/0.0 too."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

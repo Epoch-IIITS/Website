@@ -1,0 +1,77 @@
+{
+  "id": "ML-08",
+  "slug": "standard-scaler",
+  "title": "Standard Scaler (fit on train only)",
+  "topic": "machine-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-05"
+  ],
+  "prerequisite_slugs": [
+    "train-test-split"
+  ],
+  "learning_objectives": [
+    "Write a fit/transform class",
+    "Avoid data leakage by fitting only on training data",
+    "Invert the transformation"
+  ],
+  "concept_tags": [
+    "preprocessing",
+    "standardization",
+    "leakage",
+    "classes"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012"
+  ],
+  "entry_point": "class StandardScaler: fit, transform, fit_transform, inverse_transform",
+  "hints": [
+    "In fit: `self.mean_ = X.mean(axis=0)`; `std = X.std(axis=0)`.",
+    "`self.scale_ = np.where(std == 0, 1.0, std)`.",
+    "Check `self.mean_ is None` in transform and compare `X.shape[1]` with `len(self.mean_)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_transform_test_point",
+      "advice": "Use the stored training mean/std; never refit inside transform."
+    },
+    {
+      "test": "test_fit_returns_self",
+      "advice": "fit must `return self`."
+    },
+    {
+      "test": "test_not_fitted",
+      "advice": "Raise RuntimeError when transform is called before fit."
+    },
+    {
+      "test": "test_fit_params",
+      "advice": "Constant columns get scale 1.0 (not 0)."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

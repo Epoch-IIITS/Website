@@ -1,0 +1,74 @@
+{
+  "id": "MA-06",
+  "slug": "matrix-multiply",
+  "title": "Matrix Multiplication",
+  "topic": "mathematics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-04",
+    "PY-20"
+  ],
+  "prerequisite_slugs": [
+    "dot-product",
+    "matrix-transpose"
+  ],
+  "learning_objectives": [
+    "Multiply matrices with the row-by-column rule",
+    "Check shape compatibility",
+    "Recognise that AB ≠ BA in general"
+  ],
+  "concept_tags": [
+    "matrices",
+    "matrix-multiplication",
+    "shapes"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009"
+  ],
+  "entry_point": "matmul(A, B)",
+  "hints": [
+    "Write a helper that checks a matrix is non-empty and rectangular.",
+    "Compatibility: number of columns of A (`len(A[0])`) must equal rows of B (`len(B)`).",
+    "Triple loop over i, j, k, or a comprehension using `zip(*B)` to get B's columns."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_incompatible",
+      "advice": "Compare columns of A with rows of B: len(A[0]) vs len(B)."
+    },
+    {
+      "test": "test_2x2",
+      "advice": "Entry (i, j) is row i of A dotted with column j of B — not element-wise."
+    },
+    {
+      "test": "test_column_times_row",
+      "advice": "Output shape is len(A) × len(B[0])."
+    },
+    {
+      "test": "test_ragged",
+      "advice": "Validate every row length."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

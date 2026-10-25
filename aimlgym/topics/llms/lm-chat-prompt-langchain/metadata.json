@@ -1,0 +1,76 @@
+{
+  "id": "LM-17",
+  "slug": "lm-chat-prompt-langchain",
+  "title": "Chat Prompts and Messages with LangChain",
+  "topic": "llms",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-16"
+  ],
+  "prerequisite_slugs": [
+    "lm-tiny-gpt"
+  ],
+  "learning_objectives": [
+    "Build chat prompts with ChatPromptTemplate and MessagesPlaceholder",
+    "Represent conversations as SystemMessage, HumanMessage and AIMessage objects",
+    "Compose prompt | model | output parser chains and test them with a fake chat model"
+  ],
+  "concept_tags": [
+    "langchain",
+    "prompts",
+    "chat-models",
+    "messages"
+  ],
+  "permitted_packages": [
+    "langchain-core"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S130",
+    "S132"
+  ],
+  "entry_point": "make_tutor_prompt(); format_chat(prompt, subject, max_words, history, question); ask(prompt, model, subject, max_words, history, question)",
+  "hints": [
+    "`ChatPromptTemplate.from_messages([(\"system\", \"...\"), MessagesPlaceholder(\"history\"), (\"human\", \"{question}\")])`.",
+    "Write a helper that turns the history pairs into message objects and builds the input dict.",
+    "`[(m.type, m.content) for m in prompt.invoke(inputs).to_messages()]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_input_variables",
+      "advice": "The template needs subject, max_words, history and question."
+    },
+    {
+      "test": "test_message_order_and_content",
+      "advice": "System message, then the history placeholder, then the human question."
+    },
+    {
+      "test": "test_chain_with_fake_model",
+      "advice": "Compose prompt | model | StrOutputParser() and invoke it."
+    },
+    {
+      "test": "test_invalid_role",
+      "advice": "Only 'human' and 'ai' roles are allowed in the history."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

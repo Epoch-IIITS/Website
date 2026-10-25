@@ -1,0 +1,79 @@
+{
+  "id": "NL-01",
+  "slug": "regex-text",
+  "title": "Regular Expressions for Text",
+  "topic": "nlp",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-16"
+  ],
+  "prerequisite_slugs": [
+    "unique-words"
+  ],
+  "learning_objectives": [
+    "Write patterns with character classes, quantifiers and anchors",
+    "Use re.findall, re.sub and re.fullmatch",
+    "Capture parts of a match with named groups",
+    "Compare a regex with the equivalent character loop"
+  ],
+  "concept_tags": [
+    "regex",
+    "pattern-matching",
+    "text-cleaning",
+    "parsing"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S059",
+    "S060"
+  ],
+  "entry_point": "collapse_spaces_manual(text); collapse_spaces(text); mask_digits(text); find_numbers(text); find_hashtags(text); parse_log(line)",
+  "hints": [
+    "`\" \".join(text.split())` collapses whitespace without regex; with regex use `re.sub(r\"\\s+\", \" \", text).strip()`.",
+    "Numbers: `r\"-?\\d+(?:\\.\\d+)?\"`; hashtags: `r\"(?<!\\w)#(\\w+)\"` (a negative look-behind for 'not preceded by a word character').",
+    "Log: `r\"(?P<date>\\d{4}-\\d{2}-\\d{2}) (?P<time>\\d{2}:\\d{2}:\\d{2}) (?P<level>DEBUG|INFO|WARNING|ERROR) (?P<message>.+)\"`; return `m.groupdict()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_collapse_manual_matches_regex",
+      "advice": "`\" \".join(text.split())` without regex; `re.sub(r\"\\s+\", \" \", text).strip()` with it."
+    },
+    {
+      "test": "test_find_numbers",
+      "advice": "Use a non-capturing group for the decimal part so findall returns whole numbers."
+    },
+    {
+      "test": "test_hashtags",
+      "advice": "Require that `#` is not preceded by a word character, and lowercase the result."
+    },
+    {
+      "test": "test_parse_log_rejects",
+      "advice": "Use `fullmatch` so the whole line must match, and list only the four levels."
+    },
+    {
+      "test": "test_message_keeps_spaces",
+      "advice": "The message group should be `.+` and must not be cleaned."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "CV-04",
+  "slug": "cv-geometric-transforms",
+  "title": "Flips, Rotations and Affine Warps",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-03"
+  ],
+  "prerequisite_slugs": [
+    "cv-opencv-basics"
+  ],
+  "learning_objectives": [
+    "Flip and rotate images by multiples of 90° with cv2.flip and cv2.rotate",
+    "Rotate about the centre with getRotationMatrix2D and warpAffine",
+    "Translate an image with a 2×3 affine matrix"
+  ],
+  "concept_tags": [
+    "opencv",
+    "geometric-transforms",
+    "affine",
+    "rotation"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S116",
+    "S122"
+  ],
+  "entry_point": "transform(image, op); rotate_about_centre(image, angle); translate(image, dx, dy)",
+  "hints": [
+    "Map op names to `lambda img: cv2.flip(img, 1)`, `cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)` and so on.",
+    "`h, w = image.shape[:2]`; `M = cv2.getRotationMatrix2D(((w - 1) / 2, (h - 1) / 2), angle, scale)`.",
+    "`cv2.warpAffine(image, M, (w, h))` — the size is (width, height); for translation `M = np.float32([[1, 0, dx], [0, 1, dy]])`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_flips",
+      "advice": "flip_h is cv2.flip(img, 1); flip_v is cv2.flip(img, 0)."
+    },
+    {
+      "test": "test_rotate_about_centre_is_counter_clockwise",
+      "advice": "Rotate about ((w - 1) / 2, (h - 1) / 2)."
+    },
+    {
+      "test": "test_rotation_keeps_size_and_dtype",
+      "advice": "warpAffine's size argument is (width, height)."
+    },
+    {
+      "test": "test_translate",
+      "advice": "The translation matrix is [[1, 0, dx], [0, 1, dy]]."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

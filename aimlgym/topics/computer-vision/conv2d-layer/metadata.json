@@ -1,0 +1,87 @@
+{
+  "id": "CV-15",
+  "slug": "conv2d-layer",
+  "title": "A Convolution Layer with Channels",
+  "topic": "computer-vision",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-13",
+    "CV-10"
+  ],
+  "prerequisite_slugs": [
+    "cv-pooling-torch",
+    "conv2d-filter"
+  ],
+  "learning_objectives": [
+    "Apply a bank of filters to a multi-channel input (C_in → C_out)",
+    "Compute output sizes from kernel size, padding and stride",
+    "Count a convolution layer's parameters",
+    "Compare a loop implementation with PyTorch's conv2d"
+  ],
+  "concept_tags": [
+    "cnn",
+    "convolution",
+    "channels",
+    "padding",
+    "stride"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S015",
+    "S013",
+    "S093"
+  ],
+  "entry_point": "conv_output_size(n, k, padding, stride); conv2d(x, weight, bias, stride=1, padding=0); conv_params(c_in, c_out, k)",
+  "hints": [
+    "`(n + 2 * padding - k) // stride + 1`.",
+    "`xp = np.pad(x, ((0, 0), (padding, padding), (padding, padding)))` pads only the spatial axes.",
+    "For each output position, take `patch = xp[:, i*s:i*s+k, j*s:j*s+k]` (shape (C_in, k, k)) and compute `np.sum(weight[o] * patch) + bias[o]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_output_size",
+      "advice": "Use `(n + 2*padding - k) // stride + 1` and reject results below 1."
+    },
+    {
+      "test": "test_sums_over_channels",
+      "advice": "Each output value sums over all input channels as well as the kernel window."
+    },
+    {
+      "test": "test_matches_reference",
+      "advice": "Pad only the spatial axes and step the window by `stride`."
+    },
+    {
+      "test": "test_no_flip",
+      "advice": "Do not flip the kernel; weight[u, v] multiplies the input at offset (u, v)."
+    },
+    {
+      "test": "test_params",
+      "advice": "Each output channel has C_in*k*k weights plus one bias."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

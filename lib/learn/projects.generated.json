@@ -1,0 +1,1614 @@
+{
+  "expense-tracker-cli": {
+    "id": "PY-P1",
+    "slug": "expense-tracker-cli",
+    "title": "Expense Tracker CLI",
+    "topicSlug": "python",
+    "after": "files-and-json",
+    "tags": [
+      "command-line",
+      "files",
+      "json"
+    ],
+    "uses": [
+      {
+        "slug": "input-output",
+        "id": "PY-04",
+        "title": "Reading Input"
+      },
+      {
+        "slug": "for-loops-range",
+        "id": "PY-09",
+        "title": "For Loops and range: FizzBuzz"
+      },
+      {
+        "slug": "gradebook-aggregate",
+        "id": "PY-18",
+        "title": "Gradebook Aggregation"
+      },
+      {
+        "slug": "safe-divide",
+        "id": "PY-21",
+        "title": "Safe Division with Exceptions"
+      },
+      {
+        "slug": "files-and-json",
+        "id": "PY-23",
+        "title": "Files, CSV and JSON"
+      }
+    ],
+    "brief": "Build a command-line program that records your expenses, saves them to a JSON file between runs, and\nprints summaries: total this month, spending by category and your biggest purchases.\n",
+    "milestones": [
+      "Ask for an amount, a category and a note with input() and keep the expense in a list of dicts.",
+      "Save the list to expenses.json when the program exits and load it when it starts.",
+      "Add a menu: add, list, summary, quit.",
+      "Summarise totals per category with a dict, sorted from largest to smallest.",
+      "Handle bad input (letters for an amount, an empty category) without crashing."
+    ],
+    "stretch": [
+      "Use argparse so commands like `python expenses.py add 120 food lunch` work without a menu.",
+      "Export a month to CSV.",
+      "Set monthly budgets per category and warn when one is exceeded."
+    ],
+    "data": "Your own expenses — or invent a week of them to test with. See the [json module](https://docs.python.org/3/library/json.html)\nand [argparse](https://docs.python.org/3/library/argparse.html) documentation.\n",
+    "setup": "```bash\npython expenses.py\n```\nOnly the standard library is needed.\n"
+  },
+  "quiz-game": {
+    "id": "PY-P2",
+    "slug": "quiz-game",
+    "title": "Quiz Game with High Scores",
+    "topicSlug": "python",
+    "after": "unit-testing",
+    "tags": [
+      "games",
+      "classes",
+      "testing"
+    ],
+    "uses": [
+      {
+        "slug": "standard-library",
+        "id": "PY-15",
+        "title": "Importing the Standard Library"
+      },
+      {
+        "slug": "files-and-json",
+        "id": "PY-23",
+        "title": "Files, CSV and JSON"
+      },
+      {
+        "slug": "bank-account",
+        "id": "PY-25",
+        "title": "Classes: A Bank Account"
+      },
+      {
+        "slug": "shapes-inheritance",
+        "id": "PY-26",
+        "title": "Inheritance, Special Methods and Dataclasses"
+      },
+      {
+        "slug": "unit-testing",
+        "id": "PY-27",
+        "title": "Writing Unit Tests"
+      }
+    ],
+    "brief": "Build a quiz game that loads questions from a file, asks them in random order, keeps score with time\nbonuses, and stores a high-score table — with unit tests for the scoring rules.\n",
+    "milestones": [
+      "Store questions (text, options, answer, category) in a JSON file and load them into Question objects.",
+      "Ask ten random questions, check answers and show the score.",
+      "Add a Player class and a high-score table saved to a file, keeping the top five.",
+      "Give multiple-choice and true/false questions their own subclasses with a shared check() method.",
+      "Write unittest tests for scoring, loading and the high-score table."
+    ],
+    "stretch": [
+      "Add difficulty levels that choose questions by category or score.",
+      "Download questions once from the Open Trivia Database and cache them in your file.",
+      "Make a two-player mode that alternates turns."
+    ],
+    "data": "Write 20–30 questions yourself, or fetch some from the [Open Trivia Database](https://opentdb.com/)\nand save them to your JSON file (the game itself should not need the network).\n",
+    "setup": "```bash\npython quiz.py\npython -m unittest -v\n```\n"
+  },
+  "text-adventure-engine": {
+    "id": "PY-P3",
+    "slug": "text-adventure-engine",
+    "title": "Text Adventure Engine",
+    "topicSlug": "python",
+    "after": "unit-testing",
+    "tags": [
+      "games",
+      "object-oriented-design",
+      "parsing"
+    ],
+    "uses": [
+      {
+        "slug": "string-basics",
+        "id": "PY-06",
+        "title": "Strings: Indexing, Slicing and Methods"
+      },
+      {
+        "slug": "vowel-counter",
+        "id": "PY-13",
+        "title": "Vowel Counter"
+      },
+      {
+        "slug": "files-and-json",
+        "id": "PY-23",
+        "title": "Files, CSV and JSON"
+      },
+      {
+        "slug": "bank-account",
+        "id": "PY-25",
+        "title": "Classes: A Bank Account"
+      },
+      {
+        "slug": "shapes-inheritance",
+        "id": "PY-26",
+        "title": "Inheritance, Special Methods and Dataclasses"
+      },
+      {
+        "slug": "unit-testing",
+        "id": "PY-27",
+        "title": "Writing Unit Tests"
+      }
+    ],
+    "brief": "Build a small engine for text adventures: rooms, exits, items and simple puzzles described in a data\nfile, a command parser (\"go north\", \"take lamp\", \"use key on door\"), and saved games — then write a\nshort adventure with it.\n",
+    "milestones": [
+      "Model Room, Item and Player as classes; describe a three-room world in a JSON file.",
+      "Write a parser that turns commands into (verb, object) pairs and rejects unknown verbs politely.",
+      "Implement go, look, take, drop and inventory.",
+      "Add locked doors and items that unlock them.",
+      "Save and load the game state to a file; test the parser and the save format with unittest."
+    ],
+    "stretch": [
+      "Add characters that respond to `talk` with a small dialogue tree.",
+      "Load several adventures from a folder and let the player choose.",
+      "Add a scoring system and an ending condition."
+    ],
+    "data": "You write the world file yourself; keep it small at first (three rooms, two items, one puzzle).\n",
+    "setup": "```bash\npython adventure.py worlds/castle.json\n```\n"
+  },
+  "gradient-descent-visualiser": {
+    "id": "MA-P1",
+    "slug": "gradient-descent-visualiser",
+    "title": "Gradient-Descent Visualiser",
+    "topicSlug": "mathematics",
+    "after": "power-iteration",
+    "tags": [
+      "optimisation",
+      "visualisation",
+      "calculus"
+    ],
+    "uses": [
+      {
+        "slug": "derivative-rules",
+        "id": "MA-11",
+        "title": "Derivative Rules and the Chain Rule"
+      },
+      {
+        "slug": "gradient-descent-1d",
+        "id": "MA-13",
+        "title": "Gradient Descent in 1D"
+      },
+      {
+        "slug": "numerical-gradient",
+        "id": "MA-14",
+        "title": "Numerical Gradient of f(x1..xn)"
+      },
+      {
+        "slug": "taylor-exp",
+        "id": "MA-15",
+        "title": "Taylor Series for exp(x)"
+      }
+    ],
+    "brief": "Build a tool that animates gradient descent on functions you choose — a bowl, a long narrow valley, a\nfunction with two minima — so you can see how the learning rate, the starting point and the shape of\nthe function change the path.\n",
+    "milestones": [
+      "Write gradient descent for one variable and print the sequence of points for f(x) = (x - 3)².",
+      "Extend it to two variables using numerical gradients, for any function you pass in.",
+      "Plot contour lines of f(x, y) with matplotlib and draw the path on top.",
+      "Compare learning rates that converge, oscillate and diverge on the same function.",
+      "Show a function with two minima where the starting point decides which one is found."
+    ],
+    "stretch": [
+      "Add momentum and compare its path in a narrow valley.",
+      "Animate the path with matplotlib's animation module and save a GIF.",
+      "Let the user type a formula and parse it safely."
+    ],
+    "data": "No data: the functions are your own. See matplotlib's [animation guide](https://matplotlib.org/stable/users/explain/animations/animations.html).\n",
+    "setup": "```bash\npip install numpy matplotlib\npython descent.py\n```\n"
+  },
+  "ab-test-analyser": {
+    "id": "ST-P1",
+    "slug": "ab-test-analyser",
+    "title": "A/B Test Analyser",
+    "topicSlug": "statistics",
+    "after": "permutation-test",
+    "tags": [
+      "a-b-testing",
+      "hypothesis-testing",
+      "confidence-intervals"
+    ],
+    "uses": [
+      {
+        "slug": "bootstrap-ci",
+        "id": "ST-13",
+        "title": "Bootstrap Confidence Interval"
+      },
+      {
+        "slug": "scipy-stats-intro",
+        "id": "ST-14",
+        "title": "Introducing scipy.stats"
+      },
+      {
+        "slug": "chi-square-scipy",
+        "id": "ST-15",
+        "title": "Chi-Square Test with SciPy"
+      },
+      {
+        "slug": "welch-t-scipy",
+        "id": "ST-17",
+        "title": "Welch's t-test with SciPy"
+      },
+      {
+        "slug": "permutation-test-scipy",
+        "id": "ST-19",
+        "title": "Permutation Test with SciPy"
+      }
+    ],
+    "brief": "Build a small tool that a product team could use after an experiment: give it the results for\nversion A and version B of a page (conversions or a numeric metric such as time on page) and it\nreports the effect size, a confidence interval, and whether the difference is statistically\nsignificant — in plain language a non-statistician can act on.\n",
+    "milestones": [
+      "Read two groups of numbers from a CSV file and print their sizes, means and standard deviations.",
+      "Report the difference in means with a 95% bootstrap confidence interval.",
+      "Add Welch's t-test and a permutation test and print both p-values side by side.",
+      "Support conversion data (converted yes/no) with a chi-square test on the 2×2 table of counts.",
+      "Write a one-paragraph summary: effect, interval, p-value and a recommendation with its caveats."
+    ],
+    "stretch": [
+      "Estimate the sample size needed to detect a given effect (power analysis) by simulation.",
+      "Show what goes wrong when you check the p-value every day and stop early ('peeking').",
+      "Handle more than two variants and correct for multiple comparisons."
+    ],
+    "data": "Generate data yourself with NumPy: for example 2,000 visitors per version with conversion rates\nof 10% and 11% (`rng.random(2000) < 0.11`), or times drawn from `rng.lognormal`. Changing the true\neffect and the sample size shows when a test can and cannot detect it.\n",
+    "setup": "```bash\npip install numpy scipy pandas\npython ab_test.py results.csv\n```\nKeep the analysis in functions so you can test each one with `unittest`, as in the course steps.\n"
+  },
+  "dice-coin-simulator": {
+    "id": "ST-P2",
+    "slug": "dice-coin-simulator",
+    "title": "Dice and Coin Simulator",
+    "topicSlug": "statistics",
+    "after": "permutation-test",
+    "tags": [
+      "simulation",
+      "law-of-large-numbers",
+      "distributions"
+    ],
+    "uses": [
+      {
+        "slug": "dice-lln",
+        "id": "ST-10",
+        "title": "Dice Simulation and the Law of Large Numbers"
+      },
+      {
+        "slug": "histogram-bins",
+        "id": "ST-04",
+        "title": "Histogram with Equal-Width Bins"
+      },
+      {
+        "slug": "binomial-pmf",
+        "id": "ST-08",
+        "title": "Binomial Probabilities"
+      },
+      {
+        "slug": "sampling-distribution",
+        "id": "ST-12",
+        "title": "Sampling Distributions and Standard Error"
+      },
+      {
+        "slug": "scipy-stats-intro",
+        "id": "ST-14",
+        "title": "Introducing scipy.stats"
+      }
+    ],
+    "brief": "Build a simulator that rolls dice and flips coins thousands of times and shows, in numbers and\nsimple text charts, how averages settle down (the law of large numbers), how sums of dice become\nbell-shaped (the central limit theorem), and how often \"unlikely\" streaks really happen.\n",
+    "milestones": [
+      "Simulate n fair coin flips with a seeded generator and print the running proportion of heads.",
+      "Roll k dice many times and print a text histogram of the sums.",
+      "Compare the simulated frequencies with the exact binomial probabilities from scipy.stats.",
+      "Measure the longest run of heads in 100 flips across many trials and report how often it is 6 or more."
+    ],
+    "stretch": [
+      "Add loaded dice and use a chi-square test to see how many rolls it takes to detect them.",
+      "Plot the running mean with matplotlib and show the ±2 standard error band shrinking like 1/√n.",
+      "Turn it into a small command-line game where players bet on outcomes."
+    ],
+    "data": "No data is needed: everything is simulated with `numpy.random.default_rng(seed)`, so every run with\nthe same seed gives the same results.\n",
+    "setup": "```bash\npip install numpy scipy\npython simulator.py --dice 3 --rolls 10000 --seed 1\n```\nOptional: `pip install matplotlib` for charts.\n"
+  },
+  "numpy-photo-filters": {
+    "id": "NP-P1",
+    "slug": "numpy-photo-filters",
+    "title": "Photo Filters with NumPy",
+    "topicSlug": "numpy",
+    "after": "moving-average",
+    "tags": [
+      "images",
+      "arrays",
+      "broadcasting"
+    ],
+    "uses": [
+      {
+        "slug": "array-info",
+        "id": "NP-01",
+        "title": "Create an Array and Inspect It"
+      },
+      {
+        "slug": "vectorized-math",
+        "id": "NP-02",
+        "title": "Vectorised Arithmetic and ufuncs"
+      },
+      {
+        "slug": "slicing-subgrid",
+        "id": "NP-03",
+        "title": "Slicing a Sub-grid"
+      },
+      {
+        "slug": "axis-aggregations",
+        "id": "NP-05",
+        "title": "Aggregations Along Axes"
+      },
+      {
+        "slug": "broadcast-center",
+        "id": "NP-07",
+        "title": "Centering Columns with Broadcasting"
+      },
+      {
+        "slug": "moving-average",
+        "id": "NP-14",
+        "title": "Moving Average with cumsum"
+      }
+    ],
+    "brief": "Build a small photo-filter program using only NumPy array operations: greyscale, brightness and\ncontrast, blur, edge detection and a vignette — applied to your own photos.\n",
+    "milestones": [
+      "Load a photo into a NumPy array (with Pillow) and print its shape and dtype.",
+      "Write greyscale, brightness and contrast filters with vectorised arithmetic, clipping to 0–255.",
+      "Write a box blur by averaging shifted copies of the image.",
+      "Write a simple edge filter from differences between neighbouring pixels.",
+      "Add a vignette with a broadcast distance-from-centre mask, and save the results side by side."
+    ],
+    "stretch": [
+      "Write a sepia filter as a 3×3 colour matrix applied with matrix multiplication.",
+      "Compare your blur's speed with a Python double loop.",
+      "Build a command-line tool that chains filters: `python filters.py in.jpg out.jpg grey blur vignette`."
+    ],
+    "data": "Your own photos. [Pillow](https://pillow.readthedocs.io/en/stable/) only loads and saves the files;\nthe filters themselves use NumPy ([broadcasting guide](https://numpy.org/doc/stable/user/basics.broadcasting.html)).\n",
+    "setup": "```bash\npip install numpy pillow\npython filters.py photo.jpg\n```\n"
+  },
+  "public-dataset-eda": {
+    "id": "PD-P1",
+    "slug": "public-dataset-eda",
+    "title": "Exploratory Analysis of a Public Dataset",
+    "topicSlug": "pandas",
+    "after": "merge-tables",
+    "tags": [
+      "exploratory-data-analysis",
+      "cleaning",
+      "reporting"
+    ],
+    "uses": [
+      {
+        "slug": "read-csv-io",
+        "id": "PD-03",
+        "title": "Reading and Writing CSV"
+      },
+      {
+        "slug": "select-filter",
+        "id": "PD-04",
+        "title": "Select and Filter Rows"
+      },
+      {
+        "slug": "missing-values",
+        "id": "PD-06",
+        "title": "Finding and Handling Missing Values"
+      },
+      {
+        "slug": "groupby-agg",
+        "id": "PD-08",
+        "title": "Group-by Aggregation"
+      },
+      {
+        "slug": "merge-tables",
+        "id": "PD-10",
+        "title": "Merging Tables"
+      }
+    ],
+    "brief": "Pick a public dataset that interests you and answer three questions about it with pandas: clean it,\ngroup and merge it, chart the findings and write them up as a short report a non-programmer can read.\n",
+    "milestones": [
+      "Choose a dataset and write down three questions before looking at the numbers.",
+      "Load it, inspect dtypes and missing values, and fix types and obvious errors.",
+      "Answer each question with groupby, filtering or a merge with a second table.",
+      "Make one clear chart per question with pandas plotting or matplotlib.",
+      "Write a one-page summary with the answers, the charts and the caveats."
+    ],
+    "stretch": [
+      "Add a time-series view with resampling.",
+      "Turn the analysis into a script that regenerates the report from the raw file.",
+      "Publish the report as an HTML page."
+    ],
+    "data": "* [Bike Sharing dataset](https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset) (UCI): hourly\n  rentals with weather and calendar data.\n* [Our World in Data](https://ourworldindata.org/): many downloadable CSVs on health, energy and more.\n",
+    "setup": "```bash\npip install pandas matplotlib\npython eda.py\n```\nSee the [pandas visualisation guide](https://pandas.pydata.org/docs/user_guide/visualization.html).\n"
+  },
+  "personal-finance-data": {
+    "id": "PD-P2",
+    "slug": "personal-finance-data",
+    "title": "Personal Finance Dashboard Data",
+    "topicSlug": "pandas",
+    "after": "rolling-features",
+    "tags": [
+      "time-series",
+      "pivot-tables",
+      "cleaning"
+    ],
+    "uses": [
+      {
+        "slug": "string-cleaning",
+        "id": "PD-11",
+        "title": "Cleaning Text Columns"
+      },
+      {
+        "slug": "datetime-basics",
+        "id": "PD-12",
+        "title": "Working with Dates"
+      },
+      {
+        "slug": "resample-weekly",
+        "id": "PD-13",
+        "title": "Weekly Resampling"
+      },
+      {
+        "slug": "pivot-table",
+        "id": "PD-14",
+        "title": "Pivot Tables"
+      },
+      {
+        "slug": "binning-cut",
+        "id": "PD-15",
+        "title": "Binning with pd.cut"
+      },
+      {
+        "slug": "rolling-features",
+        "id": "PD-16",
+        "title": "Rolling-Window Features"
+      }
+    ],
+    "brief": "Turn messy bank-statement style CSV files into tidy monthly and category summaries — the data layer of\na personal-finance dashboard: income, spending by category, savings rate and unusual transactions.\n",
+    "milestones": [
+      "Generate a year of fake transactions (date, description, amount) in two different CSV formats.",
+      "Load both, standardise column names, dates and signs, and combine them.",
+      "Assign categories from description keywords with string methods.",
+      "Build monthly totals per category with resample and a pivot table.",
+      "Flag unusual transactions with a rolling mean and standard deviation per category."
+    ],
+    "stretch": [
+      "Add budgets and compute the remaining amount per category each month.",
+      "Draw the dashboard with matplotlib or a small web page.",
+      "Write tests for the cleaning functions with unusual inputs."
+    ],
+    "data": "Generate realistic fake data with NumPy and pandas (salary on the 1st, rent, groceries, occasional\nlarge purchases). Never commit real bank statements to a repository.\n",
+    "setup": "```bash\npip install pandas numpy matplotlib\npython finance.py statements/\n```\n"
+  },
+  "url-shortener-api": {
+    "id": "FA-P1",
+    "slug": "url-shortener-api",
+    "title": "URL Shortener API",
+    "topicSlug": "fastapi",
+    "after": "fastapi-dependencies",
+    "tags": [
+      "web-api",
+      "fastapi",
+      "authentication"
+    ],
+    "uses": [
+      {
+        "slug": "http-responses",
+        "id": "FA-02",
+        "title": "HTTP Responses and Status Codes"
+      },
+      {
+        "slug": "urls-query",
+        "id": "FA-03",
+        "title": "URLs, Paths and Query Strings"
+      },
+      {
+        "slug": "fastapi-routes",
+        "id": "FA-08",
+        "title": "First FastAPI Routes"
+      },
+      {
+        "slug": "pydantic-bodies",
+        "id": "FA-10",
+        "title": "Request Bodies with Pydantic"
+      },
+      {
+        "slug": "fastapi-errors",
+        "id": "FA-11",
+        "title": "Handling Errors in FastAPI"
+      },
+      {
+        "slug": "fastapi-dependencies",
+        "id": "FA-13",
+        "title": "Dependencies and Dependency Overrides"
+      }
+    ],
+    "brief": "Build a URL-shortener service: create short codes for long URLs, redirect visitors, count clicks, and\nprotect the management endpoints with an API key — with a test suite.\n",
+    "milestones": [
+      "POST /links accepts a URL (validated with Pydantic) and returns a short code.",
+      "GET /{code} redirects with status 307, or returns 404 for unknown codes.",
+      "Count clicks per code and expose GET /links/{code}/stats.",
+      "Require an X-API-Key header for creating and deleting links, using a dependency.",
+      "Write TestClient tests for each endpoint, including errors."
+    ],
+    "stretch": [
+      "Store links in SQLite instead of a dict.",
+      "Allow custom codes and expiry dates.",
+      "Rate-limit link creation per API key."
+    ],
+    "data": "None needed. For persistence, follow FastAPI's [SQL databases tutorial](https://fastapi.tiangolo.com/tutorial/sql-databases/).\n",
+    "setup": "```bash\npip install fastapi uvicorn httpx\nuvicorn shortener:app --reload\n```\n"
+  },
+  "notes-rsvp-api": {
+    "id": "FA-P2",
+    "slug": "notes-rsvp-api",
+    "title": "Notes or Event-RSVP API",
+    "topicSlug": "fastapi",
+    "after": "api-testing",
+    "tags": [
+      "web-api",
+      "fastapi",
+      "crud"
+    ],
+    "uses": [
+      {
+        "slug": "pydantic-bodies",
+        "id": "FA-10",
+        "title": "Request Bodies with Pydantic"
+      },
+      {
+        "slug": "response-models",
+        "id": "FA-12",
+        "title": "Response Models and Status Codes"
+      },
+      {
+        "slug": "fastapi-dependencies",
+        "id": "FA-13",
+        "title": "Dependencies and Dependency Overrides"
+      },
+      {
+        "slug": "fastapi-async",
+        "id": "FA-14",
+        "title": "Async Endpoints and External Services"
+      },
+      {
+        "slug": "api-testing",
+        "id": "FA-15",
+        "title": "Testing an API"
+      }
+    ],
+    "brief": "Build a complete small API — either personal notes or event RSVPs for a club — with create, read,\nupdate and delete, validation, an asynchronous call to another service, and a thorough test suite.\n",
+    "milestones": [
+      "Design the resources and their Pydantic models (input, stored, output).",
+      "Implement the CRUD endpoints with correct status codes (201, 204, 404, 409).",
+      "Add filtering and pagination to the list endpoint.",
+      "Call an external service asynchronously (for example a holiday calendar) and mock it in tests.",
+      "Reach good test coverage with TestClient, including validation errors."
+    ],
+    "stretch": [
+      "Add users with hashed passwords and token authentication.",
+      "Persist to SQLite and write migrations.",
+      "Generate a small client from the OpenAPI schema."
+    ],
+    "data": "No data is needed; create a few example notes or events in a test fixture.\n",
+    "setup": "```bash\npip install fastapi uvicorn httpx pytest\nuvicorn app:app --reload\n```\n"
+  },
+  "house-price-predictor": {
+    "id": "ML-P1",
+    "slug": "house-price-predictor",
+    "title": "House-Price Predictor",
+    "topicSlug": "machine-learning",
+    "after": "sklearn-column-transformer",
+    "tags": [
+      "regression",
+      "pipelines",
+      "feature-engineering"
+    ],
+    "uses": [
+      {
+        "slug": "sklearn-estimator-api",
+        "id": "ML-02",
+        "title": "The scikit-learn Estimator API"
+      },
+      {
+        "slug": "sklearn-train-test-split",
+        "id": "ML-04",
+        "title": "Splitting Data with scikit-learn"
+      },
+      {
+        "slug": "sklearn-cross-validation",
+        "id": "ML-16",
+        "title": "Cross-Validation with scikit-learn"
+      },
+      {
+        "slug": "sklearn-column-transformer",
+        "id": "ML-18",
+        "title": "Pipelines and ColumnTransformer"
+      }
+    ],
+    "brief": "Build a model that estimates house prices from a table of homes, and an error analysis that shows\nwhere it is wrong. Someone pricing a home should be able to see the estimate, a typical error, and\nwhich kinds of homes the model struggles with.\n",
+    "milestones": [
+      "Load the data with pandas, look at missing values and the distribution of prices.",
+      "Split once into train and test, and fit a mean baseline and a LinearRegression pipeline.",
+      "Build a ColumnTransformer for numeric and categorical columns and compare models with 5-fold cross-validation.",
+      "Try predicting log(price) and engineered features (age of house, price per room) and keep what helps.",
+      "Evaluate once on the test set and list the 20 largest errors to look for patterns."
+    ],
+    "stretch": [
+      "Tune a Ridge or gradient-boosting model with GridSearchCV.",
+      "Report a prediction interval (for example from quantile regression) instead of a single number.",
+      "Save the pipeline with joblib and load it in a separate script."
+    ],
+    "data": "* California housing (20,640 districts, numeric features): `sklearn.datasets.fetch_california_housing()`\n  downloads it the first time — see the\n  [dataset page](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_california_housing.html).\n* Ames house prices with many categorical columns: the\n  [Kaggle competition data](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)\n  (free account needed).\n",
+    "setup": "```bash\npip install numpy pandas scikit-learn\npython train.py\n```\nKeep notebooks for exploration, but put the final pipeline in a script you can rerun from scratch.\n"
+  },
+  "spam-fraud-classifier": {
+    "id": "ML-P2",
+    "slug": "spam-fraud-classifier",
+    "title": "Spam or Fraud Classifier",
+    "topicSlug": "machine-learning",
+    "after": "ml-capstone",
+    "tags": [
+      "classification",
+      "imbalanced-data",
+      "thresholds"
+    ],
+    "uses": [
+      {
+        "slug": "classification-metrics",
+        "id": "ML-06",
+        "title": "Confusion Matrix, Precision, Recall, F1"
+      },
+      {
+        "slug": "sklearn-gradient-boosting",
+        "id": "ML-23",
+        "title": "Gradient Boosting"
+      },
+      {
+        "slug": "sklearn-roc-pr",
+        "id": "ML-24",
+        "title": "Thresholds, ROC and Precision–Recall Curves"
+      },
+      {
+        "slug": "ml-capstone",
+        "id": "ML-27",
+        "title": "Capstone: an End-to-End Tabular Model"
+      }
+    ],
+    "brief": "Build a classifier for a problem where the interesting class is rare — spam messages or fraudulent\ntransactions — and choose a decision threshold that reflects real costs: a missed fraud is\nexpensive, but so is blocking a real customer.\n",
+    "milestones": [
+      "Load the data, measure the class imbalance and fit a majority-class baseline.",
+      "Train a logistic regression pipeline and a gradient-boosting model with stratified cross-validation.",
+      "Compare them with ROC AUC and average precision, and plot both curves.",
+      "Choose a threshold from the precision–recall curve on validation data for a target recall.",
+      "Report the confusion matrix and the cost per 1,000 cases at that threshold on the test set."
+    ],
+    "stretch": [
+      "Try class_weight='balanced' and compare it with moving the threshold.",
+      "For SMS spam, turn the messages into TF-IDF features (see the NLP topic).",
+      "Check how the precision changes if fraud becomes twice as rare after deployment."
+    ],
+    "data": "* [SMS Spam Collection](https://archive.ics.uci.edu/dataset/228/sms+spam+collection) (UCI): 5,574\n  labelled text messages, about 13% spam.\n* Synthetic transactions: `sklearn.datasets.make_classification(n_samples=20000, weights=[0.98, 0.02], random_state=0)`\n  ([documentation](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html)).\n",
+    "setup": "```bash\npip install numpy pandas scikit-learn matplotlib\npython fraud.py\n```\n"
+  },
+  "serve-your-model": {
+    "id": "ML-P3",
+    "slug": "serve-your-model",
+    "title": "Serve Your Model with FastAPI",
+    "topicSlug": "machine-learning",
+    "after": "ml-capstone",
+    "tags": [
+      "deployment",
+      "fastapi",
+      "model-serving"
+    ],
+    "uses": [
+      {
+        "slug": "ml-capstone",
+        "id": "ML-27",
+        "title": "Capstone: an End-to-End Tabular Model"
+      },
+      {
+        "slug": "fastapi-routes",
+        "id": "FA-08",
+        "title": "First FastAPI Routes"
+      },
+      {
+        "slug": "pydantic-bodies",
+        "id": "FA-10",
+        "title": "Request Bodies with Pydantic"
+      },
+      {
+        "slug": "response-models",
+        "id": "FA-12",
+        "title": "Response Models and Status Codes"
+      },
+      {
+        "slug": "api-testing",
+        "id": "FA-15",
+        "title": "Testing an API"
+      }
+    ],
+    "brief": "Put a trained scikit-learn pipeline behind a small web API, so other programs can send a JSON row\nand get a prediction back — with input validation, a health check and tests, as a real service\nwould have.\n",
+    "milestones": [
+      "Train and save a pipeline from the capstone or house-price project with joblib.",
+      "Create a FastAPI app that loads the model once at start-up and exposes GET /health.",
+      "Add POST /predict with a Pydantic model describing one input row; return the prediction and probability.",
+      "Reject bad input (missing fields, negative values) with clear 422 errors.",
+      "Write TestClient tests for a valid request, an invalid one and the health check."
+    ],
+    "stretch": [
+      "Accept a batch of rows in one request.",
+      "Log each prediction with a timestamp and add GET /stats with simple counts.",
+      "Package the service in a Dockerfile."
+    ],
+    "data": "Use the model and data from the capstone (synthetic churn data you generate) or from the\nhouse-price project. See [model persistence](https://scikit-learn.org/stable/model_persistence.html)\nfor saving pipelines.\n",
+    "setup": "```bash\npip install fastapi uvicorn scikit-learn joblib pandas httpx\nuvicorn app:app --reload\n```\nThen open http://127.0.0.1:8000/docs to try the endpoints. See\n[running a server manually](https://fastapi.tiangolo.com/deployment/manually/).\n"
+  },
+  "digit-recogniser": {
+    "id": "DL-P1",
+    "slug": "digit-recogniser",
+    "title": "Handwritten Digit Recogniser",
+    "topicSlug": "deep-learning",
+    "after": "train-xor-mlp",
+    "tags": [
+      "image-classification",
+      "pytorch",
+      "mlp"
+    ],
+    "uses": [
+      {
+        "slug": "torch-mlp-module",
+        "id": "DL-06",
+        "title": "Models with nn.Module"
+      },
+      {
+        "slug": "torch-datasets",
+        "id": "DL-17",
+        "title": "Datasets and DataLoader"
+      },
+      {
+        "slug": "torch-training-loop",
+        "id": "DL-18",
+        "title": "A Full Training Loop"
+      }
+    ],
+    "brief": "Train a neural network that recognises handwritten digits, then try it on digits you draw\nyourself. Start with the small 8×8 digits that ship with scikit-learn, then move to MNIST's 28×28\nimages.\n",
+    "milestones": [
+      "Load the 8×8 digits with sklearn.datasets.load_digits, scale pixels to [0, 1] and split train/validation/test.",
+      "Train an MLP with the training loop from the course and plot train and validation loss per epoch.",
+      "Report test accuracy and a confusion matrix; look at the ten worst mistakes.",
+      "Switch to MNIST through torchvision and train the same model on 28×28 images.",
+      "Write a predict(image) function and test it on digits you draw yourself (scaled to the same size)."
+    ],
+    "stretch": [
+      "Add dropout and compare validation curves; save the best model with its state_dict.",
+      "Replace the MLP with a small CNN (see the Computer Vision topic).",
+      "Make a tiny web page or FastAPI endpoint where you draw a digit and get a prediction."
+    ],
+    "data": "* 1,797 8×8 digits bundled with scikit-learn (no download):\n  [`sklearn.datasets.load_digits`](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html).\n* MNIST, 70,000 28×28 digits, downloaded by\n  [`torchvision.datasets.MNIST`](https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.MNIST.html).\n",
+    "setup": "```bash\npip install torch torchvision scikit-learn matplotlib\npython train_digits.py\n```\nA CPU is enough: an MLP on MNIST trains in a few minutes.\n"
+  },
+  "training-diagnostics": {
+    "id": "DL-P2",
+    "slug": "training-diagnostics",
+    "title": "Training Diagnostics Notebook",
+    "topicSlug": "deep-learning",
+    "after": "torch-debugging",
+    "tags": [
+      "debugging",
+      "learning-rate",
+      "overfitting"
+    ],
+    "uses": [
+      {
+        "slug": "torch-optimizers",
+        "id": "DL-15",
+        "title": "Optimisers in torch.optim"
+      },
+      {
+        "slug": "torch-training-loop",
+        "id": "DL-18",
+        "title": "A Full Training Loop"
+      },
+      {
+        "slug": "torch-dropout",
+        "id": "DL-20",
+        "title": "Dropout with train() and eval()"
+      },
+      {
+        "slug": "torch-debugging",
+        "id": "DL-27",
+        "title": "Debugging Training"
+      }
+    ],
+    "brief": "Build a reusable notebook (or script) of experiments that explain why a model trains well or badly:\na learning-rate finder, loss curves for good and bad settings, an overfitting demonstration and\ngradient-norm plots. Use it on your digit recogniser or any other model.\n",
+    "milestones": [
+      "Write a function that trains a model for a few epochs and returns train and validation losses.",
+      "Learning-rate finder: increase the learning rate exponentially over one epoch and plot loss against learning rate.",
+      "Show three curves side by side: learning rate too low, about right and too high.",
+      "Demonstrate overfitting with a large model on 200 examples, then fix it with dropout or weight decay.",
+      "Log the gradient norm of every layer per step and show the effect of gradient clipping."
+    ],
+    "stretch": [
+      "Add a learning-rate schedule (cosine or one-cycle) and compare final accuracy.",
+      "Track experiments in a CSV file and compare runs with different seeds.",
+      "Use TensorBoard to view the curves live."
+    ],
+    "data": "Any small classification dataset works: `sklearn.datasets.load_digits()` (bundled) or synthetic data\nfrom `sklearn.datasets.make_moons(n_samples=1000, noise=0.25, random_state=0)`.\n",
+    "setup": "```bash\npip install torch scikit-learn matplotlib jupyter\njupyter notebook\n```\n"
+  },
+  "document-scanner": {
+    "id": "CV-P1",
+    "slug": "document-scanner",
+    "title": "Document Scanner",
+    "topicSlug": "computer-vision",
+    "after": "cv-contours",
+    "tags": [
+      "opencv",
+      "contours",
+      "perspective"
+    ],
+    "uses": [
+      {
+        "slug": "cv-opencv-basics",
+        "id": "CV-03",
+        "title": "OpenCV Basics: BGR, dtypes and Indexing"
+      },
+      {
+        "slug": "cv-geometric-transforms",
+        "id": "CV-04",
+        "title": "Flips, Rotations and Affine Warps"
+      },
+      {
+        "slug": "cv-threshold-otsu",
+        "id": "CV-06",
+        "title": "Thresholding and Otsu's Method"
+      },
+      {
+        "slug": "cv-sobel-canny",
+        "id": "CV-11",
+        "title": "Edges with Sobel and Canny"
+      },
+      {
+        "slug": "cv-contours",
+        "id": "CV-20",
+        "title": "Contours and Bounding Boxes"
+      }
+    ],
+    "brief": "Turn a phone photo of a page lying on a desk into a flat, black-and-white scan: find the page,\nstraighten it, and clean up the lighting — what scanner apps do.\n",
+    "milestones": [
+      "Load a photo, resize it to about 800 pixels wide and convert it to greyscale.",
+      "Blur, run Canny and find the largest contour.",
+      "Approximate the contour with cv2.approxPolyDP until it has four corners; draw them on the photo.",
+      "Order the corners and warp the page flat with cv2.getPerspectiveTransform and cv2.warpPerspective.",
+      "Clean the result with adaptive or Otsu thresholding and save it as a PNG."
+    ],
+    "stretch": [
+      "Handle photos where the page is not the largest object.",
+      "Process a folder of photos into one multi-page PDF.",
+      "Add a fallback that lets the user click the four corners when detection fails."
+    ],
+    "data": "Photograph a few printed pages on a contrasting desk with your phone (different angles and lighting).\nNo dataset download is needed.\n",
+    "setup": "```bash\npip install opencv-python numpy\npython scan.py photo.jpg scanned.png\n```\n"
+  },
+  "shape-sorter": {
+    "id": "CV-P2",
+    "slug": "shape-sorter",
+    "title": "Shape and Colour Sorter",
+    "topicSlug": "computer-vision",
+    "after": "cv-augmentation",
+    "tags": [
+      "cnn",
+      "augmentation",
+      "image-classification"
+    ],
+    "uses": [
+      {
+        "slug": "cv-opencv-basics",
+        "id": "CV-03",
+        "title": "OpenCV Basics: BGR, dtypes and Indexing"
+      },
+      {
+        "slug": "cv-resize",
+        "id": "CV-18",
+        "title": "Resizing with cv2.resize"
+      },
+      {
+        "slug": "cv-small-cnn",
+        "id": "CV-21",
+        "title": "A Small CNN in PyTorch"
+      },
+      {
+        "slug": "cv-augmentation",
+        "id": "CV-22",
+        "title": "Data Augmentation"
+      },
+      {
+        "slug": "torch-training-loop",
+        "id": "DL-18",
+        "title": "A Full Training Loop"
+      }
+    ],
+    "brief": "Train a CNN that sorts photos of simple objects — for example coloured blocks, coins or bottle caps —\ninto classes, and test it with your webcam or new photos taken in different light.\n",
+    "milestones": [
+      "Collect 30–50 photos per class (or generate synthetic shapes) and resize them to 64×64.",
+      "Split into train, validation and test folders and write a Dataset that loads them with OpenCV.",
+      "Train the small CNN, adapted to 3 colour channels and 64×64 inputs.",
+      "Add augmentation (flips, shifts, brightness) and compare validation accuracy with and without it.",
+      "Classify frames from a webcam with cv2.VideoCapture and show the predicted label on screen."
+    ],
+    "stretch": [
+      "Fine-tune a pretrained torchvision model (for example ResNet-18) and compare.",
+      "Add a confidence threshold that answers 'unknown' for low-probability predictions.",
+      "Export the model with TorchScript or ONNX."
+    ],
+    "data": "Take your own photos with a phone or webcam. For a synthetic start, draw coloured circles, squares and\ntriangles with `cv2.circle`, `cv2.rectangle` and `cv2.fillPoly` at random positions and sizes.\n",
+    "setup": "```bash\npip install torch opencv-python numpy\npython train_sorter.py data/\n```\n"
+  },
+  "object-counter": {
+    "id": "CV-P3",
+    "slug": "object-counter",
+    "title": "Simple Object Counter",
+    "topicSlug": "computer-vision",
+    "after": "connected-components",
+    "tags": [
+      "segmentation",
+      "counting",
+      "connected-components"
+    ],
+    "uses": [
+      {
+        "slug": "cv-threshold-otsu",
+        "id": "CV-06",
+        "title": "Thresholding and Otsu's Method"
+      },
+      {
+        "slug": "cv-contours",
+        "id": "CV-20",
+        "title": "Contours and Bounding Boxes"
+      },
+      {
+        "slug": "iou",
+        "id": "CV-23",
+        "title": "Intersection over Union"
+      },
+      {
+        "slug": "non-max-suppression",
+        "id": "CV-24",
+        "title": "Non-Maximum Suppression"
+      },
+      {
+        "slug": "cv-connected-components",
+        "id": "CV-25",
+        "title": "Connected Components with OpenCV"
+      }
+    ],
+    "brief": "Count objects in images — coins on a table or cell nuclei under a microscope — and report their\nsizes. Compare your counts with the ground truth and find out which images are hard and why.\n",
+    "milestones": [
+      "Load an image, convert to greyscale, blur and threshold with Otsu.",
+      "Clean the mask with morphological opening (cv2.morphologyEx) to remove speckles.",
+      "Count objects with connectedComponentsWithStats and filter by area.",
+      "Draw numbered bounding boxes and save an annotated image.",
+      "On a labelled dataset, compare counts with the ground truth and report the mean absolute error."
+    ],
+    "stretch": [
+      "Separate touching objects with the distance transform and watershed.",
+      "Match predicted boxes to ground-truth boxes with IoU and report precision and recall.",
+      "Measure object sizes in millimetres using a reference object of known size."
+    ],
+    "data": "* [BBBC039](https://bbbc.broadinstitute.org/BBBC039): fluorescent nuclei images with ground-truth\n  masks (Broad Bioimage Benchmark Collection).\n* A coins image ships with scikit-image: `skimage.data.coins()`\n  ([data module](https://scikit-image.org/docs/stable/api/skimage.data.html)), or photograph coins yourself.\n",
+    "setup": "```bash\npip install opencv-python numpy scikit-image\npython count.py image.png\n```\n"
+  },
+  "review-sentiment-analyser": {
+    "id": "NL-P1",
+    "slug": "review-sentiment-analyser",
+    "title": "Review Sentiment Analyser",
+    "topicSlug": "nlp",
+    "after": "nlp-text-classifier",
+    "tags": [
+      "sentiment-analysis",
+      "text-classification"
+    ],
+    "uses": [
+      {
+        "slug": "nlp-countvectorizer",
+        "id": "NL-03",
+        "title": "Counting Words with Counter and CountVectorizer"
+      },
+      {
+        "slug": "nlp-tfidf-retrieval",
+        "id": "NL-10",
+        "title": "Search with TfidfVectorizer and Cosine Similarity"
+      },
+      {
+        "slug": "nlp-text-classifier",
+        "id": "NL-15",
+        "title": "A Text Classification Pipeline"
+      },
+      {
+        "slug": "sklearn-cross-validation",
+        "id": "ML-16",
+        "title": "Cross-Validation with scikit-learn"
+      }
+    ],
+    "brief": "Build a sentiment analyser for product or movie reviews that predicts positive or negative, explains\nits decision with the words that mattered, and reports honestly where it fails (negation, sarcasm,\nmixed reviews).\n",
+    "milestones": [
+      "Load a labelled review dataset and look at the class balance and typical review length.",
+      "Train the TF-IDF + logistic regression pipeline and report cross-validated accuracy and F1.",
+      "List the top positive and negative phrases and check that they make sense.",
+      "Write an explain(review) function that shows each word's contribution to the score.",
+      "Collect 30 misclassified reviews and group them by cause (negation, sarcasm, wrong label, ...)."
+    ],
+    "stretch": [
+      "Compare with the embedding-bag model in PyTorch.",
+      "Add a third class for neutral or mixed reviews.",
+      "Serve the model with FastAPI as in the 'Serve your model' project."
+    ],
+    "data": "* IMDB movie reviews (50,000, balanced): on [Hugging Face](https://huggingface.co/datasets/stanfordnlp/imdb)\n  or [Kaggle](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews).\n* Or write 100 short reviews of things you own and label them yourself.\n",
+    "setup": "```bash\npip install scikit-learn pandas datasets\npython sentiment.py\n```\n"
+  },
+  "blog-semantic-search": {
+    "id": "NL-P2",
+    "slug": "blog-semantic-search",
+    "title": "Semantic Search for the Club Blog",
+    "topicSlug": "nlp",
+    "after": "nlp-embedding-bag",
+    "tags": [
+      "search",
+      "embeddings",
+      "retrieval"
+    ],
+    "uses": [
+      {
+        "slug": "nlp-tfidf-retrieval",
+        "id": "NL-10",
+        "title": "Search with TfidfVectorizer and Cosine Similarity"
+      },
+      {
+        "slug": "nlp-char-ngrams-sklearn",
+        "id": "NL-05",
+        "title": "Character n-grams with CountVectorizer"
+      },
+      {
+        "slug": "embedding-analogy",
+        "id": "NL-18",
+        "title": "Word Embedding Analogies"
+      },
+      {
+        "slug": "nlp-embedding-bag",
+        "id": "NL-19",
+        "title": "Word Embeddings in PyTorch"
+      }
+    ],
+    "brief": "Build a search box for a collection of blog posts that finds posts by meaning, not only exact words:\n\"beginner python workshop\" should also find \"Intro to programming session\". Compare keyword (TF-IDF)\nsearch with embedding-based search on the same queries.\n",
+    "milestones": [
+      "Collect 50–200 posts (titles and text) into a JSON file.",
+      "Build TF-IDF search and a small command-line interface that prints the top five results.",
+      "Write 20 test queries with the posts you expect, and measure how often the right post is in the top three.",
+      "Add character n-gram search for typos and compare the scores.",
+      "Add embedding search with a sentence-embedding model and combine it with TF-IDF (for example by averaging ranks)."
+    ],
+    "stretch": [
+      "Add filters (author, date, tag) alongside the text search.",
+      "Highlight the matching sentences in each result.",
+      "Expose the search as a FastAPI endpoint for the website."
+    ],
+    "data": "Use the Epoch blog posts you can access, or any set of articles you write or collect. Sentence-embedding\nmodels such as those in the `sentence-transformers` library download weights the first time they run.\n",
+    "setup": "```bash\npip install scikit-learn numpy sentence-transformers\npython search.py \"beginner python workshop\"\n```\n"
+  },
+  "poem-name-generator": {
+    "id": "LM-P1",
+    "slug": "poem-name-generator",
+    "title": "Poem or Name Generator",
+    "topicSlug": "llms",
+    "after": "lm-tiny-gpt",
+    "tags": [
+      "language-model",
+      "text-generation",
+      "gpt"
+    ],
+    "uses": [
+      {
+        "slug": "temperature-softmax",
+        "id": "LM-03",
+        "title": "Logits, Temperature and Softmax"
+      },
+      {
+        "slug": "top-k-top-p",
+        "id": "LM-13",
+        "title": "Top-k and Top-p Filtering"
+      },
+      {
+        "slug": "lm-tiny-gpt",
+        "id": "LM-16",
+        "title": "A Tiny GPT in PyTorch"
+      },
+      {
+        "slug": "torch-save-load",
+        "id": "DL-26",
+        "title": "Saving, Loading and Reproducibility"
+      }
+    ],
+    "brief": "Train your tiny GPT on text you choose — public-domain poems, Indian city names, invented\ncharacter names — and generate new samples. Explore how context length, model size and\nsampling temperature change the results.\n",
+    "milestones": [
+      "Collect a text file of at least 50 KB (or a list of a few thousand names, one per line).",
+      "Train the tiny GPT with a train/validation split and plot both losses.",
+      "Add temperature and top-k sampling to generate, and compare greedy with sampled output.",
+      "Scale up: more layers, a longer context, a wider model — and note the validation loss each time.",
+      "Save the best model and write a script that prints ten new samples."
+    ],
+    "stretch": [
+      "Switch from characters to a BPE tokenizer (see the BPE step).",
+      "Add a key–value cache to generation and measure the speed-up.",
+      "Filter generated names that already appear in the training data."
+    ],
+    "data": "Public-domain books from [Project Gutenberg](https://www.gutenberg.org/) (download a plain-text file),\nyour own writing, or name lists you assemble. Keep the text in one UTF-8 file.\n",
+    "setup": "```bash\npip install torch\npython train_gpt.py --text poems.txt --steps 5000\n```\nA laptop CPU is enough for a model with a few hundred thousand parameters.\n"
+  },
+  "course-faq-chatbot": {
+    "id": "LM-P2",
+    "slug": "course-faq-chatbot",
+    "title": "Course FAQ Chatbot",
+    "topicSlug": "llms",
+    "after": "rag-pipeline",
+    "tags": [
+      "rag",
+      "chatbot",
+      "langchain"
+    ],
+    "uses": [
+      {
+        "slug": "nlp-tfidf-retrieval",
+        "id": "NL-10",
+        "title": "Search with TfidfVectorizer and Cosine Similarity"
+      },
+      {
+        "slug": "lm-chat-prompt-langchain",
+        "id": "LM-17",
+        "title": "Chat Prompts and Messages with LangChain"
+      },
+      {
+        "slug": "lm-structured-output",
+        "id": "LM-19",
+        "title": "Structured Output with Pydantic and Retries"
+      },
+      {
+        "slug": "lm-langchain-rag",
+        "id": "LM-20",
+        "title": "Retrieval-Augmented Generation with LangChain"
+      }
+    ],
+    "brief": "Build a chatbot that answers questions about this course — what a step covers, how Run and Submit\ndiffer, which step to do next — using RAG over the course's lesson text, and that cites the lessons it\nused. It should say \"I don't know\" when the answer is not in the material.\n",
+    "milestones": [
+      "Split lesson texts into passages of a few paragraphs, each with an id and its lesson title.",
+      "Index the passages with TF-IDF or a sentence-embedding model and test retrieval on 20 questions.",
+      "Connect a chat model (a local model through Ollama or a hosted API) with a prompt that requires citations.",
+      "Return structured answers (answer, cited ids, confidence) and reject ungrounded ones.",
+      "Build a tiny evaluation set of question/expected-lesson pairs and report retrieval and answer accuracy."
+    ],
+    "stretch": [
+      "Keep conversation history so follow-up questions work.",
+      "Serve it with FastAPI and add a chat box to a web page.",
+      "Log questions the bot could not answer to find gaps in the lessons."
+    ],
+    "data": "Use the lesson articles of this course (each step's lesson) or notes from your own classes. For a local\nmodel without API keys, install [Ollama](https://ollama.com/) and pull a small model.\n",
+    "setup": "```bash\npip install langchain-core langchain-ollama scikit-learn\npython faq_bot.py\n```\n"
+  },
+  "prompt-playground": {
+    "id": "LM-P3",
+    "slug": "prompt-playground",
+    "title": "Prompt Playground",
+    "topicSlug": "llms",
+    "after": "rag-pipeline",
+    "tags": [
+      "prompting",
+      "decoding",
+      "evaluation"
+    ],
+    "uses": [
+      {
+        "slug": "temperature-softmax",
+        "id": "LM-03",
+        "title": "Logits, Temperature and Softmax"
+      },
+      {
+        "slug": "top-k-top-p",
+        "id": "LM-13",
+        "title": "Top-k and Top-p Filtering"
+      },
+      {
+        "slug": "beam-search",
+        "id": "LM-14",
+        "title": "Beam Search"
+      },
+      {
+        "slug": "lm-chat-prompt-langchain",
+        "id": "LM-17",
+        "title": "Chat Prompts and Messages with LangChain"
+      }
+    ],
+    "brief": "Build a small tool that sends the same task to a model with different prompts and decoding settings,\nshows the outputs side by side, and scores them — so you can see what temperature, top-p, system\nmessages and few-shot examples actually change.\n",
+    "milestones": [
+      "Define three tasks (summarise, classify, extract fields) with a few test inputs each.",
+      "Write prompt variants: plain, with a system message, with two few-shot examples.",
+      "Run each variant at temperatures 0, 0.7 and 1.2 and store the outputs in a table.",
+      "Score outputs automatically where possible (exact match for classification, valid JSON for extraction).",
+      "Summarise which settings work best per task, with examples of failures."
+    ],
+    "stretch": [
+      "Repeat each setting five times to measure variability.",
+      "Use your tiny GPT for the decoding experiments and a chat model for the prompting ones.",
+      "Turn the table into an HTML report."
+    ],
+    "data": "Write your own small task inputs (10–20 per task). A local model through [Ollama](https://ollama.com/)\navoids API costs.\n",
+    "setup": "```bash\npip install langchain-core langchain-ollama pandas\npython playground.py\n```\n"
+  },
+  "explain-house-prices": {
+    "id": "XA-P1",
+    "slug": "explain-house-prices",
+    "title": "Explain Your House-Price Model",
+    "topicSlug": "explainable-ai",
+    "after": "integrated-gradients",
+    "tags": [
+      "explainability",
+      "reporting",
+      "shap"
+    ],
+    "uses": [
+      {
+        "slug": "xai-partial-dependence",
+        "id": "XA-05",
+        "title": "Partial Dependence with sklearn.inspection"
+      },
+      {
+        "slug": "xai-permutation-importance",
+        "id": "XA-07",
+        "title": "Permutation Importance with sklearn.inspection"
+      },
+      {
+        "slug": "exact-shapley",
+        "id": "XA-11",
+        "title": "Exact Shapley Values"
+      },
+      {
+        "slug": "lime-local",
+        "id": "XA-12",
+        "title": "LIME-style Local Linear Explanation"
+      },
+      {
+        "slug": "counterfactual-search",
+        "id": "XA-13",
+        "title": "Minimal Counterfactual Search"
+      }
+    ],
+    "brief": "Write an explanation report for the house-price model from the Machine Learning project: which\nfeatures matter, how each one moves the price, why one particular house got its estimate, and where\nthe explanations disagree.\n",
+    "milestones": [
+      "Load your trained pipeline and a held-out test set.",
+      "Rank features with permutation importance (mean ± std) and plot the top ten.",
+      "Plot partial dependence and ICE curves for the three most important features.",
+      "Explain five individual predictions with SHAP values and compare them with LIME-style local fits.",
+      "Write a one-page report: findings, surprising effects, and the limits of each method."
+    ],
+    "stretch": [
+      "Find counterfactuals: the smallest change that moves a house into a different price band.",
+      "Check whether correlated features (rooms and area) split their importance.",
+      "Build a small web page that shows the explanation for any house id."
+    ],
+    "data": "Use the house-price project's data (California housing or Ames). The [SHAP library](https://shap.readthedocs.io/en/latest/)\ncomputes Shapley values efficiently for tree models; it is not part of the graded course because it\nneeds compiled dependencies.\n",
+    "setup": "```bash\npip install scikit-learn pandas matplotlib shap\npython explain.py\n```\n"
+  },
+  "federated-departments": {
+    "id": "FL-P1",
+    "slug": "federated-departments",
+    "title": "Federated Training across Departments",
+    "topicSlug": "federated-learning",
+    "after": "fedprox",
+    "tags": [
+      "federated-learning",
+      "non-iid",
+      "flower"
+    ],
+    "uses": [
+      {
+        "slug": "label-skew-partition",
+        "id": "FL-04",
+        "title": "Label-Skewed (non-IID) Partition"
+      },
+      {
+        "slug": "fl-torch-local-training",
+        "id": "FL-05",
+        "title": "Client Training with a PyTorch Model"
+      },
+      {
+        "slug": "fl-torch-fedavg",
+        "id": "FL-11",
+        "title": "FedAvg with PyTorch state_dicts"
+      },
+      {
+        "slug": "dp-aggregation",
+        "id": "FL-13",
+        "title": "Differentially Private Aggregation"
+      },
+      {
+        "slug": "fedprox",
+        "id": "FL-14",
+        "title": "FedProx Local Objective"
+      }
+    ],
+    "brief": "Simulate several college departments that want a shared model (for example, predicting which students\nneed extra support) without pooling their records. Compare federated training with central training,\nand see how uneven, non-IID data across departments affects the result.\n",
+    "milestones": [
+      "Generate or load a tabular dataset and split it into 4–6 'departments' with different label mixes.",
+      "Train a central model on all data as the reference.",
+      "Run FedAvg with the PyTorch steps and plot global accuracy per round.",
+      "Vary local epochs and client sampling and record how many rounds each setting needs.",
+      "Add update clipping and noise (differential privacy) and measure the accuracy cost."
+    ],
+    "stretch": [
+      "Implement FedProx in PyTorch and compare on the most uneven split.",
+      "Run the same experiment with the Flower framework, with clients as separate processes.",
+      "Personalise: fine-tune the global model on each department and report per-department accuracy."
+    ],
+    "data": "Synthetic data from `sklearn.datasets.make_classification` works well; split it by a feature to create\nnon-IID departments. See the [Flower framework documentation](https://flower.ai/docs/framework/) for\nrunning real federated clients.\n",
+    "setup": "```bash\npip install torch scikit-learn flwr\npython simulate.py --clients 5 --rounds 30\n```\n"
+  },
+  "grid-game-agent": {
+    "id": "RL-P1",
+    "slug": "grid-game-agent",
+    "title": "Grid Game Agent",
+    "topicSlug": "reinforcement-learning",
+    "after": "sarsa",
+    "tags": [
+      "reinforcement-learning",
+      "gymnasium",
+      "q-learning"
+    ],
+    "uses": [
+      {
+        "slug": "discounted-return",
+        "id": "RL-01",
+        "title": "Discounted Return"
+      },
+      {
+        "slug": "rl-gymnasium-env",
+        "id": "RL-04",
+        "title": "Gymnasium Environments"
+      },
+      {
+        "slug": "q-learning",
+        "id": "RL-13",
+        "title": "Tabular Q-Learning"
+      },
+      {
+        "slug": "rl-frozenlake-q",
+        "id": "RL-14",
+        "title": "Q-Learning on FrozenLake"
+      },
+      {
+        "slug": "sarsa",
+        "id": "RL-15",
+        "title": "SARSA"
+      }
+    ],
+    "brief": "Design a small grid game of your own — collect keys and reach the door, avoid moving guards, or push a\nbox onto a target — as a Gymnasium environment, then train a Q-learning agent to play it and watch it\nimprove.\n",
+    "milestones": [
+      "Define the rules, the state encoding and the rewards on paper; keep the state space small.",
+      "Implement the game as a gymnasium.Env and pass check_env.",
+      "Print the grid as text after each step so you can play it yourself with the keyboard.",
+      "Train Q-learning and plot the success rate and average return per 100 episodes.",
+      "Compare Q-learning with SARSA and explain any difference in the learned behaviour."
+    ],
+    "stretch": [
+      "Make the game stochastic (slippery moves, random guards) and compare again.",
+      "Replace the table with a small neural network (deep Q-learning) for a larger grid.",
+      "Record and replay an episode as an animated GIF."
+    ],
+    "data": "No data is needed: the agent learns from playing your game. See the\n[FrozenLake documentation](https://gymnasium.farama.org/environments/toy_text/frozen_lake/) for a\ntext-based environment to imitate.\n",
+    "setup": "```bash\npip install gymnasium numpy matplotlib\npython train_agent.py\n```\n"
+  },
+  "bandit-recommender": {
+    "id": "RL-P2",
+    "slug": "bandit-recommender",
+    "title": "Bandit-Based Recommender",
+    "topicSlug": "reinforcement-learning",
+    "after": "sarsa",
+    "tags": [
+      "bandits",
+      "recommendation",
+      "exploration"
+    ],
+    "uses": [
+      {
+        "slug": "epsilon-greedy",
+        "id": "RL-05",
+        "title": "Epsilon-Greedy Action Selection"
+      },
+      {
+        "slug": "bandit-incremental",
+        "id": "RL-06",
+        "title": "Incremental Value Estimates"
+      },
+      {
+        "slug": "ucb-bandit",
+        "id": "RL-07",
+        "title": "UCB1 Bandit"
+      }
+    ],
+    "brief": "Build a recommender that picks which article to show next, learning from simulated clicks. Compare\nrandom choice, epsilon-greedy and UCB by their cumulative regret, and see what happens when reader\ninterests change over time.\n",
+    "milestones": [
+      "Simulate 10 articles with hidden click probabilities and a reader who clicks with those probabilities.",
+      "Implement random, epsilon-greedy and UCB recommenders with the same interface.",
+      "Run each for 10,000 recommendations over 20 seeds and plot average cumulative regret.",
+      "Make the click probabilities drift slowly and add a sliding-window version of UCB.",
+      "Write up which strategy you would deploy and why."
+    ],
+    "stretch": [
+      "Implement Thompson sampling with Beta distributions.",
+      "Add reader features (contextual bandits) with one linear model per article.",
+      "Serve recommendations from a FastAPI endpoint that updates on click events."
+    ],
+    "data": "Everything is simulated with seeded NumPy generators, so experiments are reproducible.\n",
+    "setup": "```bash\npip install numpy matplotlib\npython bandits.py --strategy ucb --steps 10000\n```\n"
+  },
+  "study-planner-agent": {
+    "id": "AG-P1",
+    "slug": "study-planner-agent",
+    "title": "Study-Planner Agent",
+    "topicSlug": "agentic-ai",
+    "after": "task-dag-plan",
+    "tags": [
+      "agents",
+      "langgraph",
+      "tools"
+    ],
+    "uses": [
+      {
+        "slug": "ag-langchain-tools",
+        "id": "AG-03",
+        "title": "Tools and Tool Calling with LangChain"
+      },
+      {
+        "slug": "ag-langgraph-basics",
+        "id": "AG-07",
+        "title": "LangGraph Basics: State, Nodes and Edges"
+      },
+      {
+        "slug": "ag-langgraph-react",
+        "id": "AG-08",
+        "title": "A ReAct Agent in LangGraph"
+      },
+      {
+        "slug": "task-dag-plan",
+        "id": "AG-13",
+        "title": "Dependency-Ordered Plans"
+      }
+    ],
+    "brief": "Build an assistant that plans your study week: it reads your deadlines and free time from files, uses\ntools to look them up and update a plan, and answers questions such as \"what should I do tonight?\" —\nwithout ever running more than a fixed number of steps.\n",
+    "milestones": [
+      "Store deadlines and free time slots in JSON files and write tools to read and update them.",
+      "Build the ReAct graph with those tools and a scripted model; test it with a few fixed conversations.",
+      "Connect a real chat model and write a system prompt that explains the tools and your preferences.",
+      "Add a step limit and a checkpointer so each day's conversation continues where it stopped.",
+      "Add a tool that schedules tasks in dependency order (prerequisites first) and test it on a sample week."
+    ],
+    "stretch": [
+      "Export the plan to an .ics calendar file.",
+      "Add a reflection node that checks the plan against deadlines before answering.",
+      "Measure how often the agent uses the right tool on 20 test requests."
+    ],
+    "data": "Write your own deadline and timetable files. No dataset is needed; for a local model install\n[Ollama](https://ollama.com/).\n",
+    "setup": "```bash\npip install langgraph langchain-core langchain-ollama\npython planner.py\n```\n"
+  },
+  "club-event-assistant": {
+    "id": "AG-P2",
+    "slug": "club-event-assistant",
+    "title": "Club Event Assistant",
+    "topicSlug": "agentic-ai",
+    "after": "permission-guardrails",
+    "tags": [
+      "agents",
+      "guardrails",
+      "human-in-the-loop"
+    ],
+    "uses": [
+      {
+        "slug": "lm-langchain-rag",
+        "id": "LM-20",
+        "title": "Retrieval-Augmented Generation with LangChain"
+      },
+      {
+        "slug": "ag-langgraph-react",
+        "id": "AG-08",
+        "title": "A ReAct Agent in LangGraph"
+      },
+      {
+        "slug": "ag-validate-retry",
+        "id": "AG-14",
+        "title": "Validating Tool Arguments and Retrying"
+      },
+      {
+        "slug": "ag-approval-guardrails",
+        "id": "AG-18",
+        "title": "Guardrails with Human Approval"
+      }
+    ],
+    "brief": "Build an assistant for a student club that answers questions about upcoming events, drafts\nannouncements and registration reminders — and never sends anything without a committee member's\napproval.\n",
+    "milestones": [
+      "Put event details in a small JSON or CSV file and answer FAQ-style questions about them with retrieval.",
+      "Add a draft_announcement tool that returns text but sends nothing.",
+      "Add a send_message tool behind an approval interrupt; show the draft and ask approve or reject.",
+      "Validate tool arguments (dates in the future, known channels, length limits) and retry on errors.",
+      "Log every proposed and approved action with a timestamp for review."
+    ],
+    "stretch": [
+      "Support edits: the reviewer can change the draft before approving.",
+      "Connect a real channel (email or a chat webhook) only after everything else is tested.",
+      "Write evaluation cases for refusals: requests the assistant must not act on."
+    ],
+    "data": "Use a sample events file you create (titles, dates, venues, registration links). Keep real contact lists\nout of the project until the approval flow is reliable.\n",
+    "setup": "```bash\npip install langgraph langchain-core\npython assistant.py\n```\n"
+  },
+  "agent-evaluation-suite": {
+    "id": "AG-P3",
+    "slug": "agent-evaluation-suite",
+    "title": "Agent Evaluation Suite",
+    "topicSlug": "agentic-ai",
+    "after": "agent-evaluation",
+    "tags": [
+      "evaluation",
+      "testing",
+      "agents"
+    ],
+    "uses": [
+      {
+        "slug": "agent-evaluation",
+        "id": "AG-20",
+        "title": "Evaluating Agents"
+      },
+      {
+        "slug": "ag-langgraph-react",
+        "id": "AG-08",
+        "title": "A ReAct Agent in LangGraph"
+      },
+      {
+        "slug": "ag-approval-guardrails",
+        "id": "AG-18",
+        "title": "Guardrails with Human Approval"
+      },
+      {
+        "slug": "nlp-error-analysis",
+        "id": "NL-16",
+        "title": "Evaluating Text Classifiers"
+      }
+    ],
+    "brief": "Build a reusable test suite for an agent: scripted scenarios with expected tool calls and answers,\nmetrics such as task success, tool accuracy and step count, and a report that shows what changed\nbetween two versions of the agent.\n",
+    "milestones": [
+      "Write 20 test cases: input, expected final answer (or a checker function) and expected tools.",
+      "Run an agent on every case and record the messages, tool calls, steps and time.",
+      "Compute task success, tool precision and recall, and average steps per task.",
+      "Add safety cases that must end in refusal or approval, and count violations.",
+      "Compare two agent versions in one table and highlight regressions."
+    ],
+    "stretch": [
+      "Use a second model as a grader for open-ended answers, and check its agreement with your own grades.",
+      "Run each case several times to measure variability.",
+      "Run the suite automatically on every change with a CI workflow."
+    ],
+    "data": "Write the test cases yourself, for the study-planner or club-assistant agent. Scripted fake models make\nthe first version of the suite fully deterministic.\n",
+    "setup": "```bash\npip install langgraph langchain-core pandas\npython evaluate.py --agent planner\n```\n"
+  }
+}

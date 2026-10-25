@@ -1,0 +1,78 @@
+{
+  "id": "CV-09",
+  "slug": "intensity-histogram",
+  "title": "Intensity Histogram",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "CV-02",
+    "ST-04"
+  ],
+  "prerequisite_slugs": [
+    "rgb-to-gray",
+    "histogram-bins"
+  ],
+  "learning_objectives": [
+    "Count pixel intensities with np.bincount",
+    "Compute a cumulative distribution",
+    "Apply histogram equalisation"
+  ],
+  "concept_tags": [
+    "histograms",
+    "contrast",
+    "equalisation",
+    "cdf"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S023",
+    "S006"
+  ],
+  "entry_point": "histogram256(gray); cdf(hist); equalize(gray)",
+  "hints": [
+    "`np.bincount(gray.ravel(), minlength=256)`.",
+    "`c_min = c[c > 0].min()`; build a 256-entry lookup table.",
+    "`lut[gray]` applies the mapping to every pixel at once."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_hist",
+      "advice": "Use np.bincount(..., minlength=256)."
+    },
+    {
+      "test": "test_equalize",
+      "advice": "Use the first non-zero CDF value as c_min and N − c_min in the denominator."
+    },
+    {
+      "test": "test_constant",
+      "advice": "If every pixel has the same value, return the image unchanged."
+    },
+    {
+      "test": "test_full_range",
+      "advice": "Round the lookup table and cast to uint8."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

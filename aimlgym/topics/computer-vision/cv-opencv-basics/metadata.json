@@ -1,0 +1,77 @@
+{
+  "id": "CV-03",
+  "slug": "cv-opencv-basics",
+  "title": "OpenCV Basics: BGR, dtypes and Indexing",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-02"
+  ],
+  "prerequisite_slugs": [
+    "rgb-to-gray"
+  ],
+  "learning_objectives": [
+    "Convert between OpenCV's BGR order, RGB and greyscale with cv2.cvtColor",
+    "Keep images as uint8 arrays and know where OpenCV expects them",
+    "Translate OpenCV (x, y) coordinates into NumPy [row, column] indexing"
+  ],
+  "concept_tags": [
+    "opencv",
+    "colour-spaces",
+    "bgr",
+    "image-arrays"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S115",
+    "S023"
+  ],
+  "entry_point": "to_rgb_and_gray(bgr); crop(image, x, y, w, h)",
+  "hints": [
+    "Check `isinstance(bgr, np.ndarray)`, `bgr.dtype == np.uint8`, `bgr.ndim == 3` and `bgr.shape[2] == 3`.",
+    "`cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)` and `cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)`.",
+    "Rows come first: `image[y:y + h, x:x + w].copy()` after checking `x + w <= width` and `y + h <= height`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_blue_pixel",
+      "advice": "OpenCV images are BGR: use COLOR_BGR2RGB and COLOR_BGR2GRAY."
+    },
+    {
+      "test": "test_crop_rows_then_columns",
+      "advice": "Index image[y:y + h, x:x + w] — rows (y) first."
+    },
+    {
+      "test": "test_crop_is_copy",
+      "advice": "Return .copy() of the slice."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Require uint8 (h, w, 3) images and rectangles inside the image."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

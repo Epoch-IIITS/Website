@@ -1,0 +1,76 @@
+{
+  "id": "RL-05",
+  "slug": "epsilon-greedy",
+  "title": "Epsilon-Greedy Action Selection",
+  "topic": "reinforcement-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-03",
+    "NP-10"
+  ],
+  "prerequisite_slugs": [
+    "env-interface",
+    "seeded-generator"
+  ],
+  "learning_objectives": [
+    "Balance exploration and exploitation",
+    "Implement ε-greedy with a seeded generator",
+    "Compute the ε-greedy action probabilities"
+  ],
+  "concept_tags": [
+    "exploration",
+    "epsilon-greedy",
+    "policies"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033"
+  ],
+  "entry_point": "epsilon_greedy(q_values, epsilon, rng); epsilon_greedy_probs(q_values, epsilon)",
+  "hints": [
+    "`q = np.asarray(q_values)`; `n = len(q)`.",
+    "`if rng.random() < epsilon: return int(rng.integers(n))`.",
+    "Probs: `p = np.full(n, epsilon / n); p[np.argmax(q)] += 1 - epsilon`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_recipe",
+      "advice": "Draw rng.random() first; call rng.integers(n) only when exploring."
+    },
+    {
+      "test": "test_probs",
+      "advice": "Greedy action gets 1 − ε + ε/|A|; others ε/|A|."
+    },
+    {
+      "test": "test_ties_lowest",
+      "advice": "np.argmax returns the lowest index on ties."
+    },
+    {
+      "test": "test_frequencies",
+      "advice": "Random exploration chooses among all actions, including the greedy one."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

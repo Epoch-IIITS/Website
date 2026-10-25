@@ -1,0 +1,77 @@
+{
+  "id": "RL-11",
+  "slug": "mc-first-visit",
+  "title": "First-Visit Monte Carlo Prediction",
+  "topic": "reinforcement-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-03",
+    "RL-08"
+  ],
+  "prerequisite_slugs": [
+    "env-interface",
+    "policy-evaluation"
+  ],
+  "learning_objectives": [
+    "Estimate values by averaging sampled returns",
+    "Implement the first-visit rule",
+    "Compare with every-visit estimates"
+  ],
+  "concept_tags": [
+    "monte-carlo",
+    "prediction",
+    "returns",
+    "sampling"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033"
+  ],
+  "entry_point": "mc_prediction(episodes, n_states, gamma, first_visit=True)",
+  "hints": [
+    "For each episode compute `G_t` for all t with a backward pass.",
+    "First visit: find `first = {}` mapping state → earliest t.",
+    "Keep `sums[s]` and `counts[s]`; V = sums / counts where counts > 0."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_first_visit",
+      "advice": "Only the first occurrence of each state per episode counts."
+    },
+    {
+      "test": "test_discount",
+      "advice": "Return at t is R_{t+1} + γG_{t+1}; compute backwards."
+    },
+    {
+      "test": "test_every_visit",
+      "advice": "With first_visit=False every occurrence adds its return."
+    },
+    {
+      "test": "test_unvisited",
+      "advice": "Unvisited states keep V = 0 and count 0."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "ST-14",
+  "slug": "scipy-stats-intro",
+  "title": "Introducing scipy.stats",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-09"
+  ],
+  "prerequisite_slugs": [
+    "normal-distribution"
+  ],
+  "learning_objectives": [
+    "Create frozen distribution objects with scipy.stats.norm and scipy.stats.binom",
+    "Use pdf/pmf, cdf, ppf, mean and std on a distribution object",
+    "Check library results against the formulas you implemented by hand"
+  ],
+  "concept_tags": [
+    "scipy",
+    "distributions",
+    "normal",
+    "binomial",
+    "quantiles"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scipy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S101",
+    "S010"
+  ],
+  "entry_point": "distribution_facts(kind, params, x, q)",
+  "hints": [
+    "Validate first, then build `dist = stats.norm(loc=mu, scale=sigma)` or `stats.binom(n, p)`.",
+    "The density method is `dist.pdf(x)` for the normal and `dist.pmf(x)` for the binomial.",
+    "Convert every result with `float(...)` before putting it in the dict."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_normal_matches_formulas",
+      "advice": "`scale` is the standard deviation σ, and ppf takes a probability q."
+    },
+    {
+      "test": "test_binomial_matches_formulas",
+      "advice": "Discrete distributions use `pmf`, not `pdf`."
+    },
+    {
+      "test": "test_plain_floats",
+      "advice": "Wrap SciPy results in `float(...)`."
+    },
+    {
+      "test": "test_invalid_parameters",
+      "advice": "Check the parameters yourself before calling SciPy; it returns nan instead of raising."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

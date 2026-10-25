@@ -1,0 +1,78 @@
+{
+  "id": "XA-07",
+  "slug": "xai-permutation-importance",
+  "title": "Permutation Importance with sklearn.inspection",
+  "topic": "explainable-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "XA-05"
+  ],
+  "prerequisite_slugs": [
+    "xai-partial-dependence"
+  ],
+  "learning_objectives": [
+    "Measure feature importance with permutation_importance on held-out data",
+    "Apply it to a whole pipeline so importances refer to the original columns",
+    "Report the mean and spread over repeats"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "explainability",
+    "feature-importance",
+    "permutation-importance"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "pandas",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S091"
+  ],
+  "entry_point": "importance_table(model, X, y, n_repeats=10, seed=0, scoring=None)",
+  "hints": [
+    "Check `isinstance(X, pd.DataFrame)` and the repeat count.",
+    "`result = permutation_importance(model, X, y, n_repeats=n_repeats, random_state=seed, scoring=scoring)`.",
+    "Zip `X.columns`, `result.importances_mean` and `result.importances_std`, then sort by `(-mean, column)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_order",
+      "advice": "Sort rows by mean importance, largest first."
+    },
+    {
+      "test": "test_original_columns",
+      "advice": "Pass the whole pipeline and the DataFrame so rows are original columns."
+    },
+    {
+      "test": "test_matches_library",
+      "advice": "Use permutation_importance with random_state=seed and the given scoring."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Require a DataFrame and n_repeats >= 1."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

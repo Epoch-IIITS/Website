@@ -1,0 +1,6982 @@
+{
+  "topics": [
+    {
+      "slug": "python",
+      "title": "Python",
+      "prefix": "PY",
+      "prerequisites": [],
+      "outcome": "Write programs from print and input up to functions, collections, files, exceptions, modules, classes and unit tests.",
+      "description": "This topic assumes no programming experience. It climbs in three stages: Programs (steps 1–9). print, variables, types, input, operators, strings, if, while and for. You write whole programs; the tests run them with sample input and compare what they print. Functions and collections (steps 10–18). def, lists, comprehensions, dictionaries, tuples, the standard library, sets, functions as values and grouping records. From here on, tests call your functions and check their return values. Robust programs (steps 19–27). Raising exceptions, validating nested lists, handling exceptions, a stateful game loop, files and JSON, scripts that read standard input, classes, inheritance and writing your own unit tests. Packages: standard library only. Where Python has a built-in shortcut (sum, collections.Counter, math.comb), the lesson first shows the loop it replaces. Project ideas: ungraded briefs between steps suggest things to build with what you have learned so far.",
+      "problemCount": 27,
+      "optionalCount": 0,
+      "projectCount": 3,
+      "difficultyCounts": {
+        "beginner": 13,
+        "intermediate": 8,
+        "advanced": 6
+      },
+      "resources": [
+        {
+          "id": "S001",
+          "title": "The Python Tutorial (Python 3.15.1 docs)",
+          "url": "https://docs.python.org/3/tutorial/",
+          "author": "Python Software Foundation"
+        },
+        {
+          "id": "S040",
+          "title": "The Python Tutorial: An Informal Introduction to Python",
+          "url": "https://docs.python.org/3/tutorial/introduction.html",
+          "author": "Python Software Foundation"
+        },
+        {
+          "id": "S041",
+          "title": "The Python Tutorial: Input and Output",
+          "url": "https://docs.python.org/3/tutorial/inputoutput.html",
+          "author": "Python Software Foundation"
+        },
+        {
+          "id": "S049",
+          "title": "Built-in Types",
+          "url": "https://docs.python.org/3/library/stdtypes.html",
+          "author": "Python Software Foundation"
+        }
+      ]
+    },
+    {
+      "slug": "mathematics",
+      "title": "Mathematics for AI/ML",
+      "prefix": "MA",
+      "prerequisites": [
+        "python"
+      ],
+      "outcome": "Use summation, exponentials, logarithms, the sigmoid, vectors, matrices, derivatives, the chain rule, integration, gradient descent, series and eigenvectors.",
+      "description": "The mathematics that later topics use, each idea implemented in plain Python before NumPy appears. It starts with notation (Σ and Π), exponentials and logarithms, and the sigmoid — the pieces needed for probabilities and logistic regression — then moves through vectors and matrices, counting, small linear systems, numerical and analytic derivatives (including the chain rule used by backpropagation), integration, gradient descent, series and eigenvectors. Packages: standard library only. Each lesson compares the hand-written version with the math module where one exists; NP-02 and NP-06 later redo these operations in NumPy and check that the answers agree. Project ideas: ungraded briefs between steps suggest things to build with what you have learned so far.",
+      "problemCount": 16,
+      "optionalCount": 0,
+      "projectCount": 1,
+      "difficultyCounts": {
+        "beginner": 6,
+        "intermediate": 6,
+        "advanced": 4
+      },
+      "resources": [
+        {
+          "id": "S009",
+          "title": "Mathematics for Machine Learning",
+          "url": "https://mml-book.github.io/",
+          "author": "Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong (Cambridge University Press)"
+        },
+        {
+          "id": "S013",
+          "title": "Dive into Deep Learning",
+          "url": "https://d2l.ai/",
+          "author": "Aston Zhang, Zachary C. Lipton, Mu Li, Alexander J. Smola"
+        },
+        {
+          "id": "S050",
+          "title": "math — Mathematical functions",
+          "url": "https://docs.python.org/3/library/math.html",
+          "author": "Python Software Foundation"
+        },
+        {
+          "id": "S016",
+          "title": "CS231n: Backpropagation notes",
+          "url": "https://cs231n.github.io/optimization-2/",
+          "author": "Stanford University CS231n"
+        }
+      ]
+    },
+    {
+      "slug": "statistics",
+      "title": "Statistics",
+      "prefix": "ST",
+      "prerequisites": [
+        "mathematics"
+      ],
+      "outcome": "Describe data, reason with probability, conditional probability and Bayes' rule, use the binomial and normal distributions, simulate, and run interval estimates and hypothesis tests by hand and with scipy.stats.",
+      "description": "Describing data first (mean, variance, median, percentiles, histograms, z-scores), then probability (sample spaces, conditional probability, Bayes' rule), two named distributions (binomial and normal), simulation and the law of large numbers, correlation, sampling distributions and standard errors, and bootstrap intervals. The topic ends with scipy.stats: distribution objects, then the chi-square test, Welch's t-test and the permutation test, each followed by an optional deep dive that computes the same test by hand. Packages: standard library, then scipy for the last four required steps. Random simulations use random.Random(seed).random(), whose sequence Python documents as reproducible. Project ideas: an A/B test analyser and a dice-and-coin simulator.",
+      "problemCount": 17,
+      "optionalCount": 3,
+      "projectCount": 2,
+      "difficultyCounts": {
+        "beginner": 5,
+        "intermediate": 6,
+        "advanced": 9
+      },
+      "resources": [
+        {
+          "id": "S010",
+          "title": "Think Stats (3rd edition)",
+          "url": "https://greenteapress.com/wp/think-stats-3e/",
+          "author": "Allen B. Downey"
+        },
+        {
+          "id": "S011",
+          "title": "OpenIntro Statistics",
+          "url": "https://www.openintro.org/book/os/",
+          "author": "OpenIntro"
+        },
+        {
+          "id": "S003",
+          "title": "statistics — Mathematical statistics functions",
+          "url": "https://docs.python.org/3/library/statistics.html",
+          "author": "Python Software Foundation"
+        },
+        {
+          "id": "S004",
+          "title": "random — Generate pseudo-random numbers",
+          "url": "https://docs.python.org/3/library/random.html",
+          "author": "Python Software Foundation"
+        }
+      ]
+    },
+    {
+      "slug": "numpy",
+      "title": "NumPy",
+      "prefix": "NP",
+      "prerequisites": [
+        "statistics"
+      ],
+      "outcome": "Replace Python loops with arrays: vectorised arithmetic, slicing, masks, reductions, matrix products, broadcasting, reshaping, gathers, seeded randomness and linear algebra.",
+      "description": "NumPy replaces Python loops over numbers with operations on whole arrays. The topic starts by creating and inspecting arrays and repeating the loops you wrote in Mathematics as vectorised expressions, then covers slicing, masks, axis reductions, matrix products, broadcasting, reshaping, gathers, seeded random generators, pairwise distances, linear solvers, one-hot encoding and sliding windows. Packages: numpy (validated on 2.2 and 2.5). Most tests check a NumPy implementation against a plain-Python reference so you can see they compute the same thing. Project ideas: ungraded briefs between steps suggest things to build with what you have learned so far.",
+      "problemCount": 14,
+      "optionalCount": 0,
+      "projectCount": 1,
+      "difficultyCounts": {
+        "beginner": 5,
+        "intermediate": 5,
+        "advanced": 4
+      },
+      "resources": [
+        {
+          "id": "S007",
+          "title": "NumPy: the absolute basics for beginners (NumPy v2.5 Manual)",
+          "url": "https://numpy.org/doc/stable/user/absolute_beginners.html",
+          "author": "NumPy Developers"
+        },
+        {
+          "id": "S006",
+          "title": "Scientific Python Lectures",
+          "url": "https://lectures.scientific-python.org/",
+          "author": "Scientific Python developers"
+        },
+        {
+          "id": "S009",
+          "title": "Mathematics for Machine Learning",
+          "url": "https://mml-book.github.io/",
+          "author": "Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong (Cambridge University Press)"
+        },
+        {
+          "id": "S081",
+          "title": "Universal functions (ufunc) basics (NumPy v2.5 Manual)",
+          "url": "https://numpy.org/doc/stable/user/basics.ufuncs.html",
+          "author": "NumPy Developers"
+        }
+      ]
+    },
+    {
+      "slug": "pandas",
+      "title": "Pandas",
+      "prefix": "PD",
+      "prerequisites": [
+        "numpy"
+      ],
+      "outcome": "Load, inspect, clean, filter, group, merge, reshape and window tabular data, comparing each operation with its plain-Python equivalent.",
+      "description": "pandas adds labelled rows and columns on top of NumPy. You start with a single labelled column (Series), then build and read tables, select and derive columns, handle missing values, sort, group, merge, clean text, work with dates, resample, pivot, bin and compute rolling features. Group-by and merge lessons first solve the task with dictionaries so the library's behaviour is not magic. Packages: pandas and numpy. Packs are validated on pandas 2.2 (the executor image) and pandas 3.x; code avoids chained assignment so it behaves the same under Copy-on-Write. Project ideas: ungraded briefs between steps suggest things to build with what you have learned so far.",
+      "problemCount": 16,
+      "optionalCount": 0,
+      "projectCount": 2,
+      "difficultyCounts": {
+        "beginner": 6,
+        "intermediate": 6,
+        "advanced": 4
+      },
+      "resources": [
+        {
+          "id": "S008",
+          "title": "10 minutes to pandas (pandas 3.1.0 docs)",
+          "url": "https://pandas.pydata.org/docs/user_guide/10min.html",
+          "author": "pandas via NumFOCUS"
+        },
+        {
+          "id": "S084",
+          "title": "Intro to data structures (pandas 3.1.0 docs)",
+          "url": "https://pandas.pydata.org/docs/user_guide/dsintro.html",
+          "author": "pandas development team"
+        },
+        {
+          "id": "S085",
+          "title": "IO tools (pandas 3.1.0 docs)",
+          "url": "https://pandas.pydata.org/docs/user_guide/io.html",
+          "author": "pandas development team"
+        },
+        {
+          "id": "S055",
+          "title": "csv — CSV file reading and writing",
+          "url": "https://docs.python.org/3/library/csv.html",
+          "author": "Python Software Foundation"
+        }
+      ]
+    },
+    {
+      "slug": "fastapi",
+      "title": "FastAPI",
+      "prefix": "FA",
+      "prerequisites": [
+        "python"
+      ],
+      "outcome": "Understand HTTP messages, URLs, JSON and routing by hand, then build, validate, secure, run asynchronously and test FastAPI services.",
+      "description": "Web APIs from first principles. The first half uses only the standard library: the structure of HTTP requests and responses, status codes, URLs and query strings, JSON bodies, a hand-made router, asyncio, and a minimal ASGI application. The second half rebuilds the same ideas with FastAPI — routes, typed parameters and validation, Pydantic request bodies, error handling, response models, dependencies, asynchronous endpoints — and finishes by writing API tests. Packages: standard library for steps 1–7; fastapi (with httpx, used by fastapi.testclient.TestClient) from step 8. No server is started and no network is used: tests call the application in-process, and external services are replaced by fakes. Prerequisite: the Python topic only; you can take this topic any time after Python. Project ideas: ungraded briefs between steps suggest things to build with what you have learned so far.",
+      "problemCount": 15,
+      "optionalCount": 0,
+      "projectCount": 2,
+      "difficultyCounts": {
+        "beginner": 3,
+        "intermediate": 8,
+        "advanced": 4
+      },
+      "resources": [
+        {
+          "id": "S067",
+          "title": "RFC 9110: HTTP Semantics",
+          "url": "https://www.rfc-editor.org/rfc/rfc9110",
+          "author": "IETF (Fielding, Nottingham, Reschke)"
+        },
+        {
+          "id": "S066",
+          "title": "HTTP response status codes",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status",
+          "author": "MDN Web Docs (Mozilla)"
+        },
+        {
+          "id": "S071",
+          "title": "FastAPI Tutorial: Path Parameters",
+          "url": "https://fastapi.tiangolo.com/tutorial/path-params/",
+          "author": "FastAPI (Sebastián Ramírez)"
+        },
+        {
+          "id": "S061",
+          "title": "Coroutines and Tasks (asyncio)",
+          "url": "https://docs.python.org/3/library/asyncio-task.html",
+          "author": "Python Software Foundation"
+        }
+      ]
+    },
+    {
+      "slug": "machine-learning",
+      "title": "Machine Learning",
+      "prefix": "ML",
+      "prerequisites": [
+        "pandas"
+      ],
+      "outcome": "Build baselines and core models by hand, then use scikit-learn's estimator API, splits, pipelines, ColumnTransformer, cross-validation, grid search, trees, random forests, gradient boosting, ROC/PR thresholds and k-means in an end-to-end project.",
+      "description": "Machine learning from the ground up, then with scikit-learn. You start with features, labels and baselines, then learn the estimator API (fit, predict, score, clone), splitting, classification metrics and scaling inside a pipeline. Least squares, gradient-descent regression and logistic regression are built by hand; k-NN, validation curves, cross-validation, ColumnTransformer pipelines, regularisation with grid search, decision trees, random forests, gradient boosting, ROC and precision–recall thresholds and k-means use scikit-learn. A capstone combines everything in one leak-free workflow. Packages: numpy, pandas and scikit-learn. Where a library step replaces an earlier from-scratch step, that step follows it as an optional deep dive showing what the library does inside. Project ideas: a house-price predictor, a spam or fraud classifier, and serving your model with FastAPI.",
+      "problemCount": 19,
+      "optionalCount": 8,
+      "projectCount": 3,
+      "difficultyCounts": {
+        "beginner": 8,
+        "intermediate": 9,
+        "advanced": 10
+      },
+      "resources": [
+        {
+          "id": "S012",
+          "title": "User Guide (scikit-learn 1.9.1)",
+          "url": "https://scikit-learn.org/stable/user_guide.html",
+          "author": "scikit-learn developers"
+        },
+        {
+          "id": "S091",
+          "title": "Metrics and scoring (scikit-learn 1.9.1)",
+          "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+          "author": "scikit-learn developers"
+        },
+        {
+          "id": "S089",
+          "title": "Getting Started (scikit-learn 1.9.1)",
+          "url": "https://scikit-learn.org/stable/getting_started.html",
+          "author": "scikit-learn developers"
+        },
+        {
+          "id": "S009",
+          "title": "Mathematics for Machine Learning",
+          "url": "https://mml-book.github.io/",
+          "author": "Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong (Cambridge University Press)"
+        }
+      ]
+    },
+    {
+      "slug": "deep-learning",
+      "title": "Deep Learning",
+      "prefix": "DL",
+      "prerequisites": [
+        "machine-learning"
+      ],
+      "outcome": "Understand neurons, activations, losses, backpropagation and optimisers in NumPy, then build, train, debug, save and reproduce PyTorch models with nn.Module, autograd, torch.optim, DataLoader, dropout, batch normalisation and Conv1d.",
+      "description": "Neural networks in two passes. In NumPy you write activations, softmax, cross-entropy, dense layers, a tiny scalar autograd engine and backpropagation, and SGD with momentum. In PyTorch you then use tensors, nn.Module, autograd, custom gradients with gradcheck, torch.optim, Dataset and DataLoader, a full training loop, dropout, batch normalisation and Conv1d, and finish with saving, loading, reproducibility and debugging training. Packages: numpy, then torch (CPU). Everything trains in about a second. The NumPy versions of the MLP, gradient check, Adam, XOR training, dropout, batch normalisation and convolution stay as optional deep dives after their PyTorch steps. Project ideas: a handwritten digit recogniser and a training-diagnostics notebook.",
+      "problemCount": 20,
+      "optionalCount": 7,
+      "projectCount": 2,
+      "difficultyCounts": {
+        "beginner": 7,
+        "intermediate": 7,
+        "advanced": 13
+      },
+      "resources": [
+        {
+          "id": "S013",
+          "title": "Dive into Deep Learning",
+          "url": "https://d2l.ai/",
+          "author": "Aston Zhang, Zachary C. Lipton, Mu Li, Alexander J. Smola"
+        },
+        {
+          "id": "S016",
+          "title": "CS231n: Backpropagation notes",
+          "url": "https://cs231n.github.io/optimization-2/",
+          "author": "Stanford University CS231n"
+        },
+        {
+          "id": "S014",
+          "title": "Neural Networks and Deep Learning",
+          "url": "http://neuralnetworksanddeeplearning.com/",
+          "author": "free online book (author not stated on landing page)"
+        },
+        {
+          "id": "S039",
+          "title": "PyTorch Quickstart tutorial",
+          "url": "https://docs.pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html",
+          "author": "PyTorch"
+        }
+      ]
+    },
+    {
+      "slug": "computer-vision",
+      "title": "Computer Vision",
+      "prefix": "CV",
+      "prerequisites": [
+        "deep-learning"
+      ],
+      "outcome": "Treat images as arrays, then process them with OpenCV (colour spaces, transforms, thresholds, histograms, edges, resizing, contours, connected components), train a small PyTorch CNN with augmentation, and post-process detections with IoU and NMS.",
+      "description": "Images are arrays of numbers. After image dtypes and colour-to-grey conversion, OpenCV takes over: BGR order and indexing, flips, rotations and affine warps, thresholding with Otsu's method, histograms and equalisation, 2D filtering, Sobel and Canny edges, PSNR, resizing, contours and bounding boxes. With PyTorch you use pooling layers and a convolution layer, train a small CNN and add data augmentation; the topic ends with IoU, non-maximum suppression and connected components. Packages: numpy, opencv-python-headless and torch. Images are small synthetic arrays defined in the tests. The NumPy versions of the library steps follow them as optional deep dives. Project ideas: a document scanner, a shape and colour sorter, and an object counter.",
+      "problemCount": 18,
+      "optionalCount": 8,
+      "projectCount": 3,
+      "difficultyCounts": {
+        "beginner": 9,
+        "intermediate": 8,
+        "advanced": 9
+      },
+      "resources": [
+        {
+          "id": "S023",
+          "title": "OpenCV Tutorials (OpenCV 4.13.0)",
+          "url": "https://docs.opencv.org/4.x/d9/df8/tutorial_root.html",
+          "author": "OpenCV team"
+        },
+        {
+          "id": "S006",
+          "title": "Scientific Python Lectures",
+          "url": "https://lectures.scientific-python.org/",
+          "author": "Scientific Python developers"
+        },
+        {
+          "id": "S013",
+          "title": "Dive into Deep Learning",
+          "url": "https://d2l.ai/",
+          "author": "Aston Zhang, Zachary C. Lipton, Mu Li, Alexander J. Smola"
+        },
+        {
+          "id": "S122",
+          "title": "Geometric Image Transformations reference (OpenCV 4.13)",
+          "url": "https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html",
+          "author": "OpenCV team"
+        }
+      ]
+    },
+    {
+      "slug": "nlp",
+      "title": "Natural Language Processing",
+      "prefix": "NL",
+      "prerequisites": [
+        "deep-learning"
+      ],
+      "outcome": "Clean and tokenise text, count and vectorise it with CountVectorizer and TF-IDF, retrieve documents, compare strings, classify text with scikit-learn pipelines and error analysis, and learn word embeddings with PPMI and PyTorch.",
+      "description": "Working with text: regular expressions, tokenisation and normalisation, word and character n-gram counts with Counter and CountVectorizer, bag-of-words vectors, TF-IDF and cosine-similarity search with scikit-learn, edit distance, Naive Bayes, a TF-IDF + logistic-regression text classifier with error analysis, PPMI word vectors and analogies, and learned embeddings with PyTorch's nn.EmbeddingBag. Packages: standard library, numpy, scikit-learn and torch. The hand-written stopword, character n-gram and retrieval steps, bigram counts and the suffix stemmer are optional deep dives. Project ideas: a review sentiment analyser and semantic search for the club blog.",
+      "problemCount": 14,
+      "optionalCount": 5,
+      "projectCount": 2,
+      "difficultyCounts": {
+        "beginner": 6,
+        "intermediate": 6,
+        "advanced": 7
+      },
+      "resources": [
+        {
+          "id": "S017",
+          "title": "Speech and Language Processing (3rd ed. draft)",
+          "url": "https://web.stanford.edu/~jurafsky/slp3/",
+          "author": "Dan Jurafsky, James H. Martin"
+        },
+        {
+          "id": "S012",
+          "title": "User Guide (scikit-learn 1.9.1)",
+          "url": "https://scikit-learn.org/stable/user_guide.html",
+          "author": "scikit-learn developers"
+        },
+        {
+          "id": "S126",
+          "title": "Text feature extraction (scikit-learn 1.9.1)",
+          "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+          "author": "scikit-learn developers"
+        },
+        {
+          "id": "S018",
+          "title": "Natural Language Processing with Python (NLTK Book)",
+          "url": "https://www.nltk.org/book/",
+          "author": "Steven Bird, Ewan Klein, Edward Loper"
+        }
+      ]
+    },
+    {
+      "slug": "llms",
+      "title": "Large Language Models",
+      "prefix": "LM",
+      "prerequisites": [
+        "nlp",
+        "deep-learning"
+      ],
+      "outcome": "Map text to tokens, model and decode next tokens, build attention and transformer blocks, train a tiny GPT in PyTorch, and build LangChain prompts, structured output and RAG pipelines with citation checks.",
+      "description": "How a language model turns text into tokens and tokens into text: vocabularies and token IDs, next-token probabilities, temperature, greedy decoding and perplexity, byte-pair encoding, then the transformer — scaled dot-product attention, causal masks, positional encodings, multi-head attention and a pre-norm block as a PyTorch nn.Module — then sampling (top-k/top-p), beam search, KV caching and a tiny character-level GPT trained in PyTorch. The topic ends with LangChain: chat prompts and messages, structured output with Pydantic and retries, and retrieval-augmented generation with citation checks. Packages: numpy, torch and langchain-core. No model weights are downloaded and no API is called: LangChain steps use fake chat models, so tests are exact. The NumPy transformer block, the hand-made chat template and RAG pipeline are optional deep dives. Project ideas: a poem or name generator, a course FAQ chatbot and a prompt playground.",
+      "problemCount": 18,
+      "optionalCount": 3,
+      "projectCount": 3,
+      "difficultyCounts": {
+        "beginner": 5,
+        "intermediate": 7,
+        "advanced": 9
+      },
+      "resources": [
+        {
+          "id": "S013",
+          "title": "Dive into Deep Learning",
+          "url": "https://d2l.ai/",
+          "author": "Aston Zhang, Zachary C. Lipton, Mu Li, Alexander J. Smola"
+        },
+        {
+          "id": "S022",
+          "title": "LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/1",
+          "author": "Hugging Face"
+        },
+        {
+          "id": "S019",
+          "title": "Attention Is All You Need",
+          "url": "https://arxiv.org/abs/1706.03762",
+          "author": "Ashish Vaswani et al."
+        },
+        {
+          "id": "S017",
+          "title": "Speech and Language Processing (3rd ed. draft)",
+          "url": "https://web.stanford.edu/~jurafsky/slp3/",
+          "author": "Dan Jurafsky, James H. Martin"
+        }
+      ]
+    },
+    {
+      "slug": "explainable-ai",
+      "title": "Explainable AI",
+      "prefix": "XA",
+      "prerequisites": [
+        "computer-vision"
+      ],
+      "outcome": "Explain models with contributions, decision paths, ICE curves, scikit-learn partial dependence and permutation importance, occlusion, surrogates, Shapley values, LIME, counterfactuals and integrated gradients.",
+      "description": "Explaining predictions, from models that explain themselves (linear contributions, decision paths) to model-agnostic methods — ICE curves, partial dependence and permutation importance with sklearn.inspection, occlusion, global surrogates, exact Shapley values, LIME, counterfactuals — and a gradient method for neural networks (integrated gradients). Every model being explained is small and defined in the test, so each attribution can be checked. Packages: numpy, pandas and scikit-learn. The NumPy partial dependence and permutation importance are optional deep dives. Project idea: explain your house-price model.",
+      "problemCount": 12,
+      "optionalCount": 2,
+      "projectCount": 1,
+      "difficultyCounts": {
+        "beginner": 4,
+        "intermediate": 6,
+        "advanced": 4
+      },
+      "resources": [
+        {
+          "id": "S024",
+          "title": "Interpretable Machine Learning (3rd edition)",
+          "url": "https://christophm.github.io/interpretable-ml-book/",
+          "author": "Christoph Molnar"
+        },
+        {
+          "id": "S012",
+          "title": "User Guide (scikit-learn 1.9.1)",
+          "url": "https://scikit-learn.org/stable/user_guide.html",
+          "author": "scikit-learn developers"
+        },
+        {
+          "id": "S091",
+          "title": "Metrics and scoring (scikit-learn 1.9.1)",
+          "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+          "author": "scikit-learn developers"
+        },
+        {
+          "id": "S015",
+          "title": "CS231n: Convolutional Neural Networks notes",
+          "url": "https://cs231n.github.io/convolutional-networks/",
+          "author": "Stanford University CS231n"
+        }
+      ]
+    },
+    {
+      "slug": "federated-learning",
+      "title": "Federated Learning",
+      "prefix": "FL",
+      "prerequisites": [
+        "deep-learning"
+      ],
+      "outcome": "Simulate clients and partitions, train client copies of PyTorch models, aggregate state_dicts with weighted FedAvg, and add client sampling, clipping, secure aggregation, differential privacy and FedProx.",
+      "description": "Training a model across many clients without collecting their data. The topic simulates clients in one process: IID and label-skewed partitions, weighted averaging, client updates as deltas, client training of a PyTorch model copy, a FedAvg round and full training loop, FedAvg over PyTorch state_dicts, client sampling, update clipping, secure aggregation with pairwise masks, differentially private aggregation and FedProx. Packages: numpy and torch. The privacy steps teach the mechanics (clipping, noise, masking); they do not compute formal privacy guarantees. Local SGD in NumPy is an optional deep dive. Project idea: federated training across departments, with a pointer to the Flower framework.",
+      "problemCount": 13,
+      "optionalCount": 1,
+      "projectCount": 1,
+      "difficultyCounts": {
+        "beginner": 4,
+        "intermediate": 5,
+        "advanced": 5
+      },
+      "resources": [
+        {
+          "id": "S032",
+          "title": "Advances and Open Problems in Federated Learning",
+          "url": "https://arxiv.org/abs/1912.04977",
+          "author": "Peter Kairouz, H. Brendan McMahan et al."
+        },
+        {
+          "id": "S028",
+          "title": "Communication-Efficient Learning of Deep Networks from Decentralized Data",
+          "url": "https://arxiv.org/abs/1602.05629",
+          "author": "H. Brendan McMahan, Eider Moore, Daniel Ramage, Seth Hampson, Blaise Agüera y Arcas"
+        },
+        {
+          "id": "S039",
+          "title": "PyTorch Quickstart tutorial",
+          "url": "https://docs.pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html",
+          "author": "PyTorch"
+        },
+        {
+          "id": "S108",
+          "title": "Saving and Loading Models (PyTorch tutorial)",
+          "url": "https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html",
+          "author": "PyTorch"
+        }
+      ]
+    },
+    {
+      "slug": "reinforcement-learning",
+      "title": "Reinforcement Learning",
+      "prefix": "RL",
+      "prerequisites": [
+        "numpy"
+      ],
+      "outcome": "Define environments and returns (including Gymnasium environments), explore with bandits, solve MDPs with dynamic programming, and learn values with Monte Carlo, TD(0), Q-learning on FrozenLake and SARSA.",
+      "description": "Learning from rewards. You first define returns, a gridworld transition function and the reset/step environment interface — then the same environment as a real gymnasium.Env with spaces and a time-limit wrapper. You explore with ε-greedy, incremental estimates and UCB bandits, solve known MDPs with policy evaluation, value iteration and policy iteration, and learn from experience with first-visit Monte Carlo, TD(0), Q-learning (also on Gymnasium's FrozenLake) and SARSA. Packages: numpy and gymnasium. MDP format (design choice): P[s][a] is a list of (probability, next_state, reward, done) tuples; terminal transitions stop bootstrapping. All environments are tiny and seeded, so every result is reproducible. Project ideas: a grid game agent and a bandit-based recommender.",
+      "problemCount": 15,
+      "optionalCount": 0,
+      "projectCount": 2,
+      "difficultyCounts": {
+        "beginner": 5,
+        "intermediate": 5,
+        "advanced": 5
+      },
+      "resources": [
+        {
+          "id": "S033",
+          "title": "Reinforcement Learning: An Introduction (2nd edition)",
+          "url": "http://incompleteideas.net/book/the-book-2nd.html",
+          "author": "Richard S. Sutton, Andrew G. Barto (MIT Press 2018)"
+        },
+        {
+          "id": "S034",
+          "title": "Dive into Deep Learning — Reinforcement Learning chapter",
+          "url": "https://d2l.ai/chapter_reinforcement-learning/index.html",
+          "author": "Pratik Chaudhari, Rasool Fakoor, Kavosh Asadi (D2L)"
+        },
+        {
+          "id": "S035",
+          "title": "Gymnasium Documentation",
+          "url": "https://gymnasium.farama.org/",
+          "author": "Farama Foundation"
+        },
+        {
+          "id": "S099",
+          "title": "Gymnasium Env API",
+          "url": "https://gymnasium.farama.org/api/env/",
+          "author": "Farama Foundation"
+        }
+      ]
+    },
+    {
+      "slug": "agentic-ai",
+      "title": "Agentic AI",
+      "prefix": "AG",
+      "prerequisites": [
+        "llms"
+      ],
+      "outcome": "Build agent loops, parsing, budgets, ReAct, planners and evaluation by hand, then LangChain tools and LangGraph graphs with tool nodes, checkpointed memory, validated retries, orchestrator–workers and human-approval guardrails.",
+      "description": "Agents are programs that repeatedly decide on an action, act through tools and observe the result. You first build each part with ordinary Python and a scripted model — tool registries, parsing model output, perceive–act loops, goals and budgets, the ReAct loop, BFS and A* planners, dependency-ordered plans and an evaluation harness. Then you use the libraries: LangChain tools and tool calling, LangGraph state graphs, a ReAct agent with a tool node and checkpointed threads, message trimming, validated tool arguments with retries, orchestrator–workers with Send, and human approval with interrupts. Packages: standard library, langchain-core and langgraph. Fake chat models keep every test deterministic; no paid API or network is used. The hand-written memory window, validate-and-retry, orchestrator and guardrail steps are optional deep dives. Project ideas: a study-planner agent, a club event assistant and an agent evaluation suite.",
+      "problemCount": 16,
+      "optionalCount": 4,
+      "projectCount": 3,
+      "difficultyCounts": {
+        "beginner": 5,
+        "intermediate": 7,
+        "advanced": 8
+      },
+      "resources": [
+        {
+          "id": "S037",
+          "title": "Building effective AI agents",
+          "url": "https://www.anthropic.com/research/building-effective-agents",
+          "author": "Anthropic"
+        },
+        {
+          "id": "S038",
+          "title": "Artificial Intelligence: A Modern Approach (4th ed.)",
+          "url": "https://aima.cs.berkeley.edu/",
+          "author": "Stuart Russell, Peter Norvig"
+        },
+        {
+          "id": "S036",
+          "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+          "url": "https://arxiv.org/abs/2210.03629",
+          "author": "Shunyu Yao et al."
+        },
+        {
+          "id": "S139",
+          "title": "Workflows and agents (LangGraph docs)",
+          "url": "https://docs.langchain.com/oss/python/langgraph/workflows-agents",
+          "author": "LangChain"
+        }
+      ]
+    }
+  ],
+  "problems": [
+    {
+      "id": "PY-01",
+      "slug": "hello-print",
+      "title": "Hello, print()",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [],
+      "tags": [
+        "print",
+        "strings",
+        "comments",
+        "sep-end"
+      ],
+      "entryPoint": "program (prints to stdout)",
+      "testCount": 8,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-02",
+      "slug": "variables",
+      "title": "Variables and f-strings",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-01"
+      ],
+      "tags": [
+        "variables",
+        "assignment",
+        "f-strings",
+        "naming"
+      ],
+      "entryPoint": "program (module-level variables + stdout)",
+      "testCount": 6,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-03",
+      "slug": "types-conversion",
+      "title": "Types and Conversion",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-02"
+      ],
+      "tags": [
+        "types",
+        "int",
+        "float",
+        "str",
+        "bool",
+        "conversion"
+      ],
+      "entryPoint": "program (module-level variables + stdout)",
+      "testCount": 6,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-04",
+      "slug": "input-output",
+      "title": "Reading Input",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-03"
+      ],
+      "tags": [
+        "input",
+        "stdin",
+        "conversion",
+        "strip"
+      ],
+      "entryPoint": "program (reads stdin, prints to stdout)",
+      "testCount": 6,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-05",
+      "slug": "arithmetic-operators",
+      "title": "Arithmetic Operators",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-04"
+      ],
+      "tags": [
+        "operators",
+        "integer-division",
+        "modulo",
+        "precedence",
+        "formatting"
+      ],
+      "entryPoint": "program (reads stdin, prints to stdout)",
+      "testCount": 7,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-06",
+      "slug": "string-basics",
+      "title": "Strings: Indexing, Slicing and Methods",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-05"
+      ],
+      "tags": [
+        "strings",
+        "indexing",
+        "slicing",
+        "string-methods"
+      ],
+      "entryPoint": "program (reads stdin, prints to stdout)",
+      "testCount": 7,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-07",
+      "slug": "conditionals",
+      "title": "Conditionals: Letter Grades",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-06"
+      ],
+      "tags": [
+        "conditionals",
+        "if-elif-else",
+        "comparisons",
+        "boolean-logic"
+      ],
+      "entryPoint": "program (reads stdin, prints to stdout)",
+      "testCount": 7,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-08",
+      "slug": "while-loops",
+      "title": "While Loops: Read Until Done",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-07"
+      ],
+      "tags": [
+        "while",
+        "break",
+        "sentinel",
+        "accumulator"
+      ],
+      "entryPoint": "program (reads stdin, prints to stdout)",
+      "testCount": 6,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-09",
+      "slug": "for-loops-range",
+      "title": "For Loops and range: FizzBuzz",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-08"
+      ],
+      "tags": [
+        "for",
+        "range",
+        "iteration",
+        "fizzbuzz"
+      ],
+      "entryPoint": "program (reads stdin, prints to stdout)",
+      "testCount": 6,
+      "kind": "script",
+      "optional": false
+    },
+    {
+      "id": "PY-10",
+      "slug": "greeting-formatter",
+      "title": "Greeting Formatter",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-09"
+      ],
+      "tags": [
+        "functions",
+        "strings",
+        "f-strings",
+        "default-arguments"
+      ],
+      "entryPoint": "greet(name='World')",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-11",
+      "slug": "sum-and-mean",
+      "title": "Sum and Mean of a List",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-10"
+      ],
+      "tags": [
+        "loops",
+        "accumulator",
+        "tuples",
+        "edge-cases"
+      ],
+      "entryPoint": "sum_and_mean(nums)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-12",
+      "slug": "filter-evens",
+      "title": "Filter Even Numbers",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-11"
+      ],
+      "tags": [
+        "list-comprehension",
+        "modulo",
+        "filtering"
+      ],
+      "entryPoint": "evens(nums)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-13",
+      "slug": "vowel-counter",
+      "title": "Vowel Counter",
+      "topicSlug": "python",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-12"
+      ],
+      "tags": [
+        "strings",
+        "dictionaries",
+        "counting",
+        "membership"
+      ],
+      "entryPoint": "count_vowels(text)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-14",
+      "slug": "fibonacci-sequence",
+      "title": "Fibonacci Sequence",
+      "topicSlug": "python",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PY-13"
+      ],
+      "tags": [
+        "loops",
+        "sequences",
+        "tuple-unpacking",
+        "state"
+      ],
+      "entryPoint": "fibonacci(n)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-15",
+      "slug": "standard-library",
+      "title": "Importing the Standard Library",
+      "topicSlug": "python",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PY-14"
+      ],
+      "tags": [
+        "modules",
+        "import",
+        "math",
+        "random",
+        "collections",
+        "heapq",
+        "itertools"
+      ],
+      "entryPoint": "hypotenuse(a, b); pages_needed(items, per_page); most_common_letter(text); dice_rolls(seed, n); smallest_k(nums, k); all_pairs(items)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-16",
+      "slug": "unique-words",
+      "title": "Unique Words in Order",
+      "topicSlug": "python",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PY-15"
+      ],
+      "tags": [
+        "sets",
+        "strings",
+        "deduplication",
+        "order-preservation"
+      ],
+      "entryPoint": "unique_words(sentence)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-17",
+      "slug": "functions-as-values",
+      "title": "Functions as Values",
+      "topicSlug": "python",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PY-16"
+      ],
+      "tags": [
+        "higher-order-functions",
+        "lambda",
+        "args-kwargs",
+        "decorators",
+        "closures"
+      ],
+      "entryPoint": "pipeline(*funcs); sort_words(words); format_record(name, *scores, sep=', ', **extra); count_calls(func)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-18",
+      "slug": "gradebook-aggregate",
+      "title": "Gradebook Aggregation",
+      "topicSlug": "python",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PY-17"
+      ],
+      "tags": [
+        "dictionaries",
+        "grouping",
+        "sorting",
+        "lambda"
+      ],
+      "entryPoint": "gradebook(records)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-19",
+      "slug": "factorial-validated",
+      "title": "Validated Factorial",
+      "topicSlug": "python",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PY-18"
+      ],
+      "tags": [
+        "exceptions",
+        "validation",
+        "loops",
+        "integers"
+      ],
+      "entryPoint": "factorial(n)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-20",
+      "slug": "matrix-transpose",
+      "title": "Matrix Transpose with Validation",
+      "topicSlug": "python",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PY-19"
+      ],
+      "tags": [
+        "nested-lists",
+        "list-comprehension",
+        "zip",
+        "validation"
+      ],
+      "entryPoint": "transpose(matrix)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-21",
+      "slug": "safe-divide",
+      "title": "Safe Division with Exceptions",
+      "topicSlug": "python",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PY-20"
+      ],
+      "tags": [
+        "exceptions",
+        "try-except",
+        "error-handling",
+        "batch-processing"
+      ],
+      "entryPoint": "safe_divide(a, b); divide_pairs(pairs)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-22",
+      "slug": "guessing-game-feedback",
+      "title": "Guessing Game Feedback",
+      "topicSlug": "python",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PY-21"
+      ],
+      "tags": [
+        "loops",
+        "break",
+        "state-machines",
+        "validation"
+      ],
+      "entryPoint": "guess_feedback(target, guesses, max_attempts=7)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-23",
+      "slug": "files-and-json",
+      "title": "Files, CSV and JSON",
+      "topicSlug": "python",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PY-22"
+      ],
+      "tags": [
+        "files",
+        "with",
+        "pathlib",
+        "csv",
+        "json"
+      ],
+      "entryPoint": "write_lines(path, lines); read_lines(path); load_scores_csv(path); save_json(path, data); load_json(path); summarize_scores(csv_path, json_path)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-24",
+      "slug": "text-stats-stdin",
+      "title": "Text Statistics from stdin",
+      "topicSlug": "python",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PY-23"
+      ],
+      "tags": [
+        "stdin",
+        "io",
+        "strings",
+        "program-structure"
+      ],
+      "entryPoint": "text_stats(text); main()",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-25",
+      "slug": "bank-account",
+      "title": "Classes: A Bank Account",
+      "topicSlug": "python",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PY-24"
+      ],
+      "tags": [
+        "classes",
+        "objects",
+        "methods",
+        "state",
+        "repr"
+      ],
+      "entryPoint": "class BankAccount(owner, balance=0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-26",
+      "slug": "shapes-inheritance",
+      "title": "Inheritance, Special Methods and Dataclasses",
+      "topicSlug": "python",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PY-25"
+      ],
+      "tags": [
+        "inheritance",
+        "polymorphism",
+        "super",
+        "dunder-methods",
+        "dataclasses"
+      ],
+      "entryPoint": "Shape, Rectangle(width, height), Square(side), Circle(radius), total_area(shapes), Point(x, y)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PY-27",
+      "slug": "unit-testing",
+      "title": "Writing Unit Tests",
+      "topicSlug": "python",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PY-26"
+      ],
+      "tags": [
+        "testing",
+        "unittest",
+        "edge-cases",
+        "mutation-testing",
+        "mocks"
+      ],
+      "entryPoint": "class SlugifyTests(unittest.TestCase)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-01",
+      "slug": "summation",
+      "title": "Summation and Product Notation",
+      "topicSlug": "mathematics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-17"
+      ],
+      "tags": [
+        "summation",
+        "sigma-notation",
+        "product-notation",
+        "floating-point"
+      ],
+      "entryPoint": "summation(f, start, stop); product(f, start, stop); mean(xs); sum_of_squares(n); accurate_sum(xs)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-02",
+      "slug": "exp-log",
+      "title": "Exponentials and Logarithms",
+      "topicSlug": "mathematics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "MA-01"
+      ],
+      "tags": [
+        "exponential",
+        "logarithm",
+        "log-likelihood",
+        "underflow",
+        "log-sum-exp"
+      ],
+      "entryPoint": "log_base(x, base); doubling_time(rate); log_likelihood(probs); logsumexp(values)",
+      "testCount": 10,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-03",
+      "slug": "sigmoid-function",
+      "title": "The Sigmoid Function",
+      "topicSlug": "mathematics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "MA-02"
+      ],
+      "tags": [
+        "sigmoid",
+        "logistic-function",
+        "logit",
+        "numerical-stability"
+      ],
+      "entryPoint": "sigmoid(x); sigmoid_derivative(x); logit(p)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-04",
+      "slug": "dot-product",
+      "title": "Dot Product",
+      "topicSlug": "mathematics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "MA-01"
+      ],
+      "tags": [
+        "vectors",
+        "dot-product",
+        "linear-algebra"
+      ],
+      "entryPoint": "dot(u, v)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-05",
+      "slug": "vector-norm-unit",
+      "title": "Vector Norm and Unit Vector",
+      "topicSlug": "mathematics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "MA-04"
+      ],
+      "tags": [
+        "vectors",
+        "norms",
+        "normalisation"
+      ],
+      "entryPoint": "norm(v, p=2); unit(v)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-06",
+      "slug": "matrix-multiply",
+      "title": "Matrix Multiplication",
+      "topicSlug": "mathematics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "MA-04",
+        "PY-20"
+      ],
+      "tags": [
+        "matrices",
+        "matrix-multiplication",
+        "shapes"
+      ],
+      "entryPoint": "matmul(A, B)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-07",
+      "slug": "binomial-coefficient",
+      "title": "Binomial Coefficient",
+      "topicSlug": "mathematics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "MA-01",
+        "PY-19"
+      ],
+      "tags": [
+        "combinatorics",
+        "counting",
+        "integers"
+      ],
+      "entryPoint": "comb(n, k)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-08",
+      "slug": "solve-2x2-cramer",
+      "title": "Solve a 2x2 System (Cramer's Rule)",
+      "topicSlug": "mathematics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "MA-06"
+      ],
+      "tags": [
+        "linear-systems",
+        "determinant",
+        "cramers-rule",
+        "floating-point"
+      ],
+      "entryPoint": "solve_2x2(A, b, tol=1e-12)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-09",
+      "slug": "inverse-2x2",
+      "title": "Inverse of a 2x2 Matrix",
+      "topicSlug": "mathematics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "MA-08"
+      ],
+      "tags": [
+        "matrix-inverse",
+        "determinant",
+        "identity"
+      ],
+      "entryPoint": "inverse_2x2(A, tol=1e-12)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-10",
+      "slug": "central-difference",
+      "title": "Numerical Derivative (Central Difference)",
+      "topicSlug": "mathematics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "MA-02"
+      ],
+      "tags": [
+        "calculus",
+        "derivatives",
+        "finite-differences",
+        "numerical-methods"
+      ],
+      "entryPoint": "forward_diff(f, x, h=1e-6); central_diff(f, x, h=1e-5)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-11",
+      "slug": "derivative-rules",
+      "title": "Derivative Rules and the Chain Rule",
+      "topicSlug": "mathematics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "MA-10",
+        "MA-03"
+      ],
+      "tags": [
+        "derivatives",
+        "chain-rule",
+        "product-rule",
+        "calculus",
+        "backpropagation"
+      ],
+      "entryPoint": "power_rule(n); sum_rule(f, df, g, dg); product_rule(f, df, g, dg); chain_rule(f, df, g, dg); sigmoid_of_linear(a, b)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-12",
+      "slug": "trapezoid-rule",
+      "title": "Trapezoidal Integration",
+      "topicSlug": "mathematics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "MA-10"
+      ],
+      "tags": [
+        "calculus",
+        "integration",
+        "numerical-methods"
+      ],
+      "entryPoint": "trapezoid(f, a, b, n)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-13",
+      "slug": "gradient-descent-1d",
+      "title": "Gradient Descent in 1D",
+      "topicSlug": "mathematics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "MA-11"
+      ],
+      "tags": [
+        "optimisation",
+        "gradient-descent",
+        "learning-rate",
+        "convergence"
+      ],
+      "entryPoint": "gradient_descent(df, x0, lr, max_steps=1000, tol=1e-8)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-14",
+      "slug": "numerical-gradient",
+      "title": "Numerical Gradient of f(x1..xn)",
+      "topicSlug": "mathematics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "MA-10",
+        "MA-13"
+      ],
+      "tags": [
+        "multivariable-calculus",
+        "gradient",
+        "partial-derivatives",
+        "optimisation"
+      ],
+      "entryPoint": "numerical_gradient(f, x, h=1e-5); gd_step(f, x, lr)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-15",
+      "slug": "taylor-exp",
+      "title": "Taylor Series for exp(x)",
+      "topicSlug": "mathematics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "MA-11",
+        "MA-07"
+      ],
+      "tags": [
+        "series",
+        "approximation",
+        "taylor",
+        "convergence"
+      ],
+      "entryPoint": "exp_taylor(x, n_terms); terms_needed(x, tol)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "MA-16",
+      "slug": "power-iteration",
+      "title": "Dominant Eigenvalue by Power Iteration",
+      "topicSlug": "mathematics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "MA-05",
+        "MA-06"
+      ],
+      "tags": [
+        "eigenvalues",
+        "linear-algebra",
+        "iterative-methods",
+        "pca"
+      ],
+      "entryPoint": "power_iteration(A, num_iters=1000, tol=1e-10)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-01",
+      "slug": "mean-variance",
+      "title": "Mean and Variance (Population vs Sample)",
+      "topicSlug": "statistics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "MA-01"
+      ],
+      "tags": [
+        "descriptive-statistics",
+        "variance",
+        "bessel-correction"
+      ],
+      "entryPoint": "mean_variance(data, sample=False)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-02",
+      "slug": "median-mode",
+      "title": "Median and Mode",
+      "topicSlug": "statistics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ST-01"
+      ],
+      "tags": [
+        "descriptive-statistics",
+        "median",
+        "mode",
+        "robustness"
+      ],
+      "entryPoint": "median(data); modes(data)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-03",
+      "slug": "percentiles",
+      "title": "Percentiles by Linear Interpolation",
+      "topicSlug": "statistics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ST-02"
+      ],
+      "tags": [
+        "percentiles",
+        "quantiles",
+        "iqr",
+        "robust-statistics"
+      ],
+      "entryPoint": "percentile(data, q); iqr(data); tukey_outliers(data, k=1.5)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-04",
+      "slug": "histogram-bins",
+      "title": "Histogram with Equal-Width Bins",
+      "topicSlug": "statistics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ST-01"
+      ],
+      "tags": [
+        "histograms",
+        "binning",
+        "distributions"
+      ],
+      "entryPoint": "histogram(data, bins, lo=None, hi=None)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-05",
+      "slug": "z-scores",
+      "title": "Standardize to z-scores",
+      "topicSlug": "statistics",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ST-01"
+      ],
+      "tags": [
+        "standardization",
+        "z-score",
+        "outliers"
+      ],
+      "entryPoint": "z_scores(data, sample=False); outliers(data, threshold=3.0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-06",
+      "slug": "probability-basics",
+      "title": "Probability by Counting Outcomes",
+      "topicSlug": "statistics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ST-04"
+      ],
+      "tags": [
+        "probability",
+        "sample-space",
+        "events",
+        "independence",
+        "fractions"
+      ],
+      "entryPoint": "two_dice(); probability(space, event); complement(space, event); union(space, a, b); independent(space, a, b)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-07",
+      "slug": "conditional-bayes",
+      "title": "Conditional Probability and Bayes' Rule",
+      "topicSlug": "statistics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ST-06"
+      ],
+      "tags": [
+        "conditional-probability",
+        "bayes-rule",
+        "base-rate",
+        "posterior"
+      ],
+      "entryPoint": "conditional(space, a, b); posterior(prior, sensitivity, false_positive_rate); update(prior, sensitivity, false_positive_rate, results)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-08",
+      "slug": "binomial-pmf",
+      "title": "Binomial Probabilities",
+      "topicSlug": "statistics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ST-06",
+        "MA-07"
+      ],
+      "tags": [
+        "probability",
+        "binomial-distribution",
+        "bernoulli-trials"
+      ],
+      "entryPoint": "binom_pmf(k, n, p); binom_cdf(k, n, p); prob_at_least(k, n, p)",
+      "testCount": 10,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-09",
+      "slug": "normal-distribution",
+      "title": "The Normal Distribution",
+      "topicSlug": "statistics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ST-05",
+        "ST-08"
+      ],
+      "tags": [
+        "normal-distribution",
+        "pdf",
+        "cdf",
+        "erf",
+        "normal-approximation"
+      ],
+      "entryPoint": "normal_pdf(x, mu, sigma); normal_cdf(x, mu, sigma); prob_between(a, b, mu, sigma); empirical_rule(); binomial_cdf_approx(k, n, p)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-10",
+      "slug": "dice-lln",
+      "title": "Dice Simulation and the Law of Large Numbers",
+      "topicSlug": "statistics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ST-06"
+      ],
+      "tags": [
+        "simulation",
+        "monte-carlo",
+        "law-of-large-numbers",
+        "reproducibility"
+      ],
+      "entryPoint": "roll(rng); simulate_two_dice(n, seed)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-11",
+      "slug": "covariance-correlation",
+      "title": "Covariance and Pearson Correlation",
+      "topicSlug": "statistics",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ST-05",
+        "MA-04"
+      ],
+      "tags": [
+        "covariance",
+        "correlation",
+        "association"
+      ],
+      "entryPoint": "covariance(x, y, sample=True); pearson(x, y)",
+      "testCount": 10,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-12",
+      "slug": "sampling-distribution",
+      "title": "Sampling Distributions and Standard Error",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-10",
+        "ST-09"
+      ],
+      "tags": [
+        "sampling-distribution",
+        "standard-error",
+        "central-limit-theorem",
+        "confidence-interval"
+      ],
+      "entryPoint": "sample_means(population, n, reps, seed); standard_error(sample); mean_ci95(sample)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-13",
+      "slug": "bootstrap-ci",
+      "title": "Bootstrap Confidence Interval",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-12",
+        "ST-03"
+      ],
+      "tags": [
+        "bootstrap",
+        "confidence-interval",
+        "resampling",
+        "inference"
+      ],
+      "entryPoint": "bootstrap_ci(data, n_boot=2000, alpha=0.05, seed=0, stat=None)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-14",
+      "slug": "scipy-stats-intro",
+      "title": "Introducing scipy.stats",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-09"
+      ],
+      "tags": [
+        "scipy",
+        "distributions",
+        "normal",
+        "binomial",
+        "quantiles"
+      ],
+      "entryPoint": "distribution_facts(kind, params, x, q)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-15",
+      "slug": "chi-square-scipy",
+      "title": "Chi-Square Test with SciPy",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-14"
+      ],
+      "tags": [
+        "scipy",
+        "hypothesis-testing",
+        "chi-square",
+        "p-value"
+      ],
+      "entryPoint": "chi_square_test(observed, probs, alpha=0.05)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-16",
+      "slug": "chi-square-gof",
+      "title": "Chi-Square Goodness of Fit by Hand",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-08"
+      ],
+      "tags": [
+        "hypothesis-testing",
+        "chi-square",
+        "categorical-data"
+      ],
+      "entryPoint": "chi_square_gof(observed, probs, critical=None)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ST-17",
+      "slug": "welch-t-scipy",
+      "title": "Welch's t-test with SciPy",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-15",
+        "ST-12"
+      ],
+      "tags": [
+        "scipy",
+        "hypothesis-testing",
+        "t-test",
+        "two-sample"
+      ],
+      "entryPoint": "compare_means(x, y, alternative=\"two-sided\", alpha=0.05)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-18",
+      "slug": "welch-t",
+      "title": "Welch's t-statistic by Hand",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-12"
+      ],
+      "tags": [
+        "hypothesis-testing",
+        "t-test",
+        "two-sample",
+        "standard-error"
+      ],
+      "entryPoint": "welch_t(x, y)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ST-19",
+      "slug": "permutation-test-scipy",
+      "title": "Permutation Test with SciPy",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-17"
+      ],
+      "tags": [
+        "scipy",
+        "hypothesis-testing",
+        "permutation-test",
+        "resampling"
+      ],
+      "entryPoint": "permutation_mean_diff(x, y, alternative=\"two-sided\", n_resamples=9999, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ST-20",
+      "slug": "permutation-test",
+      "title": "Permutation Test for a Mean Difference by Hand",
+      "topicSlug": "statistics",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ST-13",
+        "ST-18"
+      ],
+      "tags": [
+        "hypothesis-testing",
+        "permutation-test",
+        "p-value",
+        "shuffling"
+      ],
+      "entryPoint": "fisher_yates(items, rng); permutation_test(x, y, n_perm=5000, seed=0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "NP-01",
+      "slug": "array-info",
+      "title": "Create an Array and Inspect It",
+      "topicSlug": "numpy",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-20"
+      ],
+      "tags": [
+        "ndarray",
+        "dtype",
+        "shape"
+      ],
+      "entryPoint": "to_array(rows, dtype=float); describe(a)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-02",
+      "slug": "vectorized-math",
+      "title": "Vectorised Arithmetic and ufuncs",
+      "topicSlug": "numpy",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NP-01",
+        "MA-03"
+      ],
+      "tags": [
+        "vectorisation",
+        "ufuncs",
+        "elementwise",
+        "allclose"
+      ],
+      "entryPoint": "dot_loop(a, b); dot_vectorized(a, b); fahrenheit(celsius); rms(x); sigmoid(x)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-03",
+      "slug": "slicing-subgrid",
+      "title": "Slicing a Sub-grid",
+      "topicSlug": "numpy",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NP-01"
+      ],
+      "tags": [
+        "slicing",
+        "views",
+        "copies",
+        "indexing"
+      ],
+      "entryPoint": "crop(a, top, left, h, w); every_other(a); border_sum(a)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-04",
+      "slug": "boolean-mask",
+      "title": "Boolean Masks",
+      "topicSlug": "numpy",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NP-03"
+      ],
+      "tags": [
+        "boolean-indexing",
+        "masks",
+        "np.where",
+        "vectorisation"
+      ],
+      "entryPoint": "in_range(a, lo, hi); count_above(a, t); cap(a, t)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-05",
+      "slug": "axis-aggregations",
+      "title": "Aggregations Along Axes",
+      "topicSlug": "numpy",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NP-02"
+      ],
+      "tags": [
+        "aggregation",
+        "axis",
+        "argmax",
+        "keepdims"
+      ],
+      "entryPoint": "summarize(X)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-06",
+      "slug": "matmul-dot",
+      "title": "Matrix Products with @",
+      "topicSlug": "numpy",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NP-05",
+        "MA-06"
+      ],
+      "tags": [
+        "matmul",
+        "matrix-multiplication",
+        "shapes",
+        "linear-algebra"
+      ],
+      "entryPoint": "matmul_loops(A, B); matmul(A, B); batch_scores(X, w, b); gram(X)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-07",
+      "slug": "broadcast-center",
+      "title": "Centering Columns with Broadcasting",
+      "topicSlug": "numpy",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NP-05",
+        "ST-05"
+      ],
+      "tags": [
+        "broadcasting",
+        "standardization",
+        "shapes"
+      ],
+      "entryPoint": "center_columns(X); scale_rows(X, w); standardize(X)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-08",
+      "slug": "reshape-stack",
+      "title": "Reshape and Stack",
+      "topicSlug": "numpy",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NP-03"
+      ],
+      "tags": [
+        "reshape",
+        "stack",
+        "concatenate",
+        "batching"
+      ],
+      "entryPoint": "to_batches(x, batch_size); add_bias_column(X); flatten_images(imgs)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-09",
+      "slug": "fancy-indexing",
+      "title": "Fancy Indexing and Gather",
+      "topicSlug": "numpy",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NP-04",
+        "NP-05"
+      ],
+      "tags": [
+        "fancy-indexing",
+        "argsort",
+        "gather",
+        "top-k"
+      ],
+      "entryPoint": "gather_rows(X, idx); pick_per_row(P, cols); top_k(v, k)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-10",
+      "slug": "seeded-generator",
+      "title": "Seeded Random Generators",
+      "topicSlug": "numpy",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NP-09",
+        "ST-10"
+      ],
+      "tags": [
+        "random",
+        "reproducibility",
+        "synthetic-data",
+        "Generator"
+      ],
+      "entryPoint": "make_regression(n, seed, noise=0.1); split_indices(n, test_frac, seed)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-11",
+      "slug": "pairwise-distances",
+      "title": "Vectorized Pairwise Distances",
+      "topicSlug": "numpy",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NP-07",
+        "NP-06"
+      ],
+      "tags": [
+        "distances",
+        "broadcasting",
+        "vectorisation",
+        "nearest-neighbour"
+      ],
+      "entryPoint": "pairwise_sq_dists(A, B); nearest(A, B)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-12",
+      "slug": "linalg-solve",
+      "title": "Solve Linear Systems Safely",
+      "topicSlug": "numpy",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NP-06",
+        "MA-08"
+      ],
+      "tags": [
+        "linear-algebra",
+        "conditioning",
+        "least-squares"
+      ],
+      "entryPoint": "solve(A, b, max_cond=1e12); residual_norm(A, x, b); fit_line(x, y)",
+      "testCount": 10,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-13",
+      "slug": "one-hot",
+      "title": "One-Hot Encoding",
+      "topicSlug": "numpy",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NP-09"
+      ],
+      "tags": [
+        "one-hot",
+        "encoding",
+        "labels",
+        "fancy-indexing"
+      ],
+      "entryPoint": "one_hot(labels, num_classes=None); from_one_hot(Y)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NP-14",
+      "slug": "moving-average",
+      "title": "Moving Average with cumsum",
+      "topicSlug": "numpy",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NP-08"
+      ],
+      "tags": [
+        "cumsum",
+        "convolution",
+        "sliding-window",
+        "time-series"
+      ],
+      "entryPoint": "moving_average(x, w); windows(x, w)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-01",
+      "slug": "series-basics",
+      "title": "Series: Labelled Columns",
+      "topicSlug": "pandas",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NP-04"
+      ],
+      "tags": [
+        "series",
+        "index",
+        "alignment",
+        "value-counts"
+      ],
+      "entryPoint": "make_series(data); add_aligned(a, b); above_mean(s); top_labels(s, k); count_values(items)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-02",
+      "slug": "dataframe-basics",
+      "title": "Build and Describe a DataFrame",
+      "topicSlug": "pandas",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PD-01"
+      ],
+      "tags": [
+        "dataframe",
+        "dtypes",
+        "inspection"
+      ],
+      "entryPoint": "make_df(data); describe_df(df)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-03",
+      "slug": "read-csv-io",
+      "title": "Reading and Writing CSV",
+      "topicSlug": "pandas",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PD-02",
+        "PY-23"
+      ],
+      "tags": [
+        "read-csv",
+        "io",
+        "dtypes",
+        "csv"
+      ],
+      "entryPoint": "parse_manual(text); parse_pandas(text); numeric_means(df); to_csv_text(df)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-04",
+      "slug": "select-filter",
+      "title": "Select and Filter Rows",
+      "topicSlug": "pandas",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PD-03"
+      ],
+      "tags": [
+        "filtering",
+        "loc",
+        "isin",
+        "boolean-indexing"
+      ],
+      "entryPoint": "filter_students(df, min_score, cities, cols)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-05",
+      "slug": "derived-columns",
+      "title": "Derived Columns",
+      "topicSlug": "pandas",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PD-04"
+      ],
+      "tags": [
+        "feature-engineering",
+        "assign",
+        "missing-values"
+      ],
+      "entryPoint": "add_features(df)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-06",
+      "slug": "missing-values",
+      "title": "Finding and Handling Missing Values",
+      "topicSlug": "pandas",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PD-05"
+      ],
+      "tags": [
+        "missing-values",
+        "isna",
+        "dropna",
+        "fillna",
+        "nan"
+      ],
+      "entryPoint": "missing_report(df); drop_incomplete(df, cols); fill_defaults(df, defaults); mean_skipping_missing(values)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-07",
+      "slug": "sort-rank",
+      "title": "Sort and Rank",
+      "topicSlug": "pandas",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PD-06"
+      ],
+      "tags": [
+        "sorting",
+        "ranking",
+        "ties"
+      ],
+      "entryPoint": "leaderboard(df, n=None)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-08",
+      "slug": "groupby-agg",
+      "title": "Group-by Aggregation",
+      "topicSlug": "pandas",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PD-07",
+        "PY-18"
+      ],
+      "tags": [
+        "groupby",
+        "aggregation",
+        "split-apply-combine"
+      ],
+      "entryPoint": "category_summary(df)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-09",
+      "slug": "fill-missing-group",
+      "title": "Fill Missing Values by Group",
+      "topicSlug": "pandas",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PD-08"
+      ],
+      "tags": [
+        "missing-values",
+        "imputation",
+        "transform",
+        "groupby"
+      ],
+      "entryPoint": "impute_group_mean(df, group, col)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-10",
+      "slug": "merge-tables",
+      "title": "Merging Tables",
+      "topicSlug": "pandas",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PD-08"
+      ],
+      "tags": [
+        "merge",
+        "join",
+        "relational-data"
+      ],
+      "entryPoint": "orders_with_customers(orders, customers); spend_per_customer(orders, customers)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-11",
+      "slug": "string-cleaning",
+      "title": "Cleaning Text Columns",
+      "topicSlug": "pandas",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PD-06"
+      ],
+      "tags": [
+        "strings",
+        "regex",
+        "data-cleaning",
+        "str-accessor"
+      ],
+      "entryPoint": "clean_contacts(df)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-12",
+      "slug": "datetime-basics",
+      "title": "Working with Dates",
+      "topicSlug": "pandas",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "PD-11"
+      ],
+      "tags": [
+        "datetime",
+        "to-datetime",
+        "dt-accessor",
+        "timedelta"
+      ],
+      "entryPoint": "days_between_manual(start, end); parse_dates(df, col); add_date_parts(df, col); add_duration(df, start, end); in_month(df, col, year, month)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-13",
+      "slug": "resample-weekly",
+      "title": "Weekly Resampling",
+      "topicSlug": "pandas",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PD-12",
+        "PD-08"
+      ],
+      "tags": [
+        "time-series",
+        "resample",
+        "datetime"
+      ],
+      "entryPoint": "weekly_summary(df)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-14",
+      "slug": "pivot-table",
+      "title": "Pivot Tables",
+      "topicSlug": "pandas",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PD-08"
+      ],
+      "tags": [
+        "pivot",
+        "melt",
+        "reshaping",
+        "tidy-data"
+      ],
+      "entryPoint": "sales_pivot(df); to_long(wide)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-15",
+      "slug": "binning-cut",
+      "title": "Binning with pd.cut",
+      "topicSlug": "pandas",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PD-08",
+        "ST-04"
+      ],
+      "tags": [
+        "binning",
+        "categorical",
+        "pd.cut",
+        "discretisation"
+      ],
+      "entryPoint": "age_groups(ages); group_counts(ages)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "PD-16",
+      "slug": "rolling-features",
+      "title": "Rolling-Window Features",
+      "topicSlug": "pandas",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "PD-13",
+        "NP-14"
+      ],
+      "tags": [
+        "rolling",
+        "lag-features",
+        "leakage",
+        "groupby-transform"
+      ],
+      "entryPoint": "add_history_features(df, window=3)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-01",
+      "slug": "http-requests",
+      "title": "Anatomy of an HTTP Request",
+      "topicSlug": "fastapi",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-23"
+      ],
+      "tags": [
+        "http",
+        "requests",
+        "headers",
+        "methods",
+        "parsing"
+      ],
+      "entryPoint": "parse_request(raw); build_request(method, target, headers=None, body=''); is_safe(method); is_idempotent(method)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-02",
+      "slug": "http-responses",
+      "title": "HTTP Responses and Status Codes",
+      "topicSlug": "fastapi",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "FA-01"
+      ],
+      "tags": [
+        "http",
+        "responses",
+        "status-codes",
+        "content-type"
+      ],
+      "entryPoint": "status_class(code); reason(code); build_response(status, body='', content_type='text/plain; charset=utf-8'); parse_response(raw)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-03",
+      "slug": "urls-query",
+      "title": "URLs, Paths and Query Strings",
+      "topicSlug": "fastapi",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "FA-02"
+      ],
+      "tags": [
+        "urls",
+        "query-strings",
+        "percent-encoding",
+        "parsing"
+      ],
+      "entryPoint": "split_url(url); percent_decode(text, plus_as_space=True); parse_query(qs); build_query(params)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-04",
+      "slug": "json-bodies",
+      "title": "JSON Request Bodies and Validation",
+      "topicSlug": "fastapi",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FA-03"
+      ],
+      "tags": [
+        "json",
+        "validation",
+        "content-type",
+        "error-format"
+      ],
+      "entryPoint": "read_json(headers, body); validate_item(data); json_response(status, payload)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-05",
+      "slug": "manual-router",
+      "title": "A Router by Hand",
+      "topicSlug": "fastapi",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FA-04"
+      ],
+      "tags": [
+        "routing",
+        "path-parameters",
+        "decorators",
+        "http-status"
+      ],
+      "entryPoint": "class Router; Router.route(method, pattern); Router.dispatch(method, path, query=None)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-06",
+      "slug": "asyncio-basics",
+      "title": "async and await with asyncio",
+      "topicSlug": "fastapi",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FA-05"
+      ],
+      "tags": [
+        "asyncio",
+        "async-await",
+        "concurrency",
+        "timeouts",
+        "semaphore"
+      ],
+      "entryPoint": "run_in_order(log); run_together(log); gather_in_order(values); limited(factories, limit); with_timeout(coro, seconds)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-07",
+      "slug": "asgi-app",
+      "title": "A Minimal ASGI Application",
+      "topicSlug": "fastapi",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FA-06"
+      ],
+      "tags": [
+        "asgi",
+        "async",
+        "http",
+        "test-client",
+        "frameworks"
+      ],
+      "entryPoint": "async app(scope, receive, send); call_asgi(app, method, path, query_string=b'', body=b'', headers=None)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-08",
+      "slug": "fastapi-routes",
+      "title": "First FastAPI Routes",
+      "topicSlug": "fastapi",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FA-07"
+      ],
+      "tags": [
+        "fastapi",
+        "routing",
+        "path-parameters",
+        "testclient",
+        "openapi"
+      ],
+      "entryPoint": "app (FastAPI); route_table(app)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-09",
+      "slug": "fastapi-params",
+      "title": "Query and Path Parameters with Validation",
+      "topicSlug": "fastapi",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FA-08"
+      ],
+      "tags": [
+        "fastapi",
+        "query-parameters",
+        "validation",
+        "annotated",
+        "enum"
+      ],
+      "entryPoint": "app (FastAPI) with GET /books, /books/by-year/{year}, /books/tagged",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-10",
+      "slug": "pydantic-bodies",
+      "title": "Request Bodies with Pydantic",
+      "topicSlug": "fastapi",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FA-09",
+        "FA-04"
+      ],
+      "tags": [
+        "pydantic",
+        "request-body",
+        "validation",
+        "basemodel",
+        "fastapi"
+      ],
+      "entryPoint": "class Item(BaseModel); parse_item(data); app with POST /items",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-11",
+      "slug": "fastapi-errors",
+      "title": "Handling Errors in FastAPI",
+      "topicSlug": "fastapi",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FA-10"
+      ],
+      "tags": [
+        "fastapi",
+        "errors",
+        "httpexception",
+        "exception-handlers",
+        "app-factory"
+      ],
+      "entryPoint": "class OutOfStock(Exception); create_app()",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-12",
+      "slug": "response-models",
+      "title": "Response Models and Status Codes",
+      "topicSlug": "fastapi",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FA-11"
+      ],
+      "tags": [
+        "fastapi",
+        "response-model",
+        "status-codes",
+        "crud",
+        "security"
+      ],
+      "entryPoint": "class UserIn; class UserOut; create_app()",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-13",
+      "slug": "fastapi-dependencies",
+      "title": "Dependencies and Dependency Overrides",
+      "topicSlug": "fastapi",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FA-12"
+      ],
+      "tags": [
+        "fastapi",
+        "dependency-injection",
+        "authentication",
+        "testing",
+        "overrides"
+      ],
+      "entryPoint": "class NoteStore; get_store(); current_user(); pagination(); request_log(); create_app()",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-14",
+      "slug": "fastapi-async",
+      "title": "Async Endpoints and External Services",
+      "topicSlug": "fastapi",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FA-13",
+        "FA-06"
+      ],
+      "tags": [
+        "fastapi",
+        "async",
+        "timeouts",
+        "mocking",
+        "concurrency"
+      ],
+      "entryPoint": "class WeatherService; get_weather(); get_settings(); create_app()",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FA-15",
+      "slug": "api-testing",
+      "title": "Testing an API",
+      "topicSlug": "fastapi",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FA-14",
+        "PY-27"
+      ],
+      "tags": [
+        "testing",
+        "api-testing",
+        "testclient",
+        "mutation-testing",
+        "fastapi"
+      ],
+      "entryPoint": "class ApiTests(unittest.TestCase) using self.make_app()",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-01",
+      "slug": "ml-baselines",
+      "title": "Features, Labels and Baseline Models",
+      "topicSlug": "machine-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NP-05"
+      ],
+      "tags": [
+        "supervised-learning",
+        "features",
+        "labels",
+        "baselines",
+        "fit-predict"
+      ],
+      "entryPoint": "class MeanRegressor; class MajorityClassifier; mse(y_true, y_pred); accuracy(y_true, y_pred)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-02",
+      "slug": "sklearn-estimator-api",
+      "title": "The scikit-learn Estimator API",
+      "topicSlug": "machine-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-01"
+      ],
+      "tags": [
+        "scikit-learn",
+        "estimator-api",
+        "regression-metrics",
+        "baselines"
+      ],
+      "entryPoint": "evaluate_regressor(model, X_train, y_train, X_test, y_test)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-03",
+      "slug": "regression-metrics",
+      "title": "Regression Metrics",
+      "topicSlug": "machine-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-01"
+      ],
+      "tags": [
+        "metrics",
+        "mse",
+        "mae",
+        "r2",
+        "evaluation"
+      ],
+      "entryPoint": "regression_report(y_true, y_pred)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ML-04",
+      "slug": "sklearn-train-test-split",
+      "title": "Splitting Data with scikit-learn",
+      "topicSlug": "machine-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-02"
+      ],
+      "tags": [
+        "scikit-learn",
+        "train-test-split",
+        "stratification",
+        "reproducibility"
+      ],
+      "entryPoint": "split_data(X, y, test_size=0.25, seed=0, stratify=False)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-05",
+      "slug": "train-test-split",
+      "title": "Seeded Train/Test Split",
+      "topicSlug": "machine-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-01",
+        "NP-10"
+      ],
+      "tags": [
+        "train-test-split",
+        "stratification",
+        "generalisation"
+      ],
+      "entryPoint": "train_test_split(X, y, test_size=0.25, seed=0, stratify=False)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ML-06",
+      "slug": "classification-metrics",
+      "title": "Confusion Matrix, Precision, Recall, F1",
+      "topicSlug": "machine-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-01"
+      ],
+      "tags": [
+        "metrics",
+        "confusion-matrix",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "entryPoint": "confusion_matrix(y_true, y_pred, n_classes); classification_report(y_true, y_pred, n_classes)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-07",
+      "slug": "sklearn-scaler-pipeline",
+      "title": "Scaling inside a Pipeline",
+      "topicSlug": "machine-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-04"
+      ],
+      "tags": [
+        "scikit-learn",
+        "pipeline",
+        "standardisation",
+        "data-leakage"
+      ],
+      "entryPoint": "train_and_predict(X_train, y_train, X_test)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-08",
+      "slug": "standard-scaler",
+      "title": "Standard Scaler (fit on train only)",
+      "topicSlug": "machine-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-05"
+      ],
+      "tags": [
+        "preprocessing",
+        "standardization",
+        "leakage",
+        "classes"
+      ],
+      "entryPoint": "class StandardScaler: fit, transform, fit_transform, inverse_transform",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ML-09",
+      "slug": "least-squares-line",
+      "title": "Least-Squares Line",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-02",
+        "ST-11"
+      ],
+      "tags": [
+        "linear-regression",
+        "least-squares",
+        "closed-form"
+      ],
+      "entryPoint": "class SimpleLinearRegression: fit(x, y), predict(x), score(x, y)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-10",
+      "slug": "linreg-gradient-descent",
+      "title": "Linear Regression by Gradient Descent",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-09",
+        "MA-14"
+      ],
+      "tags": [
+        "gradient-descent",
+        "linear-regression",
+        "mse",
+        "vectorisation"
+      ],
+      "entryPoint": "mse_grad(X, y, w, b); fit_gd(X, y, lr=0.1, epochs=1000)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-11",
+      "slug": "logistic-regression",
+      "title": "Logistic Regression from Scratch",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-10",
+        "MA-03"
+      ],
+      "tags": [
+        "logistic-regression",
+        "log-loss",
+        "sigmoid",
+        "classification"
+      ],
+      "entryPoint": "sigmoid(z); log_loss(y, p); class LogisticRegression",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-12",
+      "slug": "sklearn-knn",
+      "title": "k-Nearest Neighbours with scikit-learn",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-07",
+        "ML-11"
+      ],
+      "tags": [
+        "scikit-learn",
+        "knn",
+        "hyperparameters",
+        "pipeline"
+      ],
+      "entryPoint": "knn_accuracy_by_k(X_train, y_train, X_test, y_test, ks)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-13",
+      "slug": "knn-classifier",
+      "title": "k-Nearest Neighbors Classifier by Hand",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-06",
+        "NP-11"
+      ],
+      "tags": [
+        "knn",
+        "instance-based-learning",
+        "distance",
+        "classification"
+      ],
+      "entryPoint": "knn_predict(X_train, y_train, X_test, k=3)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ML-14",
+      "slug": "sklearn-polynomial-validation",
+      "title": "Polynomial Features and Validation Curves",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-12",
+        "ML-10"
+      ],
+      "tags": [
+        "scikit-learn",
+        "overfitting",
+        "model-complexity",
+        "validation-curve"
+      ],
+      "entryPoint": "degree_curve(x, y, degrees, n_splits=5, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-15",
+      "slug": "polynomial-overfitting",
+      "title": "Polynomial Features and Overfitting by Hand",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-09",
+        "ML-05"
+      ],
+      "tags": [
+        "polynomial-regression",
+        "overfitting",
+        "underfitting",
+        "model-selection",
+        "bias-variance"
+      ],
+      "entryPoint": "poly_features(x, degree); fit_poly(x, y, degree); predict_poly(coef, x); errors_by_degree(x_tr, y_tr, x_te, y_te, degrees); best_degree(errors)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ML-16",
+      "slug": "sklearn-cross-validation",
+      "title": "Cross-Validation with scikit-learn",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-14"
+      ],
+      "tags": [
+        "scikit-learn",
+        "cross-validation",
+        "kfold",
+        "evaluation"
+      ],
+      "entryPoint": "cv_report(model, X, y, n_splits=5, seed=0, stratified=False, scoring=None)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-17",
+      "slug": "k-fold-cv",
+      "title": "k-Fold Cross-Validation by Hand",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-15"
+      ],
+      "tags": [
+        "cross-validation",
+        "model-selection",
+        "folds"
+      ],
+      "entryPoint": "kfold_indices(n, k, seed=None); cross_val_score(fit, score, X, y, k=5, seed=0)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ML-18",
+      "slug": "sklearn-column-transformer",
+      "title": "Pipelines and ColumnTransformer",
+      "topicSlug": "machine-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-16"
+      ],
+      "tags": [
+        "scikit-learn",
+        "pipeline",
+        "column-transformer",
+        "one-hot-encoding",
+        "imputation"
+      ],
+      "entryPoint": "build_model(numeric, categorical)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-19",
+      "slug": "sklearn-grid-search",
+      "title": "Regularisation and Hyperparameter Search",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-18"
+      ],
+      "tags": [
+        "scikit-learn",
+        "regularisation",
+        "ridge",
+        "grid-search",
+        "hyperparameters"
+      ],
+      "entryPoint": "tune_ridge(X, y, alphas, n_splits=5, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-20",
+      "slug": "ridge-regression",
+      "title": "Ridge Regression (Closed Form)",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-17",
+        "ML-08"
+      ],
+      "tags": [
+        "regularisation",
+        "ridge",
+        "l2",
+        "bias-variance"
+      ],
+      "entryPoint": "class Ridge(alpha=1.0): fit, predict",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ML-21",
+      "slug": "decision-stump-gini",
+      "title": "Decision Stump with Gini Impurity",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-06"
+      ],
+      "tags": [
+        "decision-trees",
+        "gini",
+        "splitting",
+        "greedy-search"
+      ],
+      "entryPoint": "gini(y); best_split(X, y)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-22",
+      "slug": "sklearn-trees-forests",
+      "title": "Decision Trees and Random Forests",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-21",
+        "ML-19"
+      ],
+      "tags": [
+        "scikit-learn",
+        "decision-trees",
+        "random-forest",
+        "ensembles",
+        "feature-importance"
+      ],
+      "entryPoint": "compare_tree_forest(X_train, y_train, X_test, y_test, max_depth=None, n_estimators=100, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-23",
+      "slug": "sklearn-gradient-boosting",
+      "title": "Gradient Boosting",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-22"
+      ],
+      "tags": [
+        "scikit-learn",
+        "gradient-boosting",
+        "ensembles",
+        "early-stopping",
+        "log-loss"
+      ],
+      "entryPoint": "boosting_curve(X_train, y_train, X_val, y_val, max_iter=100, learning_rate=0.1, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-24",
+      "slug": "sklearn-roc-pr",
+      "title": "Thresholds, ROC and Precision–Recall Curves",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-23",
+        "ML-06"
+      ],
+      "tags": [
+        "scikit-learn",
+        "roc-auc",
+        "precision-recall",
+        "thresholds",
+        "imbalanced-data"
+      ],
+      "entryPoint": "threshold_report(y_true, scores, min_recall)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-25",
+      "slug": "sklearn-kmeans",
+      "title": "k-Means and Silhouette Scores",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-24"
+      ],
+      "tags": [
+        "scikit-learn",
+        "clustering",
+        "kmeans",
+        "silhouette",
+        "unsupervised"
+      ],
+      "entryPoint": "choose_k(X, ks, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "ML-26",
+      "slug": "kmeans",
+      "title": "k-Means Clustering by Hand",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-13"
+      ],
+      "tags": [
+        "clustering",
+        "kmeans",
+        "unsupervised-learning",
+        "lloyd-algorithm"
+      ],
+      "entryPoint": "kmeans(X, init_centroids, max_iter=100, tol=1e-9)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "ML-27",
+      "slug": "ml-capstone",
+      "title": "Capstone: an End-to-End Tabular Model",
+      "topicSlug": "machine-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "ML-25",
+        "ML-18"
+      ],
+      "tags": [
+        "scikit-learn",
+        "end-to-end",
+        "pipeline",
+        "grid-search",
+        "evaluation"
+      ],
+      "entryPoint": "end_to_end(df, target, numeric, categorical, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-01",
+      "slug": "activations",
+      "title": "Activation Functions",
+      "topicSlug": "deep-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-11"
+      ],
+      "tags": [
+        "activations",
+        "relu",
+        "tanh",
+        "derivatives"
+      ],
+      "entryPoint": "relu, relu_grad, leaky_relu, leaky_relu_grad, tanh, tanh_grad",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-02",
+      "slug": "stable-softmax",
+      "title": "Numerically Stable Softmax",
+      "topicSlug": "deep-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "DL-01",
+        "MA-02"
+      ],
+      "tags": [
+        "softmax",
+        "numerical-stability",
+        "log-sum-exp"
+      ],
+      "entryPoint": "softmax(z, axis=-1); log_softmax(z, axis=-1)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-03",
+      "slug": "cross-entropy",
+      "title": "Cross-Entropy Loss",
+      "topicSlug": "deep-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "DL-02"
+      ],
+      "tags": [
+        "cross-entropy",
+        "loss-functions",
+        "softmax",
+        "gradients"
+      ],
+      "entryPoint": "cross_entropy(logits, labels); cross_entropy_grad(logits, labels)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-04",
+      "slug": "dense-forward",
+      "title": "Dense Layer Forward Pass",
+      "topicSlug": "deep-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "DL-01",
+        "NP-06"
+      ],
+      "tags": [
+        "dense-layer",
+        "fully-connected",
+        "initialisation",
+        "shapes"
+      ],
+      "entryPoint": "dense(X, W, b); n_params(layer_sizes); he_init(fan_in, fan_out, rng)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-05",
+      "slug": "torch-tensors",
+      "title": "PyTorch Tensors",
+      "topicSlug": "deep-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "DL-04"
+      ],
+      "tags": [
+        "pytorch",
+        "tensors",
+        "dtype",
+        "broadcasting"
+      ],
+      "entryPoint": "dense_relu(x, W, b)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-06",
+      "slug": "torch-mlp-module",
+      "title": "Models with nn.Module",
+      "topicSlug": "deep-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "DL-05"
+      ],
+      "tags": [
+        "pytorch",
+        "nn-module",
+        "mlp",
+        "parameters"
+      ],
+      "entryPoint": "class MLP(nn.Module); count_parameters(model)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-07",
+      "slug": "mlp-forward",
+      "title": "MLP Forward Pass",
+      "topicSlug": "deep-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "DL-04"
+      ],
+      "tags": [
+        "mlp",
+        "forward-pass",
+        "cache",
+        "neural-networks"
+      ],
+      "entryPoint": "mlp_forward(X, params); predict_classes(X, params)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "DL-08",
+      "slug": "scalar-autograd",
+      "title": "A Tiny Autograd Engine",
+      "topicSlug": "deep-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "DL-06",
+        "MA-11"
+      ],
+      "tags": [
+        "autograd",
+        "computational-graph",
+        "backpropagation",
+        "chain-rule",
+        "operator-overloading"
+      ],
+      "entryPoint": "class Value(data); Value.backward()",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-09",
+      "slug": "torch-autograd",
+      "title": "Autograd in PyTorch",
+      "topicSlug": "deep-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "DL-08",
+        "DL-06"
+      ],
+      "tags": [
+        "pytorch",
+        "autograd",
+        "backpropagation",
+        "gradients"
+      ],
+      "entryPoint": "neuron_gradients(x, w, b, target)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-10",
+      "slug": "neuron-backprop",
+      "title": "Backprop Through One Neuron",
+      "topicSlug": "deep-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "DL-08"
+      ],
+      "tags": [
+        "backpropagation",
+        "chain-rule",
+        "computational-graph"
+      ],
+      "entryPoint": "neuron_forward_backward(x, y, w, b)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-11",
+      "slug": "dense-backward",
+      "title": "Backpropagation Through a Dense Layer",
+      "topicSlug": "deep-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "DL-10"
+      ],
+      "tags": [
+        "backpropagation",
+        "dense-layer",
+        "relu",
+        "matrix-calculus",
+        "gradients"
+      ],
+      "entryPoint": "dense_backward(X, W, dY); relu_backward(Z, dA); mse_and_grad(Y_hat, Y); two_layer_grads(X, Y, params)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-12",
+      "slug": "torch-gradcheck",
+      "title": "Custom Gradients and gradcheck",
+      "topicSlug": "deep-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "DL-11",
+        "DL-09"
+      ],
+      "tags": [
+        "pytorch",
+        "autograd",
+        "gradient-checking",
+        "custom-function"
+      ],
+      "entryPoint": "class Softplus(torch.autograd.Function); passes_gradcheck(fn, shape, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-13",
+      "slug": "gradient-check",
+      "title": "Gradient Checking by Hand",
+      "topicSlug": "deep-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "DL-11",
+        "MA-14"
+      ],
+      "tags": [
+        "gradient-checking",
+        "debugging",
+        "finite-differences"
+      ],
+      "entryPoint": "relative_error(a, b); grad_check(f, grad, x, h=1e-5)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "DL-14",
+      "slug": "sgd-momentum",
+      "title": "SGD with Momentum",
+      "topicSlug": "deep-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "DL-11",
+        "MA-13"
+      ],
+      "tags": [
+        "optimisers",
+        "momentum",
+        "sgd"
+      ],
+      "entryPoint": "class Momentum(lr, beta): step(params, grads)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-15",
+      "slug": "torch-optimizers",
+      "title": "Optimisers in torch.optim",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-14",
+        "DL-12"
+      ],
+      "tags": [
+        "pytorch",
+        "optimisers",
+        "adam",
+        "sgd",
+        "weight-decay"
+      ],
+      "entryPoint": "minimise(name, start, lr, steps)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-16",
+      "slug": "adam-optimizer",
+      "title": "The Adam Optimiser",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-14"
+      ],
+      "tags": [
+        "optimisers",
+        "adam",
+        "adaptive-learning-rate",
+        "bias-correction"
+      ],
+      "entryPoint": "class Adam(lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8); Adam.step(params, grads)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "DL-17",
+      "slug": "torch-datasets",
+      "title": "Datasets and DataLoader",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-15"
+      ],
+      "tags": [
+        "pytorch",
+        "dataset",
+        "dataloader",
+        "mini-batches",
+        "reproducibility"
+      ],
+      "entryPoint": "class ArrayDataset(Dataset); make_loader(X, y, batch_size, shuffle=True, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-18",
+      "slug": "torch-training-loop",
+      "title": "A Full Training Loop",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-17"
+      ],
+      "tags": [
+        "pytorch",
+        "training-loop",
+        "cross-entropy",
+        "classification"
+      ],
+      "entryPoint": "train_classifier(X, y, n_hidden=16, epochs=100, lr=0.05, batch_size=16, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-19",
+      "slug": "train-xor-mlp",
+      "title": "Train an MLP on XOR",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-11",
+        "DL-14"
+      ],
+      "tags": [
+        "backpropagation",
+        "training-loop",
+        "xor",
+        "mlp"
+      ],
+      "entryPoint": "init_params(n_hidden, seed); forward_backward(X, y, params); train_xor(n_hidden=8, lr=1.0, epochs=3000, seed=0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "DL-20",
+      "slug": "torch-dropout",
+      "title": "Dropout with train() and eval()",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-18"
+      ],
+      "tags": [
+        "pytorch",
+        "dropout",
+        "regularisation",
+        "train-eval"
+      ],
+      "entryPoint": "class DropoutMLP(nn.Module); predict_proba(model, x)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-21",
+      "slug": "inverted-dropout",
+      "title": "Inverted Dropout",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-19",
+        "NP-10"
+      ],
+      "tags": [
+        "dropout",
+        "regularisation",
+        "train-eval-mode"
+      ],
+      "entryPoint": "dropout_forward(x, p, rng, training=True); dropout_backward(grad_out, mask, p)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "DL-22",
+      "slug": "torch-batchnorm",
+      "title": "Batch Normalisation with nn.BatchNorm1d",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-20"
+      ],
+      "tags": [
+        "pytorch",
+        "batch-normalisation",
+        "train-eval",
+        "normalisation"
+      ],
+      "entryPoint": "run_batchnorm(batches, x_eval, momentum=0.1)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-23",
+      "slug": "batchnorm-forward",
+      "title": "Batch Normalization by Hand (train/eval)",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-21"
+      ],
+      "tags": [
+        "batch-normalization",
+        "normalisation",
+        "running-statistics"
+      ],
+      "entryPoint": "class BatchNorm1d(n_features, momentum=0.1, eps=1e-5): forward(x, training=True)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "DL-24",
+      "slug": "torch-conv1d",
+      "title": "1-D Convolution with nn.Conv1d",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-22",
+        "NP-14"
+      ],
+      "tags": [
+        "pytorch",
+        "convolution",
+        "conv1d",
+        "signals"
+      ],
+      "entryPoint": "conv1d_layer(x, weight, bias=None, stride=1, padding=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-25",
+      "slug": "conv1d",
+      "title": "1D Convolution by Hand (valid, stride)",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-04",
+        "NP-14"
+      ],
+      "tags": [
+        "convolution",
+        "cnn",
+        "stride",
+        "padding"
+      ],
+      "entryPoint": "conv1d(x, kernel, stride=1, padding=0, bias=0.0); conv_output_length(n, k, stride, padding)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "DL-26",
+      "slug": "torch-save-load",
+      "title": "Saving, Loading and Reproducibility",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-24"
+      ],
+      "tags": [
+        "pytorch",
+        "checkpoints",
+        "state-dict",
+        "reproducibility"
+      ],
+      "entryPoint": "set_seed(seed); save_model(model, path); load_model(path, n_in, n_hidden, n_out)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "DL-27",
+      "slug": "torch-debugging",
+      "title": "Debugging Training",
+      "topicSlug": "deep-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "DL-26"
+      ],
+      "tags": [
+        "pytorch",
+        "debugging",
+        "gradient-clipping",
+        "learning-rate",
+        "training-dynamics"
+      ],
+      "entryPoint": "diagnose(losses); overfit_one_batch(model, X, y, steps=200, lr=0.01); train_with_clipping(model, X, y, lr, steps, max_norm=None)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-01",
+      "slug": "image-arrays",
+      "title": "Images as Arrays",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "DL-24"
+      ],
+      "tags": [
+        "images",
+        "uint8",
+        "dtype",
+        "channels",
+        "normalisation"
+      ],
+      "entryPoint": "image_info(img); adjust(img, brightness=0, contrast=1.0); to_float(img); to_uint8(x); channels_first(img); channels_last(x)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-02",
+      "slug": "rgb-to-gray",
+      "title": "RGB to Grayscale",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "CV-01"
+      ],
+      "tags": [
+        "images",
+        "grayscale",
+        "colour",
+        "dtype"
+      ],
+      "entryPoint": "rgb_to_gray(img); to_uint8(x)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-03",
+      "slug": "cv-opencv-basics",
+      "title": "OpenCV Basics: BGR, dtypes and Indexing",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "CV-02"
+      ],
+      "tags": [
+        "opencv",
+        "colour-spaces",
+        "bgr",
+        "image-arrays"
+      ],
+      "entryPoint": "to_rgb_and_gray(bgr); crop(image, x, y, w, h)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-04",
+      "slug": "cv-geometric-transforms",
+      "title": "Flips, Rotations and Affine Warps",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "CV-03"
+      ],
+      "tags": [
+        "opencv",
+        "geometric-transforms",
+        "affine",
+        "rotation"
+      ],
+      "entryPoint": "transform(image, op); rotate_about_centre(image, angle); translate(image, dx, dy)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-05",
+      "slug": "flip-rotate",
+      "title": "Flip and Rotate",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "CV-01"
+      ],
+      "tags": [
+        "geometric-transforms",
+        "augmentation",
+        "slicing"
+      ],
+      "entryPoint": "flip_horizontal(img); flip_vertical(img); rotate90_cw(img, k=1)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "CV-06",
+      "slug": "cv-threshold-otsu",
+      "title": "Thresholding and Otsu's Method",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "CV-04"
+      ],
+      "tags": [
+        "opencv",
+        "thresholding",
+        "otsu",
+        "segmentation"
+      ],
+      "entryPoint": "binarise(gray, threshold=None, invert=False)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-07",
+      "slug": "threshold-binary",
+      "title": "Binary Thresholding",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "CV-02"
+      ],
+      "tags": [
+        "thresholding",
+        "segmentation",
+        "masks"
+      ],
+      "entryPoint": "threshold(gray, t, invert=False); foreground_fraction(mask); apply_mask(img, mask)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "CV-08",
+      "slug": "cv-histograms",
+      "title": "Histograms and Equalisation",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "CV-06"
+      ],
+      "tags": [
+        "opencv",
+        "histograms",
+        "contrast",
+        "equalisation"
+      ],
+      "entryPoint": "histogram_and_equalise(gray, bins=256)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-09",
+      "slug": "intensity-histogram",
+      "title": "Intensity Histogram",
+      "topicSlug": "computer-vision",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "CV-02",
+        "ST-04"
+      ],
+      "tags": [
+        "histograms",
+        "contrast",
+        "equalisation",
+        "cdf"
+      ],
+      "entryPoint": "histogram256(gray); cdf(hist); equalize(gray)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "CV-10",
+      "slug": "conv2d-filter",
+      "title": "2D Filtering (Blur)",
+      "topicSlug": "computer-vision",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-02",
+        "DL-24"
+      ],
+      "tags": [
+        "filtering",
+        "convolution",
+        "blur",
+        "kernels",
+        "padding"
+      ],
+      "entryPoint": "filter2d(img, kernel, mode='zero'); box_kernel(k); gaussian_kernel(k, sigma)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-11",
+      "slug": "cv-sobel-canny",
+      "title": "Edges with Sobel and Canny",
+      "topicSlug": "computer-vision",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-10",
+        "CV-08"
+      ],
+      "tags": [
+        "opencv",
+        "edge-detection",
+        "sobel",
+        "canny",
+        "gradients"
+      ],
+      "entryPoint": "edges(gray, low, high, blur_ksize=5)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-12",
+      "slug": "sobel-edges",
+      "title": "Sobel Edge Magnitude",
+      "topicSlug": "computer-vision",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-10"
+      ],
+      "tags": [
+        "edge-detection",
+        "sobel",
+        "gradients"
+      ],
+      "entryPoint": "sobel(gray); edges(gray, t)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "CV-13",
+      "slug": "cv-pooling-torch",
+      "title": "Pooling with nn.MaxPool2d and nn.AvgPool2d",
+      "topicSlug": "computer-vision",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-11",
+        "DL-24"
+      ],
+      "tags": [
+        "pytorch",
+        "pooling",
+        "downsampling",
+        "cnn"
+      ],
+      "entryPoint": "pool(x, kind, kernel_size, stride=None, padding=0); pooled_size(n, kernel_size, stride=None, padding=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-14",
+      "slug": "max-pool-2d",
+      "title": "2D Max Pooling",
+      "topicSlug": "computer-vision",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-10"
+      ],
+      "tags": [
+        "pooling",
+        "downsampling",
+        "cnn"
+      ],
+      "entryPoint": "pool2d(x, size=2, stride=None, mode='max')",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "CV-15",
+      "slug": "conv2d-layer",
+      "title": "A Convolution Layer with Channels",
+      "topicSlug": "computer-vision",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-13",
+        "CV-10"
+      ],
+      "tags": [
+        "cnn",
+        "convolution",
+        "channels",
+        "padding",
+        "stride"
+      ],
+      "entryPoint": "conv_output_size(n, k, padding, stride); conv2d(x, weight, bias, stride=1, padding=0); conv_params(c_in, c_out, k)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-16",
+      "slug": "cv-psnr",
+      "title": "Image Quality: MSE and PSNR",
+      "topicSlug": "computer-vision",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-15",
+        "CV-13"
+      ],
+      "tags": [
+        "opencv",
+        "image-quality",
+        "psnr",
+        "mse"
+      ],
+      "entryPoint": "image_quality(reference, distorted)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-17",
+      "slug": "psnr",
+      "title": "MSE and PSNR by Hand",
+      "topicSlug": "computer-vision",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-01",
+        "ML-02"
+      ],
+      "tags": [
+        "image-quality",
+        "psnr",
+        "mse",
+        "metrics"
+      ],
+      "entryPoint": "mse(a, b); psnr(a, b, max_val=255.0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "CV-18",
+      "slug": "cv-resize",
+      "title": "Resizing with cv2.resize",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-16"
+      ],
+      "tags": [
+        "opencv",
+        "resizing",
+        "interpolation",
+        "image-pyramids"
+      ],
+      "entryPoint": "resize(image, width, height, method=\"linear\")",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-19",
+      "slug": "bilinear-resize",
+      "title": "Bilinear Resize",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-05",
+        "NP-09"
+      ],
+      "tags": [
+        "resizing",
+        "interpolation",
+        "bilinear",
+        "image-transforms"
+      ],
+      "entryPoint": "resize_bilinear(img, out_h, out_w)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "CV-20",
+      "slug": "cv-contours",
+      "title": "Contours and Bounding Boxes",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-18"
+      ],
+      "tags": [
+        "opencv",
+        "contours",
+        "bounding-boxes",
+        "shape-analysis"
+      ],
+      "entryPoint": "find_objects(mask, min_area=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-21",
+      "slug": "cv-small-cnn",
+      "title": "A Small CNN in PyTorch",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-20",
+        "DL-18"
+      ],
+      "tags": [
+        "pytorch",
+        "cnn",
+        "image-classification",
+        "conv2d"
+      ],
+      "entryPoint": "class SmallCNN(nn.Module); train_cnn(images, labels, epochs=8, lr=0.01, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-22",
+      "slug": "cv-augmentation",
+      "title": "Data Augmentation",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-21"
+      ],
+      "tags": [
+        "opencv",
+        "data-augmentation",
+        "regularisation",
+        "image-classification"
+      ],
+      "entryPoint": "augment(image, rng, max_shift=2); augment_batch(images, seed=0, max_shift=2)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-23",
+      "slug": "iou",
+      "title": "Intersection over Union",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-01",
+        "NP-07"
+      ],
+      "tags": [
+        "object-detection",
+        "iou",
+        "bounding-boxes",
+        "broadcasting"
+      ],
+      "entryPoint": "box_area(boxes); iou_matrix(A, B)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-24",
+      "slug": "non-max-suppression",
+      "title": "Non-Maximum Suppression",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-23"
+      ],
+      "tags": [
+        "object-detection",
+        "nms",
+        "greedy-algorithms"
+      ],
+      "entryPoint": "nms(boxes, scores, iou_threshold=0.5, score_threshold=0.0)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-25",
+      "slug": "cv-connected-components",
+      "title": "Connected Components with OpenCV",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-24"
+      ],
+      "tags": [
+        "opencv",
+        "connected-components",
+        "segmentation",
+        "counting"
+      ],
+      "entryPoint": "label_objects(mask, connectivity=8, min_area=1)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "CV-26",
+      "slug": "connected-components",
+      "title": "Connected Components Labeling by Hand",
+      "topicSlug": "computer-vision",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "CV-07"
+      ],
+      "tags": [
+        "segmentation",
+        "connected-components",
+        "bfs",
+        "graphs"
+      ],
+      "entryPoint": "label_components(mask, connectivity=4)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "NL-01",
+      "slug": "regex-text",
+      "title": "Regular Expressions for Text",
+      "topicSlug": "nlp",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-16"
+      ],
+      "tags": [
+        "regex",
+        "pattern-matching",
+        "text-cleaning",
+        "parsing"
+      ],
+      "entryPoint": "collapse_spaces_manual(text); collapse_spaces(text); mask_digits(text); find_numbers(text); find_hashtags(text); parse_log(line)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-02",
+      "slug": "tokenize-normalize",
+      "title": "Tokenize and Normalize",
+      "topicSlug": "nlp",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NL-01"
+      ],
+      "tags": [
+        "tokenization",
+        "normalization",
+        "regex",
+        "unicode"
+      ],
+      "entryPoint": "normalize(text); tokenize(text)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-03",
+      "slug": "nlp-countvectorizer",
+      "title": "Counting Words with Counter and CountVectorizer",
+      "topicSlug": "nlp",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NL-02",
+        "ML-02"
+      ],
+      "tags": [
+        "scikit-learn",
+        "word-counts",
+        "stop-words",
+        "vectorisation"
+      ],
+      "entryPoint": "top_words(texts, k, stop_words=()); count_matrix(texts, stop_words=None, min_df=1)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-04",
+      "slug": "stopword-counts",
+      "title": "Stopwords and Word Counts",
+      "topicSlug": "nlp",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NL-02"
+      ],
+      "tags": [
+        "stopwords",
+        "word-frequency",
+        "counter"
+      ],
+      "entryPoint": "remove_stopwords(tokens, stopwords); top_words(tokens, n, stopwords=())",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "NL-05",
+      "slug": "nlp-char-ngrams-sklearn",
+      "title": "Character n-grams with CountVectorizer",
+      "topicSlug": "nlp",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NL-03"
+      ],
+      "tags": [
+        "scikit-learn",
+        "character-ngrams",
+        "fuzzy-matching",
+        "cosine-similarity"
+      ],
+      "entryPoint": "char_ngrams(texts, n_min=2, n_max=3); char_similarity(a, b, n=3)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-06",
+      "slug": "char-ngrams",
+      "title": "Character n-grams by Hand",
+      "topicSlug": "nlp",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NL-02"
+      ],
+      "tags": [
+        "char-ngrams",
+        "subwords",
+        "jaccard"
+      ],
+      "entryPoint": "char_ngrams(word, n_min=3, n_max=3); jaccard(a, b, n=3)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "NL-07",
+      "slug": "bag-of-words",
+      "title": "Bag-of-Words Vectors",
+      "topicSlug": "nlp",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NL-03"
+      ],
+      "tags": [
+        "bag-of-words",
+        "vocabulary",
+        "vectorization",
+        "oov"
+      ],
+      "entryPoint": "build_vocab(docs, min_count=1); vectorize(docs, vocab)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-08",
+      "slug": "bigram-counts",
+      "title": "Bigram Counts with Sentence Markers",
+      "topicSlug": "nlp",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NL-04"
+      ],
+      "tags": [
+        "n-grams",
+        "bigrams",
+        "language-models",
+        "mle"
+      ],
+      "entryPoint": "bigram_counts(sentences); bigram_prob(w_prev, w, counts)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "NL-09",
+      "slug": "tf-idf",
+      "title": "TF-IDF",
+      "topicSlug": "nlp",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NL-07"
+      ],
+      "tags": [
+        "tf-idf",
+        "information-retrieval",
+        "weighting",
+        "normalisation"
+      ],
+      "entryPoint": "tfidf(counts)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-10",
+      "slug": "nlp-tfidf-retrieval",
+      "title": "Search with TfidfVectorizer and Cosine Similarity",
+      "topicSlug": "nlp",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NL-09"
+      ],
+      "tags": [
+        "scikit-learn",
+        "tf-idf",
+        "information-retrieval",
+        "search"
+      ],
+      "entryPoint": "build_index(docs); search(index, query, k=3)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-11",
+      "slug": "cosine-retrieval",
+      "title": "Cosine Similarity Retrieval",
+      "topicSlug": "nlp",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NL-09"
+      ],
+      "tags": [
+        "cosine-similarity",
+        "retrieval",
+        "ranking",
+        "search"
+      ],
+      "entryPoint": "cosine_matrix(A, B); search(query_vec, doc_matrix, k)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "NL-12",
+      "slug": "levenshtein",
+      "title": "Levenshtein Edit Distance",
+      "topicSlug": "nlp",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "NL-05"
+      ],
+      "tags": [
+        "edit-distance",
+        "dynamic-programming",
+        "spelling-correction"
+      ],
+      "entryPoint": "levenshtein(a, b); suggest(word, vocab, max_dist=2)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-13",
+      "slug": "suffix-stemmer",
+      "title": "Rule-Based Suffix Stemmer",
+      "topicSlug": "nlp",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NL-02"
+      ],
+      "tags": [
+        "stemming",
+        "porter-stemmer",
+        "morphology",
+        "rules"
+      ],
+      "entryPoint": "measure(stem); step1ab(word)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "NL-14",
+      "slug": "naive-bayes-text",
+      "title": "Multinomial Naive Bayes Text Classifier",
+      "topicSlug": "nlp",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NL-07",
+        "ST-07"
+      ],
+      "tags": [
+        "naive-bayes",
+        "text-classification",
+        "laplace-smoothing",
+        "log-probabilities"
+      ],
+      "entryPoint": "class MultinomialNB(alpha=1.0): fit(X, y), predict_log_proba(X), predict(X)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-15",
+      "slug": "nlp-text-classifier",
+      "title": "A Text Classification Pipeline",
+      "topicSlug": "nlp",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NL-14",
+        "NL-10"
+      ],
+      "tags": [
+        "scikit-learn",
+        "text-classification",
+        "sentiment-analysis",
+        "tf-idf",
+        "logistic-regression"
+      ],
+      "entryPoint": "train_text_classifier(texts, labels, C=1.0); top_features(pipe, n=5)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-16",
+      "slug": "nlp-error-analysis",
+      "title": "Evaluating Text Classifiers",
+      "topicSlug": "nlp",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NL-15"
+      ],
+      "tags": [
+        "scikit-learn",
+        "evaluation",
+        "error-analysis",
+        "confusion-matrix",
+        "f1"
+      ],
+      "entryPoint": "error_report(texts, y_true, y_pred, labels)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-17",
+      "slug": "ppmi-matrix",
+      "title": "PPMI Co-occurrence Matrix",
+      "topicSlug": "nlp",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NL-07",
+        "NL-09"
+      ],
+      "tags": [
+        "co-occurrence",
+        "ppmi",
+        "distributional-semantics",
+        "word-vectors"
+      ],
+      "entryPoint": "cooccurrence(sentences, vocab, window=2); ppmi(C)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-18",
+      "slug": "embedding-analogy",
+      "title": "Word Embedding Analogies",
+      "topicSlug": "nlp",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NL-10",
+        "NL-17"
+      ],
+      "tags": [
+        "word-embeddings",
+        "analogies",
+        "cosine-similarity",
+        "vector-arithmetic"
+      ],
+      "entryPoint": "most_similar(word, emb, k=3); analogy(a, b, c, emb)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "NL-19",
+      "slug": "nlp-embedding-bag",
+      "title": "Word Embeddings in PyTorch",
+      "topicSlug": "nlp",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "NL-18",
+        "DL-18"
+      ],
+      "tags": [
+        "pytorch",
+        "embeddings",
+        "text-classification",
+        "embedding-bag"
+      ],
+      "entryPoint": "build_vocab(texts, min_count=1); encode(texts, vocab); class BagClassifier(nn.Module); train_bag(texts, labels, dim=16, epochs=30, lr=0.05, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-01",
+      "slug": "token-ids",
+      "title": "Vocabularies and Token IDs",
+      "topicSlug": "llms",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "NL-07"
+      ],
+      "tags": [
+        "tokenization",
+        "vocabulary",
+        "special-tokens",
+        "padding",
+        "attention-mask"
+      ],
+      "entryPoint": "build_vocab(texts, min_count=1); encode(text, vocab, add_special=True); decode(ids, vocab, skip_special=True); pad_batch(seqs, pad_id=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-02",
+      "slug": "bigram-next-token",
+      "title": "Next-Token Probabilities (Add-k)",
+      "topicSlug": "llms",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "LM-01",
+        "NL-02"
+      ],
+      "tags": [
+        "language-modeling",
+        "next-token",
+        "smoothing",
+        "n-grams"
+      ],
+      "entryPoint": "next_token_dist(bigrams, prev, vocab, k=1.0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-03",
+      "slug": "temperature-softmax",
+      "title": "Logits, Temperature and Softmax",
+      "topicSlug": "llms",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "LM-02",
+        "DL-02"
+      ],
+      "tags": [
+        "temperature",
+        "softmax",
+        "entropy",
+        "decoding"
+      ],
+      "entryPoint": "softmax_t(logits, T=1.0); entropy(p)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-04",
+      "slug": "greedy-decoding",
+      "title": "Greedy Decoding",
+      "topicSlug": "llms",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "LM-03"
+      ],
+      "tags": [
+        "decoding",
+        "greedy",
+        "autoregressive",
+        "generation"
+      ],
+      "entryPoint": "greedy_decode(next_logits, prompt, vocab, eos='</s>', max_new=20)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-05",
+      "slug": "perplexity",
+      "title": "Perplexity",
+      "topicSlug": "llms",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "LM-02",
+        "DL-03"
+      ],
+      "tags": [
+        "perplexity",
+        "evaluation",
+        "cross-entropy",
+        "language-modeling"
+      ],
+      "entryPoint": "avg_nll(token_probs); perplexity(token_probs)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-06",
+      "slug": "bpe-merges",
+      "title": "Byte-Pair Encoding Merges",
+      "topicSlug": "llms",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "LM-01"
+      ],
+      "tags": [
+        "bpe",
+        "subword-tokenization",
+        "tokenizers"
+      ],
+      "entryPoint": "learn_bpe(word_counts, num_merges); apply_bpe(word, merges)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-07",
+      "slug": "scaled-dot-attention",
+      "title": "Scaled Dot-Product Attention",
+      "topicSlug": "llms",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "LM-03",
+        "NP-06"
+      ],
+      "tags": [
+        "attention",
+        "transformers",
+        "softmax",
+        "queries-keys-values"
+      ],
+      "entryPoint": "attention(Q, K, V, mask=None)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-08",
+      "slug": "causal-mask",
+      "title": "Causal Masking",
+      "topicSlug": "llms",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "LM-07"
+      ],
+      "tags": [
+        "causal-mask",
+        "padding-mask",
+        "autoregressive",
+        "attention"
+      ],
+      "entryPoint": "causal_mask(T); padding_mask(lengths, T); combined_mask(lengths, T)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-09",
+      "slug": "positional-encoding",
+      "title": "Sinusoidal Positional Encoding",
+      "topicSlug": "llms",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "LM-07"
+      ],
+      "tags": [
+        "positional-encoding",
+        "transformers",
+        "sinusoids"
+      ],
+      "entryPoint": "positional_encoding(T, d)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-10",
+      "slug": "multi-head-attention",
+      "title": "Multi-Head Attention",
+      "topicSlug": "llms",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "LM-07",
+        "LM-08"
+      ],
+      "tags": [
+        "multi-head-attention",
+        "transformers",
+        "reshaping",
+        "self-attention"
+      ],
+      "entryPoint": "split_heads(X, h); merge_heads(Xh); multi_head_attention(X, Wq, Wk, Wv, Wo, h, causal=False)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-11",
+      "slug": "lm-transformer-module",
+      "title": "A Transformer Block as nn.Module",
+      "topicSlug": "llms",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "LM-10",
+        "DL-06"
+      ],
+      "tags": [
+        "pytorch",
+        "transformer",
+        "attention",
+        "layer-norm",
+        "residual-connections"
+      ],
+      "entryPoint": "class TransformerBlock(nn.Module)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-12",
+      "slug": "transformer-block",
+      "title": "A Pre-Norm Transformer Block by Hand",
+      "topicSlug": "llms",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "LM-10",
+        "LM-09"
+      ],
+      "tags": [
+        "transformer",
+        "layer-norm",
+        "residual-connections",
+        "feed-forward",
+        "pre-norm"
+      ],
+      "entryPoint": "layer_norm(x, gamma, beta, eps=1e-5); feed_forward(x, W1, b1, W2, b2); transformer_block(x, params, h)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "LM-13",
+      "slug": "top-k-top-p",
+      "title": "Top-k and Top-p Filtering",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-03"
+      ],
+      "tags": [
+        "sampling",
+        "top-k",
+        "top-p",
+        "nucleus-sampling",
+        "decoding"
+      ],
+      "entryPoint": "top_k_filter(p, k); top_p_filter(p, top_p); sample(p, u)",
+      "testCount": 10,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-14",
+      "slug": "beam-search",
+      "title": "Beam Search",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-04"
+      ],
+      "tags": [
+        "beam-search",
+        "decoding",
+        "log-probabilities",
+        "search"
+      ],
+      "entryPoint": "beam_search(next_logprobs, prompt, vocab, beam_width=2, max_new=5, eos='</s>')",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-15",
+      "slug": "kv-cache",
+      "title": "Incremental Decoding with a KV Cache",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-08",
+        "LM-10"
+      ],
+      "tags": [
+        "kv-cache",
+        "inference",
+        "efficiency",
+        "causal-attention"
+      ],
+      "entryPoint": "class KVCache(Wq, Wk, Wv): step(x_t); full_causal_attention(X, Wq, Wk, Wv)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-16",
+      "slug": "lm-tiny-gpt",
+      "title": "A Tiny GPT in PyTorch",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-15",
+        "LM-11"
+      ],
+      "tags": [
+        "pytorch",
+        "language-model",
+        "gpt",
+        "transformer",
+        "text-generation"
+      ],
+      "entryPoint": "class TinyGPT(nn.Module); train_tiny_gpt(text, context=16, steps=200, batch_size=32, lr=3e-3, seed=0); generate(model, stoi, itos, prompt, n_new)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-17",
+      "slug": "lm-chat-prompt-langchain",
+      "title": "Chat Prompts and Messages with LangChain",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-16"
+      ],
+      "tags": [
+        "langchain",
+        "prompts",
+        "chat-models",
+        "messages"
+      ],
+      "entryPoint": "make_tutor_prompt(); format_chat(prompt, subject, max_words, history, question); ask(prompt, model, subject, max_words, history, question)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-18",
+      "slug": "chat-prompt",
+      "title": "Chat Prompt Templates",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-01"
+      ],
+      "tags": [
+        "prompting",
+        "chat-templates",
+        "prompt-injection",
+        "templating"
+      ],
+      "entryPoint": "render_chat(messages, add_generation_prompt=True); parse_chat(text); fill_template(template, values); quote_document(doc)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "LM-19",
+      "slug": "lm-structured-output",
+      "title": "Structured Output with Pydantic and Retries",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-17"
+      ],
+      "tags": [
+        "langchain",
+        "structured-output",
+        "pydantic",
+        "output-parsing",
+        "retries"
+      ],
+      "entryPoint": "class Answer(BaseModel); build_messages(question, parser); ask_structured(model, question, max_retries=2)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-20",
+      "slug": "lm-langchain-rag",
+      "title": "Retrieval-Augmented Generation with LangChain",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-19",
+        "NL-10"
+      ],
+      "tags": [
+        "langchain",
+        "rag",
+        "retrieval",
+        "vector-store",
+        "citations"
+      ],
+      "entryPoint": "class KeywordEmbeddings(Embeddings); build_store(docs, vocabulary); rag_answer(store, model, question, k=2)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "LM-21",
+      "slug": "rag-pipeline",
+      "title": "Retrieval-Augmented Generation by Hand",
+      "topicSlug": "llms",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "LM-18",
+        "NL-11"
+      ],
+      "tags": [
+        "rag",
+        "retrieval",
+        "chunking",
+        "grounding",
+        "citations",
+        "tf-idf"
+      ],
+      "entryPoint": "chunk_words(text, size, overlap); retrieve(query, chunks, k); build_prompt(question, passages); answer(question, chunks, model, k=2)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "XA-01",
+      "slug": "linear-contributions",
+      "title": "Linear Model Contributions",
+      "topicSlug": "explainable-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-09"
+      ],
+      "tags": [
+        "feature-attribution",
+        "linear-models",
+        "baseline",
+        "local-explanation"
+      ],
+      "entryPoint": "contributions(w, b, x, baseline)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-02",
+      "slug": "top-k-attributions",
+      "title": "Ranking Attributions",
+      "topicSlug": "explainable-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "XA-01"
+      ],
+      "tags": [
+        "feature-attribution",
+        "ranking",
+        "explanations",
+        "reporting"
+      ],
+      "entryPoint": "top_attributions(names, phi, k=3)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-03",
+      "slug": "decision-path",
+      "title": "Tracing a Decision Path",
+      "topicSlug": "explainable-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-21"
+      ],
+      "tags": [
+        "decision-trees",
+        "interpretable-models",
+        "rules",
+        "intrinsic-explanations"
+      ],
+      "entryPoint": "predict_with_path(tree, x, feature_names)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-04",
+      "slug": "ice-curve",
+      "title": "Individual Conditional Expectation",
+      "topicSlug": "explainable-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "XA-01"
+      ],
+      "tags": [
+        "ice",
+        "model-agnostic",
+        "what-if",
+        "local-explanation"
+      ],
+      "entryPoint": "ice_curve(predict, x, feature, grid)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-05",
+      "slug": "xai-partial-dependence",
+      "title": "Partial Dependence with sklearn.inspection",
+      "topicSlug": "explainable-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "XA-04",
+        "ML-22"
+      ],
+      "tags": [
+        "scikit-learn",
+        "explainability",
+        "partial-dependence",
+        "ice"
+      ],
+      "entryPoint": "pd_curve(model, X, feature, grid_resolution=20, kind=\"average\")",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-06",
+      "slug": "partial-dependence",
+      "title": "Partial Dependence by Hand",
+      "topicSlug": "explainable-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "XA-04"
+      ],
+      "tags": [
+        "pdp",
+        "partial-dependence",
+        "global-explanation",
+        "model-agnostic"
+      ],
+      "entryPoint": "partial_dependence(predict, X, feature, grid); ice_spread(predict, X, feature, grid)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "XA-07",
+      "slug": "xai-permutation-importance",
+      "title": "Permutation Importance with sklearn.inspection",
+      "topicSlug": "explainable-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "XA-05"
+      ],
+      "tags": [
+        "scikit-learn",
+        "explainability",
+        "feature-importance",
+        "permutation-importance"
+      ],
+      "entryPoint": "importance_table(model, X, y, n_repeats=10, seed=0, scoring=None)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-08",
+      "slug": "permutation-importance",
+      "title": "Permutation Feature Importance by Hand",
+      "topicSlug": "explainable-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "XA-06",
+        "ML-02"
+      ],
+      "tags": [
+        "permutation-importance",
+        "global-explanation",
+        "model-agnostic"
+      ],
+      "entryPoint": "permutation_importance(predict, X, y, score, n_repeats=5, seed=0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "XA-09",
+      "slug": "occlusion-saliency",
+      "title": "Occlusion Saliency Map",
+      "topicSlug": "explainable-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "CV-13",
+        "XA-04"
+      ],
+      "tags": [
+        "saliency",
+        "occlusion",
+        "image-explanations",
+        "perturbation"
+      ],
+      "entryPoint": "occlusion_map(score_fn, img, patch=2, baseline=0.0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-10",
+      "slug": "surrogate-fidelity",
+      "title": "Global Surrogate and Fidelity",
+      "topicSlug": "explainable-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "XA-07",
+        "ML-09"
+      ],
+      "tags": [
+        "global-surrogate",
+        "fidelity",
+        "model-agnostic",
+        "interpretable-models"
+      ],
+      "entryPoint": "fit_linear_surrogate(predict, X); fidelity_r2(predict, surrogate, X)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-11",
+      "slug": "exact-shapley",
+      "title": "Exact Shapley Values",
+      "topicSlug": "explainable-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "MA-07",
+        "XA-01"
+      ],
+      "tags": [
+        "shapley-values",
+        "shap",
+        "game-theory",
+        "feature-attribution"
+      ],
+      "entryPoint": "coalition_value(predict, x, baseline, subset); shapley_values(predict, x, baseline)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-12",
+      "slug": "lime-local",
+      "title": "LIME-style Local Linear Explanation",
+      "topicSlug": "explainable-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "XA-10",
+        "ML-19"
+      ],
+      "tags": [
+        "lime",
+        "local-surrogate",
+        "weighted-least-squares",
+        "perturbation"
+      ],
+      "entryPoint": "sample_masks(n, d, rng); lime_explain(predict, x, baseline, masks, kernel_width=0.75)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-13",
+      "slug": "counterfactual-search",
+      "title": "Minimal Counterfactual Search",
+      "topicSlug": "explainable-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "XA-03"
+      ],
+      "tags": [
+        "counterfactuals",
+        "recourse",
+        "search",
+        "local-explanation"
+      ],
+      "entryPoint": "find_counterfactual(predict, x, steps, max_steps=3, lower=None, upper=None)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "XA-14",
+      "slug": "integrated-gradients",
+      "title": "Integrated Gradients",
+      "topicSlug": "explainable-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "XA-11",
+        "DL-10"
+      ],
+      "tags": [
+        "integrated-gradients",
+        "gradient-attribution",
+        "completeness",
+        "deep-learning-explanations"
+      ],
+      "entryPoint": "integrated_gradients(grad_fn, x, baseline, steps=50)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-01",
+      "slug": "iid-partition",
+      "title": "IID Client Partitioning",
+      "topicSlug": "federated-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "ML-16"
+      ],
+      "tags": [
+        "federated-learning",
+        "partitioning",
+        "iid",
+        "simulation"
+      ],
+      "entryPoint": "iid_partition(n, n_clients, seed); client_sizes(parts)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-02",
+      "slug": "weighted-fedavg",
+      "title": "Weighted Federated Averaging",
+      "topicSlug": "federated-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "FL-01"
+      ],
+      "tags": [
+        "fedavg",
+        "aggregation",
+        "weighted-average"
+      ],
+      "entryPoint": "fedavg(client_params, sizes)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-03",
+      "slug": "client-delta",
+      "title": "Client Updates as Deltas",
+      "topicSlug": "federated-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "FL-02"
+      ],
+      "tags": [
+        "fedavg",
+        "model-updates",
+        "server-optimizer"
+      ],
+      "entryPoint": "client_delta(global_w, local_w); server_update(global_w, deltas, sizes, server_lr=1.0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-04",
+      "slug": "label-skew-partition",
+      "title": "Label-Skewed (non-IID) Partition",
+      "topicSlug": "federated-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "FL-01"
+      ],
+      "tags": [
+        "non-iid",
+        "label-skew",
+        "heterogeneity",
+        "partitioning"
+      ],
+      "entryPoint": "shard_partition(labels, n_clients, shards_per_client, seed); label_counts(labels, parts, n_classes)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-05",
+      "slug": "fl-torch-local-training",
+      "title": "Client Training with a PyTorch Model",
+      "topicSlug": "federated-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FL-04",
+        "DL-18"
+      ],
+      "tags": [
+        "pytorch",
+        "federated-learning",
+        "local-training",
+        "state-dict"
+      ],
+      "entryPoint": "client_update(global_model, X, y, epochs=1, lr=0.1, batch_size=8, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-06",
+      "slug": "local-sgd",
+      "title": "Local SGD on a Client",
+      "topicSlug": "federated-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "ML-10",
+        "FL-03"
+      ],
+      "tags": [
+        "local-training",
+        "sgd",
+        "minibatch",
+        "federated-learning"
+      ],
+      "entryPoint": "mse_grad(w, X, y); local_sgd(w, X, y, lr, epochs, batch_size, seed)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "FL-07",
+      "slug": "fedavg-round",
+      "title": "One FedAvg Round",
+      "topicSlug": "federated-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FL-02",
+        "FL-05"
+      ],
+      "tags": [
+        "fedavg",
+        "communication-round",
+        "federated-learning"
+      ],
+      "entryPoint": "fedavg_round(global_w, clients, lr, epochs, batch_size, seed)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-08",
+      "slug": "client-sampling",
+      "title": "Seeded Client Sampling",
+      "topicSlug": "federated-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FL-07"
+      ],
+      "tags": [
+        "client-sampling",
+        "participation",
+        "cross-device"
+      ],
+      "entryPoint": "sample_clients(n_clients, fraction, seed, round_idx)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-09",
+      "slug": "update-clipping",
+      "title": "Clipping Client Updates",
+      "topicSlug": "federated-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "FL-03"
+      ],
+      "tags": [
+        "clipping",
+        "robustness",
+        "privacy",
+        "norms"
+      ],
+      "entryPoint": "clip_update(delta, max_norm); clip_all(deltas, max_norm)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-10",
+      "slug": "fedavg-training",
+      "title": "Full FedAvg Training Loop",
+      "topicSlug": "federated-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FL-07",
+        "FL-08"
+      ],
+      "tags": [
+        "fedavg",
+        "training-loop",
+        "convergence",
+        "non-iid"
+      ],
+      "entryPoint": "global_loss(w, clients); train_fedavg(clients, w0, rounds, fraction, lr, epochs, batch_size, seed)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-11",
+      "slug": "fl-torch-fedavg",
+      "title": "FedAvg with PyTorch state_dicts",
+      "topicSlug": "federated-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FL-10",
+        "FL-05"
+      ],
+      "tags": [
+        "pytorch",
+        "federated-learning",
+        "fedavg",
+        "aggregation"
+      ],
+      "entryPoint": "average_states(states, counts); federated_training(model, clients, rounds, epochs=1, lr=0.1, seed=0)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-12",
+      "slug": "secure-aggregation",
+      "title": "Secure Aggregation with Pairwise Masks",
+      "topicSlug": "federated-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FL-02"
+      ],
+      "tags": [
+        "secure-aggregation",
+        "privacy",
+        "masking",
+        "cryptography-concepts"
+      ],
+      "entryPoint": "pair_mask(i, j, dim, base_seed); mask_update(i, update, n_clients, base_seed); aggregate(masked, n_clients, dim, base_seed, dropped=())",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-13",
+      "slug": "dp-aggregation",
+      "title": "Differentially Private Aggregation",
+      "topicSlug": "federated-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FL-09",
+        "FL-02"
+      ],
+      "tags": [
+        "differential-privacy",
+        "gaussian-mechanism",
+        "clipping",
+        "dp-fedavg"
+      ],
+      "entryPoint": "dp_mean(deltas, clip_norm, noise_multiplier, rng)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "FL-14",
+      "slug": "fedprox",
+      "title": "FedProx Local Objective",
+      "topicSlug": "federated-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "FL-05",
+        "FL-10"
+      ],
+      "tags": [
+        "fedprox",
+        "non-iid",
+        "client-drift",
+        "regularisation"
+      ],
+      "entryPoint": "prox_grad(w, w_global, X, y, mu); local_prox_gd(w_global, X, y, mu, lr, steps)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-01",
+      "slug": "discounted-return",
+      "title": "Discounted Return",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-14"
+      ],
+      "tags": [
+        "returns",
+        "discounting",
+        "rewards"
+      ],
+      "entryPoint": "discounted_return(rewards, gamma); returns_to_go(rewards, gamma)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-02",
+      "slug": "gridworld-step",
+      "title": "Gridworld Transition Function",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "RL-01"
+      ],
+      "tags": [
+        "environments",
+        "mdp",
+        "gridworld",
+        "transitions"
+      ],
+      "entryPoint": "class GridWorld(rows): step(state, action), build_P()",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-03",
+      "slug": "env-interface",
+      "title": "The Environment Interface: reset and step",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "RL-02"
+      ],
+      "tags": [
+        "environments",
+        "gymnasium-api",
+        "episodes",
+        "termination",
+        "truncation"
+      ],
+      "entryPoint": "class LineWorld(n=5, start=0, slip=0.0, max_steps=20); run_episode(env, policy, seed=None)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-04",
+      "slug": "rl-gymnasium-env",
+      "title": "Gymnasium Environments",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "RL-03"
+      ],
+      "tags": [
+        "gymnasium",
+        "environments",
+        "spaces",
+        "wrappers"
+      ],
+      "entryPoint": "class LineWorldEnv(gym.Env); make_lineworld(n=5, slip=0.0, max_steps=20)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-05",
+      "slug": "epsilon-greedy",
+      "title": "Epsilon-Greedy Action Selection",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "RL-03",
+        "NP-10"
+      ],
+      "tags": [
+        "exploration",
+        "epsilon-greedy",
+        "policies"
+      ],
+      "entryPoint": "epsilon_greedy(q_values, epsilon, rng); epsilon_greedy_probs(q_values, epsilon)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-06",
+      "slug": "bandit-incremental",
+      "title": "Incremental Value Estimates",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "RL-05"
+      ],
+      "tags": [
+        "bandits",
+        "incremental-mean",
+        "step-size"
+      ],
+      "entryPoint": "class ValueEstimates(n_actions, alpha=None): update(a, r), q, n",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-07",
+      "slug": "ucb-bandit",
+      "title": "UCB1 Bandit",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "RL-06"
+      ],
+      "tags": [
+        "bandits",
+        "ucb",
+        "exploration",
+        "regret"
+      ],
+      "entryPoint": "ucb_select(q, n, t, c=2.0); run_bandit(means, steps, seed, policy='ucb', epsilon=0.1, c=2.0)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-08",
+      "slug": "policy-evaluation",
+      "title": "Iterative Policy Evaluation",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "RL-02",
+        "RL-01"
+      ],
+      "tags": [
+        "dynamic-programming",
+        "bellman-equation",
+        "policy-evaluation",
+        "mdp"
+      ],
+      "entryPoint": "policy_evaluation(P, policy, gamma=0.9, theta=1e-10, max_iter=10000)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-09",
+      "slug": "value-iteration",
+      "title": "Value Iteration",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "RL-08"
+      ],
+      "tags": [
+        "dynamic-programming",
+        "value-iteration",
+        "optimal-policy",
+        "bellman-optimality"
+      ],
+      "entryPoint": "q_from_v(P, V, gamma); value_iteration(P, gamma=0.9, theta=1e-10, max_iter=10000)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-10",
+      "slug": "policy-iteration",
+      "title": "Policy Iteration",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "RL-08",
+        "RL-09"
+      ],
+      "tags": [
+        "policy-iteration",
+        "dynamic-programming",
+        "policy-improvement"
+      ],
+      "entryPoint": "policy_iteration(P, gamma=0.9, theta=1e-10, max_iter=100)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-11",
+      "slug": "mc-first-visit",
+      "title": "First-Visit Monte Carlo Prediction",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "RL-03",
+        "RL-08"
+      ],
+      "tags": [
+        "monte-carlo",
+        "prediction",
+        "returns",
+        "sampling"
+      ],
+      "entryPoint": "mc_prediction(episodes, n_states, gamma, first_visit=True)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-12",
+      "slug": "td0-prediction",
+      "title": "TD(0) Prediction",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "RL-08",
+        "RL-11"
+      ],
+      "tags": [
+        "temporal-difference",
+        "td-learning",
+        "bootstrapping",
+        "prediction"
+      ],
+      "entryPoint": "td_error(V, s, r, s_next, done, gamma); td0(transitions_episodes, n_states, alpha, gamma, sweeps=1)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-13",
+      "slug": "q-learning",
+      "title": "Tabular Q-Learning",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "RL-05",
+        "RL-02",
+        "RL-12"
+      ],
+      "tags": [
+        "q-learning",
+        "control",
+        "off-policy",
+        "tabular-rl"
+      ],
+      "entryPoint": "q_update(Q, s, a, r, s2, done, alpha, gamma); q_learning(env_step, start, n_states, n_actions, episodes, alpha, gamma, epsilon, seed, max_steps=100)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-14",
+      "slug": "rl-frozenlake-q",
+      "title": "Q-Learning on FrozenLake",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "RL-13",
+        "RL-04"
+      ],
+      "tags": [
+        "gymnasium",
+        "q-learning",
+        "frozenlake",
+        "exploration"
+      ],
+      "entryPoint": "q_learning(env, episodes, alpha=0.1, gamma=0.99, eps_min=0.05, seed=0); success_rate(env, Q, episodes=200, seed=10000)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "RL-15",
+      "slug": "sarsa",
+      "title": "SARSA",
+      "topicSlug": "reinforcement-learning",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "RL-13"
+      ],
+      "tags": [
+        "sarsa",
+        "on-policy",
+        "control",
+        "tabular-rl"
+      ],
+      "entryPoint": "sarsa_update(Q, s, a, r, s2, a2, done, alpha, gamma); sarsa(env_step, start, n_states, n_actions, episodes, alpha, gamma, epsilon, seed, max_steps=100)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-01",
+      "slug": "tool-registry",
+      "title": "Tool Registry and Dispatch",
+      "topicSlug": "agentic-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "PY-17"
+      ],
+      "tags": [
+        "tools",
+        "function-calling",
+        "validation",
+        "agents"
+      ],
+      "entryPoint": "class ToolRegistry: register(name, fn, schema, description=''), dispatch(call), describe()",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-02",
+      "slug": "parse-tool-call",
+      "title": "Parsing Model Tool Calls",
+      "topicSlug": "agentic-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "AG-01",
+        "NL-01"
+      ],
+      "tags": [
+        "parsing",
+        "json",
+        "tool-calling",
+        "robustness"
+      ],
+      "entryPoint": "parse_model_output(text)",
+      "testCount": 9,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-03",
+      "slug": "ag-langchain-tools",
+      "title": "Tools and Tool Calling with LangChain",
+      "topicSlug": "agentic-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "AG-02",
+        "LM-17"
+      ],
+      "tags": [
+        "langchain",
+        "tools",
+        "tool-calling",
+        "function-calling"
+      ],
+      "entryPoint": "word_count; to_fahrenheit; run_tool_calls(message, tools)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-04",
+      "slug": "reflex-agent-loop",
+      "title": "Perceive-Act Loop",
+      "topicSlug": "agentic-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "AG-01"
+      ],
+      "tags": [
+        "agents",
+        "environments",
+        "reflex-agent",
+        "performance-measure"
+      ],
+      "entryPoint": "reflex_vacuum_agent(percept); class VacuumWorld(dirt, location); run(agent, env, steps)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-05",
+      "slug": "goal-and-budget",
+      "title": "Goal Tests and Step Budgets",
+      "topicSlug": "agentic-ai",
+      "difficulty": "beginner",
+      "prerequisites": [
+        "AG-04"
+      ],
+      "tags": [
+        "agents",
+        "termination",
+        "budgets",
+        "goal-test"
+      ],
+      "entryPoint": "run_with_budget(state, policy, transition, goal_test, max_steps, max_cost=None)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-06",
+      "slug": "react-loop",
+      "title": "ReAct Loop with a Scripted Model",
+      "topicSlug": "agentic-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "AG-02",
+        "AG-05"
+      ],
+      "tags": [
+        "react",
+        "agent-loop",
+        "tool-use",
+        "llm-agents"
+      ],
+      "entryPoint": "react_agent(model, registry, question, max_steps=5)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-07",
+      "slug": "ag-langgraph-basics",
+      "title": "LangGraph Basics: State, Nodes and Edges",
+      "topicSlug": "agentic-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "AG-06",
+        "AG-03"
+      ],
+      "tags": [
+        "langgraph",
+        "state-machines",
+        "workflows",
+        "graphs"
+      ],
+      "entryPoint": "build_cleaner(max_words)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-08",
+      "slug": "ag-langgraph-react",
+      "title": "A ReAct Agent in LangGraph",
+      "topicSlug": "agentic-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "AG-07"
+      ],
+      "tags": [
+        "langgraph",
+        "react",
+        "agents",
+        "tool-calling",
+        "checkpoints"
+      ],
+      "entryPoint": "build_agent(model, tools); run_agent(app, question, thread_id, max_steps=8)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-09",
+      "slug": "ag-message-memory",
+      "title": "Conversation Memory with trim_messages",
+      "topicSlug": "agentic-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "AG-08"
+      ],
+      "tags": [
+        "langchain",
+        "memory",
+        "context-window",
+        "messages"
+      ],
+      "entryPoint": "trim_history(messages, max_messages); count_words(messages); trim_by_words(messages, max_words)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-10",
+      "slug": "memory-window",
+      "title": "Conversation Memory Window by Hand",
+      "topicSlug": "agentic-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "AG-06"
+      ],
+      "tags": [
+        "memory",
+        "context-window",
+        "token-budget",
+        "agents"
+      ],
+      "entryPoint": "count_tokens(text); fit_context(messages, budget)",
+      "testCount": 8,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "AG-11",
+      "slug": "bfs-planner",
+      "title": "BFS Planner",
+      "topicSlug": "agentic-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "AG-05"
+      ],
+      "tags": [
+        "planning",
+        "search",
+        "bfs",
+        "shortest-path"
+      ],
+      "entryPoint": "bfs_plan(start, goal_test, successors)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-12",
+      "slug": "a-star-planner",
+      "title": "A* Planner",
+      "topicSlug": "agentic-ai",
+      "difficulty": "intermediate",
+      "prerequisites": [
+        "AG-11"
+      ],
+      "tags": [
+        "planning",
+        "a-star",
+        "heuristics",
+        "priority-queue"
+      ],
+      "entryPoint": "astar(start, goal, neighbors, heuristic)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-13",
+      "slug": "task-dag-plan",
+      "title": "Dependency-Ordered Plans",
+      "topicSlug": "agentic-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "AG-11"
+      ],
+      "tags": [
+        "planning",
+        "dag",
+        "topological-sort",
+        "parallelism"
+      ],
+      "entryPoint": "topo_order(deps); stages(deps)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-14",
+      "slug": "ag-validate-retry",
+      "title": "Validating Tool Arguments and Retrying",
+      "topicSlug": "agentic-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "AG-13",
+        "AG-09",
+        "LM-19"
+      ],
+      "tags": [
+        "langchain",
+        "validation",
+        "pydantic",
+        "tool-calling",
+        "retries"
+      ],
+      "entryPoint": "class BookingArgs(BaseModel); book_room; call_with_validation(model, tool, messages, max_attempts=3)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-15",
+      "slug": "validate-and-retry",
+      "title": "Validate-and-Retry Tool Calls",
+      "topicSlug": "agentic-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "AG-02",
+        "AG-06"
+      ],
+      "tags": [
+        "structured-output",
+        "validation",
+        "retries",
+        "self-correction"
+      ],
+      "entryPoint": "validate(obj, schema); call_with_retries(model, prompt, schema, max_attempts=3)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "AG-16",
+      "slug": "ag-orchestrator-graph",
+      "title": "Orchestrator and Workers in LangGraph",
+      "topicSlug": "agentic-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "AG-14"
+      ],
+      "tags": [
+        "langgraph",
+        "orchestration",
+        "map-reduce",
+        "parallelism"
+      ],
+      "entryPoint": "build_report_graph(worker_fn)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-17",
+      "slug": "orchestrator-workers",
+      "title": "Orchestrator-Workers Pipeline by Hand",
+      "topicSlug": "agentic-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "AG-13",
+        "AG-15"
+      ],
+      "tags": [
+        "multi-agent",
+        "orchestration",
+        "evaluator-optimizer",
+        "workflows"
+      ],
+      "entryPoint": "orchestrate(task, planner, workers, evaluator, max_rounds=2)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "AG-18",
+      "slug": "ag-approval-guardrails",
+      "title": "Guardrails with Human Approval",
+      "topicSlug": "agentic-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "AG-16"
+      ],
+      "tags": [
+        "langgraph",
+        "guardrails",
+        "human-in-the-loop",
+        "interrupts",
+        "safety"
+      ],
+      "entryPoint": "build_guarded_graph(tools, sensitive); run_with_approval(app, action, thread_id, decide)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    },
+    {
+      "id": "AG-19",
+      "slug": "permission-guardrails",
+      "title": "Permission Guardrails",
+      "topicSlug": "agentic-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "AG-01",
+        "AG-06"
+      ],
+      "tags": [
+        "safety",
+        "guardrails",
+        "permissions",
+        "prompt-injection",
+        "human-in-the-loop"
+      ],
+      "entryPoint": "class Guard(policy): check(call), record(call); run_guarded(model_calls, guard, tools, approve)",
+      "testCount": 7,
+      "kind": "function",
+      "optional": true
+    },
+    {
+      "id": "AG-20",
+      "slug": "agent-evaluation",
+      "title": "Evaluating Agents",
+      "topicSlug": "agentic-ai",
+      "difficulty": "advanced",
+      "prerequisites": [
+        "AG-06",
+        "AG-18"
+      ],
+      "tags": [
+        "evaluation",
+        "agents",
+        "regression-testing",
+        "metrics",
+        "safety"
+      ],
+      "entryPoint": "normalize_answer(text); evaluate(agent, tasks); regressions(old_report, new_report)",
+      "testCount": 6,
+      "kind": "function",
+      "optional": false
+    }
+  ],
+  "projects": [
+    {
+      "id": "PY-P1",
+      "slug": "expense-tracker-cli",
+      "title": "Expense Tracker CLI",
+      "topicSlug": "python",
+      "after": "files-and-json",
+      "tags": [
+        "command-line",
+        "files",
+        "json"
+      ]
+    },
+    {
+      "id": "PY-P2",
+      "slug": "quiz-game",
+      "title": "Quiz Game with High Scores",
+      "topicSlug": "python",
+      "after": "unit-testing",
+      "tags": [
+        "games",
+        "classes",
+        "testing"
+      ]
+    },
+    {
+      "id": "PY-P3",
+      "slug": "text-adventure-engine",
+      "title": "Text Adventure Engine",
+      "topicSlug": "python",
+      "after": "unit-testing",
+      "tags": [
+        "games",
+        "object-oriented-design",
+        "parsing"
+      ]
+    },
+    {
+      "id": "MA-P1",
+      "slug": "gradient-descent-visualiser",
+      "title": "Gradient-Descent Visualiser",
+      "topicSlug": "mathematics",
+      "after": "power-iteration",
+      "tags": [
+        "optimisation",
+        "visualisation",
+        "calculus"
+      ]
+    },
+    {
+      "id": "ST-P1",
+      "slug": "ab-test-analyser",
+      "title": "A/B Test Analyser",
+      "topicSlug": "statistics",
+      "after": "permutation-test",
+      "tags": [
+        "a-b-testing",
+        "hypothesis-testing",
+        "confidence-intervals"
+      ]
+    },
+    {
+      "id": "ST-P2",
+      "slug": "dice-coin-simulator",
+      "title": "Dice and Coin Simulator",
+      "topicSlug": "statistics",
+      "after": "permutation-test",
+      "tags": [
+        "simulation",
+        "law-of-large-numbers",
+        "distributions"
+      ]
+    },
+    {
+      "id": "NP-P1",
+      "slug": "numpy-photo-filters",
+      "title": "Photo Filters with NumPy",
+      "topicSlug": "numpy",
+      "after": "moving-average",
+      "tags": [
+        "images",
+        "arrays",
+        "broadcasting"
+      ]
+    },
+    {
+      "id": "PD-P1",
+      "slug": "public-dataset-eda",
+      "title": "Exploratory Analysis of a Public Dataset",
+      "topicSlug": "pandas",
+      "after": "merge-tables",
+      "tags": [
+        "exploratory-data-analysis",
+        "cleaning",
+        "reporting"
+      ]
+    },
+    {
+      "id": "PD-P2",
+      "slug": "personal-finance-data",
+      "title": "Personal Finance Dashboard Data",
+      "topicSlug": "pandas",
+      "after": "rolling-features",
+      "tags": [
+        "time-series",
+        "pivot-tables",
+        "cleaning"
+      ]
+    },
+    {
+      "id": "FA-P1",
+      "slug": "url-shortener-api",
+      "title": "URL Shortener API",
+      "topicSlug": "fastapi",
+      "after": "fastapi-dependencies",
+      "tags": [
+        "web-api",
+        "fastapi",
+        "authentication"
+      ]
+    },
+    {
+      "id": "FA-P2",
+      "slug": "notes-rsvp-api",
+      "title": "Notes or Event-RSVP API",
+      "topicSlug": "fastapi",
+      "after": "api-testing",
+      "tags": [
+        "web-api",
+        "fastapi",
+        "crud"
+      ]
+    },
+    {
+      "id": "ML-P1",
+      "slug": "house-price-predictor",
+      "title": "House-Price Predictor",
+      "topicSlug": "machine-learning",
+      "after": "sklearn-column-transformer",
+      "tags": [
+        "regression",
+        "pipelines",
+        "feature-engineering"
+      ]
+    },
+    {
+      "id": "ML-P2",
+      "slug": "spam-fraud-classifier",
+      "title": "Spam or Fraud Classifier",
+      "topicSlug": "machine-learning",
+      "after": "ml-capstone",
+      "tags": [
+        "classification",
+        "imbalanced-data",
+        "thresholds"
+      ]
+    },
+    {
+      "id": "ML-P3",
+      "slug": "serve-your-model",
+      "title": "Serve Your Model with FastAPI",
+      "topicSlug": "machine-learning",
+      "after": "ml-capstone",
+      "tags": [
+        "deployment",
+        "fastapi",
+        "model-serving"
+      ]
+    },
+    {
+      "id": "DL-P1",
+      "slug": "digit-recogniser",
+      "title": "Handwritten Digit Recogniser",
+      "topicSlug": "deep-learning",
+      "after": "train-xor-mlp",
+      "tags": [
+        "image-classification",
+        "pytorch",
+        "mlp"
+      ]
+    },
+    {
+      "id": "DL-P2",
+      "slug": "training-diagnostics",
+      "title": "Training Diagnostics Notebook",
+      "topicSlug": "deep-learning",
+      "after": "torch-debugging",
+      "tags": [
+        "debugging",
+        "learning-rate",
+        "overfitting"
+      ]
+    },
+    {
+      "id": "CV-P1",
+      "slug": "document-scanner",
+      "title": "Document Scanner",
+      "topicSlug": "computer-vision",
+      "after": "cv-contours",
+      "tags": [
+        "opencv",
+        "contours",
+        "perspective"
+      ]
+    },
+    {
+      "id": "CV-P2",
+      "slug": "shape-sorter",
+      "title": "Shape and Colour Sorter",
+      "topicSlug": "computer-vision",
+      "after": "cv-augmentation",
+      "tags": [
+        "cnn",
+        "augmentation",
+        "image-classification"
+      ]
+    },
+    {
+      "id": "CV-P3",
+      "slug": "object-counter",
+      "title": "Simple Object Counter",
+      "topicSlug": "computer-vision",
+      "after": "connected-components",
+      "tags": [
+        "segmentation",
+        "counting",
+        "connected-components"
+      ]
+    },
+    {
+      "id": "NL-P1",
+      "slug": "review-sentiment-analyser",
+      "title": "Review Sentiment Analyser",
+      "topicSlug": "nlp",
+      "after": "nlp-text-classifier",
+      "tags": [
+        "sentiment-analysis",
+        "text-classification"
+      ]
+    },
+    {
+      "id": "NL-P2",
+      "slug": "blog-semantic-search",
+      "title": "Semantic Search for the Club Blog",
+      "topicSlug": "nlp",
+      "after": "nlp-embedding-bag",
+      "tags": [
+        "search",
+        "embeddings",
+        "retrieval"
+      ]
+    },
+    {
+      "id": "LM-P1",
+      "slug": "poem-name-generator",
+      "title": "Poem or Name Generator",
+      "topicSlug": "llms",
+      "after": "lm-tiny-gpt",
+      "tags": [
+        "language-model",
+        "text-generation",
+        "gpt"
+      ]
+    },
+    {
+      "id": "LM-P2",
+      "slug": "course-faq-chatbot",
+      "title": "Course FAQ Chatbot",
+      "topicSlug": "llms",
+      "after": "rag-pipeline",
+      "tags": [
+        "rag",
+        "chatbot",
+        "langchain"
+      ]
+    },
+    {
+      "id": "LM-P3",
+      "slug": "prompt-playground",
+      "title": "Prompt Playground",
+      "topicSlug": "llms",
+      "after": "rag-pipeline",
+      "tags": [
+        "prompting",
+        "decoding",
+        "evaluation"
+      ]
+    },
+    {
+      "id": "XA-P1",
+      "slug": "explain-house-prices",
+      "title": "Explain Your House-Price Model",
+      "topicSlug": "explainable-ai",
+      "after": "integrated-gradients",
+      "tags": [
+        "explainability",
+        "reporting",
+        "shap"
+      ]
+    },
+    {
+      "id": "FL-P1",
+      "slug": "federated-departments",
+      "title": "Federated Training across Departments",
+      "topicSlug": "federated-learning",
+      "after": "fedprox",
+      "tags": [
+        "federated-learning",
+        "non-iid",
+        "flower"
+      ]
+    },
+    {
+      "id": "RL-P1",
+      "slug": "grid-game-agent",
+      "title": "Grid Game Agent",
+      "topicSlug": "reinforcement-learning",
+      "after": "sarsa",
+      "tags": [
+        "reinforcement-learning",
+        "gymnasium",
+        "q-learning"
+      ]
+    },
+    {
+      "id": "RL-P2",
+      "slug": "bandit-recommender",
+      "title": "Bandit-Based Recommender",
+      "topicSlug": "reinforcement-learning",
+      "after": "sarsa",
+      "tags": [
+        "bandits",
+        "recommendation",
+        "exploration"
+      ]
+    },
+    {
+      "id": "AG-P1",
+      "slug": "study-planner-agent",
+      "title": "Study-Planner Agent",
+      "topicSlug": "agentic-ai",
+      "after": "task-dag-plan",
+      "tags": [
+        "agents",
+        "langgraph",
+        "tools"
+      ]
+    },
+    {
+      "id": "AG-P2",
+      "slug": "club-event-assistant",
+      "title": "Club Event Assistant",
+      "topicSlug": "agentic-ai",
+      "after": "permission-guardrails",
+      "tags": [
+        "agents",
+        "guardrails",
+        "human-in-the-loop"
+      ]
+    },
+    {
+      "id": "AG-P3",
+      "slug": "agent-evaluation-suite",
+      "title": "Agent Evaluation Suite",
+      "topicSlug": "agentic-ai",
+      "after": "agent-evaluation",
+      "tags": [
+        "evaluation",
+        "testing",
+        "agents"
+      ]
+    }
+  ]
+}

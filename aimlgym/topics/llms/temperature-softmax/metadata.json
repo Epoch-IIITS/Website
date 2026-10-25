@@ -1,0 +1,78 @@
+{
+  "id": "LM-03",
+  "slug": "temperature-softmax",
+  "title": "Logits, Temperature and Softmax",
+  "topic": "llms",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-02",
+    "DL-02"
+  ],
+  "prerequisite_slugs": [
+    "bigram-next-token",
+    "stable-softmax"
+  ],
+  "learning_objectives": [
+    "Convert logits to probabilities with temperature",
+    "Measure distribution sharpness with entropy",
+    "Explain the T → 0 and T → ∞ limits"
+  ],
+  "concept_tags": [
+    "temperature",
+    "softmax",
+    "entropy",
+    "decoding"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013",
+    "S021"
+  ],
+  "entry_point": "softmax_t(logits, T=1.0); entropy(p)",
+  "hints": [
+    "`z = np.asarray(logits, float) / T`, subtract the max, exponentiate, normalise.",
+    "Entropy: use only `p > 0` entries: `-(p[p > 0] * np.log(p[p > 0])).sum()`.",
+    "Validate T before dividing."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_t_half",
+      "advice": "Divide logits by T (T = 0.5 doubles them)."
+    },
+    {
+      "test": "test_entropy",
+      "advice": "Skip zero probabilities to avoid log(0)."
+    },
+    {
+      "test": "test_low_t_greedy",
+      "advice": "Use the max-subtraction trick so tiny T does not overflow."
+    },
+    {
+      "test": "test_bad_t",
+      "advice": "T must be > 0."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

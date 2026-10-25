@@ -1,0 +1,78 @@
+{
+  "id": "FL-14",
+  "slug": "fedprox",
+  "title": "FedProx Local Objective",
+  "topic": "federated-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-05",
+    "FL-10"
+  ],
+  "prerequisite_slugs": [
+    "fl-torch-local-training",
+    "fedavg-training"
+  ],
+  "learning_objectives": [
+    "Add a proximal term to the local objective",
+    "Derive and implement its gradient",
+    "Show that μ limits client drift on heterogeneous data"
+  ],
+  "concept_tags": [
+    "fedprox",
+    "non-iid",
+    "client-drift",
+    "regularisation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S030",
+    "S032"
+  ],
+  "entry_point": "prox_grad(w, w_global, X, y, mu); local_prox_gd(w_global, X, y, mu, lr, steps)",
+  "hints": [
+    "MSE gradient from FL-06 plus `mu * (w - w_global)`.",
+    "Keep `w_global` fixed as the anchor during all steps.",
+    "Start from `w = np.array(w_global, dtype=float)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_grad_formula",
+      "advice": "Proximal gradient adds mu·(w − w_global)."
+    },
+    {
+      "test": "test_closed_form",
+      "advice": "Keep the anchor w_global fixed; minimiser is 8/(2 + mu) for the 1-D example."
+    },
+    {
+      "test": "test_mu0_plain",
+      "advice": "With mu = 0, FedProx equals plain gradient descent."
+    },
+    {
+      "test": "test_anchor_fixed",
+      "advice": "Copy w_global; don't modify it."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

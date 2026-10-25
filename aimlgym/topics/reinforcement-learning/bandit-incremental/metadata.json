@@ -1,0 +1,74 @@
+{
+  "id": "RL-06",
+  "slug": "bandit-incremental",
+  "title": "Incremental Value Estimates",
+  "topic": "reinforcement-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-05"
+  ],
+  "prerequisite_slugs": [
+    "epsilon-greedy"
+  ],
+  "learning_objectives": [
+    "Update sample-average estimates incrementally",
+    "Use a constant step size for non-stationary rewards",
+    "Track action counts"
+  ],
+  "concept_tags": [
+    "bandits",
+    "incremental-mean",
+    "step-size"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033"
+  ],
+  "entry_point": "class ValueEstimates(n_actions, alpha=None): update(a, r), q, n",
+  "hints": [
+    "`self.q = np.zeros(n_actions)`; `self.n = np.zeros(n_actions, dtype=int)`.",
+    "Increment `self.n[a]` first, then `step = 1 / self.n[a]` (or alpha).",
+    "`self.q[a] += step * (r - self.q[a])`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_sample_average",
+      "advice": "Increment n[a] before computing the 1/n step."
+    },
+    {
+      "test": "test_constant_alpha",
+      "advice": "With alpha set, use it as a constant step size."
+    },
+    {
+      "test": "test_tracks_change",
+      "advice": "Constant α forgets old rewards; 1/n does not."
+    },
+    {
+      "test": "test_independent_arms",
+      "advice": "Keep separate counts and estimates per action."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

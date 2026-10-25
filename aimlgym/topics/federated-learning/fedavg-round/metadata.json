@@ -1,0 +1,76 @@
+{
+  "id": "FL-07",
+  "slug": "fedavg-round",
+  "title": "One FedAvg Round",
+  "topic": "federated-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-02",
+    "FL-05"
+  ],
+  "prerequisite_slugs": [
+    "weighted-fedavg",
+    "fl-torch-local-training"
+  ],
+  "learning_objectives": [
+    "Broadcast the global model, train locally, aggregate",
+    "Use distinct reproducible seeds per client",
+    "Relate one-epoch full-batch FedAvg to centralised gradient descent"
+  ],
+  "concept_tags": [
+    "fedavg",
+    "communication-round",
+    "federated-learning"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S028"
+  ],
+  "entry_point": "fedavg_round(global_w, clients, lr, epochs, batch_size, seed)",
+  "hints": [
+    "Loop `for k, (X, y) in enumerate(clients)`.",
+    "`bs = len(y) if batch_size is None else batch_size`.",
+    "Aggregate: `sum(n * w for n, w in zip(sizes, locals_)) / sum(sizes)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_equals_centralised_step",
+      "advice": "All clients must start from global_w; aggregate with weights n_k/N."
+    },
+    {
+      "test": "test_seeds_per_client",
+      "advice": "Client k uses seed + k."
+    },
+    {
+      "test": "test_weighting",
+      "advice": "Weight each local model by its client's number of samples."
+    },
+    {
+      "test": "test_global_unchanged",
+      "advice": "Never modify global_w in place."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

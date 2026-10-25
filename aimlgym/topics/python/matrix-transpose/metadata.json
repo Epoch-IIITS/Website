@@ -1,0 +1,74 @@
+{
+  "id": "PY-20",
+  "slug": "matrix-transpose",
+  "title": "Matrix Transpose with Validation",
+  "topic": "python",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-19"
+  ],
+  "prerequisite_slugs": [
+    "factorial-validated"
+  ],
+  "learning_objectives": [
+    "Use nested list comprehensions",
+    "Validate rectangular shape",
+    "Reason about rows and columns by index"
+  ],
+  "concept_tags": [
+    "nested-lists",
+    "list-comprehension",
+    "zip",
+    "validation"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S001",
+    "S009"
+  ],
+  "entry_point": "transpose(matrix)",
+  "hints": [
+    "Let `n = len(matrix[0])`; every row must satisfy `len(row) == n`.",
+    "Output row `j` is `[row[j] for row in matrix]`.",
+    "`[[row[j] for row in matrix] for j in range(n)]` builds the whole result."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_ragged",
+      "advice": "Check every row length before transposing; zip() hides ragged rows."
+    },
+    {
+      "test": "test_2x3",
+      "advice": "The outer loop must run over columns (j), the inner over rows."
+    },
+    {
+      "test": "test_independent_rows",
+      "advice": "Don't create rows with `[[0]*m]*n`; each row must be a separate list."
+    },
+    {
+      "test": "test_empty_rows",
+      "advice": "Rows of length 0 give n = 0, so the result is []."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

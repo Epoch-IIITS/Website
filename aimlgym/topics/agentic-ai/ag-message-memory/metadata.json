@@ -1,0 +1,76 @@
+{
+  "id": "AG-09",
+  "slug": "ag-message-memory",
+  "title": "Conversation Memory with trim_messages",
+  "topic": "agentic-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-08"
+  ],
+  "prerequisite_slugs": [
+    "ag-langgraph-react"
+  ],
+  "learning_objectives": [
+    "Keep a conversation within a budget with trim_messages",
+    "Keep the system message and start the kept history on a human turn",
+    "Write a custom token counter"
+  ],
+  "concept_tags": [
+    "langchain",
+    "memory",
+    "context-window",
+    "messages"
+  ],
+  "permitted_packages": [
+    "langchain-core"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S135",
+    "S130"
+  ],
+  "entry_point": "trim_history(messages, max_messages); count_words(messages); trim_by_words(messages, max_words)",
+  "hints": [
+    "Both trimming functions call `trim_messages` with `strategy=\"last\"`, `include_system=True`, `start_on=\"human\"`.",
+    "A token counter receives a list of messages: `sum(len(str(m.content).split()) for m in messages)`.",
+    "Pass the function itself (`token_counter=count_words`), not its result."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_budget_three",
+      "advice": "Use strategy='last' and include_system=True."
+    },
+    {
+      "test": "test_starts_on_human",
+      "advice": "start_on='human' drops a leading AI message from the kept window."
+    },
+    {
+      "test": "test_trim_by_words",
+      "advice": "Pass count_words itself as token_counter."
+    },
+    {
+      "test": "test_original_unchanged_and_invalid",
+      "advice": "Return a trimmed copy and reject budgets below 1."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

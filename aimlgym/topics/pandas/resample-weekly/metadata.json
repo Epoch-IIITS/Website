@@ -1,0 +1,77 @@
+{
+  "id": "PD-13",
+  "slug": "resample-weekly",
+  "title": "Weekly Resampling",
+  "topic": "pandas",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-12",
+    "PD-08"
+  ],
+  "prerequisite_slugs": [
+    "datetime-basics",
+    "groupby-agg"
+  ],
+  "learning_objectives": [
+    "Parse dates and set a DatetimeIndex",
+    "Resample to weekly frequency",
+    "Understand week anchoring and empty periods"
+  ],
+  "concept_tags": [
+    "time-series",
+    "resample",
+    "datetime"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "weekly_summary(df)",
+  "hints": [
+    "`s = df.assign(date=pd.to_datetime(df['date'])).set_index('date')['amount'].sort_index()`.",
+    "`r = s.resample('W')`.",
+    "`pd.DataFrame({'total': r.sum(), 'n': r.count(), 'mean': r.mean()})`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_index",
+      "advice": "Use resample('W') (weeks end Sunday) and name the index 'date'."
+    },
+    {
+      "test": "test_counts",
+      "advice": "Use count() so empty weeks show 0."
+    },
+    {
+      "test": "test_mean_nan_empty",
+      "advice": "Mean of an empty week is NaN — don't fill it."
+    },
+    {
+      "test": "test_unsorted_input",
+      "advice": "Convert to datetime and sort the index."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id": "FA-P1",
+  "slug": "url-shortener-api",
+  "title": "URL Shortener API",
+  "topic": "fastapi",
+  "kind": "project",
+  "concept_tags": [
+    "web-api",
+    "fastapi",
+    "authentication"
+  ],
+  "uses": [
+    {
+      "slug": "http-responses",
+      "id": "FA-02",
+      "title": "HTTP Responses and Status Codes"
+    },
+    {
+      "slug": "urls-query",
+      "id": "FA-03",
+      "title": "URLs, Paths and Query Strings"
+    },
+    {
+      "slug": "fastapi-routes",
+      "id": "FA-08",
+      "title": "First FastAPI Routes"
+    },
+    {
+      "slug": "pydantic-bodies",
+      "id": "FA-10",
+      "title": "Request Bodies with Pydantic"
+    },
+    {
+      "slug": "fastapi-errors",
+      "id": "FA-11",
+      "title": "Handling Errors in FastAPI"
+    },
+    {
+      "slug": "fastapi-dependencies",
+      "id": "FA-13",
+      "title": "Dependencies and Dependency Overrides"
+    }
+  ],
+  "brief": "Build a URL-shortener service: create short codes for long URLs, redirect visitors, count clicks, and\nprotect the management endpoints with an API key — with a test suite.\n",
+  "milestones": [
+    "POST /links accepts a URL (validated with Pydantic) and returns a short code.",
+    "GET /{code} redirects with status 307, or returns 404 for unknown codes.",
+    "Count clicks per code and expose GET /links/{code}/stats.",
+    "Require an X-API-Key header for creating and deleting links, using a dependency.",
+    "Write TestClient tests for each endpoint, including errors."
+  ],
+  "stretch": [
+    "Store links in SQLite instead of a dict.",
+    "Allow custom codes and expiry dates.",
+    "Rate-limit link creation per API key."
+  ],
+  "data": "None needed. For persistence, follow FastAPI's [SQL databases tutorial](https://fastapi.tiangolo.com/tutorial/sql-databases/).\n",
+  "setup": "```bash\npip install fastapi uvicorn httpx\nuvicorn shortener:app --reload\n```\n"
+}

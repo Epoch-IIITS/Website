@@ -1,0 +1,77 @@
+{
+  "id": "CV-08",
+  "slug": "cv-histograms",
+  "title": "Histograms and Equalisation",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-06"
+  ],
+  "prerequisite_slugs": [
+    "cv-threshold-otsu"
+  ],
+  "learning_objectives": [
+    "Compute intensity histograms with cv2.calcHist",
+    "Improve contrast with cv2.equalizeHist",
+    "Explain equalisation as mapping intensities through the cumulative histogram"
+  ],
+  "concept_tags": [
+    "opencv",
+    "histograms",
+    "contrast",
+    "equalisation"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S118",
+    "S023"
+  ],
+  "entry_point": "histogram_and_equalise(gray, bins=256)",
+  "hints": [
+    "Validate the image and the bin count first.",
+    "`cv2.calcHist([gray], [0], None, [bins], [0, 256])` returns shape (bins, 1).",
+    "`[int(v) for v in hist.ravel()]`; `cv2.equalizeHist(gray)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_matches_bincount",
+      "advice": "calcHist ranges are [0, 256): the upper bound is exclusive."
+    },
+    {
+      "test": "test_coarse_bins",
+      "advice": "Pass [bins] as histSize."
+    },
+    {
+      "test": "test_types",
+      "advice": "Convert the float32 counts to a list of ints."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Require a 2-D uint8 image and 1 <= bins <= 256."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

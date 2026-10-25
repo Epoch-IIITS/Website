@@ -1,0 +1,84 @@
+{
+  "id": "CV-01",
+  "slug": "image-arrays",
+  "title": "Images as Arrays",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-24"
+  ],
+  "prerequisite_slugs": [
+    "torch-conv1d"
+  ],
+  "learning_objectives": [
+    "Describe an image as an (H, W) or (H, W, C) array and index pixels by (row, column)",
+    "Avoid uint8 overflow when changing brightness and contrast",
+    "Convert between uint8 [0, 255] and float [0, 1]",
+    "Convert between channels-last (H, W, C) and channels-first (C, H, W)"
+  ],
+  "concept_tags": [
+    "images",
+    "uint8",
+    "dtype",
+    "channels",
+    "normalisation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S023",
+    "S007"
+  ],
+  "entry_point": "image_info(img); adjust(img, brightness=0, contrast=1.0); to_float(img); to_uint8(x); channels_first(img); channels_last(x)",
+  "hints": [
+    "`channels = img.shape[2] if img.ndim == 3 else 1`; `str(img.dtype)` gives the dtype name.",
+    "`out = (img.astype(float) - 128) * contrast + 128 + brightness`, then `np.clip(np.rint(out), 0, 255).astype(np.uint8)`.",
+    "`np.transpose(img, (2, 0, 1))` and `np.transpose(x, (1, 2, 0))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_brightness_no_wraparound",
+      "advice": "Convert to float before adding, then clip to [0, 255]."
+    },
+    {
+      "test": "test_contrast",
+      "advice": "Scale around 128: `(img - 128) * contrast + 128`, round with np.rint, clip."
+    },
+    {
+      "test": "test_float_round_trip",
+      "advice": "Divide by 255 for floats; multiply by 255 and round to go back."
+    },
+    {
+      "test": "test_to_uint8_rounds_and_clips",
+      "advice": "Round with `np.rint` before converting; don't truncate."
+    },
+    {
+      "test": "test_channels",
+      "advice": "Use `np.transpose` with axes (2, 0, 1) and (1, 2, 0)."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

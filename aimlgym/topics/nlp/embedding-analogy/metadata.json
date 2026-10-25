@@ -1,0 +1,78 @@
+{
+  "id": "NL-18",
+  "slug": "embedding-analogy",
+  "title": "Word Embedding Analogies",
+  "topic": "nlp",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-10",
+    "NL-17"
+  ],
+  "prerequisite_slugs": [
+    "nlp-tfidf-retrieval",
+    "ppmi-matrix"
+  ],
+  "learning_objectives": [
+    "Find nearest neighbours in embedding space",
+    "Solve analogies with vector arithmetic (3CosAdd)",
+    "Exclude query words from results"
+  ],
+  "concept_tags": [
+    "word-embeddings",
+    "analogies",
+    "cosine-similarity",
+    "vector-arithmetic"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S017",
+    "S013"
+  ],
+  "entry_point": "most_similar(word, emb, k=3); analogy(a, b, c, emb)",
+  "hints": [
+    "Write `_cos(u, v)` returning 0 if either norm is 0.",
+    "Score every candidate and sort with key `(-score, word)`.",
+    "Target vector: `emb[b] - emb[a] + emb[c]`; skip {a, b, c}."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_analogy",
+      "advice": "Target = v_b − v_a + v_c; rank by cosine."
+    },
+    {
+      "test": "test_excludes_inputs",
+      "advice": "Exclude a, b and c from the candidates."
+    },
+    {
+      "test": "test_zero_vector",
+      "advice": "Return cosine 0 for zero vectors instead of NaN."
+    },
+    {
+      "test": "test_ties_alphabetical",
+      "advice": "Sort by (−score, word)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}
