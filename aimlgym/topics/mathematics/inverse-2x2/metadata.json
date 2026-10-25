@@ -1,0 +1,72 @@
+{
+  "id": "MA-09",
+  "slug": "inverse-2x2",
+  "title": "Inverse of a 2x2 Matrix",
+  "topic": "mathematics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-08"
+  ],
+  "prerequisite_slugs": [
+    "solve-2x2-cramer"
+  ],
+  "learning_objectives": [
+    "Compute the inverse via the adjugate formula",
+    "Verify A·A⁻¹ = I numerically",
+    "Explain when a matrix has no inverse"
+  ],
+  "concept_tags": [
+    "matrix-inverse",
+    "determinant",
+    "identity"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009"
+  ],
+  "entry_point": "inverse_2x2(A, tol=1e-12)",
+  "hints": [
+    "Unpack `(a, b), (c, d) = A` and compute `det = a*d - b*c`.",
+    "Raise ValueError if `abs(det) < tol`.",
+    "Return `[[d/det, -b/det], [-c/det, a/det]]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Swap the diagonal entries and negate the off-diagonal ones."
+    },
+    {
+      "test": "test_product_is_identity",
+      "advice": "Divide every entry by the determinant."
+    },
+    {
+      "test": "test_singular",
+      "advice": "Raise ValueError when |det| < tol."
+    },
+    {
+      "test": "test_bad_shape",
+      "advice": "Check A has exactly two rows of length two."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

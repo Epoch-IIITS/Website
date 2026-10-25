@@ -1,0 +1,87 @@
+{
+  "id": "FA-09",
+  "slug": "fastapi-params",
+  "title": "Query and Path Parameters with Validation",
+  "topic": "fastapi",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-08"
+  ],
+  "prerequisite_slugs": [
+    "fastapi-routes"
+  ],
+  "learning_objectives": [
+    "Declare optional and required query parameters with defaults",
+    "Add constraints with Annotated, Query and Path",
+    "Restrict a parameter to fixed choices with an Enum",
+    "Accept repeated query parameters as a list"
+  ],
+  "concept_tags": [
+    "fastapi",
+    "query-parameters",
+    "validation",
+    "annotated",
+    "enum"
+  ],
+  "permitted_packages": [
+    "fastapi"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S072",
+    "S071",
+    "S078"
+  ],
+  "entry_point": "app (FastAPI) with GET /books, /books/by-year/{year}, /books/tagged",
+  "hints": [
+    "`class Order(str, Enum): asc = \"asc\"; desc = \"desc\"` and the parameter `order: Order = Order.asc`.",
+    "`limit: Annotated[int, Query(ge=1, le=5)] = 3`; `year: Annotated[int, Path(ge=1900, le=2100)]`.",
+    "`sorted(matches, key=lambda b: (b[\"year\"], b[\"id\"]), reverse=order == Order.desc)`; tags: `tag: Annotated[list[str], Query()] = []` and `set(tag) <= set(b[\"tags\"])`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_defaults",
+      "advice": "Sort by (year, id) ascending by default and return 3 items."
+    },
+    {
+      "test": "test_filter_sort_page",
+      "advice": "Filter case-insensitively, reverse the sort for desc, then slice `[offset:offset + limit]`."
+    },
+    {
+      "test": "test_limits_validated",
+      "advice": "Declare the constraints with `Annotated[..., Query(...)]` and use an Enum for order."
+    },
+    {
+      "test": "test_by_year",
+      "advice": "Use `Annotated[int, Path(ge=1900, le=2100)]` for the year."
+    },
+    {
+      "test": "test_tagged",
+      "advice": "Declare `tag: Annotated[list[str], Query()] = []` and keep books whose tags include all of them."
+    },
+    {
+      "test": "test_documented_in_openapi",
+      "advice": "Constraints declared with Query appear in the OpenAPI schema."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

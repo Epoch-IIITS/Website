@@ -1,0 +1,83 @@
+{
+  "id": "FA-05",
+  "slug": "manual-router",
+  "title": "A Router by Hand",
+  "topic": "fastapi",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-04"
+  ],
+  "prerequisite_slugs": [
+    "json-bodies"
+  ],
+  "learning_objectives": [
+    "Match request paths against patterns with path parameters",
+    "Convert typed parameters such as {item_id:int}",
+    "Return 404, 405 (with Allow) and 422 at the right times",
+    "Register handlers with a decorator"
+  ],
+  "concept_tags": [
+    "routing",
+    "path-parameters",
+    "decorators",
+    "http-status"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S071",
+    "S067"
+  ],
+  "entry_point": "class Router; Router.route(method, pattern); Router.dispatch(method, path, query=None)",
+  "hints": [
+    "Write `_match(segments, parts)` returning a dict of raw params or None: lengths equal, literal segments equal, `{...}` segments captured.",
+    "First collect every route whose pattern matches the path; none → 404; none with this method → 405 with `\", \".join(sorted(methods))`.",
+    "For `{name:int}`, `int(raw)` inside try/except ValueError → 422; the handler result is a dict or a `(status, dict)` tuple."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_typed_param_and_query",
+      "advice": "Convert `{item_id:int}` with int() and pass `query=` to the handler."
+    },
+    {
+      "test": "test_404",
+      "advice": "A path matches only when it has the same number of segments and equal literals."
+    },
+    {
+      "test": "test_405_allow",
+      "advice": "If the path matches but the method does not, return 405 with the sorted allowed methods."
+    },
+    {
+      "test": "test_422",
+      "advice": "Catch the int() conversion error and return 422 with loc ['path', name]."
+    },
+    {
+      "test": "test_order_and_str_param",
+      "advice": "Try routes in registration order and compare methods in upper case."
+    },
+    {
+      "test": "test_decorator_returns_function",
+      "advice": "The decorator must register the function and return it unchanged."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id": "NP-P1",
+  "slug": "numpy-photo-filters",
+  "title": "Photo Filters with NumPy",
+  "topic": "numpy",
+  "kind": "project",
+  "concept_tags": [
+    "images",
+    "arrays",
+    "broadcasting"
+  ],
+  "uses": [
+    {
+      "slug": "array-info",
+      "id": "NP-01",
+      "title": "Create an Array and Inspect It"
+    },
+    {
+      "slug": "vectorized-math",
+      "id": "NP-02",
+      "title": "Vectorised Arithmetic and ufuncs"
+    },
+    {
+      "slug": "slicing-subgrid",
+      "id": "NP-03",
+      "title": "Slicing a Sub-grid"
+    },
+    {
+      "slug": "axis-aggregations",
+      "id": "NP-05",
+      "title": "Aggregations Along Axes"
+    },
+    {
+      "slug": "broadcast-center",
+      "id": "NP-07",
+      "title": "Centering Columns with Broadcasting"
+    },
+    {
+      "slug": "moving-average",
+      "id": "NP-14",
+      "title": "Moving Average with cumsum"
+    }
+  ],
+  "brief": "Build a small photo-filter program using only NumPy array operations: greyscale, brightness and\ncontrast, blur, edge detection and a vignette — applied to your own photos.\n",
+  "milestones": [
+    "Load a photo into a NumPy array (with Pillow) and print its shape and dtype.",
+    "Write greyscale, brightness and contrast filters with vectorised arithmetic, clipping to 0–255.",
+    "Write a box blur by averaging shifted copies of the image.",
+    "Write a simple edge filter from differences between neighbouring pixels.",
+    "Add a vignette with a broadcast distance-from-centre mask, and save the results side by side."
+  ],
+  "stretch": [
+    "Write a sepia filter as a 3×3 colour matrix applied with matrix multiplication.",
+    "Compare your blur's speed with a Python double loop.",
+    "Build a command-line tool that chains filters: `python filters.py in.jpg out.jpg grey blur vignette`."
+  ],
+  "data": "Your own photos. [Pillow](https://pillow.readthedocs.io/en/stable/) only loads and saves the files;\nthe filters themselves use NumPy ([broadcasting guide](https://numpy.org/doc/stable/user/basics.broadcasting.html)).\n",
+  "setup": "```bash\npip install numpy pillow\npython filters.py photo.jpg\n```\n"
+}

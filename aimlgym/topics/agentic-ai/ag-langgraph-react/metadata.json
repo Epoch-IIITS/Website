@@ -1,0 +1,78 @@
+{
+  "id": "AG-08",
+  "slug": "ag-langgraph-react",
+  "title": "A ReAct Agent in LangGraph",
+  "topic": "agentic-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-07"
+  ],
+  "prerequisite_slugs": [
+    "ag-langgraph-basics"
+  ],
+  "learning_objectives": [
+    "Build an agent graph from a model node, a ToolNode and tools_condition",
+    "Limit the number of steps with recursion_limit",
+    "Keep conversations per thread with an InMemorySaver checkpointer"
+  ],
+  "concept_tags": [
+    "langgraph",
+    "react",
+    "agents",
+    "tool-calling",
+    "checkpoints"
+  ],
+  "permitted_packages": [
+    "langchain-core",
+    "langgraph"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S139",
+    "S137"
+  ],
+  "entry_point": "build_agent(model, tools); run_agent(app, question, thread_id, max_steps=8)",
+  "hints": [
+    "Bind the tools once outside the node function: `bound = model.bind_tools(tools)`.",
+    "Edges: START → agent, conditional edges with tools_condition, tools → agent; compile with `checkpointer=InMemorySaver()`.",
+    "The config is `{\"configurable\": {\"thread_id\": thread_id}, \"recursion_limit\": max_steps}`; read `result[\"messages\"][-1].content`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_answers_after_tools",
+      "advice": "Route with tools_condition and add an edge from tools back to agent."
+    },
+    {
+      "test": "test_step_limit",
+      "advice": "Pass recursion_limit=max_steps and catch GraphRecursionError."
+    },
+    {
+      "test": "test_threads_are_separate",
+      "advice": "Compile with InMemorySaver() and pass the thread_id in the config."
+    },
+    {
+      "test": "test_tool_error_reaches_model",
+      "advice": "Use ToolNode(tools), which reports tool errors as messages."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

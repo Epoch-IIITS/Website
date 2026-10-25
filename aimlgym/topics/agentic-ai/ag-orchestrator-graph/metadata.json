@@ -1,0 +1,76 @@
+{
+  "id": "AG-16",
+  "slug": "ag-orchestrator-graph",
+  "title": "Orchestrator and Workers in LangGraph",
+  "topic": "agentic-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-14"
+  ],
+  "prerequisite_slugs": [
+    "ag-validate-retry"
+  ],
+  "learning_objectives": [
+    "Fan out work to parallel workers with Send",
+    "Collect worker results with a reducer and restore their order",
+    "Combine results in a synthesiser node"
+  ],
+  "concept_tags": [
+    "langgraph",
+    "orchestration",
+    "map-reduce",
+    "parallelism"
+  ],
+  "permitted_packages": [
+    "langgraph"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S139",
+    "S136"
+  ],
+  "entry_point": "build_report_graph(worker_fn)",
+  "hints": [
+    "`orchestrator` returns `{\"sections\": [s.strip() for s in state[\"document\"].split(\"\\n\\n\") if s.strip()]}`.",
+    "The fan-out function returns a list of `Send(\"worker\", {...})`; register it with `add_conditional_edges(\"orchestrator\", assign, [\"worker\"])`.",
+    "The worker receives the Send payload (with `index` and `section`), not the whole state."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_worked_example",
+      "advice": "Fan out with Send('worker', {'index': i, 'section': s}) and join results in synthesise."
+    },
+    {
+      "test": "test_order_restored",
+      "advice": "Sort the collected (index, summary) pairs before joining."
+    },
+    {
+      "test": "test_one_worker_per_section",
+      "advice": "Split on blank lines and drop empty sections."
+    },
+    {
+      "test": "test_results_collected",
+      "advice": "Annotate results with operator.add so every worker's update is kept."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

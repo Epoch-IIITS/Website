@@ -1,0 +1,82 @@
+{
+  "id": "FA-11",
+  "slug": "fastapi-errors",
+  "title": "Handling Errors in FastAPI",
+  "topic": "fastapi",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-10"
+  ],
+  "prerequisite_slugs": [
+    "pydantic-bodies"
+  ],
+  "learning_objectives": [
+    "Raise HTTPException with a status code, detail and headers",
+    "Turn domain exceptions into responses with exception handlers",
+    "Customise the validation-error response",
+    "Build apps with a factory so every test starts from fresh state"
+  ],
+  "concept_tags": [
+    "fastapi",
+    "errors",
+    "httpexception",
+    "exception-handlers",
+    "app-factory"
+  ],
+  "permitted_packages": [
+    "fastapi"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S074",
+    "S066"
+  ],
+  "entry_point": "class OutOfStock(Exception); create_app()",
+  "hints": [
+    "`if item_id not in stock: raise HTTPException(status_code=404, detail=\"Item not found\", headers={\"X-Error\": \"missing\"})`.",
+    "Declare `qty: Annotated[int, Query(ge=1)] = 1`; raise `OutOfStock(name, qty, available)` when `qty > available`.",
+    "`@app.exception_handler(RequestValidationError)` with `fields = [\".\".join(str(p) for p in e[\"loc\"]) for e in exc.errors()]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_read_ok_and_404",
+      "advice": "Raise HTTPException(404, detail=..., headers={\"X-Error\": \"missing\"}) for unknown ids."
+    },
+    {
+      "test": "test_buy_reduces_stock",
+      "advice": "Subtract qty from the stored stock and default qty to 1."
+    },
+    {
+      "test": "test_out_of_stock_409",
+      "advice": "Raise OutOfStock before changing stock and map it to 409 in an exception handler."
+    },
+    {
+      "test": "test_validation_format",
+      "advice": "Register a RequestValidationError handler that joins each loc with '.'."
+    },
+    {
+      "test": "test_fresh_state_per_app",
+      "advice": "Create the stock dict inside create_app, not at module level."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "XA-02",
+  "slug": "top-k-attributions",
+  "title": "Ranking Attributions",
+  "topic": "explainable-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "XA-01"
+  ],
+  "prerequisite_slugs": [
+    "linear-contributions"
+  ],
+  "learning_objectives": [
+    "Rank features by absolute attribution",
+    "Report direction (sign) and share of total effect",
+    "Produce a deterministic, human-readable explanation"
+  ],
+  "concept_tags": [
+    "feature-attribution",
+    "ranking",
+    "explanations",
+    "reporting"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S024"
+  ],
+  "entry_point": "top_attributions(names, phi, k=3)",
+  "hints": [
+    "`total = np.abs(phi).sum()`.",
+    "Sort indices with key `(-abs(phi[i]), names[i])`.",
+    "Direction via comparisons with 0; share = abs / total (0 if total is 0)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Rank by absolute value; keep the signed value in the output."
+    },
+    {
+      "test": "test_ties_alphabetical",
+      "advice": "Break ties on |phi| by name ascending."
+    },
+    {
+      "test": "test_zero",
+      "advice": "When all attributions are 0, shares are 0 and direction is '0'."
+    },
+    {
+      "test": "test_shares_sum",
+      "advice": "share = |phi_j| / Σ|phi|."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

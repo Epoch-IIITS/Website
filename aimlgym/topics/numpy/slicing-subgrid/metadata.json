@@ -1,0 +1,76 @@
+{
+  "id": "NP-03",
+  "slug": "slicing-subgrid",
+  "title": "Slicing a Sub-grid",
+  "topic": "numpy",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-01"
+  ],
+  "prerequisite_slugs": [
+    "array-info"
+  ],
+  "learning_objectives": [
+    "Slice 2-D arrays with start:stop:step",
+    "Distinguish views from copies",
+    "Validate slice bounds"
+  ],
+  "concept_tags": [
+    "slicing",
+    "views",
+    "copies",
+    "indexing"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S007",
+    "S006"
+  ],
+  "entry_point": "crop(a, top, left, h, w); every_other(a); border_sum(a)",
+  "hints": [
+    "Check `top + h <= a.shape[0]` and `left + w <= a.shape[1]`.",
+    "`a[top:top+h, left:left+w].copy()`.",
+    "Border = total − interior `a[1:-1, 1:-1].sum()` (the interior is empty for small arrays)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_crop_is_copy",
+      "advice": "Return `.copy()` of the slice so modifying the crop doesn't modify the input."
+    },
+    {
+      "test": "test_crop_out_of_bounds",
+      "advice": "Slicing silently clips; check the bounds yourself."
+    },
+    {
+      "test": "test_border_small",
+      "advice": "For 1×1 or 2×2 arrays the interior is empty, so the border is everything."
+    },
+    {
+      "test": "test_crop",
+      "advice": "Use a[top:top+h, left:left+w] (one bracket, comma between axes)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

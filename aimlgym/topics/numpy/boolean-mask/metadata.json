@@ -1,0 +1,75 @@
+{
+  "id": "NP-04",
+  "slug": "boolean-mask",
+  "title": "Boolean Masks",
+  "topic": "numpy",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-03"
+  ],
+  "prerequisite_slugs": [
+    "slicing-subgrid"
+  ],
+  "learning_objectives": [
+    "Build boolean masks with comparisons",
+    "Combine masks with & | ~",
+    "Replace values with np.where without loops"
+  ],
+  "concept_tags": [
+    "boolean-indexing",
+    "masks",
+    "np.where",
+    "vectorisation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S007"
+  ],
+  "entry_point": "in_range(a, lo, hi); count_above(a, t); cap(a, t)",
+  "hints": [
+    "`mask = (a >= lo) & (a <= hi)` then `a[mask]`.",
+    "`int((a > t).sum())`.",
+    "`np.where(a > t, t, a)` returns a new array."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_in_range",
+      "advice": "Use & with parentheses: (a >= lo) & (a <= hi)."
+    },
+    {
+      "test": "test_count_strict",
+      "advice": "Strictly greater: a > t."
+    },
+    {
+      "test": "test_cap_no_mutation",
+      "advice": "Don't assign into a; use np.where or np.minimum to build a new array."
+    },
+    {
+      "test": "test_count",
+      "advice": "Convert the result to a Python int."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

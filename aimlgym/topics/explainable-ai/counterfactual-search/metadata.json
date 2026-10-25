@@ -1,0 +1,75 @@
+{
+  "id": "XA-13",
+  "slug": "counterfactual-search",
+  "title": "Minimal Counterfactual Search",
+  "topic": "explainable-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "XA-03"
+  ],
+  "prerequisite_slugs": [
+    "decision-path"
+  ],
+  "learning_objectives": [
+    "Define a counterfactual as a minimal change that flips a decision",
+    "Search a grid of actionable changes exhaustively",
+    "Respect immutable features and bounds"
+  ],
+  "concept_tags": [
+    "counterfactuals",
+    "recourse",
+    "search",
+    "local-explanation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S024"
+  ],
+  "entry_point": "find_counterfactual(predict, x, steps, max_steps=3, lower=None, upper=None)",
+  "hints": [
+    "Original label: `c = predict(x[None])[0]`.",
+    "Ranges: `range(-max_steps, max_steps + 1)` if step != 0 else `(0,)`; build all k with `product`.",
+    "Sort candidates by `(sum(abs(k)), k)` and return the first that flips the label and is in bounds."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Sort candidates by (cost, k) and return the first that flips the label."
+    },
+    {
+      "test": "test_immutable",
+      "advice": "Features with step 0 must never change."
+    },
+    {
+      "test": "test_bounds",
+      "advice": "Skip candidates outside lower/upper."
+    },
+    {
+      "test": "test_none",
+      "advice": "Return None if no candidate within max_steps changes the prediction."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

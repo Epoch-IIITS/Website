@@ -1,0 +1,49 @@
+{
+  "id": "ML-P2",
+  "slug": "spam-fraud-classifier",
+  "title": "Spam or Fraud Classifier",
+  "topic": "machine-learning",
+  "kind": "project",
+  "concept_tags": [
+    "classification",
+    "imbalanced-data",
+    "thresholds"
+  ],
+  "uses": [
+    {
+      "slug": "classification-metrics",
+      "id": "ML-06",
+      "title": "Confusion Matrix, Precision, Recall, F1"
+    },
+    {
+      "slug": "sklearn-gradient-boosting",
+      "id": "ML-23",
+      "title": "Gradient Boosting"
+    },
+    {
+      "slug": "sklearn-roc-pr",
+      "id": "ML-24",
+      "title": "Thresholds, ROC and Precision–Recall Curves"
+    },
+    {
+      "slug": "ml-capstone",
+      "id": "ML-27",
+      "title": "Capstone: an End-to-End Tabular Model"
+    }
+  ],
+  "brief": "Build a classifier for a problem where the interesting class is rare — spam messages or fraudulent\ntransactions — and choose a decision threshold that reflects real costs: a missed fraud is\nexpensive, but so is blocking a real customer.\n",
+  "milestones": [
+    "Load the data, measure the class imbalance and fit a majority-class baseline.",
+    "Train a logistic regression pipeline and a gradient-boosting model with stratified cross-validation.",
+    "Compare them with ROC AUC and average precision, and plot both curves.",
+    "Choose a threshold from the precision–recall curve on validation data for a target recall.",
+    "Report the confusion matrix and the cost per 1,000 cases at that threshold on the test set."
+  ],
+  "stretch": [
+    "Try class_weight='balanced' and compare it with moving the threshold.",
+    "For SMS spam, turn the messages into TF-IDF features (see the NLP topic).",
+    "Check how the precision changes if fraud becomes twice as rare after deployment."
+  ],
+  "data": "* [SMS Spam Collection](https://archive.ics.uci.edu/dataset/228/sms+spam+collection) (UCI): 5,574\n  labelled text messages, about 13% spam.\n* Synthetic transactions: `sklearn.datasets.make_classification(n_samples=20000, weights=[0.98, 0.02], random_state=0)`\n  ([documentation](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_classification.html)).\n",
+  "setup": "```bash\npip install numpy pandas scikit-learn matplotlib\npython fraud.py\n```\n"
+}

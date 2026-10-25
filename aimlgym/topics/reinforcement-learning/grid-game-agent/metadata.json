@@ -1,0 +1,54 @@
+{
+  "id": "RL-P1",
+  "slug": "grid-game-agent",
+  "title": "Grid Game Agent",
+  "topic": "reinforcement-learning",
+  "kind": "project",
+  "concept_tags": [
+    "reinforcement-learning",
+    "gymnasium",
+    "q-learning"
+  ],
+  "uses": [
+    {
+      "slug": "discounted-return",
+      "id": "RL-01",
+      "title": "Discounted Return"
+    },
+    {
+      "slug": "rl-gymnasium-env",
+      "id": "RL-04",
+      "title": "Gymnasium Environments"
+    },
+    {
+      "slug": "q-learning",
+      "id": "RL-13",
+      "title": "Tabular Q-Learning"
+    },
+    {
+      "slug": "rl-frozenlake-q",
+      "id": "RL-14",
+      "title": "Q-Learning on FrozenLake"
+    },
+    {
+      "slug": "sarsa",
+      "id": "RL-15",
+      "title": "SARSA"
+    }
+  ],
+  "brief": "Design a small grid game of your own — collect keys and reach the door, avoid moving guards, or push a\nbox onto a target — as a Gymnasium environment, then train a Q-learning agent to play it and watch it\nimprove.\n",
+  "milestones": [
+    "Define the rules, the state encoding and the rewards on paper; keep the state space small.",
+    "Implement the game as a gymnasium.Env and pass check_env.",
+    "Print the grid as text after each step so you can play it yourself with the keyboard.",
+    "Train Q-learning and plot the success rate and average return per 100 episodes.",
+    "Compare Q-learning with SARSA and explain any difference in the learned behaviour."
+  ],
+  "stretch": [
+    "Make the game stochastic (slippery moves, random guards) and compare again.",
+    "Replace the table with a small neural network (deep Q-learning) for a larger grid.",
+    "Record and replay an episode as an animated GIF."
+  ],
+  "data": "No data is needed: the agent learns from playing your game. See the\n[FrozenLake documentation](https://gymnasium.farama.org/environments/toy_text/frozen_lake/) for a\ntext-based environment to imitate.\n",
+  "setup": "```bash\npip install gymnasium numpy matplotlib\npython train_agent.py\n```\n"
+}

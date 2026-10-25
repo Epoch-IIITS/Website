@@ -1,0 +1,80 @@
+{
+  "id": "RL-13",
+  "slug": "q-learning",
+  "title": "Tabular Q-Learning",
+  "topic": "reinforcement-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-05",
+    "RL-02",
+    "RL-12"
+  ],
+  "prerequisite_slugs": [
+    "epsilon-greedy",
+    "gridworld-step",
+    "td0-prediction"
+  ],
+  "learning_objectives": [
+    "Implement the off-policy Q-learning update",
+    "Train with ε-greedy exploration on a gridworld",
+    "Extract and evaluate the learned greedy policy"
+  ],
+  "concept_tags": [
+    "q-learning",
+    "control",
+    "off-policy",
+    "tabular-rl"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033",
+    "S034"
+  ],
+  "entry_point": "q_update(Q, s, a, r, s2, done, alpha, gamma); q_learning(env_step, start, n_states, n_actions, episodes, alpha, gamma, epsilon, seed, max_steps=100)",
+  "hints": [
+    "`target = r + (0 if done else gamma * Q[s2].max())`.",
+    "ε-greedy: `if rng.random() < epsilon: a = int(rng.integers(n_actions)) else: a = int(np.argmax(Q[s]))`.",
+    "Accumulate `total += r` per episode; break when done."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_update",
+      "advice": "Target = r + γ·max_a' Q(s', a'); Q += α·(target − Q)."
+    },
+    {
+      "test": "test_update_terminal",
+      "advice": "When done, the target is just r."
+    },
+    {
+      "test": "test_corridor_values",
+      "advice": "Q-learning bootstraps from the greedy max even while exploring."
+    },
+    {
+      "test": "test_grid_avoids_pit",
+      "advice": "Use one seeded generator for ε-greedy decisions across all episodes."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "DL-05",
+  "slug": "torch-tensors",
+  "title": "PyTorch Tensors",
+  "topic": "deep-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-04"
+  ],
+  "prerequisite_slugs": [
+    "dense-forward"
+  ],
+  "learning_objectives": [
+    "Create tensors from lists and NumPy arrays with a chosen dtype",
+    "Use shapes, matrix products and broadcasting on tensors",
+    "Move between NumPy and PyTorch and know when memory is shared"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "tensors",
+    "dtype",
+    "broadcasting"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S103",
+    "S039"
+  ],
+  "entry_point": "dense_relu(x, W, b)",
+  "hints": [
+    "`x = torch.as_tensor(x, dtype=torch.float32)` and the same for W and b.",
+    "Check `x.ndim == 2`, `x.shape[1] == W.shape[0]` and `b.shape == (W.shape[1],)`.",
+    "`torch.relu(x @ W + b)` broadcasts the bias over the batch."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Compute torch.relu(x @ W + b) and return the tensor itself."
+    },
+    {
+      "test": "test_float32_from_float64",
+      "advice": "Convert every input with dtype=torch.float32."
+    },
+    {
+      "test": "test_inputs_unchanged",
+      "advice": "Do not use in-place operations on the inputs."
+    },
+    {
+      "test": "test_shape_errors",
+      "advice": "Check that x is 2-D and that W and b have matching sizes."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

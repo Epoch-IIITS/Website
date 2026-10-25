@@ -1,0 +1,80 @@
+{
+  "id": "NL-14",
+  "slug": "naive-bayes-text",
+  "title": "Multinomial Naive Bayes Text Classifier",
+  "topic": "nlp",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-07",
+    "ST-07"
+  ],
+  "prerequisite_slugs": [
+    "bag-of-words",
+    "conditional-bayes"
+  ],
+  "learning_objectives": [
+    "Estimate class priors and per-class word probabilities with Laplace smoothing",
+    "Classify in log space",
+    "Explain the conditional-independence assumption"
+  ],
+  "concept_tags": [
+    "naive-bayes",
+    "text-classification",
+    "laplace-smoothing",
+    "log-probabilities"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S017",
+    "S012"
+  ],
+  "entry_point": "class MultinomialNB(alpha=1.0): fit(X, y), predict_log_proba(X), predict(X)",
+  "hints": [
+    "`self.classes_ = np.unique(y)`; for each class, `Nc = X[y == c].sum(axis=0)`.",
+    "`feature_log_prob = np.log((Nc + a) / (Nc.sum() + a * V))`.",
+    "Joint `= X @ flp.T + prior`; subtract the row log-sum-exp."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_params",
+      "advice": "θ = (N_ct + α)/(Σ_t N_ct + αV) per class, using term counts."
+    },
+    {
+      "test": "test_log_proba_normalised",
+      "advice": "Subtract the log-sum-exp of each row."
+    },
+    {
+      "test": "test_smoothing_unseen_word",
+      "advice": "Laplace smoothing must give unseen words a non-zero probability."
+    },
+    {
+      "test": "test_long_document_no_underflow",
+      "advice": "Stay in log space; don't exponentiate before normalising."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

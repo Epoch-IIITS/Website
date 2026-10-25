@@ -1,0 +1,78 @@
+{
+  "id": "MA-01",
+  "slug": "summation",
+  "title": "Summation and Product Notation",
+  "topic": "mathematics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-17"
+  ],
+  "prerequisite_slugs": [
+    "functions-as-values"
+  ],
+  "learning_objectives": [
+    "Read Σ and Π notation and translate it into a loop",
+    "Check a closed-form formula against a loop",
+    "Explain why math.fsum is more accurate than repeated +"
+  ],
+  "concept_tags": [
+    "summation",
+    "sigma-notation",
+    "product-notation",
+    "floating-point"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S009",
+    "S050"
+  ],
+  "entry_point": "summation(f, start, stop); product(f, start, stop); mean(xs); sum_of_squares(n); accurate_sum(xs)",
+  "hints": [
+    "`for i in range(start, stop + 1): total += f(i)` — note the `+ 1`.",
+    "A product starts from 1. For the mean, `summation(lambda i: xs[i], 0, len(xs) - 1) / len(xs)`.",
+    "`n * (n + 1) * (2 * n + 1) // 6` is exact because the product is always divisible by 6."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_sum_odd_numbers",
+      "advice": "Include the last index: loop over `range(start, stop + 1)`."
+    },
+    {
+      "test": "test_empty_ranges",
+      "advice": "Start the sum at 0 and the product at 1; an empty range leaves them unchanged."
+    },
+    {
+      "test": "test_mean",
+      "advice": "Divide the sum by the number of items and raise ValueError for an empty list."
+    },
+    {
+      "test": "test_closed_form_matches_loop",
+      "advice": "Use `n * (n + 1) * (2 * n + 1) // 6`."
+    },
+    {
+      "test": "test_accurate_sum",
+      "advice": "Return `math.fsum(xs)`."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

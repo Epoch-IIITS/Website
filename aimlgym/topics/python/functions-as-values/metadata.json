@@ -1,0 +1,81 @@
+{
+  "id": "PY-17",
+  "slug": "functions-as-values",
+  "title": "Functions as Values",
+  "topic": "python",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-16"
+  ],
+  "prerequisite_slugs": [
+    "unique-words"
+  ],
+  "learning_objectives": [
+    "Pass functions as arguments and return them from functions",
+    "Write lambda expressions and sort with key=",
+    "Accept *args, **kwargs and keyword-only parameters",
+    "Write a simple decorator with functools.wraps"
+  ],
+  "concept_tags": [
+    "higher-order-functions",
+    "lambda",
+    "args-kwargs",
+    "decorators",
+    "closures"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S042",
+    "S048",
+    "S001"
+  ],
+  "entry_point": "pipeline(*funcs); sort_words(words); format_record(name, *scores, sep=', ', **extra); count_calls(func)",
+  "hints": [
+    "Inside `run`, loop `for f in funcs: x = f(x)`, then return x.",
+    "`key=lambda w: (len(w), w)`; build the score text with `sep.join(str(s) for s in scores)`.",
+    "For extras: `\", \".join(f\"{k}={v}\" for k, v in sorted(extra.items()))`. For the decorator, copy the pattern from the lesson."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_pipeline_order",
+      "advice": "Apply the functions left to right, feeding each result into the next."
+    },
+    {
+      "test": "test_sort_words",
+      "advice": "Use `sorted` (it returns a new list) with a tuple key `(len(w), w)`."
+    },
+    {
+      "test": "test_format_extra_sorted",
+      "advice": "Sort `extra.items()` by key and join scores with the given `sep`."
+    },
+    {
+      "test": "test_count_calls",
+      "advice": "Initialise `wrapper.calls = 0` and increment it inside the wrapper; return func's result."
+    },
+    {
+      "test": "test_wraps_keeps_name",
+      "advice": "Decorate the wrapper with `@functools.wraps(func)`."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

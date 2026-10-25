@@ -1,0 +1,73 @@
+{
+  "id": "PY-16",
+  "slug": "unique-words",
+  "title": "Unique Words in Order",
+  "topic": "python",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-15"
+  ],
+  "prerequisite_slugs": [
+    "standard-library"
+  ],
+  "learning_objectives": [
+    "Normalise tokens (case, punctuation)",
+    "Use a set for fast membership",
+    "Preserve first-occurrence order"
+  ],
+  "concept_tags": [
+    "sets",
+    "strings",
+    "deduplication",
+    "order-preservation"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "unique_words(sentence)",
+  "hints": [
+    "`token.strip(string.punctuation).lower()` normalises one token.",
+    "Skip a token if it is empty after normalising.",
+    "Use a `seen` set alongside an output list to keep order."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_order_not_sorted",
+      "advice": "Don't sort; keep first-occurrence order."
+    },
+    {
+      "test": "test_apostrophe_and_dash",
+      "advice": "Strip punctuation only from the ends (str.strip), and drop empty tokens."
+    },
+    {
+      "test": "test_multiple_spaces",
+      "advice": "Use `split()` with no argument to handle tabs/newlines/multiple spaces."
+    },
+    {
+      "test": "test_only_punctuation",
+      "advice": "Tokens that are empty after stripping must not be added."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

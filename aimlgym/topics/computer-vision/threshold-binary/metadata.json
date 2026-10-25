@@ -1,0 +1,74 @@
+{
+  "id": "CV-07",
+  "slug": "threshold-binary",
+  "title": "Binary Thresholding",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "CV-02"
+  ],
+  "prerequisite_slugs": [
+    "rgb-to-gray"
+  ],
+  "learning_objectives": [
+    "Create binary masks from grayscale images",
+    "Invert masks and measure foreground fraction",
+    "Apply a mask to an image"
+  ],
+  "concept_tags": [
+    "thresholding",
+    "segmentation",
+    "masks"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S023"
+  ],
+  "entry_point": "threshold(gray, t, invert=False); foreground_fraction(mask); apply_mask(img, mask)",
+  "hints": [
+    "`m = np.asarray(gray) > t`; return `~m` if invert.",
+    "`float(np.mean(mask))`.",
+    "For colour: `mask[..., None]` broadcasts over channels; use `np.where`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_threshold",
+      "advice": "Use strict > t (127 is not foreground at t = 127)."
+    },
+    {
+      "test": "test_apply_color",
+      "advice": "Broadcast the mask over channels with mask[..., None]."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Return a new array (np.where) instead of assigning into img."
+    },
+    {
+      "test": "test_shape_mismatch",
+      "advice": "Compare img.shape[:2] with mask.shape."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

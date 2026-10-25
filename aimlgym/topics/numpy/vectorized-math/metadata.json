@@ -1,0 +1,85 @@
+{
+  "id": "NP-02",
+  "slug": "vectorized-math",
+  "title": "Vectorised Arithmetic and ufuncs",
+  "topic": "numpy",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-01",
+    "MA-03"
+  ],
+  "prerequisite_slugs": [
+    "array-info",
+    "sigmoid-function"
+  ],
+  "learning_objectives": [
+    "Replace element-by-element loops with array expressions",
+    "Use universal functions (np.exp, np.sqrt, np.abs, np.where)",
+    "Check a vectorised result against a loop with np.allclose",
+    "Write a sigmoid that never overflows on arrays"
+  ],
+  "concept_tags": [
+    "vectorisation",
+    "ufuncs",
+    "elementwise",
+    "allclose"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S007",
+    "S081"
+  ],
+  "entry_point": "dot_loop(a, b); dot_vectorized(a, b); fahrenheit(celsius); rms(x); sigmoid(x)",
+  "hints": [
+    "`a = np.asarray(a, dtype=float)`; compare `a.shape != b.shape` before multiplying; `float((a * b).sum())`.",
+    "`float(np.sqrt(np.mean(x ** 2)))` for RMS.",
+    "`e = np.exp(-np.abs(x)); return np.where(x >= 0, 1 / (1 + e), e / (1 + e))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_dot_matches_loop",
+      "advice": "Multiply the arrays element-wise and call `.sum()`; return a Python float."
+    },
+    {
+      "test": "test_dot_mismatch",
+      "advice": "Compare the shapes and raise ValueError before multiplying."
+    },
+    {
+      "test": "test_rms",
+      "advice": "Square, average, then take the square root."
+    },
+    {
+      "test": "test_sigmoid_stable",
+      "advice": "Avoid `np.exp(-x)` for very negative x; use `np.exp(-np.abs(x))` with `np.where`."
+    },
+    {
+      "test": "test_sigmoid_shape",
+      "advice": "Keep the input shape: operate on the whole array without flattening."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

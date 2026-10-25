@@ -1,0 +1,78 @@
+{
+  "id": "XA-12",
+  "slug": "lime-local",
+  "title": "LIME-style Local Linear Explanation",
+  "topic": "explainable-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "XA-10",
+    "ML-19"
+  ],
+  "prerequisite_slugs": [
+    "surrogate-fidelity",
+    "sklearn-grid-search"
+  ],
+  "learning_objectives": [
+    "Perturb an instance with binary feature masks",
+    "Weight samples by proximity with an exponential kernel",
+    "Fit a weighted linear model and read local coefficients"
+  ],
+  "concept_tags": [
+    "lime",
+    "local-surrogate",
+    "weighted-least-squares",
+    "perturbation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S025",
+    "S024"
+  ],
+  "entry_point": "sample_masks(n, d, rng); lime_explain(predict, x, baseline, masks, kernel_width=0.75)",
+  "hints": [
+    "Inputs: `Xz = masks * x + (1 - masks) * baseline`; `y = predict(Xz)`.",
+    "`D = 1 - masks.mean(axis=1)`; `w = np.exp(-D**2 / kernel_width**2)`.",
+    "`A = np.column_stack([ones, masks]) * sqrt(w)[:, None]`; `beta = lstsq(A, y * sqrt(w))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_linear_exact",
+      "advice": "Fit on the binary masks (with intercept), not on the raw perturbed inputs."
+    },
+    {
+      "test": "test_weights",
+      "advice": "D = fraction of features removed; weight = exp(−D²/σ²)."
+    },
+    {
+      "test": "test_masks_recipe",
+      "advice": "Row 0 is all ones; other rows are rng.random((n−1, d)) < 0.5."
+    },
+    {
+      "test": "test_matches_shapley_linear_random_masks",
+      "advice": "Scale both the design rows and targets by sqrt(weight) before lstsq."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

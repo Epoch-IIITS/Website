@@ -1,0 +1,74 @@
+{
+  "id": "AG-10",
+  "slug": "memory-window",
+  "title": "Conversation Memory Window by Hand",
+  "topic": "agentic-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "AG-06"
+  ],
+  "prerequisite_slugs": [
+    "react-loop"
+  ],
+  "learning_objectives": [
+    "Fit a conversation into a token budget",
+    "Always keep the system message and the latest messages",
+    "Replace dropped history with a summary marker"
+  ],
+  "concept_tags": [
+    "memory",
+    "context-window",
+    "token-budget",
+    "agents"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S037",
+    "S022"
+  ],
+  "entry_point": "count_tokens(text); fit_context(messages, budget)",
+  "hints": [
+    "Split off the system message: `head = messages[:1] if messages and messages[0]['role'] == 'system' else []`.",
+    "Walk `reversed(rest)` adding while `used + cost <= budget`; stop at the first that doesn't fit.",
+    "If dropped > 0: build the marker; while it doesn't fit, pop the oldest kept message (unless only one is left) and recompute n."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Keep newest messages first; if the marker doesn't fit, drop the oldest kept message."
+    },
+    {
+      "test": "test_budget_respected",
+      "advice": "Count 4 overhead tokens per message, including the marker."
+    },
+    {
+      "test": "test_marker_fits",
+      "advice": "Insert the marker right after the system message when something was dropped."
+    },
+    {
+      "test": "test_no_system",
+      "advice": "Only keep a system message if the first message has role 'system'."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

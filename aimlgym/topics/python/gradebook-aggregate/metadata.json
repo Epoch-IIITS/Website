@@ -1,0 +1,73 @@
+{
+  "id": "PY-18",
+  "slug": "gradebook-aggregate",
+  "title": "Gradebook Aggregation",
+  "topic": "python",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-17"
+  ],
+  "prerequisite_slugs": [
+    "functions-as-values"
+  ],
+  "learning_objectives": [
+    "Group records with dict.setdefault / defaultdict",
+    "Sort with a key function and tie-breaking",
+    "Round results correctly"
+  ],
+  "concept_tags": [
+    "dictionaries",
+    "grouping",
+    "sorting",
+    "lambda"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "gradebook(records)",
+  "hints": [
+    "Skip a record unless `0 <= score <= 100`.",
+    "`groups.setdefault(name, []).append(score)` groups scores.",
+    "Sort with `key=lambda r: (-r[1], r[0])` after computing (name, avg, count)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Ties on average must be ordered by name ascending; reverse=True breaks this."
+    },
+    {
+      "test": "test_rounding",
+      "advice": "Average raw scores, then round once with round(x, 2)."
+    },
+    {
+      "test": "test_boundaries_included",
+      "advice": "0 and 100 are valid scores (inclusive range)."
+    },
+    {
+      "test": "test_only_invalid",
+      "advice": "A name with no valid scores should not appear."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "LM-07",
+  "slug": "scaled-dot-attention",
+  "title": "Scaled Dot-Product Attention",
+  "topic": "llms",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-03",
+    "NP-06"
+  ],
+  "prerequisite_slugs": [
+    "temperature-softmax",
+    "matmul-dot"
+  ],
+  "learning_objectives": [
+    "Compute attention scores QKᵀ/√d",
+    "Apply softmax row-wise to get attention weights",
+    "Mix value vectors with the weights; support masks"
+  ],
+  "concept_tags": [
+    "attention",
+    "transformers",
+    "softmax",
+    "queries-keys-values"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S019",
+    "S013"
+  ],
+  "entry_point": "attention(Q, K, V, mask=None)",
+  "hints": [
+    "`scores = Q @ K.T / np.sqrt(Q.shape[-1])`.",
+    "`scores = np.where(mask, scores, -np.inf)`; check `mask.any(axis=1)` for every row.",
+    "Stable row softmax, then `weights @ V`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_scaling",
+      "advice": "Divide scores by sqrt(d_k)."
+    },
+    {
+      "test": "test_rows_sum_one",
+      "advice": "Softmax over the key axis (axis=1)."
+    },
+    {
+      "test": "test_mask",
+      "advice": "Set disallowed scores to −inf *before* softmax."
+    },
+    {
+      "test": "test_all_masked_row",
+      "advice": "Raise ValueError if a query has no allowed keys."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

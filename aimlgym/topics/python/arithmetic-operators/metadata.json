@@ -1,0 +1,79 @@
+{
+  "id": "PY-05",
+  "slug": "arithmetic-operators",
+  "title": "Arithmetic Operators",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [
+    "PY-04"
+  ],
+  "prerequisite_slugs": [
+    "input-output"
+  ],
+  "learning_objectives": [
+    "Use //, % and ** alongside + - * /",
+    "Apply operator precedence and parentheses",
+    "Format numbers with :02d and :.2f"
+  ],
+  "concept_tags": [
+    "operators",
+    "integer-division",
+    "modulo",
+    "precedence",
+    "formatting"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S040",
+    "S049"
+  ],
+  "entry_point": "program (reads stdin, prints to stdout)",
+  "hints": [
+    "`hours = total // 3600` and `rest = total % 3600`.",
+    "`minutes = rest // 60`, `seconds = rest % 60`.",
+    "`print(f\"{hours}:{minutes:02d}:{seconds:02d}\")` and `print(f\"{total / 60:.2f} minutes\")`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_padding",
+      "advice": "Pad minutes and seconds with `:02d`."
+    },
+    {
+      "test": "test_zero",
+      "advice": "Use `:.2f` so zero is printed as `0.00`."
+    },
+    {
+      "test": "test_end_of_day",
+      "advice": "Take the remainder after removing hours before computing minutes."
+    },
+    {
+      "test": "test_more_than_a_day",
+      "advice": "Do not wrap hours at 24; just use `total // 3600`."
+    },
+    {
+      "test": "test_minutes_two_decimals",
+      "advice": "Minutes use true division `/`, then `:.2f` formatting."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "id": "LM-08",
+  "slug": "causal-mask",
+  "title": "Causal Masking",
+  "topic": "llms",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-07"
+  ],
+  "prerequisite_slugs": [
+    "scaled-dot-attention"
+  ],
+  "learning_objectives": [
+    "Build a lower-triangular causal mask",
+    "Combine causal and padding masks",
+    "Verify that outputs do not depend on future tokens"
+  ],
+  "concept_tags": [
+    "causal-mask",
+    "padding-mask",
+    "autoregressive",
+    "attention"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S019",
+    "S013"
+  ],
+  "entry_point": "causal_mask(T); padding_mask(lengths, T); combined_mask(lengths, T)",
+  "hints": [
+    "`np.tril(np.ones((T, T), dtype=bool))`.",
+    "`np.arange(T)[None, :] < np.asarray(lengths)[:, None]`.",
+    "`causal[None] & pad[:, None, :]`, then OR with `np.eye(T, dtype=bool)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_causal",
+      "advice": "Use the lower triangle including the diagonal (np.tril)."
+    },
+    {
+      "test": "test_padding",
+      "advice": "Key j is valid iff j < length."
+    },
+    {
+      "test": "test_combined",
+      "advice": "AND the masks over keys, then OR with the identity so the diagonal stays True."
+    },
+    {
+      "test": "test_no_future_leak",
+      "advice": "With a correct causal mask, changing the last token leaves earlier outputs unchanged."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

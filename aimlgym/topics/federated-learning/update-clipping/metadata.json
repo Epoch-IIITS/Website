@@ -1,0 +1,76 @@
+{
+  "id": "FL-09",
+  "slug": "update-clipping",
+  "title": "Clipping Client Updates",
+  "topic": "federated-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-03"
+  ],
+  "prerequisite_slugs": [
+    "client-delta"
+  ],
+  "learning_objectives": [
+    "Clip update vectors to a maximum L2 norm",
+    "Preserve direction while bounding magnitude",
+    "Report how many clients were clipped"
+  ],
+  "concept_tags": [
+    "clipping",
+    "robustness",
+    "privacy",
+    "norms"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S031",
+    "S032"
+  ],
+  "entry_point": "clip_update(delta, max_norm); clip_all(deltas, max_norm)",
+  "hints": [
+    "`n = np.linalg.norm(delta)`.",
+    "Scale factor `min(1.0, max_norm / n)` when `n > 0`.",
+    "Count with `sum(np.linalg.norm(d) > max_norm for d in deltas)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_clip",
+      "advice": "Scale by max_norm / ‖Δ‖ when the norm is too large."
+    },
+    {
+      "test": "test_norm_and_direction",
+      "advice": "Scale the whole vector; don't clip coordinates independently."
+    },
+    {
+      "test": "test_zero",
+      "advice": "The zero vector must stay zero without dividing by zero."
+    },
+    {
+      "test": "test_clip_all",
+      "advice": "Count updates with norm strictly greater than max_norm."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

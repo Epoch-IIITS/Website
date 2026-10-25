@@ -1,0 +1,79 @@
+{
+  "id": "PD-06",
+  "slug": "missing-values",
+  "title": "Finding and Handling Missing Values",
+  "topic": "pandas",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-05"
+  ],
+  "prerequisite_slugs": [
+    "derived-columns"
+  ],
+  "learning_objectives": [
+    "Detect missing values with isna and count them per column",
+    "Drop incomplete rows only for the columns that matter",
+    "Fill missing values with per-column defaults",
+    "Explain how pandas reductions skip NaN, compared with a manual loop"
+  ],
+  "concept_tags": [
+    "missing-values",
+    "isna",
+    "dropna",
+    "fillna",
+    "nan"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S086",
+    "S008"
+  ],
+  "entry_point": "missing_report(df); drop_incomplete(df, cols); fill_defaults(df, defaults); mean_skipping_missing(values)",
+  "hints": [
+    "`{str(c): int(n) for c, n in df.isna().sum().items()}`.",
+    "`df.dropna(subset=list(cols)).reset_index(drop=True)` and `df.fillna(defaults)`.",
+    "Skip `v is None` and floats where `math.isnan(v)`; divide the sum by the count of kept values."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_report",
+      "advice": "Count with `df.isna().sum()` and convert to a dict of ints."
+    },
+    {
+      "test": "test_drop_subset",
+      "advice": "Pass `subset=` to dropna and reset the index."
+    },
+    {
+      "test": "test_fill_defaults",
+      "advice": "`df.fillna(defaults)` returns a new frame; do not fill in place."
+    },
+    {
+      "test": "test_manual_mean",
+      "advice": "Skip None and NaN values; return None when nothing is left."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

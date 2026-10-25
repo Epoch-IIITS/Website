@@ -1,0 +1,81 @@
+{
+  "id": "ST-06",
+  "slug": "probability-basics",
+  "title": "Probability by Counting Outcomes",
+  "topic": "statistics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-04"
+  ],
+  "prerequisite_slugs": [
+    "histogram-bins"
+  ],
+  "learning_objectives": [
+    "Describe a sample space and events as Python data and predicates",
+    "Compute exact probabilities with fractions.Fraction",
+    "Apply the complement and inclusion–exclusion rules",
+    "Test two events for independence"
+  ],
+  "concept_tags": [
+    "probability",
+    "sample-space",
+    "events",
+    "independence",
+    "fractions"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S011",
+    "S010",
+    "S058"
+  ],
+  "entry_point": "two_dice(); probability(space, event); complement(space, event); union(space, a, b); independent(space, a, b)",
+  "hints": [
+    "`[(d1, d2) for d1 in range(1, 7) for d2 in range(1, 7)]` builds the space in the right order.",
+    "`Fraction(sum(1 for o in space if event(o)), len(space))` is the probability.",
+    "The intersection event is `lambda o: a(o) and b(o)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_space",
+      "advice": "Use two nested loops (or a nested comprehension) over 1..6, first die outer."
+    },
+    {
+      "test": "test_probability_exact",
+      "advice": "Return `Fraction(count, len(space))`, not a float."
+    },
+    {
+      "test": "test_union_overlap",
+      "advice": "Subtract the probability of both events, which inclusion–exclusion counts twice."
+    },
+    {
+      "test": "test_independence",
+      "advice": "Compare P(A and B) with P(A) * P(B) using Fractions."
+    },
+    {
+      "test": "test_empty_space",
+      "advice": "Raise ValueError when the sample space is empty."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

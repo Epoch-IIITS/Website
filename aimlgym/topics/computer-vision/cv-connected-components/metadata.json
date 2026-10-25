@@ -1,0 +1,77 @@
+{
+  "id": "CV-25",
+  "slug": "cv-connected-components",
+  "title": "Connected Components with OpenCV",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-24"
+  ],
+  "prerequisite_slugs": [
+    "non-max-suppression"
+  ],
+  "learning_objectives": [
+    "Label blobs with cv2.connectedComponentsWithStats",
+    "Read each component's area, bounding box and centroid from the stats table",
+    "Compare 4- and 8-connectivity and filter small components"
+  ],
+  "concept_tags": [
+    "opencv",
+    "connected-components",
+    "segmentation",
+    "counting"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S121",
+    "S023"
+  ],
+  "entry_point": "label_objects(mask, connectivity=8, min_area=1)",
+  "hints": [
+    "Validate the mask and connectivity first.",
+    "`n, labels, stats, centroids = cv2.connectedComponentsWithStats(mask, connectivity=connectivity)`.",
+    "Loop over `range(1, n)`: `x, y, w, h, area = stats[i]` and keep those with `area >= min_area`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_counts_and_areas",
+      "advice": "Skip label 0, the background, and report stats areas in label order."
+    },
+    {
+      "test": "test_min_area",
+      "advice": "Keep only components with area >= min_area."
+    },
+    {
+      "test": "test_connectivity",
+      "advice": "Pass connectivity through to connectedComponentsWithStats."
+    },
+    {
+      "test": "test_types_and_empty",
+      "advice": "Convert stats to ints and centroids to floats."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

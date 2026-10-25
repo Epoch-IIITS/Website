@@ -1,0 +1,81 @@
+{
+  "id": "ML-27",
+  "slug": "ml-capstone",
+  "title": "Capstone: an End-to-End Tabular Model",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-25",
+    "ML-18"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-kmeans",
+    "sklearn-column-transformer"
+  ],
+  "learning_objectives": [
+    "Combine a stratified split, a ColumnTransformer and a classifier in one pipeline",
+    "Tune the model with cross-validated grid search on the training set only",
+    "Report a baseline, the cross-validated score and the final test scores"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "end-to-end",
+    "pipeline",
+    "grid-search",
+    "evaluation"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "pandas",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S091"
+  ],
+  "entry_point": "end_to_end(df, target, numeric, categorical, seed=0)",
+  "hints": [
+    "Check `target in df.columns` and that its values are exactly {0, 1}; split before anything is fitted.",
+    "Build the ColumnTransformer as in the previous step and wrap it with the model in a Pipeline.",
+    "Use `search.best_estimator_.predict_proba(X_test)[:, 1]` for the test AUC."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_beats_baseline",
+      "advice": "Tune with GridSearchCV on the training split, then score the best estimator on the test split."
+    },
+    {
+      "test": "test_baseline_is_majority_share",
+      "advice": "Split with test_size=0.25, stratify=y, random_state=seed before fitting anything."
+    },
+    {
+      "test": "test_model_handles_new_rows",
+      "advice": "Impute and use OneHotEncoder(handle_unknown='ignore') inside the pipeline."
+    },
+    {
+      "test": "test_invalid_target",
+      "advice": "Raise ValueError if the target column is missing or not 0/1."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

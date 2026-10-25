@@ -1,0 +1,76 @@
+{
+  "id": "RL-09",
+  "slug": "value-iteration",
+  "title": "Value Iteration",
+  "topic": "reinforcement-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-08"
+  ],
+  "prerequisite_slugs": [
+    "policy-evaluation"
+  ],
+  "learning_objectives": [
+    "Apply the Bellman optimality backup",
+    "Extract a greedy policy from values",
+    "Solve a small gridworld optimally"
+  ],
+  "concept_tags": [
+    "dynamic-programming",
+    "value-iteration",
+    "optimal-policy",
+    "bellman-optimality"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033",
+    "S034"
+  ],
+  "entry_point": "q_from_v(P, V, gamma); value_iteration(P, gamma=0.9, theta=1e-10, max_iter=10000)",
+  "hints": [
+    "`nA = len(P[0])`; `Q = np.zeros((nS, nA))`.",
+    "`Q[s, a] = sum(p * (r + gamma * (0 if d else V[s2])) for p, s2, r, d in P[s][a])`.",
+    "Loop: `Q = q_from_v(P, V, gamma); new = Q.max(axis=1)`; policy = `q_from_v(P, V, gamma).argmax(axis=1)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_grid_values",
+      "advice": "V(s) = max_a Σ p[r + γ(1−done)V(s')]."
+    },
+    {
+      "test": "test_q_from_v",
+      "advice": "Sum over outcomes weighted by probability; terminal outcomes don't bootstrap."
+    },
+    {
+      "test": "test_avoids_pit",
+      "advice": "The greedy policy uses argmax over actions of Q."
+    },
+    {
+      "test": "test_ties_lowest",
+      "advice": "np.argmax gives the lowest action on ties."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

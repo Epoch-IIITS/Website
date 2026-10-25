@@ -1,0 +1,78 @@
+{
+  "id": "FL-10",
+  "slug": "fedavg-training",
+  "title": "Full FedAvg Training Loop",
+  "topic": "federated-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-07",
+    "FL-08"
+  ],
+  "prerequisite_slugs": [
+    "fedavg-round",
+    "client-sampling"
+  ],
+  "learning_objectives": [
+    "Combine sampling, local training and aggregation over many rounds",
+    "Track global loss per round",
+    "Compare IID and non-IID convergence"
+  ],
+  "concept_tags": [
+    "fedavg",
+    "training-loop",
+    "convergence",
+    "non-iid"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S028",
+    "S032"
+  ],
+  "entry_point": "global_loss(w, clients); train_fedavg(clients, w0, rounds, fraction, lr, epochs, batch_size, seed)",
+  "hints": [
+    "Global loss: total squared error over all clients / total samples.",
+    "Client seed: `seed * 1000 + t * K + k`.",
+    "Aggregate only over `S_t` with weights `len(y_k)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_first_round_matches_manual",
+      "advice": "Use seed*1000 + t*K + k for client k in round t and average only sampled clients."
+    },
+    {
+      "test": "test_global_loss",
+      "advice": "Global loss = total squared error / total number of samples."
+    },
+    {
+      "test": "test_converges_iid",
+      "advice": "Every round must start local training from the current global w."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "All randomness must come from seeded generators."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "DL-12",
+  "slug": "torch-gradcheck",
+  "title": "Custom Gradients and gradcheck",
+  "topic": "deep-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-11",
+    "DL-09"
+  ],
+  "prerequisite_slugs": [
+    "dense-backward",
+    "torch-autograd"
+  ],
+  "learning_objectives": [
+    "Write a torch.autograd.Function with its own forward and backward",
+    "Verify a backward pass numerically with torch.autograd.gradcheck",
+    "Use float64 inputs for reliable finite-difference checks"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "autograd",
+    "gradient-checking",
+    "custom-function"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S110",
+    "S092"
+  ],
+  "entry_point": "class Softplus(torch.autograd.Function); passes_gradcheck(fn, shape, seed=0)",
+  "hints": [
+    "In forward: `ctx.save_for_backward(x)`; in backward: `(x,) = ctx.saved_tensors`.",
+    "The derivative of softplus is the sigmoid, so return `grad_output * torch.sigmoid(x)`.",
+    "`x = torch.randn(shape, generator=g, dtype=torch.float64, requires_grad=True)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_backward_is_sigmoid",
+      "advice": "backward must return grad_output * torch.sigmoid(x)."
+    },
+    {
+      "test": "test_wrong_backward_fails",
+      "advice": "Pass raise_exception=False so gradcheck returns False instead of raising."
+    },
+    {
+      "test": "test_stable_for_large_inputs",
+      "advice": "Use torch.logaddexp(x, torch.zeros_like(x)) instead of log(1 + exp(x))."
+    },
+    {
+      "test": "test_uses_custom_function",
+      "advice": "softplus should call Softplus.apply(x)."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

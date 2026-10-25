@@ -1,0 +1,75 @@
+{
+  "id": "RL-07",
+  "slug": "ucb-bandit",
+  "title": "UCB1 Bandit",
+  "topic": "reinforcement-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-06"
+  ],
+  "prerequisite_slugs": [
+    "bandit-incremental"
+  ],
+  "learning_objectives": [
+    "Select actions by optimism in the face of uncertainty",
+    "Implement UCB1 with initial exploration of every arm",
+    "Measure cumulative regret"
+  ],
+  "concept_tags": [
+    "bandits",
+    "ucb",
+    "exploration",
+    "regret"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033"
+  ],
+  "entry_point": "ucb_select(q, n, t, c=2.0); run_bandit(means, steps, seed, policy='ucb', epsilon=0.1, c=2.0)",
+  "hints": [
+    "Untried arms: `zeros = np.flatnonzero(n == 0)`; return `zeros[0]` if any.",
+    "Scores: `q + c * np.sqrt(np.log(t) / n)`; `np.argmax`.",
+    "Update: `n[a] += 1; q[a] += (r - q[a]) / n[a]`; regret = `steps*max(means) - sum(means[a])`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_untried_first",
+      "advice": "Arms with N = 0 must be selected before computing bonuses."
+    },
+    {
+      "test": "test_select",
+      "advice": "Bonus = c·sqrt(ln t / N(a)) using the total time t."
+    },
+    {
+      "test": "test_regret_definition",
+      "advice": "Regret uses true means of the chosen arms, not observed rewards."
+    },
+    {
+      "test": "test_learns_best",
+      "advice": "Update counts and sample averages after every pull."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

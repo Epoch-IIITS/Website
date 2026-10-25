@@ -1,0 +1,74 @@
+{
+  "id": "NL-08",
+  "slug": "bigram-counts",
+  "title": "Bigram Counts with Sentence Markers",
+  "topic": "nlp",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "NL-04"
+  ],
+  "prerequisite_slugs": [
+    "stopword-counts"
+  ],
+  "learning_objectives": [
+    "Pad sentences with <s> and </s>",
+    "Count bigrams and unigram contexts",
+    "Estimate maximum-likelihood bigram probabilities"
+  ],
+  "concept_tags": [
+    "n-grams",
+    "bigrams",
+    "language-models",
+    "mle"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S017",
+    "S018"
+  ],
+  "entry_point": "bigram_counts(sentences); bigram_prob(w_prev, w, counts)",
+  "hints": [
+    "`toks = ['<s>'] + sent + ['</s>']`.",
+    "`for a, b in zip(toks, toks[1:]): bigrams[(a, b)] += 1; contexts[a] += 1`.",
+    "`counts['bigrams'][(w_prev, w)] / counts['contexts'][w_prev]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_counts",
+      "advice": "Pad every sentence with <s> and </s> before pairing."
+    },
+    {
+      "test": "test_no_cross_sentence",
+      "advice": "Count pairs within each sentence only."
+    },
+    {
+      "test": "test_unknown_context",
+      "advice": "Raise KeyError when the context was never seen."
+    },
+    {
+      "test": "test_sums_to_one",
+      "advice": "Divide by context counts (first element of bigrams), not all unigram counts."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

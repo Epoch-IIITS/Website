@@ -1,0 +1,79 @@
+{
+  "id": "NL-03",
+  "slug": "nlp-countvectorizer",
+  "title": "Counting Words with Counter and CountVectorizer",
+  "topic": "nlp",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-02",
+    "ML-02"
+  ],
+  "prerequisite_slugs": [
+    "tokenize-normalize",
+    "sklearn-estimator-api"
+  ],
+  "learning_objectives": [
+    "Find the most common words with collections.Counter",
+    "Turn documents into a word-count matrix with CountVectorizer",
+    "Remove stop words and rare words with stop_words and min_df"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "word-counts",
+    "stop-words",
+    "vectorisation"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S126",
+    "S012"
+  ],
+  "entry_point": "top_words(texts, k, stop_words=()); count_matrix(texts, stop_words=None, min_df=1)",
+  "hints": [
+    "Update one Counter with the filtered tokens of every text.",
+    "`sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:k]` gives the ordering.",
+    "`vec = CountVectorizer(...)`; `X = vec.fit_transform(texts)`; return `list(vec.get_feature_names_out())` and `X.toarray().tolist()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_count_matrix_example",
+      "advice": "Fit CountVectorizer(stop_words=...) and return get_feature_names_out() and the dense rows."
+    },
+    {
+      "test": "test_top_words_ties_alphabetical",
+      "advice": "Sort by (-count, word)."
+    },
+    {
+      "test": "test_min_df",
+      "advice": "Pass min_df to CountVectorizer."
+    },
+    {
+      "test": "test_single_letters_dropped_and_types",
+      "advice": "Return plain str and int values."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

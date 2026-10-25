@@ -1,0 +1,79 @@
+{
+  "id": "LM-16",
+  "slug": "lm-tiny-gpt",
+  "title": "A Tiny GPT in PyTorch",
+  "topic": "llms",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-15",
+    "LM-11"
+  ],
+  "prerequisite_slugs": [
+    "kv-cache",
+    "lm-transformer-module"
+  ],
+  "learning_objectives": [
+    "Assemble token and position embeddings, transformer blocks and an output head into a GPT",
+    "Train it on character windows with next-token cross-entropy",
+    "Generate text greedily with a context window"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "language-model",
+    "gpt",
+    "transformer",
+    "text-generation"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S128",
+    "S129"
+  ],
+  "entry_point": "class TinyGPT(nn.Module); train_tiny_gpt(text, context=16, steps=200, batch_size=32, lr=3e-3, seed=0); generate(model, stoi, itos, prompt, n_new)",
+  "hints": [
+    "In forward: `T = idx.shape[1]`, add `self.pos_emb(torch.arange(T))` to the token embeddings, run the encoder with the mask, then `self.head(self.ln_f(x))`.",
+    "Build a batch with `torch.stack([data[i:i + context] for i in ix])` and the targets shifted by one.",
+    "Generation loop: crop `ids[-model.context:]`, take `logits[0, -1].argmax()`, append; use `torch.no_grad()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_loss_falls",
+      "advice": "Targets are the inputs shifted by one; use cross-entropy over all positions."
+    },
+    {
+      "test": "test_generates_pattern",
+      "advice": "Greedy generation takes argmax of the last position's logits."
+    },
+    {
+      "test": "test_output_shape_and_causality",
+      "advice": "Pass the causal mask and is_causal=True to the encoder."
+    },
+    {
+      "test": "test_long_prompt_is_cropped",
+      "advice": "Feed only the last model.context ids when generating."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "id": "RL-14",
+  "slug": "rl-frozenlake-q",
+  "title": "Q-Learning on FrozenLake",
+  "topic": "reinforcement-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-13",
+    "RL-04"
+  ],
+  "prerequisite_slugs": [
+    "q-learning",
+    "rl-gymnasium-env"
+  ],
+  "learning_objectives": [
+    "Train a tabular Q-learning agent on gymnasium's FrozenLake-v1",
+    "Explore with a decaying epsilon and break ties between equal Q-values randomly",
+    "Evaluate the greedy policy by its success rate on new episodes"
+  ],
+  "concept_tags": [
+    "gymnasium",
+    "q-learning",
+    "frozenlake",
+    "exploration"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "gymnasium"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S141",
+    "S033"
+  ],
+  "entry_point": "q_learning(env, episodes, alpha=0.1, gamma=0.99, eps_min=0.05, seed=0); success_rate(env, Q, episodes=200, seed=10000)",
+  "hints": [
+    "`n_states, n_actions = env.observation_space.n, env.action_space.n`; `Q = np.zeros((n_states, n_actions))`.",
+    "`target = r + (0.0 if terminated else gamma * Q[next_obs].max())`; `Q[obs, a] += alpha * (target - Q[obs, a])`.",
+    "In `success_rate`, add the final reward of each episode and divide by the number of episodes."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_deterministic_lake_solved",
+      "advice": "Break ties randomly among maximal actions and decay epsilon."
+    },
+    {
+      "test": "test_shape_and_terminal_rows",
+      "advice": "Do not bootstrap from terminal states; their rows stay at zero."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "Seed the generator and each env.reset(seed=seed + ep)."
+    },
+    {
+      "test": "test_untrained_policy_fails",
+      "advice": "success_rate uses argmax of Q and counts the final reward."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

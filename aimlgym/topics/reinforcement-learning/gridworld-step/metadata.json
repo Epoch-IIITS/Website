@@ -1,0 +1,74 @@
+{
+  "id": "RL-02",
+  "slug": "gridworld-step",
+  "title": "Gridworld Transition Function",
+  "topic": "reinforcement-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-01"
+  ],
+  "prerequisite_slugs": [
+    "discounted-return"
+  ],
+  "learning_objectives": [
+    "Encode an environment as states, actions, rewards and terminal flags",
+    "Implement deterministic transitions with walls and boundaries",
+    "Build the full transition table P"
+  ],
+  "concept_tags": [
+    "environments",
+    "mdp",
+    "gridworld",
+    "transitions"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033",
+    "S035"
+  ],
+  "entry_point": "class GridWorld(rows): step(state, action), build_P()",
+  "hints": [
+    "Store `self.grid = rows`; `cell(s)` returns `rows[s // n_cols][s % n_cols]`.",
+    "Target `(r + dr, c + dc)`; if outside or a wall, stay.",
+    "Reward/done from the target cell: G → (10, True), X → (−10, True), else (−1, False)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_moves",
+      "advice": "State id = row * n_cols + col; action 1 = right, 2 = down."
+    },
+    {
+      "test": "test_walls_and_bounds",
+      "advice": "Moves into walls or off-grid keep the agent in place with reward −1."
+    },
+    {
+      "test": "test_goal_and_pit",
+      "advice": "Goal gives +10 and pit −10, both terminal."
+    },
+    {
+      "test": "test_P",
+      "advice": "Terminal and wall states map to themselves with reward 0 and done=True."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

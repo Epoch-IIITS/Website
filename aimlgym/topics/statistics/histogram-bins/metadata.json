@@ -1,0 +1,73 @@
+{
+  "id": "ST-04",
+  "slug": "histogram-bins",
+  "title": "Histogram with Equal-Width Bins",
+  "topic": "statistics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-01"
+  ],
+  "prerequisite_slugs": [
+    "mean-variance"
+  ],
+  "learning_objectives": [
+    "Compute equal-width bin edges",
+    "Assign values to bins including the right edge",
+    "Handle values outside the range"
+  ],
+  "concept_tags": [
+    "histograms",
+    "binning",
+    "distributions"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S010",
+    "S007"
+  ],
+  "entry_point": "histogram(data, bins, lo=None, hi=None)",
+  "hints": [
+    "Resolve lo/hi defaults first, then `w = (hi - lo) / bins`.",
+    "`edges = [lo + j * w for j in range(bins + 1)]`.",
+    "For each x in range, `j = int((x - lo) / w)`; if `j == bins` set `j = bins - 1`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_max_in_last_bin",
+      "advice": "The maximum value must go in the last (closed) bin — clamp index bins → bins−1."
+    },
+    {
+      "test": "test_explicit_range_outside",
+      "advice": "Skip values below lo or above hi."
+    },
+    {
+      "test": "test_constant_data",
+      "advice": "When lo == hi, widen to [lo−0.5, hi+0.5]."
+    },
+    {
+      "test": "test_matches_numpy_convention",
+      "advice": "A value exactly on an interior edge belongs to the bin on its right."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

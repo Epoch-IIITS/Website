@@ -1,0 +1,83 @@
+{
+  "id": "FA-12",
+  "slug": "response-models",
+  "title": "Response Models and Status Codes",
+  "topic": "fastapi",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-11"
+  ],
+  "prerequisite_slugs": [
+    "fastapi-errors"
+  ],
+  "learning_objectives": [
+    "Separate input and output models so secrets never leave the API",
+    "Set success status codes such as 201 and 204",
+    "Return lists of models and handle conflicts with 409",
+    "Store a password hash instead of the password"
+  ],
+  "concept_tags": [
+    "fastapi",
+    "response-model",
+    "status-codes",
+    "crud",
+    "security"
+  ],
+  "permitted_packages": [
+    "fastapi"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S075",
+    "S070",
+    "S066"
+  ],
+  "entry_point": "class UserIn; class UserOut; create_app()",
+  "hints": [
+    "Add `response_model=UserOut, status_code=201` to the POST decorator and store `password_hash` instead of `password`.",
+    "Keep a counter (e.g. `state = {\"next_id\": 1}`) so deleted ids are not reused; check for an existing username first.",
+    "`@app.delete(\"/users/{user_id}\", status_code=204)` and return `None`; `response_model=list[UserOut]` for the list."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_create_201_without_secrets",
+      "advice": "Use `response_model=UserOut` and `status_code=201`, and never store the raw password."
+    },
+    {
+      "test": "test_input_validation",
+      "advice": "Add the username pattern and length limits, the email pattern and an 8-character password minimum."
+    },
+    {
+      "test": "test_duplicate_409",
+      "advice": "Check for an existing username before creating and raise HTTPException(409)."
+    },
+    {
+      "test": "test_list_and_read",
+      "advice": "Use `response_model=list[UserOut]` for the list and return 404 for unknown ids."
+    },
+    {
+      "test": "test_delete_204_and_no_reuse",
+      "advice": "Declare `status_code=204`, return None, and keep a separate id counter."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

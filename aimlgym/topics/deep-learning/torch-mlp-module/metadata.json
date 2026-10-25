@@ -1,0 +1,76 @@
+{
+  "id": "DL-06",
+  "slug": "torch-mlp-module",
+  "title": "Models with nn.Module",
+  "topic": "deep-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-05"
+  ],
+  "prerequisite_slugs": [
+    "torch-tensors"
+  ],
+  "learning_objectives": [
+    "Define a model as an nn.Module subclass with layers created in __init__",
+    "Compose layers with nn.Sequential and nn.Linear",
+    "Count and inspect a model's registered parameters"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "nn-module",
+    "mlp",
+    "parameters"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S104",
+    "S039"
+  ],
+  "entry_point": "class MLP(nn.Module); count_parameters(model)",
+  "hints": [
+    "Start `__init__` with `super().__init__()` so the module can register layers.",
+    "`self.net = nn.Sequential(nn.Linear(...), nn.ReLU(), nn.Linear(...))`; `forward` returns `self.net(x)`.",
+    "`sum(p.numel() for p in model.parameters())`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_output_shape",
+      "advice": "Build self.net from Linear, ReLU, Linear and return self.net(x) in forward."
+    },
+    {
+      "test": "test_is_module_with_registered_layers",
+      "advice": "Store the layers in an nn.Sequential attribute named net."
+    },
+    {
+      "test": "test_forward_matches_manual",
+      "advice": "The layers are Linear → ReLU → Linear with no activation at the end."
+    },
+    {
+      "test": "test_count_is_int_and_sees_new_modules",
+      "advice": "Sum p.numel() over model.parameters() and return an int."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

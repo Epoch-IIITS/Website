@@ -1,0 +1,73 @@
+{
+  "id": "XA-03",
+  "slug": "decision-path",
+  "title": "Tracing a Decision Path",
+  "topic": "explainable-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-21"
+  ],
+  "prerequisite_slugs": [
+    "decision-stump-gini"
+  ],
+  "learning_objectives": [
+    "Traverse a tree model represented as nested dicts",
+    "Record each condition tested",
+    "Generate a rule-style explanation"
+  ],
+  "concept_tags": [
+    "decision-trees",
+    "interpretable-models",
+    "rules",
+    "intrinsic-explanations"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S024"
+  ],
+  "entry_point": "predict_with_path(tree, x, feature_names)",
+  "hints": [
+    "Loop `while 'value' not in node`.",
+    "Compare `x[node['feature']] <= node['threshold']`.",
+    "Append `f\"{name} <= {t}\"` or `f\"{name} > {t}\"` then move to the child."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_boundary_left",
+      "advice": "Go left when x_j <= threshold (inclusive)."
+    },
+    {
+      "test": "test_right_branch",
+      "advice": "Right-branch conditions read 'name > t'."
+    },
+    {
+      "test": "test_malformed",
+      "advice": "Raise ValueError when a node lacks feature/threshold/left/right and isn't a leaf."
+    },
+    {
+      "test": "test_leaf_root",
+      "advice": "A tree that is just a leaf has an empty path."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

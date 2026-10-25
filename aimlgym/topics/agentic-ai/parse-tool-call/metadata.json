@@ -1,0 +1,76 @@
+{
+  "id": "AG-02",
+  "slug": "parse-tool-call",
+  "title": "Parsing Model Tool Calls",
+  "topic": "agentic-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-01",
+    "NL-01"
+  ],
+  "prerequisite_slugs": [
+    "tool-registry",
+    "regex-text"
+  ],
+  "learning_objectives": [
+    "Extract structured tool calls from free text",
+    "Distinguish tool calls, final answers and malformed output",
+    "Never execute anything during parsing"
+  ],
+  "concept_tags": [
+    "parsing",
+    "json",
+    "tool-calling",
+    "robustness"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S037",
+    "S036"
+  ],
+  "entry_point": "parse_model_output(text)",
+  "hints": [
+    "`blocks = re.findall(r'<tool_call>(.*?)</tool_call>', text, re.DOTALL)`.",
+    "If `len(blocks) > 1` → multiple; if 1 → `json.loads` in try/except `json.JSONDecodeError`.",
+    "Validate `isinstance(obj, dict)`, `isinstance(obj.get('tool'), str)`, `isinstance(obj.get('args', {}), dict)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_multiple",
+      "advice": "Use a non-greedy pattern (.*?) and reject more than one block."
+    },
+    {
+      "test": "test_multiline",
+      "advice": "Pass re.DOTALL so '.' matches newlines."
+    },
+    {
+      "test": "test_no_eval",
+      "advice": "Only use json.loads; never eval model output."
+    },
+    {
+      "test": "test_final",
+      "advice": "Accept 'FINAL:' after leading whitespace and strip the content."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

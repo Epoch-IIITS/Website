@@ -1,0 +1,78 @@
+{
+  "id": "ML-25",
+  "slug": "sklearn-kmeans",
+  "title": "k-Means and Silhouette Scores",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-24"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-roc-pr"
+  ],
+  "learning_objectives": [
+    "Cluster data with KMeans and read labels_, cluster_centers_ and inertia_",
+    "Compare numbers of clusters with inertia and silhouette scores",
+    "Make clustering reproducible with n_init and random_state"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "clustering",
+    "kmeans",
+    "silhouette",
+    "unsupervised"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S091"
+  ],
+  "entry_point": "choose_k(X, ks, seed=0)",
+  "hints": [
+    "Validate `ks` against `len(X)`: silhouette needs 2 ≤ k < n.",
+    "Keep each fitted model so you can return the best one's `labels_`.",
+    "`best = max(range(len(ks)), key=lambda i: (silhouette[i], -ks[i]))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_three_blobs",
+      "advice": "Pick the k with the highest silhouette score."
+    },
+    {
+      "test": "test_matches_kmeans",
+      "advice": "Use KMeans(n_clusters=k, n_init=10, random_state=seed)."
+    },
+    {
+      "test": "test_types",
+      "advice": "Return floats for scores and ints for labels."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Every k must satisfy 2 <= k < len(X)."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

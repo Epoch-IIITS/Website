@@ -1,0 +1,79 @@
+{
+  "id": "CV-16",
+  "slug": "cv-psnr",
+  "title": "Image Quality: MSE and PSNR",
+  "topic": "computer-vision",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-15",
+    "CV-13"
+  ],
+  "prerequisite_slugs": [
+    "conv2d-layer",
+    "cv-pooling-torch"
+  ],
+  "learning_objectives": [
+    "Compute MSE between images without uint8 overflow",
+    "Compute PSNR with cv2.PSNR and from the formula",
+    "Interpret PSNR values for compression and denoising"
+  ],
+  "concept_tags": [
+    "opencv",
+    "image-quality",
+    "psnr",
+    "mse"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S023",
+    "S122"
+  ],
+  "entry_point": "image_quality(reference, distorted)",
+  "hints": [
+    "Check `reference.shape == distorted.shape` and both dtypes.",
+    "`diff = reference.astype(np.float64) - distorted.astype(np.float64)`; `mse = float(np.mean(diff ** 2))`.",
+    "Return `math.inf` for zero error, otherwise `float(cv2.PSNR(reference, distorted))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_no_wraparound",
+      "advice": "Convert to float before subtracting uint8 images."
+    },
+    {
+      "test": "test_identical_is_infinite",
+      "advice": "Return math.inf when the MSE is zero."
+    },
+    {
+      "test": "test_symmetric_and_formula",
+      "advice": "PSNR = 10·log10(255² / MSE)."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Require two uint8 images with the same shape."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

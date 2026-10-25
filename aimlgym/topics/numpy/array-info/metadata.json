@@ -1,0 +1,75 @@
+{
+  "id": "NP-01",
+  "slug": "array-info",
+  "title": "Create an Array and Inspect It",
+  "topic": "numpy",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-20"
+  ],
+  "prerequisite_slugs": [
+    "matrix-transpose"
+  ],
+  "learning_objectives": [
+    "Create ndarrays from nested lists with a chosen dtype",
+    "Read shape, ndim, size and dtype",
+    "Explain why ragged lists cannot become numeric arrays"
+  ],
+  "concept_tags": [
+    "ndarray",
+    "dtype",
+    "shape"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S007",
+    "S006"
+  ],
+  "entry_point": "to_array(rows, dtype=float); describe(a)",
+  "hints": [
+    "`np.array(rows, dtype=dtype)` raises ValueError for ragged numeric lists in NumPy ≥ 1.24.",
+    "You may also check row lengths yourself for clarity.",
+    "Use `tuple(a.shape)`, `int(a.ndim)`, `int(a.size)`, `str(a.dtype)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_2d",
+      "advice": "Pass dtype to np.array and return shape as a tuple."
+    },
+    {
+      "test": "test_ragged",
+      "advice": "Raise ValueError for rows of different lengths."
+    },
+    {
+      "test": "test_bool_dtype",
+      "advice": "Return str(a.dtype), e.g. 'bool' or 'float64'."
+    },
+    {
+      "test": "test_3d",
+      "advice": "size is the product of the shape entries."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

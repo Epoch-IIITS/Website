@@ -1,0 +1,78 @@
+{
+  "id": "PY-07",
+  "slug": "conditionals",
+  "title": "Conditionals: Letter Grades",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [
+    "PY-06"
+  ],
+  "prerequisite_slugs": [
+    "string-basics"
+  ],
+  "learning_objectives": [
+    "Compare values with == != < <= > >=",
+    "Branch with if / elif / else",
+    "Combine conditions with and, or, not and chained comparisons"
+  ],
+  "concept_tags": [
+    "conditionals",
+    "if-elif-else",
+    "comparisons",
+    "boolean-logic"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S042",
+    "S049"
+  ],
+  "entry_point": "program (reads stdin, prints to stdout)",
+  "hints": [
+    "Test the invalid case first: `if score < 0 or score > 100:`.",
+    "Then go from the highest band down with `elif score >= 90:`, `elif score >= 80:` ...",
+    "For line 2 use a second if/elif/else; `0 <= score <= 100` checks validity."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_boundaries_top",
+      "advice": "Use `>=` so that exactly 90 is an A and 89 is a B."
+    },
+    {
+      "test": "test_middle_bands",
+      "advice": "Check the bands from highest to lowest with elif."
+    },
+    {
+      "test": "test_invalid_high",
+      "advice": "Handle scores above 100 before the A band."
+    },
+    {
+      "test": "test_invalid_low",
+      "advice": "Negative scores are invalid, not F."
+    },
+    {
+      "test": "test_pass_boundary",
+      "advice": "60 passes; 59 fails."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

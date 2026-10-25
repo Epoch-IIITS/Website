@@ -1,0 +1,54 @@
+{
+  "id": "ML-P3",
+  "slug": "serve-your-model",
+  "title": "Serve Your Model with FastAPI",
+  "topic": "machine-learning",
+  "kind": "project",
+  "concept_tags": [
+    "deployment",
+    "fastapi",
+    "model-serving"
+  ],
+  "uses": [
+    {
+      "slug": "ml-capstone",
+      "id": "ML-27",
+      "title": "Capstone: an End-to-End Tabular Model"
+    },
+    {
+      "slug": "fastapi-routes",
+      "id": "FA-08",
+      "title": "First FastAPI Routes"
+    },
+    {
+      "slug": "pydantic-bodies",
+      "id": "FA-10",
+      "title": "Request Bodies with Pydantic"
+    },
+    {
+      "slug": "response-models",
+      "id": "FA-12",
+      "title": "Response Models and Status Codes"
+    },
+    {
+      "slug": "api-testing",
+      "id": "FA-15",
+      "title": "Testing an API"
+    }
+  ],
+  "brief": "Put a trained scikit-learn pipeline behind a small web API, so other programs can send a JSON row\nand get a prediction back — with input validation, a health check and tests, as a real service\nwould have.\n",
+  "milestones": [
+    "Train and save a pipeline from the capstone or house-price project with joblib.",
+    "Create a FastAPI app that loads the model once at start-up and exposes GET /health.",
+    "Add POST /predict with a Pydantic model describing one input row; return the prediction and probability.",
+    "Reject bad input (missing fields, negative values) with clear 422 errors.",
+    "Write TestClient tests for a valid request, an invalid one and the health check."
+  ],
+  "stretch": [
+    "Accept a batch of rows in one request.",
+    "Log each prediction with a timestamp and add GET /stats with simple counts.",
+    "Package the service in a Dockerfile."
+  ],
+  "data": "Use the model and data from the capstone (synthetic churn data you generate) or from the\nhouse-price project. See [model persistence](https://scikit-learn.org/stable/model_persistence.html)\nfor saving pipelines.\n",
+  "setup": "```bash\npip install fastapi uvicorn scikit-learn joblib pandas httpx\nuvicorn app:app --reload\n```\nThen open http://127.0.0.1:8000/docs to try the endpoints. See\n[running a server manually](https://fastapi.tiangolo.com/deployment/manually/).\n"
+}

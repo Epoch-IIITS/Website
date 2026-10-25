@@ -1,0 +1,78 @@
+{
+  "id": "FL-05",
+  "slug": "fl-torch-local-training",
+  "title": "Client Training with a PyTorch Model",
+  "topic": "federated-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-04",
+    "DL-18"
+  ],
+  "prerequisite_slugs": [
+    "label-skew-partition",
+    "torch-training-loop"
+  ],
+  "learning_objectives": [
+    "Copy the global model for a client with copy.deepcopy",
+    "Train the copy for a few local epochs on the client's data only",
+    "Return the client's state_dict and sample count without touching the global model"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "federated-learning",
+    "local-training",
+    "state-dict"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S039",
+    "S108"
+  ],
+  "entry_point": "client_update(global_model, X, y, epochs=1, lr=0.1, batch_size=8, seed=0)",
+  "hints": [
+    "`local = copy.deepcopy(global_model)` before anything else touches the weights.",
+    "`y = torch.as_tensor(y, dtype=torch.float32).reshape(-1, 1)`.",
+    "Return `local.state_dict(), len(y)` after the training loop."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_global_unchanged",
+      "advice": "Train copy.deepcopy(global_model), never the global model itself."
+    },
+    {
+      "test": "test_learns_towards_client_data",
+      "advice": "Use MSELoss with y reshaped to (n, 1) and SGD with the given lr."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "Shuffle with a DataLoader generator seeded with seed."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject epochs < 1 and empty data."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

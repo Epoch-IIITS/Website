@@ -1,0 +1,76 @@
+{
+  "id": "NP-13",
+  "slug": "one-hot",
+  "title": "One-Hot Encoding",
+  "topic": "numpy",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-09"
+  ],
+  "prerequisite_slugs": [
+    "fancy-indexing"
+  ],
+  "learning_objectives": [
+    "Encode integer labels as one-hot rows",
+    "Decode with argmax",
+    "Validate label ranges"
+  ],
+  "concept_tags": [
+    "one-hot",
+    "encoding",
+    "labels",
+    "fancy-indexing"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S007",
+    "S013"
+  ],
+  "entry_point": "one_hot(labels, num_classes=None); from_one_hot(Y)",
+  "hints": [
+    "`labels = np.asarray(labels)`; check `np.issubdtype(labels.dtype, np.integer)`.",
+    "`Y = np.zeros((n, K)); Y[np.arange(n), labels] = 1.0`.",
+    "Valid one-hot rows: all entries in {0, 1} and each row sums to 1."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_basic",
+      "advice": "Use Y[np.arange(n), labels] = 1, not Y[:, labels] = 1."
+    },
+    {
+      "test": "test_negative",
+      "advice": "Negative indices silently wrap around in NumPy — validate labels >= 0."
+    },
+    {
+      "test": "test_bad_decode",
+      "advice": "Check each row has exactly one 1 and only 0/1 entries."
+    },
+    {
+      "test": "test_float_labels",
+      "advice": "Reject non-integer label dtypes."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

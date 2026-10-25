@@ -1,0 +1,81 @@
+{
+  "id": "PY-03",
+  "slug": "types-conversion",
+  "title": "Types and Conversion",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [
+    "PY-02"
+  ],
+  "prerequisite_slugs": [
+    "variables"
+  ],
+  "learning_objectives": [
+    "Recognise int, float, str and bool values",
+    "Inspect a value with type()",
+    "Convert between types with int(), float(), str() and round()"
+  ],
+  "concept_tags": [
+    "types",
+    "int",
+    "float",
+    "str",
+    "bool",
+    "conversion"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S040",
+    "S048",
+    "S049"
+  ],
+  "entry_point": "program (module-level variables + stdout)",
+  "hints": [
+    "`price = float(price_text)` and `quantity = int(quantity_text)`.",
+    "`total_rounded = round(total, 2)`; print it with an f-string.",
+    "`print(f\"price is {type(price).__name__}\")` prints the type's name."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_price_float",
+      "advice": "Use `float(price_text)`; `int` cannot parse `\"19.99\"`."
+    },
+    {
+      "test": "test_quantity_int",
+      "advice": "Use `int(quantity_text)` so quantity is a whole number."
+    },
+    {
+      "test": "test_total",
+      "advice": "Multiply by `(1 - discount)` and round only `total_rounded`, not `total`."
+    },
+    {
+      "test": "test_label",
+      "advice": "Convert with `str(quantity)` before adding `\" items\"`."
+    },
+    {
+      "test": "test_output",
+      "advice": "Print `total_rounded`, then the two type names from `type(x).__name__`, then the label."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

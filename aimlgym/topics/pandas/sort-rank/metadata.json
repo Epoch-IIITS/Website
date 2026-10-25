@@ -1,0 +1,75 @@
+{
+  "id": "PD-07",
+  "slug": "sort-rank",
+  "title": "Sort and Rank",
+  "topic": "pandas",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-06"
+  ],
+  "prerequisite_slugs": [
+    "missing-values"
+  ],
+  "learning_objectives": [
+    "Sort by several columns with different directions",
+    "Rank with ties (method='min')",
+    "Take the top-n rows"
+  ],
+  "concept_tags": [
+    "sorting",
+    "ranking",
+    "ties"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "leaderboard(df, n=None)",
+  "hints": [
+    "`out = df.sort_values(['score', 'name'], ascending=[False, True])`.",
+    "`out['rank'] = out['score'].rank(method='min', ascending=False).astype(int)` on the copy.",
+    "`reset_index(drop=True)` and `head(n)` if n is not None."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_order",
+      "advice": "ascending=[False, True]: score descending, name ascending."
+    },
+    {
+      "test": "test_ranks",
+      "advice": "Use rank(method='min', ascending=False)."
+    },
+    {
+      "test": "test_rank_int",
+      "advice": "Convert ranks to int with .astype(int)."
+    },
+    {
+      "test": "test_input_unchanged",
+      "advice": "Don't add the rank column to the original DataFrame."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

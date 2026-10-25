@@ -1,0 +1,74 @@
+{
+  "id": "ST-02",
+  "slug": "median-mode",
+  "title": "Median and Mode",
+  "topic": "statistics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-01"
+  ],
+  "prerequisite_slugs": [
+    "mean-variance"
+  ],
+  "learning_objectives": [
+    "Compute the median for odd and even n",
+    "Find all modes including ties",
+    "Explain robustness to outliers"
+  ],
+  "concept_tags": [
+    "descriptive-statistics",
+    "median",
+    "mode",
+    "robustness"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S003",
+    "S010"
+  ],
+  "entry_point": "median(data); modes(data)",
+  "hints": [
+    "Use `s = sorted(data)` (a new list) and `n = len(s)`.",
+    "Odd: `s[n // 2]`; even: average of `s[n // 2 - 1]` and `s[n // 2]`.",
+    "Count with a dict, find the max count, collect keys with that count, then sort."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_odd",
+      "advice": "Sort before picking the middle element."
+    },
+    {
+      "test": "test_even",
+      "advice": "For even n, average the two middle values."
+    },
+    {
+      "test": "test_modes_tie",
+      "advice": "Return every value tied for the highest count, sorted."
+    },
+    {
+      "test": "test_not_modified",
+      "advice": "Use sorted(data), not data.sort()."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

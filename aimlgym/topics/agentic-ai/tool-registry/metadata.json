@@ -1,0 +1,73 @@
+{
+  "id": "AG-01",
+  "slug": "tool-registry",
+  "title": "Tool Registry and Dispatch",
+  "topic": "agentic-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-17"
+  ],
+  "prerequisite_slugs": [
+    "functions-as-values"
+  ],
+  "learning_objectives": [
+    "Register tools with a name, function and argument schema",
+    "Validate tool-call arguments before execution",
+    "Return structured success/error results instead of crashing"
+  ],
+  "concept_tags": [
+    "tools",
+    "function-calling",
+    "validation",
+    "agents"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S037"
+  ],
+  "entry_point": "class ToolRegistry: register(name, fn, schema, description=''), dispatch(call), describe()",
+  "hints": [
+    "Store `self._tools[name] = (fn, schema, description)`.",
+    "Check missing = sorted(schema − args), unexpected = sorted(args − schema), then types.",
+    "Wrap `fn(**args)` in `try/except Exception as e` and format `type(e).__name__`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_tool_exception",
+      "advice": "Catch exceptions from the tool and return them as an error dict."
+    },
+    {
+      "test": "test_types",
+      "advice": "Reject bools for int/float parameters; floats accept ints."
+    },
+    {
+      "test": "test_missing_and_unexpected",
+      "advice": "Check missing args before unexpected args, each in sorted order."
+    },
+    {
+      "test": "test_describe",
+      "advice": "Return tools sorted by name with argument type names."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "XA-10",
+  "slug": "surrogate-fidelity",
+  "title": "Global Surrogate and Fidelity",
+  "topic": "explainable-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "XA-07",
+    "ML-09"
+  ],
+  "prerequisite_slugs": [
+    "xai-permutation-importance",
+    "least-squares-line"
+  ],
+  "learning_objectives": [
+    "Fit an interpretable model to a black box's predictions",
+    "Measure fidelity with R² against the black box",
+    "Recognise when a surrogate explanation cannot be trusted"
+  ],
+  "concept_tags": [
+    "global-surrogate",
+    "fidelity",
+    "model-agnostic",
+    "interpretable-models"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S024"
+  ],
+  "entry_point": "fit_linear_surrogate(predict, X); fidelity_r2(predict, surrogate, X)",
+  "hints": [
+    "`yhat = predict(X)`; `A = np.column_stack([np.ones(len(X)), X])`.",
+    "`w, *_ = np.linalg.lstsq(A, yhat, rcond=None)`; return `w[0], w[1:]`.",
+    "R² = 1 − Σ(yhat − s)² / Σ(yhat − mean)²; handle zero denominator."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_fits_predictions_not_labels",
+      "advice": "Fit the surrogate to predict(X), the black box's outputs."
+    },
+    {
+      "test": "test_linear_recovered",
+      "advice": "Include an intercept column of ones in the least-squares design."
+    },
+    {
+      "test": "test_nonlinear_low_fidelity",
+      "advice": "Fidelity is R² between black-box and surrogate predictions."
+    },
+    {
+      "test": "test_constant_blackbox",
+      "advice": "Handle zero variance of the black-box predictions explicitly."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

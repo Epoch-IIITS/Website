@@ -1,0 +1,79 @@
+{
+  "id": "PY-02",
+  "slug": "variables",
+  "title": "Variables and f-strings",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [
+    "PY-01"
+  ],
+  "prerequisite_slugs": [
+    "hello-print"
+  ],
+  "learning_objectives": [
+    "Create and reassign variables",
+    "Choose readable snake_case names",
+    "Do simple arithmetic with + - * /",
+    "Insert values into text with f-strings"
+  ],
+  "concept_tags": [
+    "variables",
+    "assignment",
+    "f-strings",
+    "naming"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S040",
+    "S041"
+  ],
+  "entry_point": "program (module-level variables + stdout)",
+  "hints": [
+    "Numbers are written without quotes: `age = 19`, `height_m = 1.68`.",
+    "`True` has a capital T and no quotes; `next_age = age + 1`.",
+    "`print(f\"Age next year: {next_age}\")` inserts the value into the text."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_age_is_int",
+      "advice": "Write `age = 19` without quotes; `\"19\"` is a string."
+    },
+    {
+      "test": "test_height_is_float",
+      "advice": "Use `1.68` (a float), not `\"1.68\"`."
+    },
+    {
+      "test": "test_is_student_bool",
+      "advice": "Use the keyword `True` (capital T, no quotes)."
+    },
+    {
+      "test": "test_next_age",
+      "advice": "Compute `next_age = age + 1` after creating `age`."
+    },
+    {
+      "test": "test_output",
+      "advice": "Your printed lines must match the expected output exactly: check each label, the ` m` after the height, and that you used f-strings with braces around the variable names."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

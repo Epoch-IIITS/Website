@@ -1,0 +1,54 @@
+{
+  "id": "CV-P1",
+  "slug": "document-scanner",
+  "title": "Document Scanner",
+  "topic": "computer-vision",
+  "kind": "project",
+  "concept_tags": [
+    "opencv",
+    "contours",
+    "perspective"
+  ],
+  "uses": [
+    {
+      "slug": "cv-opencv-basics",
+      "id": "CV-03",
+      "title": "OpenCV Basics: BGR, dtypes and Indexing"
+    },
+    {
+      "slug": "cv-geometric-transforms",
+      "id": "CV-04",
+      "title": "Flips, Rotations and Affine Warps"
+    },
+    {
+      "slug": "cv-threshold-otsu",
+      "id": "CV-06",
+      "title": "Thresholding and Otsu's Method"
+    },
+    {
+      "slug": "cv-sobel-canny",
+      "id": "CV-11",
+      "title": "Edges with Sobel and Canny"
+    },
+    {
+      "slug": "cv-contours",
+      "id": "CV-20",
+      "title": "Contours and Bounding Boxes"
+    }
+  ],
+  "brief": "Turn a phone photo of a page lying on a desk into a flat, black-and-white scan: find the page,\nstraighten it, and clean up the lighting — what scanner apps do.\n",
+  "milestones": [
+    "Load a photo, resize it to about 800 pixels wide and convert it to greyscale.",
+    "Blur, run Canny and find the largest contour.",
+    "Approximate the contour with cv2.approxPolyDP until it has four corners; draw them on the photo.",
+    "Order the corners and warp the page flat with cv2.getPerspectiveTransform and cv2.warpPerspective.",
+    "Clean the result with adaptive or Otsu thresholding and save it as a PNG."
+  ],
+  "stretch": [
+    "Handle photos where the page is not the largest object.",
+    "Process a folder of photos into one multi-page PDF.",
+    "Add a fallback that lets the user click the four corners when detection fails."
+  ],
+  "data": "Photograph a few printed pages on a contrasting desk with your phone (different angles and lighting).\nNo dataset download is needed.\n",
+  "setup": "```bash\npip install opencv-python numpy\npython scan.py photo.jpg scanned.png\n```\n"
+}

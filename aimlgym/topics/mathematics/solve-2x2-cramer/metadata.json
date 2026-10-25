@@ -1,0 +1,73 @@
+{
+  "id": "MA-08",
+  "slug": "solve-2x2-cramer",
+  "title": "Solve a 2x2 System (Cramer's Rule)",
+  "topic": "mathematics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-06"
+  ],
+  "prerequisite_slugs": [
+    "matrix-multiply"
+  ],
+  "learning_objectives": [
+    "Compute a 2×2 determinant",
+    "Solve a linear system with Cramer's rule",
+    "Detect singular systems with a tolerance"
+  ],
+  "concept_tags": [
+    "linear-systems",
+    "determinant",
+    "cramers-rule",
+    "floating-point"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009"
+  ],
+  "entry_point": "solve_2x2(A, b, tol=1e-12)",
+  "hints": [
+    "Unpack: `(a, b_), (c, d) = A` and `e, f = b` after checking shapes.",
+    "`det = a * d - b_ * c`; raise if `abs(det) < tol`.",
+    "`x = (e * d - b_ * f) / det`, `y = (a * f - e * c) / det`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Check the determinant ad − bc and which numerator belongs to x vs y."
+    },
+    {
+      "test": "test_near_singular_tolerance",
+      "advice": "Compare abs(det) < tol, not det == 0."
+    },
+    {
+      "test": "test_residual",
+      "advice": "Substitute your answer back into both equations to debug."
+    },
+    {
+      "test": "test_bad_shape",
+      "advice": "Validate that A is 2×2 and b has two entries."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

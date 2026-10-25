@@ -1,0 +1,77 @@
+{
+  "id": "RL-12",
+  "slug": "td0-prediction",
+  "title": "TD(0) Prediction",
+  "topic": "reinforcement-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-08",
+    "RL-11"
+  ],
+  "prerequisite_slugs": [
+    "policy-evaluation",
+    "mc-first-visit"
+  ],
+  "learning_objectives": [
+    "Update values from single transitions (bootstrapping)",
+    "Implement the TD error",
+    "Compare TD(0) with Monte Carlo on the same experience"
+  ],
+  "concept_tags": [
+    "temporal-difference",
+    "td-learning",
+    "bootstrapping",
+    "prediction"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S033"
+  ],
+  "entry_point": "td_error(V, s, r, s_next, done, gamma); td0(transitions_episodes, n_states, alpha, gamma, sweeps=1)",
+  "hints": [
+    "`target = r + (0 if done else gamma * V[s_next])`.",
+    "`delta = target - V[s]`; then `V[s] += alpha * delta`.",
+    "Outer loop over sweeps, then episodes, then transitions."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_td_error",
+      "advice": "Don't bootstrap when done is True."
+    },
+    {
+      "test": "test_order_matters",
+      "advice": "Update V in place, transition by transition, in order."
+    },
+    {
+      "test": "test_converges_chain",
+      "advice": "Repeat all episodes `sweeps` times."
+    },
+    {
+      "test": "test_batch_td_vs_mc",
+      "advice": "Batch TD values A by bootstrapping from B (Sutton & Barto's A/B example idea)."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

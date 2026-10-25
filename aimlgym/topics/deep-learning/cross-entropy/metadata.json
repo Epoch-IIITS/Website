@@ -1,0 +1,78 @@
+{
+  "id": "DL-03",
+  "slug": "cross-entropy",
+  "title": "Cross-Entropy Loss",
+  "topic": "deep-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-02"
+  ],
+  "prerequisite_slugs": [
+    "stable-softmax"
+  ],
+  "learning_objectives": [
+    "Compute softmax cross-entropy from logits and integer labels",
+    "Derive its gradient softmax − one_hot",
+    "Verify gradients numerically"
+  ],
+  "concept_tags": [
+    "cross-entropy",
+    "loss-functions",
+    "softmax",
+    "gradients"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S013",
+    "S016"
+  ],
+  "entry_point": "cross_entropy(logits, labels); cross_entropy_grad(logits, labels)",
+  "hints": [
+    "Write `_log_softmax` with max subtraction (DL-02).",
+    "Loss: `-lsm[np.arange(n), labels].mean()`.",
+    "Gradient: `P = np.exp(lsm); P[np.arange(n), labels] -= 1; P / n`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_large_logits",
+      "advice": "Use a stable log-softmax; log(softmax) underflows."
+    },
+    {
+      "test": "test_grad_numeric",
+      "advice": "Gradient of the *mean* loss: divide (softmax − one_hot) by n."
+    },
+    {
+      "test": "test_single",
+      "advice": "Pick log-probabilities with [np.arange(n), labels]."
+    },
+    {
+      "test": "test_bad_label",
+      "advice": "Validate labels are in 0..K−1."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

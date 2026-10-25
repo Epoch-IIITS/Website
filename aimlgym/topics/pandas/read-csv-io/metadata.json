@@ -1,0 +1,81 @@
+{
+  "id": "PD-03",
+  "slug": "read-csv-io",
+  "title": "Reading and Writing CSV",
+  "topic": "pandas",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-02",
+    "PY-23"
+  ],
+  "prerequisite_slugs": [
+    "dataframe-basics",
+    "files-and-json"
+  ],
+  "learning_objectives": [
+    "Read CSV text with pd.read_csv and an in-memory io.StringIO buffer",
+    "Check the dtypes pandas inferred",
+    "Write a DataFrame back to CSV without its index",
+    "Compare pandas parsing with the csv module"
+  ],
+  "concept_tags": [
+    "read-csv",
+    "io",
+    "dtypes",
+    "csv"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S085",
+    "S055",
+    "S008"
+  ],
+  "entry_point": "parse_manual(text); parse_pandas(text); numeric_means(df); to_csv_text(df)",
+  "hints": [
+    "In `_convert`, use `try: return int(value)` / `except ValueError:` then the same with float.",
+    "`[{k: _convert(v) for k, v in row.items()} for row in csv.DictReader(io.StringIO(text))]`.",
+    "`num = df.select_dtypes(include=\"number\")`; `{c: float(num[c].mean()) for c in num.columns}`; `df.to_csv(index=False)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_manual",
+      "advice": "Try `int`, then `float`, otherwise keep the string; use DictReader so quoted commas survive."
+    },
+    {
+      "test": "test_pandas_dtypes",
+      "advice": "Use `pd.read_csv(io.StringIO(text))` with no extra options."
+    },
+    {
+      "test": "test_numeric_means",
+      "advice": "Select numeric columns with `select_dtypes(include=\"number\")`; booleans are excluded."
+    },
+    {
+      "test": "test_round_trip",
+      "advice": "Write with `index=False`."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

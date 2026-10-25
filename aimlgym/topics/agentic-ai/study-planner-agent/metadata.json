@@ -1,0 +1,49 @@
+{
+  "id": "AG-P1",
+  "slug": "study-planner-agent",
+  "title": "Study-Planner Agent",
+  "topic": "agentic-ai",
+  "kind": "project",
+  "concept_tags": [
+    "agents",
+    "langgraph",
+    "tools"
+  ],
+  "uses": [
+    {
+      "slug": "ag-langchain-tools",
+      "id": "AG-03",
+      "title": "Tools and Tool Calling with LangChain"
+    },
+    {
+      "slug": "ag-langgraph-basics",
+      "id": "AG-07",
+      "title": "LangGraph Basics: State, Nodes and Edges"
+    },
+    {
+      "slug": "ag-langgraph-react",
+      "id": "AG-08",
+      "title": "A ReAct Agent in LangGraph"
+    },
+    {
+      "slug": "task-dag-plan",
+      "id": "AG-13",
+      "title": "Dependency-Ordered Plans"
+    }
+  ],
+  "brief": "Build an assistant that plans your study week: it reads your deadlines and free time from files, uses\ntools to look them up and update a plan, and answers questions such as \"what should I do tonight?\" —\nwithout ever running more than a fixed number of steps.\n",
+  "milestones": [
+    "Store deadlines and free time slots in JSON files and write tools to read and update them.",
+    "Build the ReAct graph with those tools and a scripted model; test it with a few fixed conversations.",
+    "Connect a real chat model and write a system prompt that explains the tools and your preferences.",
+    "Add a step limit and a checkpointer so each day's conversation continues where it stopped.",
+    "Add a tool that schedules tasks in dependency order (prerequisites first) and test it on a sample week."
+  ],
+  "stretch": [
+    "Export the plan to an .ics calendar file.",
+    "Add a reflection node that checks the plan against deadlines before answering.",
+    "Measure how often the agent uses the right tool on 20 test requests."
+  ],
+  "data": "Write your own deadline and timetable files. No dataset is needed; for a local model install\n[Ollama](https://ollama.com/).\n",
+  "setup": "```bash\npip install langgraph langchain-core langchain-ollama\npython planner.py\n```\n"
+}

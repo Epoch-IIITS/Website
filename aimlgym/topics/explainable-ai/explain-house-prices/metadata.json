@@ -1,0 +1,54 @@
+{
+  "id": "XA-P1",
+  "slug": "explain-house-prices",
+  "title": "Explain Your House-Price Model",
+  "topic": "explainable-ai",
+  "kind": "project",
+  "concept_tags": [
+    "explainability",
+    "reporting",
+    "shap"
+  ],
+  "uses": [
+    {
+      "slug": "xai-partial-dependence",
+      "id": "XA-05",
+      "title": "Partial Dependence with sklearn.inspection"
+    },
+    {
+      "slug": "xai-permutation-importance",
+      "id": "XA-07",
+      "title": "Permutation Importance with sklearn.inspection"
+    },
+    {
+      "slug": "exact-shapley",
+      "id": "XA-11",
+      "title": "Exact Shapley Values"
+    },
+    {
+      "slug": "lime-local",
+      "id": "XA-12",
+      "title": "LIME-style Local Linear Explanation"
+    },
+    {
+      "slug": "counterfactual-search",
+      "id": "XA-13",
+      "title": "Minimal Counterfactual Search"
+    }
+  ],
+  "brief": "Write an explanation report for the house-price model from the Machine Learning project: which\nfeatures matter, how each one moves the price, why one particular house got its estimate, and where\nthe explanations disagree.\n",
+  "milestones": [
+    "Load your trained pipeline and a held-out test set.",
+    "Rank features with permutation importance (mean ± std) and plot the top ten.",
+    "Plot partial dependence and ICE curves for the three most important features.",
+    "Explain five individual predictions with SHAP values and compare them with LIME-style local fits.",
+    "Write a one-page report: findings, surprising effects, and the limits of each method."
+  ],
+  "stretch": [
+    "Find counterfactuals: the smallest change that moves a house into a different price band.",
+    "Check whether correlated features (rooms and area) split their importance.",
+    "Build a small web page that shows the explanation for any house id."
+  ],
+  "data": "Use the house-price project's data (California housing or Ames). The [SHAP library](https://shap.readthedocs.io/en/latest/)\ncomputes Shapley values efficiently for tree models; it is not part of the graded course because it\nneeds compiled dependencies.\n",
+  "setup": "```bash\npip install scikit-learn pandas matplotlib shap\npython explain.py\n```\n"
+}

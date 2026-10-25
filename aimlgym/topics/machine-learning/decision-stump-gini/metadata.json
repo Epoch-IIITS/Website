@@ -1,0 +1,78 @@
+{
+  "id": "ML-21",
+  "slug": "decision-stump-gini",
+  "title": "Decision Stump with Gini Impurity",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-06"
+  ],
+  "prerequisite_slugs": [
+    "classification-metrics"
+  ],
+  "learning_objectives": [
+    "Compute Gini impurity",
+    "Search thresholds at midpoints between sorted unique values",
+    "Choose the split with the lowest weighted impurity"
+  ],
+  "concept_tags": [
+    "decision-trees",
+    "gini",
+    "splitting",
+    "greedy-search"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012",
+    "S024"
+  ],
+  "entry_point": "gini(y); best_split(X, y)",
+  "hints": [
+    "`_, counts = np.unique(y, return_counts=True); p = counts / len(y); 1 - (p**2).sum()`.",
+    "Thresholds: `u = np.unique(X[:, j]); (u[:-1] + u[1:]) / 2`.",
+    "Use strict `<` when comparing impurities so the first (lowest feature/threshold) best is kept."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_weighted_impurity",
+      "advice": "Weight each child's Gini by its share of samples."
+    },
+    {
+      "test": "test_duplicates_midpoints",
+      "advice": "Thresholds are midpoints between consecutive *unique* values."
+    },
+    {
+      "test": "test_tie_lowest_feature",
+      "advice": "Only replace the best split when strictly better."
+    },
+    {
+      "test": "test_gini",
+      "advice": "Gini = 1 − Σ p_c²; return 0 for empty input."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

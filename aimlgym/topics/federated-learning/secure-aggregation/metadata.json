@@ -1,0 +1,76 @@
+{
+  "id": "FL-12",
+  "slug": "secure-aggregation",
+  "title": "Secure Aggregation with Pairwise Masks",
+  "topic": "federated-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-02"
+  ],
+  "prerequisite_slugs": [
+    "weighted-fedavg"
+  ],
+  "learning_objectives": [
+    "Generate cancelling pairwise masks from shared seeds",
+    "Recover the exact sum of updates without seeing any single update",
+    "Recover the sum when a client drops out by removing its pairwise masks"
+  ],
+  "concept_tags": [
+    "secure-aggregation",
+    "privacy",
+    "masking",
+    "cryptography-concepts"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S029",
+    "S032"
+  ],
+  "entry_point": "pair_mask(i, j, dim, base_seed); mask_update(i, update, n_clients, base_seed); aggregate(masked, n_clients, dim, base_seed, dropped=())",
+  "hints": [
+    "In `mask_update`, loop `j` over all other clients: add `pair_mask(i, j)` if `j > i`, subtract `pair_mask(j, i)` if `j < i`.",
+    "Sum the survivors' masked vectors.",
+    "For dropped d and survivor s: subtract `pair_mask(s, d)` if `s < d`, add `pair_mask(d, s)` if `s > d`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_full_sum",
+      "advice": "Client i adds m_ij for j > i and subtracts m_ji for j < i."
+    },
+    {
+      "test": "test_dropout",
+      "advice": "For each dropped d, remove the masks between d and every survivor with the right sign."
+    },
+    {
+      "test": "test_pair_mask",
+      "advice": "Seed each pair with default_rng([base_seed, i, j]) for i < j."
+    },
+    {
+      "test": "test_individual_hidden",
+      "advice": "Masked updates should look nothing like the raw updates."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

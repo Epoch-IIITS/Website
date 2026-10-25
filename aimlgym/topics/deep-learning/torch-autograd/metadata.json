@@ -1,0 +1,78 @@
+{
+  "id": "DL-09",
+  "slug": "torch-autograd",
+  "title": "Autograd in PyTorch",
+  "topic": "deep-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-08",
+    "DL-06"
+  ],
+  "prerequisite_slugs": [
+    "scalar-autograd",
+    "torch-mlp-module"
+  ],
+  "learning_objectives": [
+    "Track operations with requires_grad and compute gradients with backward()",
+    "Read gradients from .grad and know that they accumulate",
+    "Compare automatic gradients with a derivative worked out by hand"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "autograd",
+    "backpropagation",
+    "gradients"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S092",
+    "S103"
+  ],
+  "entry_point": "neuron_gradients(x, w, b, target)",
+  "hints": [
+    "`w_t = torch.tensor(w, dtype=torch.float32, requires_grad=True)`; same for b (a 0-d tensor).",
+    "`loss = (torch.sigmoid((w_t * x_t).sum() + b_t) - target) ** 2`, then `loss.backward()`.",
+    "Return `loss.item()`, `w_t.grad.tolist()` and `b_t.grad.item()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Mark w and b with requires_grad=True, build the loss with torch.sigmoid and call loss.backward()."
+    },
+    {
+      "test": "test_no_accumulation_between_calls",
+      "advice": "Create new leaf tensors inside the function each call."
+    },
+    {
+      "test": "test_types",
+      "advice": "Return loss.item(), w.grad.tolist() and b.grad.item()."
+    },
+    {
+      "test": "test_length_mismatch",
+      "advice": "Raise ValueError when x and w differ in length."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

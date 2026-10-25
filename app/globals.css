@@ -179,6 +179,87 @@
   @apply rounded-lg my-4;
 }
 
+/* Learn reading surface */
+.learn-prose {
+  @apply text-sm leading-7 text-foreground;
+}
+
+.learn-prose h1 {
+  @apply mb-4 text-2xl font-semibold tracking-tight;
+}
+
+.learn-prose h2 {
+  @apply mb-3 mt-8 text-lg font-semibold tracking-tight;
+}
+
+.learn-prose h3 {
+  @apply mb-2 mt-6 text-base font-semibold;
+}
+
+.learn-prose p,
+.learn-prose ul,
+.learn-prose ol {
+  @apply mb-4;
+}
+
+.learn-prose ul {
+  @apply list-disc pl-5;
+}
+
+.learn-prose ol {
+  @apply list-decimal pl-5;
+}
+
+.learn-prose li {
+  @apply mb-1 pl-1;
+}
+
+.learn-prose a {
+  @apply font-medium text-primary underline underline-offset-2;
+}
+
+.learn-prose code {
+  @apply rounded bg-muted px-1 py-0.5 font-mono text-[0.9em];
+}
+
+.learn-prose pre {
+  @apply my-4 overflow-x-auto rounded-xl border bg-muted/60 p-4 font-mono text-xs leading-6;
+}
+
+.learn-prose pre code {
+  @apply bg-transparent p-0 text-xs;
+}
+
+.learn-prose blockquote {
+  @apply my-4 border-l-2 border-primary pl-4 text-muted-foreground;
+}
+
+.learn-prose table {
+  @apply my-5 w-full border-collapse text-xs;
+}
+
+.learn-prose th,
+.learn-prose td {
+  @apply border px-2 py-1.5 text-left align-top;
+}
+
+.learn-prose th {
+  @apply bg-muted font-semibold;
+}
+
+.learn-prose .katex-display {
+  @apply my-5 overflow-x-auto overflow-y-hidden pb-1;
+}
+
+.learn-prose .learn-diagram {
+  @apply my-5 overflow-x-auto rounded-xl border bg-muted/30 p-4 text-xs;
+}
+
+.learn-prose .learn-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
 .prose table {
   @apply w-full border-collapse my-4;
 }

@@ -1,0 +1,73 @@
+{
+  "id": "LM-06",
+  "slug": "bpe-merges",
+  "title": "Byte-Pair Encoding Merges",
+  "topic": "llms",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-01"
+  ],
+  "prerequisite_slugs": [
+    "token-ids"
+  ],
+  "learning_objectives": [
+    "Count adjacent symbol pairs weighted by word frequency",
+    "Learn BPE merges greedily",
+    "Apply learned merges to segment a new word"
+  ],
+  "concept_tags": [
+    "bpe",
+    "subword-tokenization",
+    "tokenizers"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S020",
+    "S022"
+  ],
+  "entry_point": "learn_bpe(word_counts, num_merges); apply_bpe(word, merges)",
+  "hints": [
+    "Keep `vocab = {tuple(w) + ('</w>',): c for w, c in word_counts.items()}`.",
+    "Pair counts: for each symbol tuple, add `c` to every `(s[i], s[i+1])`; best = `min(pairs, key=lambda p: (-pairs[p], p))`.",
+    "Write `_merge(symbols, pair)` scanning left to right, joining `a + b` when the pair matches."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_first_merges",
+      "advice": "Weight each pair by its word's count and append '</w>' to every word."
+    },
+    {
+      "test": "test_overlap",
+      "advice": "Merge left to right without overlapping: 'aaa' → 'aa', 'a'."
+    },
+    {
+      "test": "test_tie_lexicographic",
+      "advice": "On ties choose the smallest pair: min(pairs, key=lambda p: (-count, p))."
+    },
+    {
+      "test": "test_apply",
+      "advice": "Apply merges in the order they were learned."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

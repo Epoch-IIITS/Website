@@ -1,0 +1,76 @@
+{
+  "id": "MA-14",
+  "slug": "numerical-gradient",
+  "title": "Numerical Gradient of f(x1..xn)",
+  "topic": "mathematics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-10",
+    "MA-13"
+  ],
+  "prerequisite_slugs": [
+    "central-difference",
+    "gradient-descent-1d"
+  ],
+  "learning_objectives": [
+    "Define partial derivatives and the gradient",
+    "Approximate each partial with central differences",
+    "Use the gradient in multivariable descent"
+  ],
+  "concept_tags": [
+    "multivariable-calculus",
+    "gradient",
+    "partial-derivatives",
+    "optimisation"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009",
+    "S016"
+  ],
+  "entry_point": "numerical_gradient(f, x, h=1e-5); gd_step(f, x, lr)",
+  "hints": [
+    "For each i, copy x: `xp = list(x); xp[i] += h` and similarly `xm`.",
+    "Partial i is `(f(xp) - f(xm)) / (2 * h)`.",
+    "`gd_step`: `[xi - lr * gi for xi, gi in zip(x, grad)]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_not_modified",
+      "advice": "Copy x before perturbing each coordinate."
+    },
+    {
+      "test": "test_example",
+      "advice": "Perturb only coordinate i; keep the others at their original values."
+    },
+    {
+      "test": "test_gd_step",
+      "advice": "Subtract lr times each gradient component."
+    },
+    {
+      "test": "test_gd_converges",
+      "advice": "gd_step must return a new list using the gradient at the current point."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

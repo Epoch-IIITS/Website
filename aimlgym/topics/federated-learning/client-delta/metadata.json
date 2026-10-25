@@ -1,0 +1,75 @@
+{
+  "id": "FL-03",
+  "slug": "client-delta",
+  "title": "Client Updates as Deltas",
+  "topic": "federated-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-02"
+  ],
+  "prerequisite_slugs": [
+    "weighted-fedavg"
+  ],
+  "learning_objectives": [
+    "Represent client work as a model delta",
+    "Apply aggregated deltas with a server learning rate",
+    "Show equivalence with FedAvg when server_lr = 1"
+  ],
+  "concept_tags": [
+    "fedavg",
+    "model-updates",
+    "server-optimizer"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S028",
+    "S032"
+  ],
+  "entry_point": "client_delta(global_w, local_w); server_update(global_w, deltas, sizes, server_lr=1.0)",
+  "hints": [
+    "Delta is `local - global`.",
+    "Weighted mean: `sum(n / N * d for n, d in zip(sizes, deltas))`.",
+    "Return `global_w + server_lr * mean_delta` (a new array)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_delta",
+      "advice": "Delta = local − global."
+    },
+    {
+      "test": "test_equals_fedavg",
+      "advice": "Weight deltas by n_k/N; with server_lr = 1 you must reproduce FedAvg."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Return a new array; don't use += on global_w."
+    },
+    {
+      "test": "test_server_lr",
+      "advice": "Multiply the aggregated delta by server_lr."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

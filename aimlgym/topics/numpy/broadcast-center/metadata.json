@@ -1,0 +1,77 @@
+{
+  "id": "NP-07",
+  "slug": "broadcast-center",
+  "title": "Centering Columns with Broadcasting",
+  "topic": "numpy",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-05",
+    "ST-05"
+  ],
+  "prerequisite_slugs": [
+    "axis-aggregations",
+    "z-scores"
+  ],
+  "learning_objectives": [
+    "Apply NumPy's broadcasting rules",
+    "Centre and scale features without loops",
+    "Use np.newaxis / reshape to align shapes"
+  ],
+  "concept_tags": [
+    "broadcasting",
+    "standardization",
+    "shapes"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S007",
+    "S006"
+  ],
+  "entry_point": "center_columns(X); scale_rows(X, w); standardize(X)",
+  "hints": [
+    "`X - X.mean(axis=0)` broadcasts a (d,) vector over rows.",
+    "`np.asarray(w)[:, None]` turns w into an (n, 1) column.",
+    "Replace zero stds with 1 before dividing: `std = np.where(std == 0, 1.0, std)` — the centred column is already 0."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_scale_rows",
+      "advice": "Reshape w to (n, 1) with w[:, None] so it stretches across columns."
+    },
+    {
+      "test": "test_standardize_constant",
+      "advice": "Avoid dividing by zero for constant columns; they should become 0."
+    },
+    {
+      "test": "test_standardize_props",
+      "advice": "Use population std (np.std default ddof=0) per column."
+    },
+    {
+      "test": "test_scale_rows_bad",
+      "advice": "Validate len(w) == number of rows."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

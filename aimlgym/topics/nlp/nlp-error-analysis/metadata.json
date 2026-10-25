@@ -1,0 +1,78 @@
+{
+  "id": "NL-16",
+  "slug": "nlp-error-analysis",
+  "title": "Evaluating Text Classifiers",
+  "topic": "nlp",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-15"
+  ],
+  "prerequisite_slugs": [
+    "nlp-text-classifier"
+  ],
+  "learning_objectives": [
+    "Report per-class precision, recall and F1 with classification_report",
+    "Read a confusion matrix for several classes",
+    "Collect misclassified examples for error analysis"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "evaluation",
+    "error-analysis",
+    "confusion-matrix",
+    "f1"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S091",
+    "S126"
+  ],
+  "entry_point": "error_report(texts, y_true, y_pred, labels)",
+  "hints": [
+    "Check that the three lengths match.",
+    "`report = classification_report(y_true, y_pred, labels=labels, output_dict=True, zero_division=0)`; per-class entries are keyed by `str(label)`.",
+    "Errors: `[(t, a, b) for t, a, b in zip(texts, y_true, y_pred) if a != b]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_worked_example",
+      "advice": "Rows of the confusion matrix are true labels, columns predicted, in the given label order."
+    },
+    {
+      "test": "test_per_class_matches_metrics",
+      "advice": "Read precision, recall, f1-score and support from classification_report(output_dict=True)."
+    },
+    {
+      "test": "test_errors_in_order",
+      "advice": "Keep (text, true, predicted) for mismatches in input order."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "All three sequences must have the same length."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

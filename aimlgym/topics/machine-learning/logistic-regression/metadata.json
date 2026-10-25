@@ -1,0 +1,80 @@
+{
+  "id": "ML-11",
+  "slug": "logistic-regression",
+  "title": "Logistic Regression from Scratch",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-10",
+    "MA-03"
+  ],
+  "prerequisite_slugs": [
+    "linreg-gradient-descent",
+    "sigmoid-function"
+  ],
+  "learning_objectives": [
+    "Implement a numerically stable sigmoid and log-loss",
+    "Derive the log-loss gradient (p − y)",
+    "Train and threshold a binary classifier"
+  ],
+  "concept_tags": [
+    "logistic-regression",
+    "log-loss",
+    "sigmoid",
+    "classification"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012",
+    "S013"
+  ],
+  "entry_point": "sigmoid(z); log_loss(y, p); class LogisticRegression",
+  "hints": [
+    "Stable sigmoid: `e = np.exp(-np.abs(z)); np.where(z >= 0, 1/(1+e), e/(1+e))`.",
+    "Clip: `p = np.clip(p, eps, 1 - eps)` before logs.",
+    "Gradient: `g = (p - y)`; `w -= lr * X.T @ g / n`; `b -= lr * g.mean()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_sigmoid_extremes",
+      "advice": "Use exp(-|z|) so the exponent is never positive."
+    },
+    {
+      "test": "test_first_step",
+      "advice": "Gradient is Xᵀ(p − y)/n; with w = 0, p = 0.5 for all rows."
+    },
+    {
+      "test": "test_log_loss_clipped",
+      "advice": "Clip p to [eps, 1 − eps] before log."
+    },
+    {
+      "test": "test_fit_separable",
+      "advice": "Update w and b every epoch and record history_ before the update."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

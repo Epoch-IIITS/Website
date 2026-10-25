@@ -1,0 +1,97 @@
+{
+  "id": "FA-15",
+  "slug": "api-testing",
+  "title": "Testing an API",
+  "topic": "fastapi",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-14",
+    "PY-27"
+  ],
+  "prerequisite_slugs": [
+    "fastapi-async",
+    "unit-testing"
+  ],
+  "learning_objectives": [
+    "Write unittest tests for an API with TestClient",
+    "Cover success paths, status codes, validation, authentication and missing resources",
+    "Keep tests independent by building a fresh app per test",
+    "Judge test quality by whether broken versions of the API are caught"
+  ],
+  "concept_tags": [
+    "testing",
+    "api-testing",
+    "testclient",
+    "mutation-testing",
+    "fastapi"
+  ],
+  "permitted_packages": [
+    "fastapi"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S078",
+    "S002",
+    "S079"
+  ],
+  "entry_point": "class ApiTests(unittest.TestCase) using self.make_app()",
+  "hints": [
+    "One behaviour per test: 201 on create; 401 without the header; 404 for /notes/99; 422 for an empty title.",
+    "Create two notes and check the ids are 1 and 2 — that catches the 'every id is 1' bug.",
+    "Check that `GET /notes` returns titles in creation order after creating two notes."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_at_least_six_tests",
+      "advice": "Add more `test_...` methods to ApiTests."
+    },
+    {
+      "test": "test_pass_on_correct_app",
+      "advice": "One of your expectations is wrong for the correct app; re-read the API description."
+    },
+    {
+      "test": "test_catches_wrong_create_status",
+      "advice": "Assert that creating a note returns status 201."
+    },
+    {
+      "test": "test_catches_missing_token_check",
+      "advice": "Send a request without the X-Token header and expect 401."
+    },
+    {
+      "test": "test_catches_missing_404",
+      "advice": "Request a note id that does not exist and expect 404."
+    },
+    {
+      "test": "test_catches_empty_title",
+      "advice": "Post an empty title and expect 422."
+    },
+    {
+      "test": "test_catches_duplicate_ids",
+      "advice": "Create two notes and check their ids differ (1 and 2)."
+    },
+    {
+      "test": "test_catches_wrong_order",
+      "advice": "Create two notes and check GET /notes lists them oldest first."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

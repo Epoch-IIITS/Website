@@ -1,0 +1,77 @@
+{
+  "id": "CV-20",
+  "slug": "cv-contours",
+  "title": "Contours and Bounding Boxes",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-18"
+  ],
+  "prerequisite_slugs": [
+    "cv-resize"
+  ],
+  "learning_objectives": [
+    "Find object outlines in a binary mask with cv2.findContours",
+    "Measure each object's bounding box, area and centroid",
+    "Filter small objects and ignore holes with RETR_EXTERNAL"
+  ],
+  "concept_tags": [
+    "opencv",
+    "contours",
+    "bounding-boxes",
+    "shape-analysis"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S120",
+    "S121"
+  ],
+  "entry_point": "find_objects(mask, min_area=0)",
+  "hints": [
+    "Validate the mask; then `contours, _ = cv2.findContours(...)`.",
+    "For each contour read `boundingRect`, `contourArea` and `moments`; guard `m00 == 0`.",
+    "Filter by area and sort with `key=lambda o: (o[\"y\"], o[\"x\"])`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_boxes",
+      "advice": "Use RETR_EXTERNAL and boundingRect, and sort by (y, x)."
+    },
+    {
+      "test": "test_area_and_centroid",
+      "advice": "area is cv2.contourArea; the centroid is (m10/m00, m01/m00)."
+    },
+    {
+      "test": "test_holes_ignored",
+      "advice": "RETR_EXTERNAL returns only outer boundaries."
+    },
+    {
+      "test": "test_empty_and_single_pixel",
+      "advice": "When m00 is 0 use the bounding-box centre."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

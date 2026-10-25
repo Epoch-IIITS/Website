@@ -1,0 +1,75 @@
+{
+  "id": "PD-10",
+  "slug": "merge-tables",
+  "title": "Merging Tables",
+  "topic": "pandas",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-08"
+  ],
+  "prerequisite_slugs": [
+    "groupby-agg"
+  ],
+  "learning_objectives": [
+    "Join tables on a key with merge",
+    "Choose inner vs left joins",
+    "Validate join cardinality"
+  ],
+  "concept_tags": [
+    "merge",
+    "join",
+    "relational-data"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "orders_with_customers(orders, customers); spend_per_customer(orders, customers)",
+  "hints": [
+    "`pd.merge(orders, customers, on='customer_id', how='left', validate='many_to_one')`.",
+    "`merged.assign(name=merged['name'].fillna('unknown'))`.",
+    "Group by name, sum amount, then sort_values(['total', 'name'], ascending=[False, True])."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_row_count_kept",
+      "advice": "Use how='left' so orders without a customer are kept."
+    },
+    {
+      "test": "test_duplicate_customer",
+      "advice": "Pass validate='many_to_one' to merge."
+    },
+    {
+      "test": "test_names",
+      "advice": "Fill missing names with 'unknown' after the merge."
+    },
+    {
+      "test": "test_spend_tie",
+      "advice": "Sort by total descending, then name ascending."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

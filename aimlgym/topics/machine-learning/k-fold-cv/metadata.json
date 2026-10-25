@@ -1,0 +1,76 @@
+{
+  "id": "ML-17",
+  "slug": "k-fold-cv",
+  "title": "k-Fold Cross-Validation by Hand",
+  "topic": "machine-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-15"
+  ],
+  "prerequisite_slugs": [
+    "polynomial-overfitting"
+  ],
+  "learning_objectives": [
+    "Create k disjoint folds",
+    "Train/evaluate k times and aggregate",
+    "Use CV to choose a hyperparameter"
+  ],
+  "concept_tags": [
+    "cross-validation",
+    "model-selection",
+    "folds"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012"
+  ],
+  "entry_point": "kfold_indices(n, k, seed=None); cross_val_score(fit, score, X, y, k=5, seed=0)",
+  "hints": [
+    "`order = np.arange(n)` or the seeded permutation; `folds = np.array_split(order, k)`.",
+    "Train indices for fold i: `np.concatenate([f for j, f in enumerate(folds) if j != i])`.",
+    "Loop over folds calling fit and score, collecting scores into an array."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_sizes",
+      "advice": "Use np.array_split so the first n % k folds are one larger."
+    },
+    {
+      "test": "test_partition",
+      "advice": "Each index must appear in exactly one test fold; train = all other folds."
+    },
+    {
+      "test": "test_seeded_recipe",
+      "advice": "Shuffle with default_rng(seed).permutation(n) only when seed is not None."
+    },
+    {
+      "test": "test_cv_values",
+      "advice": "Call fit on the training fold and score on the test fold."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": "PY-P1",
+  "slug": "expense-tracker-cli",
+  "title": "Expense Tracker CLI",
+  "topic": "python",
+  "kind": "project",
+  "concept_tags": [
+    "command-line",
+    "files",
+    "json"
+  ],
+  "uses": [
+    {
+      "slug": "input-output",
+      "id": "PY-04",
+      "title": "Reading Input"
+    },
+    {
+      "slug": "for-loops-range",
+      "id": "PY-09",
+      "title": "For Loops and range: FizzBuzz"
+    },
+    {
+      "slug": "gradebook-aggregate",
+      "id": "PY-18",
+      "title": "Gradebook Aggregation"
+    },
+    {
+      "slug": "safe-divide",
+      "id": "PY-21",
+      "title": "Safe Division with Exceptions"
+    },
+    {
+      "slug": "files-and-json",
+      "id": "PY-23",
+      "title": "Files, CSV and JSON"
+    }
+  ],
+  "brief": "Build a command-line program that records your expenses, saves them to a JSON file between runs, and\nprints summaries: total this month, spending by category and your biggest purchases.\n",
+  "milestones": [
+    "Ask for an amount, a category and a note with input() and keep the expense in a list of dicts.",
+    "Save the list to expenses.json when the program exits and load it when it starts.",
+    "Add a menu: add, list, summary, quit.",
+    "Summarise totals per category with a dict, sorted from largest to smallest.",
+    "Handle bad input (letters for an amount, an empty category) without crashing."
+  ],
+  "stretch": [
+    "Use argparse so commands like `python expenses.py add 120 food lunch` work without a menu.",
+    "Export a month to CSV.",
+    "Set monthly budgets per category and warn when one is exceeded."
+  ],
+  "data": "Your own expenses — or invent a week of them to test with. See the [json module](https://docs.python.org/3/library/json.html)\nand [argparse](https://docs.python.org/3/library/argparse.html) documentation.\n",
+  "setup": "```bash\npython expenses.py\n```\nOnly the standard library is needed.\n"
+}

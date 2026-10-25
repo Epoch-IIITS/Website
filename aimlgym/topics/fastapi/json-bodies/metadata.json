@@ -1,0 +1,84 @@
+{
+  "id": "FA-04",
+  "slug": "json-bodies",
+  "title": "JSON Request Bodies and Validation",
+  "topic": "fastapi",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FA-03"
+  ],
+  "prerequisite_slugs": [
+    "urls-query"
+  ],
+  "learning_objectives": [
+    "Check Content-Type before reading a body",
+    "Map body problems to 415, 400 and 422 status codes",
+    "Validate fields by hand and report errors with a location and a message",
+    "Serialise JSON responses consistently"
+  ],
+  "concept_tags": [
+    "json",
+    "validation",
+    "content-type",
+    "error-format"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S054",
+    "S067",
+    "S074"
+  ],
+  "entry_point": "read_json(headers, body); validate_item(data); json_response(status, payload)",
+  "hints": [
+    "`media = headers.get(\"content-type\", \"\").split(\";\")[0].strip().lower()`; catch `json.JSONDecodeError`.",
+    "A number check: `isinstance(x, (int, float)) and not isinstance(x, bool)`.",
+    "Extra fields: `sorted(set(data) - {\"name\", \"price\", \"tags\"})`; append one error per field."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_read_ok_with_charset",
+      "advice": "Compare only the media type before ';', lowercased and stripped."
+    },
+    {
+      "test": "test_read_415",
+      "advice": "A missing or non-JSON Content-Type gives 415."
+    },
+    {
+      "test": "test_read_400",
+      "advice": "Catch `json.JSONDecodeError` and return 400."
+    },
+    {
+      "test": "test_all_errors_reported",
+      "advice": "Collect every error in the order name, price, tags, then sorted extra fields."
+    },
+    {
+      "test": "test_required_and_bool",
+      "advice": "Report missing fields as 'field required' and reject booleans as numbers."
+    },
+    {
+      "test": "test_json_response",
+      "advice": "Use `separators=(\",\", \":\")` for compact JSON."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

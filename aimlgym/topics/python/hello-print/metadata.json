@@ -1,0 +1,79 @@
+{
+  "id": "PY-01",
+  "slug": "hello-print",
+  "title": "Hello, print()",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [],
+  "prerequisite_slugs": [],
+  "learning_objectives": [
+    "Run a Python program that prints text",
+    "Write string literals with single and double quotes",
+    "Control print's separator and line ending with sep and end",
+    "Write comments"
+  ],
+  "concept_tags": [
+    "print",
+    "strings",
+    "comments",
+    "sep-end"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S040",
+    "S041"
+  ],
+  "entry_point": "program (prints to stdout)",
+  "hints": [
+    "`print(\"Python\", \"is\", \"fun\")` already puts one space between the words.",
+    "`print()` with no arguments prints an empty line; `sep=\"-\"` changes the separator.",
+    "`print(\"Loading\", end=\"...\")` then `print(\"done\")`; finally `print('She said \"hi\"')`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_exact_output",
+      "advice": "Compare your output with the six expected lines; look for extra spaces or missing lines."
+    },
+    {
+      "test": "test_words_line",
+      "advice": "Use one print with three arguments; print adds the spaces for you."
+    },
+    {
+      "test": "test_date_with_sep",
+      "advice": "Pass `sep=\"-\"` so the parts are joined by dashes, not spaces."
+    },
+    {
+      "test": "test_blank_line",
+      "advice": "Line 4 must be empty: call `print()` with no arguments."
+    },
+    {
+      "test": "test_end_joins_lines",
+      "advice": "The first call needs `end=\"...\"` so `done` continues the same line."
+    },
+    {
+      "test": "test_quotes",
+      "advice": "Wrap the last string in single quotes so it can contain double quotes."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

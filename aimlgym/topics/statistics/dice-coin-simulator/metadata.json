@@ -1,0 +1,53 @@
+{
+  "id": "ST-P2",
+  "slug": "dice-coin-simulator",
+  "title": "Dice and Coin Simulator",
+  "topic": "statistics",
+  "kind": "project",
+  "concept_tags": [
+    "simulation",
+    "law-of-large-numbers",
+    "distributions"
+  ],
+  "uses": [
+    {
+      "slug": "dice-lln",
+      "id": "ST-10",
+      "title": "Dice Simulation and the Law of Large Numbers"
+    },
+    {
+      "slug": "histogram-bins",
+      "id": "ST-04",
+      "title": "Histogram with Equal-Width Bins"
+    },
+    {
+      "slug": "binomial-pmf",
+      "id": "ST-08",
+      "title": "Binomial Probabilities"
+    },
+    {
+      "slug": "sampling-distribution",
+      "id": "ST-12",
+      "title": "Sampling Distributions and Standard Error"
+    },
+    {
+      "slug": "scipy-stats-intro",
+      "id": "ST-14",
+      "title": "Introducing scipy.stats"
+    }
+  ],
+  "brief": "Build a simulator that rolls dice and flips coins thousands of times and shows, in numbers and\nsimple text charts, how averages settle down (the law of large numbers), how sums of dice become\nbell-shaped (the central limit theorem), and how often \"unlikely\" streaks really happen.\n",
+  "milestones": [
+    "Simulate n fair coin flips with a seeded generator and print the running proportion of heads.",
+    "Roll k dice many times and print a text histogram of the sums.",
+    "Compare the simulated frequencies with the exact binomial probabilities from scipy.stats.",
+    "Measure the longest run of heads in 100 flips across many trials and report how often it is 6 or more."
+  ],
+  "stretch": [
+    "Add loaded dice and use a chi-square test to see how many rolls it takes to detect them.",
+    "Plot the running mean with matplotlib and show the ±2 standard error band shrinking like 1/√n.",
+    "Turn it into a small command-line game where players bet on outcomes."
+  ],
+  "data": "No data is needed: everything is simulated with `numpy.random.default_rng(seed)`, so every run with\nthe same seed gives the same results.\n",
+  "setup": "```bash\npip install numpy scipy\npython simulator.py --dice 3 --rolls 10000 --seed 1\n```\nOptional: `pip install matplotlib` for charts.\n"
+}

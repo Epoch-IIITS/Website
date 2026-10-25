@@ -1,0 +1,79 @@
+{
+  "id": "ML-05",
+  "slug": "train-test-split",
+  "title": "Seeded Train/Test Split",
+  "topic": "machine-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-01",
+    "NP-10"
+  ],
+  "prerequisite_slugs": [
+    "ml-baselines",
+    "seeded-generator"
+  ],
+  "learning_objectives": [
+    "Split data into disjoint train and test sets",
+    "Keep X and y aligned when shuffling",
+    "Implement a stratified split"
+  ],
+  "concept_tags": [
+    "train-test-split",
+    "stratification",
+    "generalisation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S012",
+    "S007"
+  ],
+  "entry_point": "train_test_split(X, y, test_size=0.25, seed=0, stratify=False)",
+  "hints": [
+    "Convert with `np.asarray`, validate, and create one `rng`.",
+    "Non-stratified: `perm = rng.permutation(n)`; slice into test/train index arrays.",
+    "Stratified: loop over `np.unique(y)`, permute `np.flatnonzero(y == c)` and split each."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_alignment",
+      "advice": "Index X and y with the same permutation."
+    },
+    {
+      "test": "test_recipe",
+      "advice": "Use rng = default_rng(seed); perm = rng.permutation(n); test = perm[:n_test]."
+    },
+    {
+      "test": "test_stratified",
+      "advice": "Split each class separately with round(n_c * test_size) test samples."
+    },
+    {
+      "test": "test_disjoint_cover",
+      "advice": "Train and test must partition all rows."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

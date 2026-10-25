@@ -1,0 +1,49 @@
+{
+  "id": "AG-P2",
+  "slug": "club-event-assistant",
+  "title": "Club Event Assistant",
+  "topic": "agentic-ai",
+  "kind": "project",
+  "concept_tags": [
+    "agents",
+    "guardrails",
+    "human-in-the-loop"
+  ],
+  "uses": [
+    {
+      "slug": "lm-langchain-rag",
+      "id": "LM-20",
+      "title": "Retrieval-Augmented Generation with LangChain"
+    },
+    {
+      "slug": "ag-langgraph-react",
+      "id": "AG-08",
+      "title": "A ReAct Agent in LangGraph"
+    },
+    {
+      "slug": "ag-validate-retry",
+      "id": "AG-14",
+      "title": "Validating Tool Arguments and Retrying"
+    },
+    {
+      "slug": "ag-approval-guardrails",
+      "id": "AG-18",
+      "title": "Guardrails with Human Approval"
+    }
+  ],
+  "brief": "Build an assistant for a student club that answers questions about upcoming events, drafts\nannouncements and registration reminders — and never sends anything without a committee member's\napproval.\n",
+  "milestones": [
+    "Put event details in a small JSON or CSV file and answer FAQ-style questions about them with retrieval.",
+    "Add a draft_announcement tool that returns text but sends nothing.",
+    "Add a send_message tool behind an approval interrupt; show the draft and ask approve or reject.",
+    "Validate tool arguments (dates in the future, known channels, length limits) and retry on errors.",
+    "Log every proposed and approved action with a timestamp for review."
+  ],
+  "stretch": [
+    "Support edits: the reviewer can change the draft before approving.",
+    "Connect a real channel (email or a chat webhook) only after everything else is tested.",
+    "Write evaluation cases for refusals: requests the assistant must not act on."
+  ],
+  "data": "Use a sample events file you create (titles, dates, venues, registration links). Keep real contact lists\nout of the project until the approval flow is reliable.\n",
+  "setup": "```bash\npip install langgraph langchain-core\npython assistant.py\n```\n"
+}

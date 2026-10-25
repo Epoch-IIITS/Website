@@ -1,0 +1,75 @@
+{
+  "id": "FL-08",
+  "slug": "client-sampling",
+  "title": "Seeded Client Sampling",
+  "topic": "federated-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-07"
+  ],
+  "prerequisite_slugs": [
+    "fedavg-round"
+  ],
+  "learning_objectives": [
+    "Select a fraction C of clients per round without replacement",
+    "Make each round's selection reproducible",
+    "Check participation rates over many rounds"
+  ],
+  "concept_tags": [
+    "client-sampling",
+    "participation",
+    "cross-device"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S028",
+    "S032"
+  ],
+  "entry_point": "sample_clients(n_clients, fraction, seed, round_idx)",
+  "hints": [
+    "`m = max(1, round(fraction * n_clients))`.",
+    "`rng = np.random.default_rng([seed, round_idx])`.",
+    "`np.sort(rng.choice(n_clients, m, replace=False))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_recipe_and_round_independence",
+      "advice": "Seed with default_rng([seed, round_idx]) and use choice(..., replace=False)."
+    },
+    {
+      "test": "test_min_one",
+      "advice": "Always select at least one client."
+    },
+    {
+      "test": "test_count_distinct",
+      "advice": "Sample without replacement."
+    },
+    {
+      "test": "test_participation_rate",
+      "advice": "Each round must be an independent draw."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

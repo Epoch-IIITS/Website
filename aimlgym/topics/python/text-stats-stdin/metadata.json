@@ -1,0 +1,73 @@
+{
+  "id": "PY-24",
+  "slug": "text-stats-stdin",
+  "title": "Text Statistics from stdin",
+  "topic": "python",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-23"
+  ],
+  "prerequisite_slugs": [
+    "files-and-json"
+  ],
+  "learning_objectives": [
+    "Read all of standard input",
+    "Separate pure logic from I/O",
+    "Format output exactly"
+  ],
+  "concept_tags": [
+    "stdin",
+    "io",
+    "strings",
+    "program-structure"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "text_stats(text); main()",
+  "hints": [
+    "`len(text.splitlines())`, `len(text.split())`, `len(text)`.",
+    "In `main`, `text = sys.stdin.read()`.",
+    "Use an f-string with exactly one space between fields."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_no_trailing_newline",
+      "advice": "Count lines with splitlines(), not count('\\n')."
+    },
+    {
+      "test": "test_main_output",
+      "advice": "Print exactly `lines=L words=W chars=C` with single spaces."
+    },
+    {
+      "test": "test_as_script",
+      "advice": "Add `if __name__ == \"__main__\": main()` at the bottom."
+    },
+    {
+      "test": "test_blank_lines",
+      "advice": "Blank lines still count as lines; words come from split()."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

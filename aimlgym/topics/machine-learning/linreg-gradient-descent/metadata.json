@@ -1,0 +1,78 @@
+{
+  "id": "ML-10",
+  "slug": "linreg-gradient-descent",
+  "title": "Linear Regression by Gradient Descent",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-09",
+    "MA-14"
+  ],
+  "prerequisite_slugs": [
+    "least-squares-line",
+    "numerical-gradient"
+  ],
+  "learning_objectives": [
+    "Derive the MSE gradient in vector form",
+    "Train with batch gradient descent",
+    "Verify against the closed-form solution"
+  ],
+  "concept_tags": [
+    "gradient-descent",
+    "linear-regression",
+    "mse",
+    "vectorisation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013",
+    "S009"
+  ],
+  "entry_point": "mse_grad(X, y, w, b); fit_gd(X, y, lr=0.1, epochs=1000)",
+  "hints": [
+    "`r = X @ w + b - y`; `loss = np.mean(r ** 2)`.",
+    "`grad_w = 2 / n * X.T @ r`, `grad_b = 2 / n * r.sum()`.",
+    "In fit_gd append the loss, then update w and b."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_grad_values",
+      "advice": "Gradient is (2/n)·Xᵀr with r = Xw + b − y."
+    },
+    {
+      "test": "test_grad_numerical",
+      "advice": "Compare your analytic gradient with central differences (MA-14)."
+    },
+    {
+      "test": "test_history_decreasing",
+      "advice": "Record the loss before each update; use minus the gradient."
+    },
+    {
+      "test": "test_matches_lstsq",
+      "advice": "Update both w and b every epoch."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

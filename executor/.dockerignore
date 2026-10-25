@@ -1,0 +1,6 @@
+tests.generated.json
+service.py
+test_service.py
+README.md
+*.pyc
+__pycache__/

@@ -1,0 +1,84 @@
+{
+  "id": "NP-06",
+  "slug": "matmul-dot",
+  "title": "Matrix Products with @",
+  "topic": "numpy",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-05",
+    "MA-06"
+  ],
+  "prerequisite_slugs": [
+    "axis-aggregations",
+    "matrix-multiply"
+  ],
+  "learning_objectives": [
+    "Multiply matrices and matrix–vector pairs with the @ operator",
+    "Predict result shapes and catch mismatches before multiplying",
+    "Score a whole batch of examples with one product",
+    "Verify @ against the triple loop from Mathematics"
+  ],
+  "concept_tags": [
+    "matmul",
+    "matrix-multiplication",
+    "shapes",
+    "linear-algebra"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S082",
+    "S007",
+    "S009"
+  ],
+  "entry_point": "matmul_loops(A, B); matmul(A, B); batch_scores(X, w, b); gram(X)",
+  "hints": [
+    "Loops: for each i (rows of A) and j (columns of B), sum `A[i][k] * B[k][j]` over k.",
+    "`if A.shape[1] != B.shape[0]: raise ValueError(f\"cannot multiply {A.shape} by {B.shape}\")`.",
+    "`np.asarray(X, dtype=float) @ np.asarray(w, dtype=float) + b`; `X @ X.T` for the Gram matrix."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_loops_match_numpy",
+      "advice": "Entry (i, j) is the sum over k of A[i][k] * B[k][j]."
+    },
+    {
+      "test": "test_not_elementwise",
+      "advice": "Use `@` (matrix product), not `*` (element-wise)."
+    },
+    {
+      "test": "test_shape_error",
+      "advice": "Check `A.shape[1] != B.shape[0]` and include both shapes in the message."
+    },
+    {
+      "test": "test_batch_scores",
+      "advice": "Compute `X @ w + b` with float arrays."
+    },
+    {
+      "test": "test_gram",
+      "advice": "The Gram matrix is `X @ X.T`, shape (rows, rows)."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

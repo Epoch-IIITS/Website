@@ -1,0 +1,76 @@
+{
+  "id": "AG-06",
+  "slug": "react-loop",
+  "title": "ReAct Loop with a Scripted Model",
+  "topic": "agentic-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-02",
+    "AG-05"
+  ],
+  "prerequisite_slugs": [
+    "parse-tool-call",
+    "goal-and-budget"
+  ],
+  "learning_objectives": [
+    "Interleave reasoning, tool actions and observations",
+    "Feed tool results and errors back to the model",
+    "Stop on a final answer or step limit"
+  ],
+  "concept_tags": [
+    "react",
+    "agent-loop",
+    "tool-use",
+    "llm-agents"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S036",
+    "S037"
+  ],
+  "entry_point": "react_agent(model, registry, question, max_steps=5)",
+  "hints": [
+    "`transcript = [{'role': 'user', 'content': question}]`.",
+    "After parsing a tool call: `res = registry.dispatch({'tool': p['tool'], 'args': p['args']})`.",
+    "Append `{'role': 'tool', 'content': json.dumps(res)}`; count tool calls."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_transcript_shape",
+      "advice": "Append the assistant message, then a tool message with json.dumps(result)."
+    },
+    {
+      "test": "test_invalid_reported",
+      "advice": "Report parse errors to the model as {'ok': False, 'error': ...}."
+    },
+    {
+      "test": "test_step_limit",
+      "advice": "Stop after max_steps model calls with status 'step_limit'."
+    },
+    {
+      "test": "test_model_sees_observation",
+      "advice": "Call the model with the transcript including previous observations."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

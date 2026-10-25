@@ -1,0 +1,74 @@
+{
+  "id": "PY-09",
+  "slug": "for-loops-range",
+  "title": "For Loops and range: FizzBuzz",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [
+    "PY-08"
+  ],
+  "prerequisite_slugs": [
+    "while-loops"
+  ],
+  "learning_objectives": [
+    "Loop a known number of times with for and range",
+    "Use range(start, stop, step)",
+    "Loop over the characters of a string",
+    "Combine loops with conditionals and %"
+  ],
+  "concept_tags": [
+    "for",
+    "range",
+    "iteration",
+    "fizzbuzz"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S042"
+  ],
+  "entry_point": "program (reads stdin, prints to stdout)",
+  "hints": [
+    "`for i in range(1, n + 1):` includes n.",
+    "Check `i % 15 == 0` (or `i % 3 == 0 and i % 5 == 0`) before the single cases.",
+    "Add to `total` inside `if i % 3 == 0 or i % 5 == 0:`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_fifteen_line",
+      "advice": "Test divisibility by both 3 and 5 before testing 3 alone."
+    },
+    {
+      "test": "test_five",
+      "advice": "Use `range(1, n + 1)` so n itself is included."
+    },
+    {
+      "test": "test_zero",
+      "advice": "With n = 0 the loop runs zero times; only the sum line is printed."
+    },
+    {
+      "test": "test_fifteen_sum",
+      "advice": "Add i to the total when it is divisible by 3 **or** 5."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

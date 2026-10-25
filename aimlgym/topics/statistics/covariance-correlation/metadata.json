@@ -1,0 +1,75 @@
+{
+  "id": "ST-11",
+  "slug": "covariance-correlation",
+  "title": "Covariance and Pearson Correlation",
+  "topic": "statistics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-05",
+    "MA-04"
+  ],
+  "prerequisite_slugs": [
+    "z-scores",
+    "dot-product"
+  ],
+  "learning_objectives": [
+    "Compute sample covariance",
+    "Compute Pearson's r and interpret its range",
+    "Recognise that correlation measures only linear association"
+  ],
+  "concept_tags": [
+    "covariance",
+    "correlation",
+    "association"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S003",
+    "S010"
+  ],
+  "entry_point": "covariance(x, y, sample=True); pearson(x, y)",
+  "hints": [
+    "Compute both means, then `sxy = sum((a - mx) * (b - my) for a, b in zip(x, y))`.",
+    "Covariance = `sxy / (n - 1)` (sample) or `/ n`.",
+    "r = `sxy / math.sqrt(sxx * syy)`; raise if `sxx` or `syy` is 0."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_cov",
+      "advice": "Sample covariance divides the sum of deviation products by n − 1."
+    },
+    {
+      "test": "test_nonlinear_zero",
+      "advice": "r measures linear association only; y = x² on symmetric x gives 0."
+    },
+    {
+      "test": "test_constant_raises",
+      "advice": "A constant variable has zero spread — raise ValueError."
+    },
+    {
+      "test": "test_scale_invariance",
+      "advice": "Centre both variables before multiplying deviations."
+    }
+  ],
+  "test_count": 10,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      }
+    }
+  }
+}

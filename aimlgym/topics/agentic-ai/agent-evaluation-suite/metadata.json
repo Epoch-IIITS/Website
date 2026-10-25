@@ -1,0 +1,49 @@
+{
+  "id": "AG-P3",
+  "slug": "agent-evaluation-suite",
+  "title": "Agent Evaluation Suite",
+  "topic": "agentic-ai",
+  "kind": "project",
+  "concept_tags": [
+    "evaluation",
+    "testing",
+    "agents"
+  ],
+  "uses": [
+    {
+      "slug": "agent-evaluation",
+      "id": "AG-20",
+      "title": "Evaluating Agents"
+    },
+    {
+      "slug": "ag-langgraph-react",
+      "id": "AG-08",
+      "title": "A ReAct Agent in LangGraph"
+    },
+    {
+      "slug": "ag-approval-guardrails",
+      "id": "AG-18",
+      "title": "Guardrails with Human Approval"
+    },
+    {
+      "slug": "nlp-error-analysis",
+      "id": "NL-16",
+      "title": "Evaluating Text Classifiers"
+    }
+  ],
+  "brief": "Build a reusable test suite for an agent: scripted scenarios with expected tool calls and answers,\nmetrics such as task success, tool accuracy and step count, and a report that shows what changed\nbetween two versions of the agent.\n",
+  "milestones": [
+    "Write 20 test cases: input, expected final answer (or a checker function) and expected tools.",
+    "Run an agent on every case and record the messages, tool calls, steps and time.",
+    "Compute task success, tool precision and recall, and average steps per task.",
+    "Add safety cases that must end in refusal or approval, and count violations.",
+    "Compare two agent versions in one table and highlight regressions."
+  ],
+  "stretch": [
+    "Use a second model as a grader for open-ended answers, and check its agreement with your own grades.",
+    "Run each case several times to measure variability.",
+    "Run the suite automatically on every change with a CI workflow."
+  ],
+  "data": "Write the test cases yourself, for the study-planner or club-assistant agent. Scripted fake models make\nthe first version of the suite fully deterministic.\n",
+  "setup": "```bash\npip install langgraph langchain-core pandas\npython evaluate.py --agent planner\n```\n"
+}

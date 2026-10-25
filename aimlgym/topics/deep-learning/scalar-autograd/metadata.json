@@ -1,0 +1,85 @@
+{
+  "id": "DL-08",
+  "slug": "scalar-autograd",
+  "title": "A Tiny Autograd Engine",
+  "topic": "deep-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-06",
+    "MA-11"
+  ],
+  "prerequisite_slugs": [
+    "torch-mlp-module",
+    "derivative-rules"
+  ],
+  "learning_objectives": [
+    "Represent a computation as a graph of Value objects",
+    "Give each operation a local backward rule from the chain rule",
+    "Run backpropagation in reverse topological order and accumulate gradients",
+    "Explain what PyTorch's autograd automates"
+  ],
+  "concept_tags": [
+    "autograd",
+    "computational-graph",
+    "backpropagation",
+    "chain-rule",
+    "operator-overloading"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S094",
+    "S016",
+    "S092"
+  ],
+  "entry_point": "class Value(data); Value.backward()",
+  "hints": [
+    "Copy the `__add__` pattern for `__mul__`: the local derivatives are `other.data` and `self.data`.",
+    "`__neg__` can return `self * -1`, `__sub__` can return `self + (-other)`; `__radd__` returns `self + other` and `__rsub__` returns `other + (-self)`.",
+    "Topological order: a recursive `build(v)` that visits `v._prev` first, then appends `v`; skip nodes already in a `visited` set."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Implement `__mul__` with local derivatives `other.data` and `self.data`, and a working `backward`."
+    },
+    {
+      "test": "test_reused_value_accumulates",
+      "advice": "Use `+=` in every backward closure so reused values collect all contributions."
+    },
+    {
+      "test": "test_reflected_and_sub",
+      "advice": "Add `__radd__`, `__rmul__`, `__sub__` and `__rsub__`, wrapping numbers in Value."
+    },
+    {
+      "test": "test_tanh_exp",
+      "advice": "tanh's derivative is `1 - t**2`; exp's derivative is its own output."
+    },
+    {
+      "test": "test_deep_chain_order",
+      "advice": "Visit nodes in reverse topological order so each gradient is complete before it is pushed further."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "NL-06",
+  "slug": "char-ngrams",
+  "title": "Character n-grams by Hand",
+  "topic": "nlp",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "NL-02"
+  ],
+  "prerequisite_slugs": [
+    "tokenize-normalize"
+  ],
+  "learning_objectives": [
+    "Extract character n-grams with boundary markers",
+    "Generate ranges of n",
+    "Compare words by n-gram overlap (Jaccard)"
+  ],
+  "concept_tags": [
+    "char-ngrams",
+    "subwords",
+    "jaccard"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S017",
+    "S020"
+  ],
+  "entry_point": "char_ngrams(word, n_min=3, n_max=3); jaccard(a, b, n=3)",
+  "hints": [
+    "`s = '<' + word + '>'`.",
+    "For each n in range(n_min, n_max + 1): `[s[i:i+n] for i in range(len(s) - n + 1)]`.",
+    "Sets: `A = set(char_ngrams(a, n, n))`; return `len(A & B) / len(A | B)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_cat",
+      "advice": "Wrap the word in '<' and '>' before slicing."
+    },
+    {
+      "test": "test_range",
+      "advice": "Order by n first, then by position."
+    },
+    {
+      "test": "test_jaccard",
+      "advice": "Use sets of n-grams: |A ∩ B| / |A ∪ B|."
+    },
+    {
+      "test": "test_jaccard_disjoint_and_empty",
+      "advice": "Return 1.0 when both n-gram sets are empty."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

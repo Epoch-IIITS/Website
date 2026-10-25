@@ -1,0 +1,79 @@
+{
+  "id": "ST-13",
+  "slug": "bootstrap-ci",
+  "title": "Bootstrap Confidence Interval",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-12",
+    "ST-03"
+  ],
+  "prerequisite_slugs": [
+    "sampling-distribution",
+    "percentiles"
+  ],
+  "learning_objectives": [
+    "Resample with replacement",
+    "Build a percentile bootstrap interval",
+    "Explain what a confidence interval does and does not mean"
+  ],
+  "concept_tags": [
+    "bootstrap",
+    "confidence-interval",
+    "resampling",
+    "inference"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S010",
+    "S011",
+    "S004"
+  ],
+  "entry_point": "bootstrap_ci(data, n_boot=2000, alpha=0.05, seed=0, stat=None)",
+  "hints": [
+    "Default `stat = lambda xs: sum(xs) / len(xs)`.",
+    "Resample: `[data[int(rng.random() * n)] for _ in range(n)]`.",
+    "Reuse a linear-interpolation percentile helper on the list of bootstrap stats."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_exact_recipe",
+      "advice": "Draw indices with int(rng.random()*n), n per resample, in order; sort the stats; use linear percentiles."
+    },
+    {
+      "test": "test_constant",
+      "advice": "Constant data gives identical bootstrap stats; both endpoints equal the value."
+    },
+    {
+      "test": "test_wider_at_higher_confidence",
+      "advice": "Lower alpha → percentiles further into the tails."
+    },
+    {
+      "test": "test_custom_stat",
+      "advice": "Apply the provided stat function to each resample."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "PY-14",
+  "slug": "fibonacci-sequence",
+  "title": "Fibonacci Sequence",
+  "topic": "python",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-13"
+  ],
+  "prerequisite_slugs": [
+    "vowel-counter"
+  ],
+  "learning_objectives": [
+    "Maintain state across loop iterations",
+    "Use tuple assignment",
+    "Handle small-n boundary cases"
+  ],
+  "concept_tags": [
+    "loops",
+    "sequences",
+    "tuple-unpacking",
+    "state"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S001"
+  ],
+  "entry_point": "fibonacci(n)",
+  "hints": [
+    "Keep two variables `a, b = 0, 1`.",
+    "Each iteration: append `a`, then `a, b = b, a + b`.",
+    "Loop exactly `n` times with `for _ in range(n)`; `range(n)` is empty when n ≤ 0, so no special case is needed."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_one",
+      "advice": "The sequence starts with 0, so fibonacci(1) is [0]."
+    },
+    {
+      "test": "test_recurrence_holds",
+      "advice": "Check simultaneous assignment `a, b = b, a + b`."
+    },
+    {
+      "test": "test_fast_large",
+      "advice": "Avoid recursion; an O(n) loop finishes instantly."
+    },
+    {
+      "test": "test_negative",
+      "advice": "A negative n should give an empty list; `range(n)` already does this."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

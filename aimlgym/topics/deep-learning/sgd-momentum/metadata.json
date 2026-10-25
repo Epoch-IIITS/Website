@@ -1,0 +1,76 @@
+{
+  "id": "DL-14",
+  "slug": "sgd-momentum",
+  "title": "SGD with Momentum",
+  "topic": "deep-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-11",
+    "MA-13"
+  ],
+  "prerequisite_slugs": [
+    "dense-backward",
+    "gradient-descent-1d"
+  ],
+  "learning_objectives": [
+    "Implement the momentum update",
+    "Keep optimiser state per parameter",
+    "Compare convergence on an ill-conditioned quadratic"
+  ],
+  "concept_tags": [
+    "optimisers",
+    "momentum",
+    "sgd"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013"
+  ],
+  "entry_point": "class Momentum(lr, beta): step(params, grads)",
+  "hints": [
+    "Store `self.v = {}` and create `np.zeros_like(param)` the first time a key appears.",
+    "`self.v[k] = self.beta * self.v[k] + grads[k]`.",
+    "Build `new[k] = params[k] - self.lr * self.v[k]` (a new array)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "v ← βv + g; θ ← θ − lr·v, with v persisting between calls."
+    },
+    {
+      "test": "test_separate_state",
+      "advice": "Keep one velocity array per parameter name."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Return new arrays; don't use -= on the inputs."
+    },
+    {
+      "test": "test_errors",
+      "advice": "Validate beta in [0, 1) and matching shapes."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "DL-10",
+  "slug": "neuron-backprop",
+  "title": "Backprop Through One Neuron",
+  "topic": "deep-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-08"
+  ],
+  "prerequisite_slugs": [
+    "scalar-autograd"
+  ],
+  "learning_objectives": [
+    "Apply the chain rule through a computational graph",
+    "Compute gradients of a sigmoid neuron with BCE",
+    "Confirm the simplification dL/dz = p − y"
+  ],
+  "concept_tags": [
+    "backpropagation",
+    "chain-rule",
+    "computational-graph"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S016",
+    "S014"
+  ],
+  "entry_point": "neuron_forward_backward(x, y, w, b)",
+  "hints": [
+    "`z = float(w @ x + b)`; `p = 1 / (1 + np.exp(-z))`.",
+    "`dL_dp = -y / pc + (1 - y) / (1 - pc)` with clipped `pc`; `dp_dz = p * (1 - p)`.",
+    "`dL_dz = dL_dp * dp_dz`; `grad_w = dL_dz * x`; `grad_b = dL_dz`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "dL/dp = −y/p + (1−y)/(1−p); dp/dz = p(1−p)."
+    },
+    {
+      "test": "test_p_minus_y",
+      "advice": "Multiply the two local derivatives; the product should equal p − y."
+    },
+    {
+      "test": "test_numeric_w",
+      "advice": "grad_w = dL/dz · x."
+    },
+    {
+      "test": "test_large_z_stable",
+      "advice": "Use a stable sigmoid and clip p for the log."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

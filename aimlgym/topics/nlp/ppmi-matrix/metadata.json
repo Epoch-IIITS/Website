@@ -1,0 +1,77 @@
+{
+  "id": "NL-17",
+  "slug": "ppmi-matrix",
+  "title": "PPMI Co-occurrence Matrix",
+  "topic": "nlp",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-07",
+    "NL-09"
+  ],
+  "prerequisite_slugs": [
+    "bag-of-words",
+    "tf-idf"
+  ],
+  "learning_objectives": [
+    "Count word–context co-occurrences in a window",
+    "Compute positive pointwise mutual information",
+    "Use PPMI rows as word vectors"
+  ],
+  "concept_tags": [
+    "co-occurrence",
+    "ppmi",
+    "distributional-semantics",
+    "word-vectors"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S017"
+  ],
+  "entry_point": "cooccurrence(sentences, vocab, window=2); ppmi(C)",
+  "hints": [
+    "For each i, loop `j in range(max(0, i - window), min(len(s), i + window + 1))`, skipping j == i.",
+    "`P = C / N`, `pw = P.sum(1, keepdims=True)`, `pc = P.sum(0, keepdims=True)`.",
+    "Compute log2 only where C > 0: `np.log2(P / (pw * pc), where=C > 0, out=np.zeros_like(P))`, then clip at 0."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_counts",
+      "advice": "Count neighbours within the window inside each sentence, excluding the word itself."
+    },
+    {
+      "test": "test_oov_positions",
+      "advice": "OOV tokens still occupy positions; don't delete them before windowing."
+    },
+    {
+      "test": "test_ppmi_value",
+      "advice": "PMI = log2(P(w,c) / (P(w)P(c))) with marginals from row/column sums."
+    },
+    {
+      "test": "test_ppmi_nonneg_finite",
+      "advice": "Only take logs where C > 0 and clip negatives to 0."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

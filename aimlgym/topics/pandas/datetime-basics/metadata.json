@@ -1,0 +1,82 @@
+{
+  "id": "PD-12",
+  "slug": "datetime-basics",
+  "title": "Working with Dates",
+  "topic": "pandas",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-11"
+  ],
+  "prerequisite_slugs": [
+    "string-cleaning"
+  ],
+  "learning_objectives": [
+    "Parse ISO date strings with pd.to_datetime and an explicit format",
+    "Extract parts with the .dt accessor",
+    "Subtract dates to get durations in days",
+    "Compare pandas date arithmetic with the datetime module"
+  ],
+  "concept_tags": [
+    "datetime",
+    "to-datetime",
+    "dt-accessor",
+    "timedelta"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S087",
+    "S008"
+  ],
+  "entry_point": "days_between_manual(start, end); parse_dates(df, col); add_date_parts(df, col); add_duration(df, start, end); in_month(df, col, year, month)",
+  "hints": [
+    "`(datetime.date.fromisoformat(end) - datetime.date.fromisoformat(start)).days`.",
+    "`df.assign(**{col: pd.to_datetime(df[col], format=\"%Y-%m-%d\")})` returns a copy.",
+    "`d = df[col].dt`; `df.assign(year=d.year, month=d.month, weekday=d.day_name())`; filter with `(d.year == year) & (d.month == month)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_manual",
+      "advice": "Convert both strings with `datetime.date.fromisoformat` and take `.days` of the difference."
+    },
+    {
+      "test": "test_parse_rejects_bad_format",
+      "advice": "Pass `format=\"%Y-%m-%d\"` so a different format raises instead of being guessed."
+    },
+    {
+      "test": "test_parts",
+      "advice": "Use `.dt.year`, `.dt.month` and `.dt.day_name()`."
+    },
+    {
+      "test": "test_duration_matches_manual",
+      "advice": "Parse both columns, subtract, and use `.dt.days`."
+    },
+    {
+      "test": "test_in_month",
+      "advice": "Combine the year and month conditions with `&` and reset the index."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

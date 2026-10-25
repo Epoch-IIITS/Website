@@ -1,0 +1,49 @@
+{
+  "id": "LM-P1",
+  "slug": "poem-name-generator",
+  "title": "Poem or Name Generator",
+  "topic": "llms",
+  "kind": "project",
+  "concept_tags": [
+    "language-model",
+    "text-generation",
+    "gpt"
+  ],
+  "uses": [
+    {
+      "slug": "temperature-softmax",
+      "id": "LM-03",
+      "title": "Logits, Temperature and Softmax"
+    },
+    {
+      "slug": "top-k-top-p",
+      "id": "LM-13",
+      "title": "Top-k and Top-p Filtering"
+    },
+    {
+      "slug": "lm-tiny-gpt",
+      "id": "LM-16",
+      "title": "A Tiny GPT in PyTorch"
+    },
+    {
+      "slug": "torch-save-load",
+      "id": "DL-26",
+      "title": "Saving, Loading and Reproducibility"
+    }
+  ],
+  "brief": "Train your tiny GPT on text you choose — public-domain poems, Indian city names, invented\ncharacter names — and generate new samples. Explore how context length, model size and\nsampling temperature change the results.\n",
+  "milestones": [
+    "Collect a text file of at least 50 KB (or a list of a few thousand names, one per line).",
+    "Train the tiny GPT with a train/validation split and plot both losses.",
+    "Add temperature and top-k sampling to generate, and compare greedy with sampled output.",
+    "Scale up: more layers, a longer context, a wider model — and note the validation loss each time.",
+    "Save the best model and write a script that prints ten new samples."
+  ],
+  "stretch": [
+    "Switch from characters to a BPE tokenizer (see the BPE step).",
+    "Add a key–value cache to generation and measure the speed-up.",
+    "Filter generated names that already appear in the training data."
+  ],
+  "data": "Public-domain books from [Project Gutenberg](https://www.gutenberg.org/) (download a plain-text file),\nyour own writing, or name lists you assemble. Keep the text in one UTF-8 file.\n",
+  "setup": "```bash\npip install torch\npython train_gpt.py --text poems.txt --steps 5000\n```\nA laptop CPU is enough for a model with a few hundred thousand parameters.\n"
+}

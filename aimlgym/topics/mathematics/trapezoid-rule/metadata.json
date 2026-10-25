@@ -1,0 +1,73 @@
+{
+  "id": "MA-12",
+  "slug": "trapezoid-rule",
+  "title": "Trapezoidal Integration",
+  "topic": "mathematics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-10"
+  ],
+  "prerequisite_slugs": [
+    "central-difference"
+  ],
+  "learning_objectives": [
+    "Approximate a definite integral",
+    "Implement the composite trapezoidal rule",
+    "Observe error shrinking as n grows"
+  ],
+  "concept_tags": [
+    "calculus",
+    "integration",
+    "numerical-methods"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S009",
+    "S013"
+  ],
+  "entry_point": "trapezoid(f, a, b, n)",
+  "hints": [
+    "`h = (b - a) / n`; the points are `a + i * h` for i = 0..n.",
+    "Start with `0.5 * (f(a) + f(b))` then add interior points i = 1..n−1.",
+    "Multiply the total by `h` at the end."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_n2",
+      "advice": "Endpoints get weight ½, interior points weight 1, then multiply by h."
+    },
+    {
+      "test": "test_linear_exact",
+      "advice": "With n = 1 the result is h·(f(a)+f(b))/2."
+    },
+    {
+      "test": "test_error_quarters",
+      "advice": "Make sure you include all n−1 interior points."
+    },
+    {
+      "test": "test_bad_n",
+      "advice": "n must be a positive int; reject floats and values < 1."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

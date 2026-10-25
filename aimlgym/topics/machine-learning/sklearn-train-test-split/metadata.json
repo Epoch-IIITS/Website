@@ -1,0 +1,77 @@
+{
+  "id": "ML-04",
+  "slug": "sklearn-train-test-split",
+  "title": "Splitting Data with scikit-learn",
+  "topic": "machine-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-02"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-estimator-api"
+  ],
+  "learning_objectives": [
+    "Split arrays with train_test_split, keeping rows paired",
+    "Preserve class proportions with stratify",
+    "Generate repeated stratified splits with StratifiedShuffleSplit"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "train-test-split",
+    "stratification",
+    "reproducibility"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S089"
+  ],
+  "entry_point": "split_data(X, y, test_size=0.25, seed=0, stratify=False)",
+  "hints": [
+    "Pass both arrays to one `train_test_split` call so they are shuffled together.",
+    "`stratify=y if stratify else None`, `random_state=seed`.",
+    "`for train, test in StratifiedShuffleSplit(n_splits=..., test_size=..., random_state=seed).split(X, y)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_stratified_ratio",
+      "advice": "Pass stratify=y when stratify is true."
+    },
+    {
+      "test": "test_rows_stay_paired",
+      "advice": "Split X and y in a single train_test_split call."
+    },
+    {
+      "test": "test_reproducible",
+      "advice": "Use random_state=seed."
+    },
+    {
+      "test": "test_stratified_splits",
+      "advice": "Convert StratifiedShuffleSplit's index arrays to lists of ints."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "NL-04",
+  "slug": "stopword-counts",
+  "title": "Stopwords and Word Counts",
+  "topic": "nlp",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "NL-02"
+  ],
+  "prerequisite_slugs": [
+    "tokenize-normalize"
+  ],
+  "learning_objectives": [
+    "Remove stopwords",
+    "Count tokens with collections.Counter",
+    "Return top-n words with deterministic tie-breaking"
+  ],
+  "concept_tags": [
+    "stopwords",
+    "word-frequency",
+    "counter"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S018",
+    "S017"
+  ],
+  "entry_point": "remove_stopwords(tokens, stopwords); top_words(tokens, n, stopwords=())",
+  "hints": [
+    "Convert stopwords to a set once: `sw = set(stopwords)`.",
+    "`Counter(remove_stopwords(tokens, stopwords))`.",
+    "`sorted(c.items(), key=lambda kv: (-kv[1], kv[0]))[:n]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_top",
+      "advice": "Sort by (-count, word) so ties are alphabetical."
+    },
+    {
+      "test": "test_order_independent",
+      "advice": "Counter.most_common keeps insertion order on ties — sort explicitly."
+    },
+    {
+      "test": "test_remove",
+      "advice": "Keep the original order of non-stopwords."
+    },
+    {
+      "test": "test_bad_n",
+      "advice": "Raise ValueError when n < 1."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -27,13 +27,13 @@ import {
 } from "lucide-react";
 
 const navigation = [
-  { name: "Home", href: "/" },
   { name: "Blog", href: "/blog" },
-  { name: "Projects", href: "/projects" },
+  { name: "Contact", href: "/contact" },
   { name: "Events", href: "/events" },
   { name: "Gallery", href: "/gallery" },
+  { name: "Learn", href: "/learn" },
+  { name: "Projects", href: "/projects" },
   { name: "Team", href: "/team" },
-  { name: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -128,7 +128,7 @@ export function Navbar() {
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-12">
+          <div className="hidden lg:flex lg:gap-x-6 xl:gap-x-9">
             {navigation.map((item) => (
               <Link
                 key={item.name}

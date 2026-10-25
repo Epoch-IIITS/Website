@@ -1,0 +1,54 @@
+{
+  "id": "ST-P1",
+  "slug": "ab-test-analyser",
+  "title": "A/B Test Analyser",
+  "topic": "statistics",
+  "kind": "project",
+  "concept_tags": [
+    "a-b-testing",
+    "hypothesis-testing",
+    "confidence-intervals"
+  ],
+  "uses": [
+    {
+      "slug": "bootstrap-ci",
+      "id": "ST-13",
+      "title": "Bootstrap Confidence Interval"
+    },
+    {
+      "slug": "scipy-stats-intro",
+      "id": "ST-14",
+      "title": "Introducing scipy.stats"
+    },
+    {
+      "slug": "chi-square-scipy",
+      "id": "ST-15",
+      "title": "Chi-Square Test with SciPy"
+    },
+    {
+      "slug": "welch-t-scipy",
+      "id": "ST-17",
+      "title": "Welch's t-test with SciPy"
+    },
+    {
+      "slug": "permutation-test-scipy",
+      "id": "ST-19",
+      "title": "Permutation Test with SciPy"
+    }
+  ],
+  "brief": "Build a small tool that a product team could use after an experiment: give it the results for\nversion A and version B of a page (conversions or a numeric metric such as time on page) and it\nreports the effect size, a confidence interval, and whether the difference is statistically\nsignificant — in plain language a non-statistician can act on.\n",
+  "milestones": [
+    "Read two groups of numbers from a CSV file and print their sizes, means and standard deviations.",
+    "Report the difference in means with a 95% bootstrap confidence interval.",
+    "Add Welch's t-test and a permutation test and print both p-values side by side.",
+    "Support conversion data (converted yes/no) with a chi-square test on the 2×2 table of counts.",
+    "Write a one-paragraph summary: effect, interval, p-value and a recommendation with its caveats."
+  ],
+  "stretch": [
+    "Estimate the sample size needed to detect a given effect (power analysis) by simulation.",
+    "Show what goes wrong when you check the p-value every day and stop early ('peeking').",
+    "Handle more than two variants and correct for multiple comparisons."
+  ],
+  "data": "Generate data yourself with NumPy: for example 2,000 visitors per version with conversion rates\nof 10% and 11% (`rng.random(2000) < 0.11`), or times drawn from `rng.lognormal`. Changing the true\neffect and the sample size shows when a test can and cannot detect it.\n",
+  "setup": "```bash\npip install numpy scipy pandas\npython ab_test.py results.csv\n```\nKeep the analysis in functions so you can test each one with `unittest`, as in the course steps.\n"
+}

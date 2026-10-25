@@ -1,0 +1,77 @@
+{
+  "id": "AG-18",
+  "slug": "ag-approval-guardrails",
+  "title": "Guardrails with Human Approval",
+  "topic": "agentic-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-16"
+  ],
+  "prerequisite_slugs": [
+    "ag-orchestrator-graph"
+  ],
+  "learning_objectives": [
+    "Pause a graph with interrupt() to ask a person for approval",
+    "Resume it with Command(resume=...) on the same thread",
+    "Allow safe actions, require approval for sensitive ones and block unknown ones"
+  ],
+  "concept_tags": [
+    "langgraph",
+    "guardrails",
+    "human-in-the-loop",
+    "interrupts",
+    "safety"
+  ],
+  "permitted_packages": [
+    "langgraph"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S138",
+    "S137"
+  ],
+  "entry_point": "build_guarded_graph(tools, sensitive); run_with_approval(app, action, thread_id, decide)",
+  "hints": [
+    "The guard node returns `{}` when the action may run, so the router can send it to execute.",
+    "`route = lambda s: END if s[\"outcome\"] in (\"blocked\", \"rejected\") else \"execute\"`.",
+    "`result = app.invoke(...)`; `if \"__interrupt__\" in result: result = app.invoke(Command(resume=decide(result[\"__interrupt__\"][0].value)), config)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_safe_action_runs_without_asking",
+      "advice": "Only sensitive tools call interrupt()."
+    },
+    {
+      "test": "test_sensitive_action_approved",
+      "advice": "Resume with Command(resume=decision) on the same thread_id."
+    },
+    {
+      "test": "test_only_exact_approve",
+      "advice": "Treat anything except 'approve' as a rejection."
+    },
+    {
+      "test": "test_sent_once_after_resume",
+      "advice": "Run the tool in the execute node, after the approval, not inside guard."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

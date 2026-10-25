@@ -1,0 +1,85 @@
+{
+  "id": "FA-01",
+  "slug": "http-requests",
+  "title": "Anatomy of an HTTP Request",
+  "topic": "fastapi",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-23"
+  ],
+  "prerequisite_slugs": [
+    "files-and-json"
+  ],
+  "learning_objectives": [
+    "Name the parts of an HTTP/1.1 request: request line, headers, blank line, body",
+    "Parse a raw request into method, target, version, headers and body",
+    "Treat header names case-insensitively and use Content-Length",
+    "Classify methods as safe and idempotent"
+  ],
+  "concept_tags": [
+    "http",
+    "requests",
+    "headers",
+    "methods",
+    "parsing"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S065",
+    "S068",
+    "S067"
+  ],
+  "entry_point": "parse_request(raw); build_request(method, target, headers=None, body=''); is_safe(method); is_idempotent(method)",
+  "hints": [
+    "Check `\"\\r\\n\\r\\n\" in raw` first; `lines[0].split(\" \")` must give 3 parts; `method.isalpha() and method.isupper()`.",
+    "For each header line use `name, sep, value = line.partition(\":\")`; if `sep` is empty raise ValueError.",
+    "Body length in bytes: `len(body.encode(\"utf-8\"))`. Idempotent methods are the safe ones plus PUT and DELETE."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_parse",
+      "advice": "Lowercase header names and strip their values."
+    },
+    {
+      "test": "test_header_values_with_colons",
+      "advice": "Split each header at the first colon only (`str.partition`)."
+    },
+    {
+      "test": "test_rejects_malformed",
+      "advice": "Check the blank line, the three-part request line, the method, the version, header colons and Content-Length."
+    },
+    {
+      "test": "test_length_in_bytes",
+      "advice": "Compare Content-Length with `len(body.encode(\"utf-8\"))`."
+    },
+    {
+      "test": "test_build_round_trip",
+      "advice": "Join lines with CRLF, end headers with a blank line, and add Content-Length in bytes for non-empty bodies."
+    },
+    {
+      "test": "test_methods",
+      "advice": "Idempotent = GET, HEAD, OPTIONS, PUT, DELETE; compare in upper case."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

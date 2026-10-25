@@ -1,0 +1,78 @@
+{
+  "id": "FL-06",
+  "slug": "local-sgd",
+  "title": "Local SGD on a Client",
+  "topic": "federated-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "ML-10",
+    "FL-03"
+  ],
+  "prerequisite_slugs": [
+    "linreg-gradient-descent",
+    "client-delta"
+  ],
+  "learning_objectives": [
+    "Run several epochs of minibatch SGD on local data",
+    "Shuffle reproducibly per epoch",
+    "Return the local model without touching the global one"
+  ],
+  "concept_tags": [
+    "local-training",
+    "sgd",
+    "minibatch",
+    "federated-learning"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S028",
+    "S013"
+  ],
+  "entry_point": "mse_grad(w, X, y); local_sgd(w, X, y, lr, epochs, batch_size, seed)",
+  "hints": [
+    "`2 / len(y) * X.T @ (X @ w - y)`.",
+    "`rng = np.random.default_rng(seed)` once, outside the epoch loop.",
+    "`for s in range(0, n, batch_size): b = order[s:s + batch_size]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_recipe",
+      "advice": "Create the generator once; new permutation each epoch; batch-mean gradient per step."
+    },
+    {
+      "test": "test_full_batch_one_step",
+      "advice": "Gradient is 2/|B| · Xᵀ(Xw − y)."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Copy w before updating (np.array(w))."
+    },
+    {
+      "test": "test_converges",
+      "advice": "The last batch of an epoch may be smaller — include it."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

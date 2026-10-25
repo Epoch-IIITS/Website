@@ -1,0 +1,77 @@
+{
+  "id": "NL-10",
+  "slug": "nlp-tfidf-retrieval",
+  "title": "Search with TfidfVectorizer and Cosine Similarity",
+  "topic": "nlp",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-09"
+  ],
+  "prerequisite_slugs": [
+    "tf-idf"
+  ],
+  "learning_objectives": [
+    "Index documents with TfidfVectorizer",
+    "Rank documents for a query with cosine_similarity",
+    "Explain why TF-IDF rows are L2-normalised"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "tf-idf",
+    "information-retrieval",
+    "search"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S126",
+    "S012"
+  ],
+  "entry_point": "build_index(docs); search(index, query, k=3)",
+  "hints": [
+    "`vec = TfidfVectorizer(); matrix = vec.fit_transform(docs)`.",
+    "`scores = cosine_similarity(vec.transform([query]), matrix)[0]`.",
+    "`sorted(range(len(scores)), key=lambda i: (-scores[i], i))[:k]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_best_match_first",
+      "advice": "Transform the query with the fitted vectorizer; do not fit a new one."
+    },
+    {
+      "test": "test_scores_sorted_and_bounded",
+      "advice": "Sort by score descending, then by index."
+    },
+    {
+      "test": "test_unknown_words",
+      "advice": "Unknown words give zero scores; ties keep index order."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject an empty corpus and k < 1."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

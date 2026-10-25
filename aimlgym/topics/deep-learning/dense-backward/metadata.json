@@ -1,0 +1,84 @@
+{
+  "id": "DL-11",
+  "slug": "dense-backward",
+  "title": "Backpropagation Through a Dense Layer",
+  "topic": "deep-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-10"
+  ],
+  "prerequisite_slugs": [
+    "neuron-backprop"
+  ],
+  "learning_objectives": [
+    "Derive dX, dW and db for Y = XW + b from the chain rule",
+    "Backpropagate through ReLU",
+    "Compute the mean-squared-error loss and its gradient",
+    "Check every gradient shape against its parameter's shape"
+  ],
+  "concept_tags": [
+    "backpropagation",
+    "dense-layer",
+    "relu",
+    "matrix-calculus",
+    "gradients"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S016",
+    "S013"
+  ],
+  "entry_point": "dense_backward(X, W, dY); relu_backward(Z, dA); mse_and_grad(Y_hat, Y); two_layer_grads(X, Y, params)",
+  "hints": [
+    "`dW = X.T @ dY`, `db = dY.sum(axis=0)`, `dX = dY @ W.T`.",
+    "`relu_backward` is `dA * (Z > 0)`; the MSE gradient is `2 * diff / diff.size`.",
+    "Forward: `Z1 = X @ W1 + b1`, `H = np.maximum(Z1, 0)`, `Y_hat = H @ W2 + b2`; backward: dense (layer 2) → relu → dense (layer 1)."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Use `dW = X.T @ dY`, `db = dY.sum(axis=0)`, `dX = dY @ W.T`."
+    },
+    {
+      "test": "test_shapes",
+      "advice": "Each gradient must have the shape of what it differentiates."
+    },
+    {
+      "test": "test_relu_backward",
+      "advice": "Pass the gradient only where Z > 0."
+    },
+    {
+      "test": "test_mse",
+      "advice": "Divide by the total number of entries: `2 * diff / diff.size`."
+    },
+    {
+      "test": "test_two_layer_numeric",
+      "advice": "Run the forward pass, then dense (layer 2) → ReLU → dense (layer 1)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

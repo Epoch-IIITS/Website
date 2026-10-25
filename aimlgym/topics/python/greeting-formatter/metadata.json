@@ -1,0 +1,74 @@
+{
+  "id": "PY-10",
+  "slug": "greeting-formatter",
+  "title": "Greeting Formatter",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-09"
+  ],
+  "prerequisite_slugs": [
+    "for-loops-range"
+  ],
+  "learning_objectives": [
+    "Define a function with a default argument",
+    "Use str.strip and f-strings",
+    "Return a value instead of printing it"
+  ],
+  "concept_tags": [
+    "functions",
+    "strings",
+    "f-strings",
+    "default-arguments"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S001",
+    "S005"
+  ],
+  "entry_point": "greet(name='World')",
+  "hints": [
+    "Start with `name = name.strip()`; remember strip returns a new string.",
+    "An empty string is falsy, so `if not name:` detects it.",
+    "Build the answer with `f\"Hello, {name.title()}!\"` and `return` it."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_returns_str_not_none",
+      "advice": "You probably used `print` instead of `return`."
+    },
+    {
+      "test": "test_strip_and_title",
+      "advice": "Call `.strip()` before `.title()` and keep the result in a variable."
+    },
+    {
+      "test": "test_only_spaces",
+      "advice": "Check for emptiness *after* stripping, not before."
+    },
+    {
+      "test": "test_already_capitalised",
+      "advice": "`.title()` also lowercases the remaining letters — use it rather than `.capitalize()` on the first letter only."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

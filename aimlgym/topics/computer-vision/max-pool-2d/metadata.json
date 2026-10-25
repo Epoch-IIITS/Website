@@ -1,0 +1,77 @@
+{
+  "id": "CV-14",
+  "slug": "max-pool-2d",
+  "title": "2D Max Pooling",
+  "topic": "computer-vision",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "CV-10"
+  ],
+  "prerequisite_slugs": [
+    "conv2d-filter"
+  ],
+  "learning_objectives": [
+    "Downsample with max and average pooling",
+    "Compute pooled output sizes",
+    "Vectorise non-overlapping pooling with reshape"
+  ],
+  "concept_tags": [
+    "pooling",
+    "downsampling",
+    "cnn"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "torch"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S015",
+    "S013"
+  ],
+  "entry_point": "pool2d(x, size=2, stride=None, mode='max')",
+  "hints": [
+    "`Ho = (H - size) // stride + 1` (same for W).",
+    "General case: `sliding_window_view(x, (size, size))[::stride, ::stride]` has shape `(Ho, Wo, size, size)`.",
+    "Reduce with `.max(axis=(2, 3))` or `.mean(axis=(2, 3))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_max",
+      "advice": "Non-overlapping 2×2 windows: stride defaults to size."
+    },
+    {
+      "test": "test_crop",
+      "advice": "Drop rows/columns that don't fill a whole window."
+    },
+    {
+      "test": "test_overlap",
+      "advice": "With stride < size, windows overlap; take every stride-th window."
+    },
+    {
+      "test": "test_errors",
+      "advice": "Reject windows larger than the input and unknown modes."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

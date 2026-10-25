@@ -1,0 +1,78 @@
+{
+  "id": "NL-11",
+  "slug": "cosine-retrieval",
+  "title": "Cosine Similarity Retrieval",
+  "topic": "nlp",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "NL-09"
+  ],
+  "prerequisite_slugs": [
+    "tf-idf"
+  ],
+  "learning_objectives": [
+    "Compute cosine similarity between query and documents",
+    "Rank documents with stable top-k",
+    "Handle zero vectors"
+  ],
+  "concept_tags": [
+    "cosine-similarity",
+    "retrieval",
+    "ranking",
+    "search"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S017",
+    "S007"
+  ],
+  "entry_point": "cosine_matrix(A, B); search(query_vec, doc_matrix, k)",
+  "hints": [
+    "Row-normalise with a guarded division: zero rows stay zero.",
+    "`An @ Bn.T` gives all cosines.",
+    "`order = np.argsort(-scores, kind='stable')[:k]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_search",
+      "advice": "Normalise rows before taking dot products."
+    },
+    {
+      "test": "test_zero_vector",
+      "advice": "Zero vectors must give cosine 0, not NaN."
+    },
+    {
+      "test": "test_ties_stable",
+      "advice": "Use np.argsort(-scores, kind='stable')."
+    },
+    {
+      "test": "test_bad_k",
+      "advice": "Validate 1 <= k <= number of documents."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

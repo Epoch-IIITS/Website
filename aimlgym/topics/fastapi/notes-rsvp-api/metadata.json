@@ -1,0 +1,54 @@
+{
+  "id": "FA-P2",
+  "slug": "notes-rsvp-api",
+  "title": "Notes or Event-RSVP API",
+  "topic": "fastapi",
+  "kind": "project",
+  "concept_tags": [
+    "web-api",
+    "fastapi",
+    "crud"
+  ],
+  "uses": [
+    {
+      "slug": "pydantic-bodies",
+      "id": "FA-10",
+      "title": "Request Bodies with Pydantic"
+    },
+    {
+      "slug": "response-models",
+      "id": "FA-12",
+      "title": "Response Models and Status Codes"
+    },
+    {
+      "slug": "fastapi-dependencies",
+      "id": "FA-13",
+      "title": "Dependencies and Dependency Overrides"
+    },
+    {
+      "slug": "fastapi-async",
+      "id": "FA-14",
+      "title": "Async Endpoints and External Services"
+    },
+    {
+      "slug": "api-testing",
+      "id": "FA-15",
+      "title": "Testing an API"
+    }
+  ],
+  "brief": "Build a complete small API — either personal notes or event RSVPs for a club — with create, read,\nupdate and delete, validation, an asynchronous call to another service, and a thorough test suite.\n",
+  "milestones": [
+    "Design the resources and their Pydantic models (input, stored, output).",
+    "Implement the CRUD endpoints with correct status codes (201, 204, 404, 409).",
+    "Add filtering and pagination to the list endpoint.",
+    "Call an external service asynchronously (for example a holiday calendar) and mock it in tests.",
+    "Reach good test coverage with TestClient, including validation errors."
+  ],
+  "stretch": [
+    "Add users with hashed passwords and token authentication.",
+    "Persist to SQLite and write migrations.",
+    "Generate a small client from the OpenAPI schema."
+  ],
+  "data": "No data is needed; create a few example notes or events in a test fixture.\n",
+  "setup": "```bash\npip install fastapi uvicorn httpx pytest\nuvicorn app:app --reload\n```\n"
+}

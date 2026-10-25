@@ -1,0 +1,77 @@
+{
+  "id": "CV-22",
+  "slug": "cv-augmentation",
+  "title": "Data Augmentation",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-21"
+  ],
+  "prerequisite_slugs": [
+    "cv-small-cnn"
+  ],
+  "learning_objectives": [
+    "Write label-preserving augmentations: flips, small shifts and brightness changes",
+    "Apply augmentations reproducibly with a seeded generator",
+    "Keep augmented images in the valid uint8 range"
+  ],
+  "concept_tags": [
+    "opencv",
+    "data-augmentation",
+    "regularisation",
+    "image-classification"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S125",
+    "S116"
+  ],
+  "entry_point": "augment(image, rng, max_shift=2); augment_batch(images, seed=0, max_shift=2)",
+  "hints": [
+    "Keep the order of random draws exactly as stated, so results are reproducible.",
+    "`M = np.float32([[1, 0, dx], [0, 1, dy]])`; `cv2.warpAffine(image, M, (w, h))`.",
+    "`np.clip(image.astype(np.float32) * factor, 0, 255).astype(np.uint8)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_reproducible",
+      "advice": "Use one np.random.default_rng(seed) for the whole batch and draw in the stated order."
+    },
+    {
+      "test": "test_label_preserved",
+      "advice": "Use small shifts and horizontal flips only, so a horizontal bar stays horizontal."
+    },
+    {
+      "test": "test_values_clipped",
+      "advice": "Scale brightness in float32 and clip to [0, 255] before converting to uint8."
+    },
+    {
+      "test": "test_zero_shift_and_flip_frequency",
+      "advice": "Flip when rng.random() < 0.5."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

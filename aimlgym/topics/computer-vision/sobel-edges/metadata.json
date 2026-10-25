@@ -1,0 +1,77 @@
+{
+  "id": "CV-12",
+  "slug": "sobel-edges",
+  "title": "Sobel Edge Magnitude",
+  "topic": "computer-vision",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "CV-10"
+  ],
+  "prerequisite_slugs": [
+    "conv2d-filter"
+  ],
+  "learning_objectives": [
+    "Estimate image gradients with Sobel kernels",
+    "Combine gradients into magnitude and direction",
+    "Threshold edges"
+  ],
+  "concept_tags": [
+    "edge-detection",
+    "sobel",
+    "gradients"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S023",
+    "S006"
+  ],
+  "entry_point": "sobel(gray); edges(gray, t)",
+  "hints": [
+    "Valid output size `(H-2, W-2)`; for each kernel entry add `K[u, v] * g[u:u+H-2, v:v+W-2]`.",
+    "Apply the same helper with KX and KY.",
+    "`np.hypot(gx, gy)` is the magnitude."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_vertical_edge",
+      "advice": "Kx = [[-1,0,1],[-2,0,2],[-1,0,1]] responds to left→right change."
+    },
+    {
+      "test": "test_shape_and_uint8",
+      "advice": "Convert to float first; uint8 cannot hold negative gradients."
+    },
+    {
+      "test": "test_ramp",
+      "advice": "Use valid (unpadded) cross-correlation, output (H−2, W−2)."
+    },
+    {
+      "test": "test_edges",
+      "advice": "edges uses strict magnitude > t."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

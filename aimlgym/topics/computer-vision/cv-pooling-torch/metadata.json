@@ -1,0 +1,78 @@
+{
+  "id": "CV-13",
+  "slug": "cv-pooling-torch",
+  "title": "Pooling with nn.MaxPool2d and nn.AvgPool2d",
+  "topic": "computer-vision",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-11",
+    "DL-24"
+  ],
+  "prerequisite_slugs": [
+    "cv-sobel-canny",
+    "torch-conv1d"
+  ],
+  "learning_objectives": [
+    "Apply max and average pooling to (batch, channels, height, width) tensors",
+    "Compute pooled output sizes from kernel, stride and padding",
+    "Explain where max pooling sends its gradient"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "pooling",
+    "downsampling",
+    "cnn"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S123",
+    "S124"
+  ],
+  "entry_point": "pool(x, kind, kernel_size, stride=None, padding=0); pooled_size(n, kernel_size, stride=None, padding=0)",
+  "hints": [
+    "Choose the class with a dict: `{\"max\": nn.MaxPool2d, \"avg\": nn.AvgPool2d}`.",
+    "`layer = cls(kernel_size, stride=stride, padding=padding)`; stride=None means stride = kernel size.",
+    "`(n + 2 * padding - kernel_size) // stride + 1` after `stride = stride or kernel_size`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_max_example",
+      "advice": "Use nn.MaxPool2d(kernel_size, stride=stride, padding=padding)."
+    },
+    {
+      "test": "test_avg_example",
+      "advice": "Use nn.AvgPool2d for kind 'avg'."
+    },
+    {
+      "test": "test_sizes",
+      "advice": "The output size is (n + 2p - k) // s + 1 with s defaulting to k."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject unknown kinds and tensors that are not 4-D."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

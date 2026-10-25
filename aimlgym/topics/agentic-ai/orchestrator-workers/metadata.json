@@ -1,0 +1,75 @@
+{
+  "id": "AG-17",
+  "slug": "orchestrator-workers",
+  "title": "Orchestrator-Workers Pipeline by Hand",
+  "topic": "agentic-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "AG-13",
+    "AG-15"
+  ],
+  "prerequisite_slugs": [
+    "task-dag-plan",
+    "validate-and-retry"
+  ],
+  "learning_objectives": [
+    "Decompose a task into typed subtasks with a planner",
+    "Route subtasks to specialised workers in dependency order",
+    "Use an evaluator to request revisions within a round limit"
+  ],
+  "concept_tags": [
+    "multi-agent",
+    "orchestration",
+    "evaluator-optimizer",
+    "workflows"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S037"
+  ],
+  "entry_point": "orchestrate(task, planner, workers, evaluator, max_rounds=2)",
+  "hints": [
+    "Topological order of subtasks by `deps` using a heap of ready ids (AG-13).",
+    "Call `workers[s['type']](s['input'], {d: outputs[d] for d in s['deps']})` inside try/except.",
+    "On a worker error, log it, mark the round failed and skip the evaluator; set `feedback` accordingly."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_log",
+      "advice": "Log the plan, each executed subtask and the evaluator decision with the exact formats."
+    },
+    {
+      "test": "test_dependency_order",
+      "advice": "Execute subtasks in dependency order (smallest ready id first)."
+    },
+    {
+      "test": "test_two_rounds",
+      "advice": "Pass the evaluator's feedback to the planner in the next round."
+    },
+    {
+      "test": "test_worker_exception",
+      "advice": "Catch worker exceptions, log them and skip evaluation for that round."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "id": "CV-02",
+  "slug": "rgb-to-gray",
+  "title": "RGB to Grayscale",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-01"
+  ],
+  "prerequisite_slugs": [
+    "image-arrays"
+  ],
+  "learning_objectives": [
+    "Represent colour images as (H, W, 3) arrays",
+    "Convert to luminance with weighted channels",
+    "Convert safely to uint8 with rounding and clipping"
+  ],
+  "concept_tags": [
+    "images",
+    "grayscale",
+    "colour",
+    "dtype"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S023",
+    "S006"
+  ],
+  "entry_point": "rgb_to_gray(img); to_uint8(x)",
+  "hints": [
+    "Convert with `img.astype(float)` before multiplying.",
+    "`img @ np.array([0.299, 0.587, 0.114])` contracts the channel axis.",
+    "`np.clip(np.rint(x), 0, 255).astype(np.uint8)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_values",
+      "advice": "Use weights 0.299, 0.587, 0.114 for R, G, B."
+    },
+    {
+      "test": "test_no_overflow",
+      "advice": "Convert to float before arithmetic; uint8 wraps around."
+    },
+    {
+      "test": "test_clip_round",
+      "advice": "Round with np.rint, then clip, then cast to uint8."
+    },
+    {
+      "test": "test_bad_shape",
+      "advice": "Require ndim == 3 and 3 channels."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

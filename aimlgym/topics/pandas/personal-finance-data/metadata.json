@@ -1,0 +1,59 @@
+{
+  "id": "PD-P2",
+  "slug": "personal-finance-data",
+  "title": "Personal Finance Dashboard Data",
+  "topic": "pandas",
+  "kind": "project",
+  "concept_tags": [
+    "time-series",
+    "pivot-tables",
+    "cleaning"
+  ],
+  "uses": [
+    {
+      "slug": "string-cleaning",
+      "id": "PD-11",
+      "title": "Cleaning Text Columns"
+    },
+    {
+      "slug": "datetime-basics",
+      "id": "PD-12",
+      "title": "Working with Dates"
+    },
+    {
+      "slug": "resample-weekly",
+      "id": "PD-13",
+      "title": "Weekly Resampling"
+    },
+    {
+      "slug": "pivot-table",
+      "id": "PD-14",
+      "title": "Pivot Tables"
+    },
+    {
+      "slug": "binning-cut",
+      "id": "PD-15",
+      "title": "Binning with pd.cut"
+    },
+    {
+      "slug": "rolling-features",
+      "id": "PD-16",
+      "title": "Rolling-Window Features"
+    }
+  ],
+  "brief": "Turn messy bank-statement style CSV files into tidy monthly and category summaries — the data layer of\na personal-finance dashboard: income, spending by category, savings rate and unusual transactions.\n",
+  "milestones": [
+    "Generate a year of fake transactions (date, description, amount) in two different CSV formats.",
+    "Load both, standardise column names, dates and signs, and combine them.",
+    "Assign categories from description keywords with string methods.",
+    "Build monthly totals per category with resample and a pivot table.",
+    "Flag unusual transactions with a rolling mean and standard deviation per category."
+  ],
+  "stretch": [
+    "Add budgets and compute the remaining amount per category each month.",
+    "Draw the dashboard with matplotlib or a small web page.",
+    "Write tests for the cleaning functions with unusual inputs."
+  ],
+  "data": "Generate realistic fake data with NumPy and pandas (salary on the 1st, rent, groceries, occasional\nlarge purchases). Never commit real bank statements to a repository.\n",
+  "setup": "```bash\npip install pandas numpy matplotlib\npython finance.py statements/\n```\n"
+}

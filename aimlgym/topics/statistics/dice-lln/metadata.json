@@ -1,0 +1,74 @@
+{
+  "id": "ST-10",
+  "slug": "dice-lln",
+  "title": "Dice Simulation and the Law of Large Numbers",
+  "topic": "statistics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-06"
+  ],
+  "prerequisite_slugs": [
+    "probability-basics"
+  ],
+  "learning_objectives": [
+    "Simulate a discrete random variable reproducibly",
+    "Track a running mean",
+    "Observe the law of large numbers"
+  ],
+  "concept_tags": [
+    "simulation",
+    "monte-carlo",
+    "law-of-large-numbers",
+    "reproducibility"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S004",
+    "S010"
+  ],
+  "entry_point": "roll(rng); simulate_two_dice(n, seed)",
+  "hints": [
+    "`int(rng.random() * 6) + 1` maps [0,1) to 1..6.",
+    "Keep a running total; running_mean[i] = total / (i + 1).",
+    "Initialise `freq = {s: 0 for s in range(2, 13)}`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_exact_sequence",
+      "advice": "Use random.Random(seed) and draw exactly two rng.random() calls per roll, first die first."
+    },
+    {
+      "test": "test_roll_range",
+      "advice": "Faces must be 1..6: int(u*6) + 1."
+    },
+    {
+      "test": "test_freq_keys_and_total",
+      "advice": "All sums 2..12 must be keys, even with count 0."
+    },
+    {
+      "test": "test_running_mean",
+      "advice": "running_mean[i] is the mean of the first i+1 sums."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

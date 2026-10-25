@@ -1,0 +1,79 @@
+{
+  "id": "ML-18",
+  "slug": "sklearn-column-transformer",
+  "title": "Pipelines and ColumnTransformer",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-16"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-cross-validation"
+  ],
+  "learning_objectives": [
+    "Preprocess numeric and categorical columns differently with ColumnTransformer",
+    "Impute missing values and one-hot encode categories inside a pipeline",
+    "Fit and predict directly on a pandas DataFrame"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "pipeline",
+    "column-transformer",
+    "one-hot-encoding",
+    "imputation"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "pandas",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S089"
+  ],
+  "entry_point": "build_model(numeric, categorical)",
+  "hints": [
+    "Validate the two lists first (empty both, or overlapping names).",
+    "Each branch is a `make_pipeline(imputer, transformer)`.",
+    "`ColumnTransformer([(\"num\", numeric_pipe, numeric), (\"cat\", categorical_pipe, categorical)])`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_feature_names",
+      "advice": "Name the transformers 'num' and 'cat' and keep the column order you were given."
+    },
+    {
+      "test": "test_median_imputation_from_training",
+      "advice": "Numeric columns: SimpleImputer(strategy='median') then StandardScaler()."
+    },
+    {
+      "test": "test_unknown_category_is_zeros",
+      "advice": "Use OneHotEncoder(handle_unknown='ignore', sparse_output=False)."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject empty column lists and columns listed twice."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "NL-07",
+  "slug": "bag-of-words",
+  "title": "Bag-of-Words Vectors",
+  "topic": "nlp",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NL-03"
+  ],
+  "prerequisite_slugs": [
+    "nlp-countvectorizer"
+  ],
+  "learning_objectives": [
+    "Build a vocabulary with a minimum count",
+    "Map documents to count vectors",
+    "Handle out-of-vocabulary tokens"
+  ],
+  "concept_tags": [
+    "bag-of-words",
+    "vocabulary",
+    "vectorization",
+    "oov"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scikit-learn"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S017",
+    "S012"
+  ],
+  "entry_point": "build_vocab(docs, min_count=1); vectorize(docs, vocab)",
+  "hints": [
+    "`c = Counter(t for doc in docs for t in doc)`.",
+    "`words = sorted(w for w, k in c.items() if k >= min_count)`; enumerate them.",
+    "Loop documents and tokens; `if t in vocab: X[i, vocab[t]] += 1`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_vocab",
+      "advice": "Assign indices in alphabetical order."
+    },
+    {
+      "test": "test_min_count",
+      "advice": "Filter by total count across all documents."
+    },
+    {
+      "test": "test_oov",
+      "advice": "Ignore tokens not in the vocabulary instead of raising KeyError."
+    },
+    {
+      "test": "test_vectors",
+      "advice": "Increment X[i, vocab[t]] for every token."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

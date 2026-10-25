@@ -1,0 +1,77 @@
+{
+  "id": "LM-13",
+  "slug": "top-k-top-p",
+  "title": "Top-k and Top-p Filtering",
+  "topic": "llms",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-03"
+  ],
+  "prerequisite_slugs": [
+    "temperature-softmax"
+  ],
+  "learning_objectives": [
+    "Restrict sampling to the top-k tokens",
+    "Implement nucleus (top-p) filtering",
+    "Sample deterministically from a distribution with inverse-CDF"
+  ],
+  "concept_tags": [
+    "sampling",
+    "top-k",
+    "top-p",
+    "nucleus-sampling",
+    "decoding"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S021",
+    "S022"
+  ],
+  "entry_point": "top_k_filter(p, k); top_p_filter(p, top_p); sample(p, u)",
+  "hints": [
+    "`order = np.argsort(-p, kind='stable')`; keep `order[:k]`.",
+    "For top-p: `c = np.cumsum(p[order])`; `n_keep = int(np.searchsorted(c, top_p) + 1)` (cap at len).",
+    "Sampling: `np.searchsorted(np.cumsum(p), u, side='right')`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_top_p",
+      "advice": "Keep the smallest prefix whose cumulative probability is >= top_p (include the crossing token)."
+    },
+    {
+      "test": "test_top_p_exact_boundary",
+      "advice": "Floating-point sums like 0.5+0.2 may be 0.7000000000000001; use a tiny tolerance."
+    },
+    {
+      "test": "test_order_preserved",
+      "advice": "Return probabilities in original vocabulary order."
+    },
+    {
+      "test": "test_sample",
+      "advice": "Return the first index whose cumulative probability is > u."
+    }
+  ],
+  "test_count": 10,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      }
+    }
+  }
+}

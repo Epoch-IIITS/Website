@@ -1,0 +1,74 @@
+{
+  "id": "MA-07",
+  "slug": "binomial-coefficient",
+  "title": "Binomial Coefficient",
+  "topic": "mathematics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-01",
+    "PY-19"
+  ],
+  "prerequisite_slugs": [
+    "summation",
+    "factorial-validated"
+  ],
+  "learning_objectives": [
+    "Count combinations",
+    "Use the multiplicative formula to avoid huge factorials",
+    "Exploit symmetry C(n,k) = C(n,n-k)"
+  ],
+  "concept_tags": [
+    "combinatorics",
+    "counting",
+    "integers"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S009"
+  ],
+  "entry_point": "comb(n, k)",
+  "hints": [
+    "Handle negatives (raise) and `k > n` (return 0) first.",
+    "Replace `k` by `min(k, n - k)`.",
+    "Loop `for i in range(1, k + 1): r = r * (n - k + i) // i`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_large_exact",
+      "advice": "Use integer `//` after multiplying, never `/`."
+    },
+    {
+      "test": "test_k_greater",
+      "advice": "Return 0 when k > n."
+    },
+    {
+      "test": "test_edges",
+      "advice": "C(n, 0) = C(n, n) = 1; check your loop for k = 0."
+    },
+    {
+      "test": "test_pascal_rule",
+      "advice": "If small values are right but some are off by rounding, divide after multiplying."
+    }
+  ],
+  "test_count": 9,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 9,
+        "skipped": 0
+      }
+    }
+  }
+}

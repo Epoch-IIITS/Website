@@ -1,0 +1,74 @@
+{
+  "id": "PY-04",
+  "slug": "input-output",
+  "title": "Reading Input",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "script",
+  "optional": false,
+  "prerequisites": [
+    "PY-03"
+  ],
+  "prerequisite_slugs": [
+    "types-conversion"
+  ],
+  "learning_objectives": [
+    "Read a line of text with input()",
+    "Remember that input() always returns a str",
+    "Clean input with strip() and convert it to a number"
+  ],
+  "concept_tags": [
+    "input",
+    "stdin",
+    "conversion",
+    "strip"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S041",
+    "S048"
+  ],
+  "entry_point": "program (reads stdin, prints to stdout)",
+  "hints": [
+    "`name = input().strip()` removes surrounding spaces.",
+    "`year = int(input())` reads the second line as a number.",
+    "Compute `2030 - year` inside an f-string."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_strips_name",
+      "advice": "Call `.strip()` on the name you read."
+    },
+    {
+      "test": "test_year_with_spaces",
+      "advice": "Convert the second line with `int(...)` and subtract it from 2030."
+    },
+    {
+      "test": "test_no_prompt_text",
+      "advice": "Do not pass a prompt to `input()`; it is printed as part of your output."
+    },
+    {
+      "test": "test_example",
+      "advice": "Check punctuation: `Hello, Ada!` and a full stop after the age."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

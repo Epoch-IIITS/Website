@@ -1,0 +1,74 @@
+{
+  "id": "PY-11",
+  "slug": "sum-and-mean",
+  "title": "Sum and Mean of a List",
+  "topic": "python",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-10"
+  ],
+  "prerequisite_slugs": [
+    "greeting-formatter"
+  ],
+  "learning_objectives": [
+    "Accumulate values in a loop",
+    "Handle the empty-input edge case",
+    "Return a tuple of results"
+  ],
+  "concept_tags": [
+    "loops",
+    "accumulator",
+    "tuples",
+    "edge-cases"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S001",
+    "S003"
+  ],
+  "entry_point": "sum_and_mean(nums)",
+  "hints": [
+    "Loop with `for x in nums:` and update `total += x`.",
+    "Check `if len(nums) == 0:` (or `if not nums:`) before dividing.",
+    "Use true division `/` so the mean is a float."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_empty",
+      "advice": "Return `(0, None)` before dividing; dividing by zero raises an error."
+    },
+    {
+      "test": "test_mean_is_true_division",
+      "advice": "Use `/` not `//`."
+    },
+    {
+      "test": "test_floats_tolerance",
+      "advice": "Floats are compared with a tolerance of 1e-9; make sure you return numbers, not strings."
+    },
+    {
+      "test": "test_single",
+      "advice": "With one element the mean equals that element as a float."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

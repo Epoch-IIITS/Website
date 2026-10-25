@@ -1,0 +1,76 @@
+{
+  "id": "DL-07",
+  "slug": "mlp-forward",
+  "title": "MLP Forward Pass",
+  "topic": "deep-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "DL-04"
+  ],
+  "prerequisite_slugs": [
+    "dense-forward"
+  ],
+  "learning_objectives": [
+    "Chain dense layers and activations",
+    "Cache intermediate values for backprop",
+    "Produce class predictions with softmax"
+  ],
+  "concept_tags": [
+    "mlp",
+    "forward-pass",
+    "cache",
+    "neural-networks"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013",
+    "S014"
+  ],
+  "entry_point": "mlp_forward(X, params); predict_classes(X, params)",
+  "hints": [
+    "Loop `for l, (W, b) in enumerate(params)` with `a = X` initially.",
+    "`z = a @ W + b`; store `{'a_prev': a, 'z': z}`; apply ReLU unless it's the last layer.",
+    "`mlp_forward(X, params)[0].argmax(axis=1)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_no_relu_on_output",
+      "advice": "Don't apply ReLU to the last layer."
+    },
+    {
+      "test": "test_example",
+      "advice": "Cache the layer input a_prev and pre-activation z for every layer."
+    },
+    {
+      "test": "test_matches_manual",
+      "advice": "Apply ReLU between layers: a = max(z, 0)."
+    },
+    {
+      "test": "test_predict",
+      "advice": "Predictions are argmax over axis 1 of the logits."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

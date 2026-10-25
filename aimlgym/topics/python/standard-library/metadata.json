@@ -1,0 +1,87 @@
+{
+  "id": "PY-15",
+  "slug": "standard-library",
+  "title": "Importing the Standard Library",
+  "topic": "python",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PY-14"
+  ],
+  "prerequisite_slugs": [
+    "fibonacci-sequence"
+  ],
+  "learning_objectives": [
+    "Import modules with import, from ... import and as",
+    "Use math, random, collections, heapq and itertools for common tasks",
+    "Make random results reproducible with random.Random(seed)",
+    "Explain what each library function replaces"
+  ],
+  "concept_tags": [
+    "modules",
+    "import",
+    "math",
+    "random",
+    "collections",
+    "heapq",
+    "itertools"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S045",
+    "S047",
+    "S050",
+    "S051",
+    "S052",
+    "S053",
+    "S004"
+  ],
+  "entry_point": "hypotenuse(a, b); pages_needed(items, per_page); most_common_letter(text); dice_rolls(seed, n); smallest_k(nums, k); all_pairs(items)",
+  "hints": [
+    "`math.ceil(items / per_page)` rounds up; `Counter(ch for ch in text.lower() if ch.isalpha())` counts letters.",
+    "For ties, find the highest count, then return `min` of the letters that have it.",
+    "`[int(rng.random() * 6) + 1 for _ in range(n)]`, `heapq.nsmallest(k, nums)`, `list(itertools.combinations(items, 2))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_pages_needed",
+      "advice": "Use `math.ceil(items / per_page)`; integer `//` rounds down."
+    },
+    {
+      "test": "test_most_common_tie_and_case",
+      "advice": "Lowercase first, keep only `ch.isalpha()`, break ties with `min`, and return None when nothing is left."
+    },
+    {
+      "test": "test_dice_reproducible",
+      "advice": "Create `random.Random(seed)` inside the function and use only `rng.random()`."
+    },
+    {
+      "test": "test_smallest_k",
+      "advice": "`heapq.nsmallest(k, nums)` already returns ascending order."
+    },
+    {
+      "test": "test_all_pairs",
+      "advice": "Convert the combinations iterator to a list of tuples."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

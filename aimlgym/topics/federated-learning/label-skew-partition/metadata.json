@@ -1,0 +1,76 @@
+{
+  "id": "FL-04",
+  "slug": "label-skew-partition",
+  "title": "Label-Skewed (non-IID) Partition",
+  "topic": "federated-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-01"
+  ],
+  "prerequisite_slugs": [
+    "iid-partition"
+  ],
+  "learning_objectives": [
+    "Build McMahan-style pathological non-IID shards",
+    "Measure per-client label distributions",
+    "Quantify heterogeneity"
+  ],
+  "concept_tags": [
+    "non-iid",
+    "label-skew",
+    "heterogeneity",
+    "partitioning"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S028",
+    "S032"
+  ],
+  "entry_point": "shard_partition(labels, n_clients, shards_per_client, seed); label_counts(labels, parts, n_classes)",
+  "hints": [
+    "`order = np.argsort(labels, kind='stable')`; `shards = np.array_split(order, n_clients * s)`.",
+    "`ids = rng.permutation(len(shards))`; client k gets `ids[k*s:(k+1)*s]`.",
+    "Counts: `np.bincount(labels[p], minlength=n_classes)` per part."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_recipe",
+      "advice": "Stable argsort by label, array_split into n_clients*s shards, deal shards by rng.permutation."
+    },
+    {
+      "test": "test_one_class_each",
+      "advice": "Shards are contiguous slices of the label-sorted indices."
+    },
+    {
+      "test": "test_cover",
+      "advice": "Every example must belong to exactly one client."
+    },
+    {
+      "test": "test_counts_shape",
+      "advice": "Use np.bincount with minlength=n_classes per client."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "FL-11",
+  "slug": "fl-torch-fedavg",
+  "title": "FedAvg with PyTorch state_dicts",
+  "topic": "federated-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "FL-10",
+    "FL-05"
+  ],
+  "prerequisite_slugs": [
+    "fedavg-training",
+    "fl-torch-local-training"
+  ],
+  "learning_objectives": [
+    "Average client state_dicts weighted by their sample counts",
+    "Handle integer buffers that must not be averaged",
+    "Run several federated rounds and watch the global model improve"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "federated-learning",
+    "fedavg",
+    "aggregation"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S108",
+    "S039"
+  ],
+  "entry_point": "average_states(states, counts); federated_training(model, clients, rounds, epochs=1, lr=0.1, seed=0)",
+  "hints": [
+    "Check `tensor.is_floating_point()` to decide between averaging and copying.",
+    "`sum(state[k] * (n / total) for state, n in zip(states, counts))` averages one tensor.",
+    "After each round, measure `nn.functional.mse_loss(model(X_all), y_all)` under `torch.no_grad()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_weighted_average",
+      "advice": "Weight each client by n_i / total and copy integer tensors from the first state."
+    },
+    {
+      "test": "test_batchnorm_model",
+      "advice": "num_batches_tracked is an integer buffer: copy it instead of averaging."
+    },
+    {
+      "test": "test_training_improves",
+      "advice": "Each round: update every client from the current model, average, load_state_dict."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject empty input, non-positive counts and mismatched keys."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

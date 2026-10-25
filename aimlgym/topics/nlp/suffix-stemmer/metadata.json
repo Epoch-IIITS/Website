@@ -1,0 +1,74 @@
+{
+  "id": "NL-13",
+  "slug": "suffix-stemmer",
+  "title": "Rule-Based Suffix Stemmer",
+  "topic": "nlp",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "NL-02"
+  ],
+  "prerequisite_slugs": [
+    "tokenize-normalize"
+  ],
+  "learning_objectives": [
+    "Implement Porter's consonant/vowel definition and measure m",
+    "Apply Porter Step 1a and Step 1b rules in order",
+    "Understand why naive suffix stripping fails"
+  ],
+  "concept_tags": [
+    "stemming",
+    "porter-stemmer",
+    "morphology",
+    "rules"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S018",
+    "S017"
+  ],
+  "entry_point": "measure(stem); step1ab(word)",
+  "hints": [
+    "`is_consonant`: vowels aeiou → False; 'y' → True at i = 0, else `not is_consonant(word, i-1)`.",
+    "Build a C/V pattern string, collapse runs, and count occurrences of 'VC'.",
+    "Write helpers `has_vowel`, `ends_double_consonant`, `ends_cvc`; apply rules with `str.endswith`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_measure",
+      "advice": "Collapse the C/V pattern to runs and count 'VC' occurrences."
+    },
+    {
+      "test": "test_y_consonant",
+      "advice": "y is a consonant at the start or after a vowel; a vowel after a consonant."
+    },
+    {
+      "test": "test_eed_blocks_ed",
+      "advice": "If the word ends in 'eed', only the EED rule is considered."
+    },
+    {
+      "test": "test_step1b",
+      "advice": "Tidy-up rules (ATE/BLE/IZE, double consonant, *o + E) apply only after ED/ING removal."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

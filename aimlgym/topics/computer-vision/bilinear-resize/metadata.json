@@ -1,0 +1,78 @@
+{
+  "id": "CV-19",
+  "slug": "bilinear-resize",
+  "title": "Bilinear Resize",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": true,
+  "prerequisites": [
+    "CV-05",
+    "NP-09"
+  ],
+  "prerequisite_slugs": [
+    "flip-rotate",
+    "fancy-indexing"
+  ],
+  "learning_objectives": [
+    "Map output pixels to input coordinates with half-pixel centres",
+    "Interpolate bilinearly between four neighbours",
+    "Vectorise with fancy indexing"
+  ],
+  "concept_tags": [
+    "resizing",
+    "interpolation",
+    "bilinear",
+    "image-transforms"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S023",
+    "S006"
+  ],
+  "entry_point": "resize_bilinear(img, out_h, out_w)",
+  "hints": [
+    "`y = (np.arange(out_h) + 0.5) * (H / out_h) - 0.5`, then `np.clip(y, 0, H - 1)`.",
+    "`y0 = np.floor(y).astype(int)`; `y1 = np.minimum(y0 + 1, H - 1)`; `wy = (y - y0)[:, None]`.",
+    "Corner values: `img[y0][:, x0]`, `img[y0][:, x1]`, `img[y1][:, x0]`, `img[y1][:, x1]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_point",
+      "advice": "Map with (i + 0.5)·scale − 0.5 (half-pixel centres), not i·scale."
+    },
+    {
+      "test": "test_corners_clamped",
+      "advice": "Clamp source coordinates to [0, n_in − 1]."
+    },
+    {
+      "test": "test_identity",
+      "advice": "With equal sizes the mapping is the identity."
+    },
+    {
+      "test": "test_linear_ramp_interior",
+      "advice": "Interpolate horizontally between x0 and x1 using weight x − x0."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "id": "XA-04",
+  "slug": "ice-curve",
+  "title": "Individual Conditional Expectation",
+  "topic": "explainable-ai",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "XA-01"
+  ],
+  "prerequisite_slugs": [
+    "linear-contributions"
+  ],
+  "learning_objectives": [
+    "Vary one feature of one instance over a grid",
+    "Query a black-box model in batch",
+    "Read local effects from an ICE curve"
+  ],
+  "concept_tags": [
+    "ice",
+    "model-agnostic",
+    "what-if",
+    "local-explanation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S024"
+  ],
+  "entry_point": "ice_curve(predict, x, feature, grid)",
+  "hints": [
+    "`X = np.tile(x, (len(grid), 1))`.",
+    "`X[:, feature] = grid`.",
+    "`return np.asarray(predict(X), dtype=float)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_single_call",
+      "advice": "Build one (len(grid), d) matrix and call predict once."
+    },
+    {
+      "test": "test_no_mutation",
+      "advice": "Tile copies of x; never write into x."
+    },
+    {
+      "test": "test_other_features_fixed",
+      "advice": "Only the chosen column changes."
+    },
+    {
+      "test": "test_errors",
+      "advice": "Validate the feature index and non-empty grid."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

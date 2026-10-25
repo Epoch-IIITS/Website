@@ -1,0 +1,77 @@
+{
+  "id": "MA-03",
+  "slug": "sigmoid-function",
+  "title": "The Sigmoid Function",
+  "topic": "mathematics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-02"
+  ],
+  "prerequisite_slugs": [
+    "exp-log"
+  ],
+  "learning_objectives": [
+    "Compute σ(x) = 1 / (1 + e^(−x)) without overflow",
+    "Use the derivative σ'(x) = σ(x)(1 − σ(x))",
+    "Invert the sigmoid with the logit function"
+  ],
+  "concept_tags": [
+    "sigmoid",
+    "logistic-function",
+    "logit",
+    "numerical-stability"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S009",
+    "S013",
+    "S050"
+  ],
+  "entry_point": "sigmoid(x); sigmoid_derivative(x); logit(p)",
+  "hints": [
+    "Branch on the sign: `if x >= 0:` use the usual formula, else compute `z = math.exp(x)` and return `z / (1 + z)`.",
+    "`s = sigmoid(x); return s * (1 - s)`.",
+    "Validate with `if not 0 < p < 1: raise ValueError(...)`, then `math.log(p / (1 - p))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_extremes_no_overflow",
+      "advice": "For negative x use `math.exp(x) / (1 + math.exp(x))` so the exponent never becomes huge."
+    },
+    {
+      "test": "test_derivative",
+      "advice": "Return `s * (1 - s)` where `s = sigmoid(x)`."
+    },
+    {
+      "test": "test_logit_inverse",
+      "advice": "logit(p) is `math.log(p / (1 - p))`."
+    },
+    {
+      "test": "test_logit_domain",
+      "advice": "Raise ValueError unless 0 < p < 1."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

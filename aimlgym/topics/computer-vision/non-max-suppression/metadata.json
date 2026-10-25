@@ -1,0 +1,74 @@
+{
+  "id": "CV-24",
+  "slug": "non-max-suppression",
+  "title": "Non-Maximum Suppression",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-23"
+  ],
+  "prerequisite_slugs": [
+    "iou"
+  ],
+  "learning_objectives": [
+    "Implement greedy NMS",
+    "Apply score and IoU thresholds",
+    "Return kept indices in score order"
+  ],
+  "concept_tags": [
+    "object-detection",
+    "nms",
+    "greedy-algorithms"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S013"
+  ],
+  "entry_point": "nms(boxes, scores, iou_threshold=0.5, score_threshold=0.0)",
+  "hints": [
+    "Order: `idx = np.argsort(-scores, kind='stable')`, then filter by score threshold.",
+    "Write an `_iou(box, many)` helper (or reuse CV-23).",
+    "Loop: `i = order[0]`; keep it; `order = order[1:][iou(boxes[i], boxes[order[1:]]) <= t]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_chain",
+      "advice": "Compare remaining boxes with each newly kept box, not only with the first box."
+    },
+    {
+      "test": "test_order_by_score",
+      "advice": "Return indices in the order they were kept (descending score)."
+    },
+    {
+      "test": "test_score_threshold",
+      "advice": "Drop boxes below score_threshold before suppression."
+    },
+    {
+      "test": "test_ties_lower_index",
+      "advice": "Use a stable sort so equal scores keep the lower index first."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

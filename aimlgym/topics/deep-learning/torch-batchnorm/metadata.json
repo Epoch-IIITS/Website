@@ -1,0 +1,76 @@
+{
+  "id": "DL-22",
+  "slug": "torch-batchnorm",
+  "title": "Batch Normalisation with nn.BatchNorm1d",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-20"
+  ],
+  "prerequisite_slugs": [
+    "torch-dropout"
+  ],
+  "learning_objectives": [
+    "Explain how BatchNorm1d uses batch statistics in training and running statistics in evaluation",
+    "Compute the running mean and variance updates with momentum",
+    "Recognise the biased and unbiased variances BatchNorm uses"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "batch-normalisation",
+    "train-eval",
+    "normalisation"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S112",
+    "S104"
+  ],
+  "entry_point": "run_batchnorm(batches, x_eval, momentum=0.1)",
+  "hints": [
+    "Convert each batch with `torch.as_tensor(b, dtype=torch.float32)` and check its row count.",
+    "`bn = nn.BatchNorm1d(n_features, momentum=momentum)`; `bn.train()` and pass the batches; then `bn.eval()`.",
+    "Read `bn.running_mean.tolist()` and `bn.running_var.tolist()` after the training batches."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_running_statistics_formula",
+      "advice": "Pass the batches in training mode with momentum=momentum; running_var uses the unbiased variance."
+    },
+    {
+      "test": "test_eval_uses_running_statistics",
+      "advice": "Call bn.eval() before evaluating x_eval."
+    },
+    {
+      "test": "test_train_output_standardised",
+      "advice": "Return the output of the last training batch."
+    },
+    {
+      "test": "test_invalid_batches",
+      "advice": "Reject an empty list and batches with fewer than two rows."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

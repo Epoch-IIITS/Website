@@ -1,0 +1,73 @@
+{
+  "id": "AG-12",
+  "slug": "a-star-planner",
+  "title": "A* Planner",
+  "topic": "agentic-ai",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-11"
+  ],
+  "prerequisite_slugs": [
+    "bfs-planner"
+  ],
+  "learning_objectives": [
+    "Search with path cost plus an admissible heuristic",
+    "Use a priority queue with deterministic tie-breaking",
+    "Compare node expansions with uniform-cost search"
+  ],
+  "concept_tags": [
+    "planning",
+    "a-star",
+    "heuristics",
+    "priority-queue"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S038"
+  ],
+  "entry_point": "astar(start, goal, neighbors, heuristic)",
+  "hints": [
+    "`best_g = {start: 0}`, `parent = {start: None}`, `heap = [(h0, h0, next(counter), start)]`.",
+    "On pop: if `g_of_entry > best_g[state]` skip (compute g = f − h).",
+    "Rebuild the path from parents when the goal is popped."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_weighted_costs",
+      "advice": "Stop when the goal is popped, not when it is generated."
+    },
+    {
+      "test": "test_fewer_expansions_than_ucs",
+      "advice": "Order the heap by f = g + h."
+    },
+    {
+      "test": "test_walls",
+      "advice": "Relax a neighbour only when the new g is strictly smaller; skip stale heap entries."
+    },
+    {
+      "test": "test_start_is_goal",
+      "advice": "Popping the start counts as one expansion."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

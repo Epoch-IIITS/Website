@@ -1,0 +1,75 @@
+{
+  "id": "LM-05",
+  "slug": "perplexity",
+  "title": "Perplexity",
+  "topic": "llms",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "LM-02",
+    "DL-03"
+  ],
+  "prerequisite_slugs": [
+    "bigram-next-token",
+    "cross-entropy"
+  ],
+  "learning_objectives": [
+    "Compute average negative log-likelihood per token",
+    "Convert it to perplexity",
+    "Interpret perplexity as an effective branching factor"
+  ],
+  "concept_tags": [
+    "perplexity",
+    "evaluation",
+    "cross-entropy",
+    "language-modeling"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S017"
+  ],
+  "entry_point": "avg_nll(token_probs); perplexity(token_probs)",
+  "hints": [
+    "Validate, then check `any(p == 0 for p in token_probs)`.",
+    "`-sum(math.log(p) for p in token_probs) / len(token_probs)`.",
+    "`math.exp(nll)` unless nll is inf."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_example",
+      "advice": "Average −ln p over tokens, then exponentiate."
+    },
+    {
+      "test": "test_not_mean_of_probs",
+      "advice": "Perplexity is the inverse geometric mean, not 1 / arithmetic mean."
+    },
+    {
+      "test": "test_zero",
+      "advice": "Return math.inf if any probability is 0."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Validate empty input and range [0, 1]."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

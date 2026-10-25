@@ -1,0 +1,44 @@
+{
+  "id": "RL-P2",
+  "slug": "bandit-recommender",
+  "title": "Bandit-Based Recommender",
+  "topic": "reinforcement-learning",
+  "kind": "project",
+  "concept_tags": [
+    "bandits",
+    "recommendation",
+    "exploration"
+  ],
+  "uses": [
+    {
+      "slug": "epsilon-greedy",
+      "id": "RL-05",
+      "title": "Epsilon-Greedy Action Selection"
+    },
+    {
+      "slug": "bandit-incremental",
+      "id": "RL-06",
+      "title": "Incremental Value Estimates"
+    },
+    {
+      "slug": "ucb-bandit",
+      "id": "RL-07",
+      "title": "UCB1 Bandit"
+    }
+  ],
+  "brief": "Build a recommender that picks which article to show next, learning from simulated clicks. Compare\nrandom choice, epsilon-greedy and UCB by their cumulative regret, and see what happens when reader\ninterests change over time.\n",
+  "milestones": [
+    "Simulate 10 articles with hidden click probabilities and a reader who clicks with those probabilities.",
+    "Implement random, epsilon-greedy and UCB recommenders with the same interface.",
+    "Run each for 10,000 recommendations over 20 seeds and plot average cumulative regret.",
+    "Make the click probabilities drift slowly and add a sliding-window version of UCB.",
+    "Write up which strategy you would deploy and why."
+  ],
+  "stretch": [
+    "Implement Thompson sampling with Beta distributions.",
+    "Add reader features (contextual bandits) with one linear model per article.",
+    "Serve recommendations from a FastAPI endpoint that updates on click events."
+  ],
+  "data": "Everything is simulated with seeded NumPy generators, so experiments are reproducible.\n",
+  "setup": "```bash\npip install numpy matplotlib\npython bandits.py --strategy ucb --steps 10000\n```\n"
+}

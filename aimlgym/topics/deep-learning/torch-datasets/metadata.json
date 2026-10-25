@@ -1,0 +1,78 @@
+{
+  "id": "DL-17",
+  "slug": "torch-datasets",
+  "title": "Datasets and DataLoader",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-15"
+  ],
+  "prerequisite_slugs": [
+    "torch-optimizers"
+  ],
+  "learning_objectives": [
+    "Write a Dataset with __len__ and __getitem__",
+    "Batch and shuffle data with DataLoader",
+    "Make shuffling reproducible with a seeded torch.Generator"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "dataset",
+    "dataloader",
+    "mini-batches",
+    "reproducibility"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S105",
+    "S109"
+  ],
+  "entry_point": "class ArrayDataset(Dataset); make_loader(X, y, batch_size, shuffle=True, seed=0)",
+  "hints": [
+    "Convert in `__init__`: `torch.as_tensor(X, dtype=torch.float32)` and `torch.as_tensor(y, dtype=torch.long)`.",
+    "`__len__` returns `len(self.y)`; `__getitem__` returns `self.X[i], self.y[i]`.",
+    "`DataLoader(dataset, batch_size=..., shuffle=shuffle, generator=torch.Generator().manual_seed(seed))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_dataset_items",
+      "advice": "Store X as float32 and y as torch.long; __getitem__ returns (X[i], y[i])."
+    },
+    {
+      "test": "test_batch_sizes",
+      "advice": "Pass batch_size to the DataLoader and keep the incomplete last batch."
+    },
+    {
+      "test": "test_seeded_shuffle_reproducible",
+      "advice": "Pass generator=torch.Generator().manual_seed(seed)."
+    },
+    {
+      "test": "test_length_mismatch",
+      "advice": "Raise ValueError in __init__ when the lengths differ."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

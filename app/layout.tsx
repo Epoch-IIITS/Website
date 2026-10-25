@@ -80,13 +80,19 @@
 import './globals.css'
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import localFont from "next/font/local"
 import { Providers } from "@/components/providers"
 import { Toaster } from "@/components/ui/sonner"
 import { ConditionalLayout } from "@/components/conditional-layout"
 import { Analytics } from '@vercel/analytics/next'
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = localFont({
+  src: [
+    { path: "../fonts/Inter-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../fonts/Inter-Bold.ttf", weight: "700", style: "normal" },
+  ],
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "Epoch - Innovation & Learning",

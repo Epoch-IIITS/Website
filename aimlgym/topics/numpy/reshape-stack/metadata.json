@@ -1,0 +1,75 @@
+{
+  "id": "NP-08",
+  "slug": "reshape-stack",
+  "title": "Reshape and Stack",
+  "topic": "numpy",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-03"
+  ],
+  "prerequisite_slugs": [
+    "slicing-subgrid"
+  ],
+  "learning_objectives": [
+    "Reshape arrays with -1",
+    "Stack and concatenate along axes",
+    "Flatten image batches for linear models"
+  ],
+  "concept_tags": [
+    "reshape",
+    "stack",
+    "concatenate",
+    "batching"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S007"
+  ],
+  "entry_point": "to_batches(x, batch_size); add_bias_column(X); flatten_images(imgs)",
+  "hints": [
+    "`m = len(x) // batch_size; x[: m * batch_size].reshape(m, batch_size)`.",
+    "`np.hstack([np.ones((n, 1)), X])`.",
+    "`imgs.reshape(imgs.shape[0], -1)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_batches",
+      "advice": "Drop the remainder before reshaping to (-1, batch_size)."
+    },
+    {
+      "test": "test_bias",
+      "advice": "The ones column comes first (prepended)."
+    },
+    {
+      "test": "test_flatten",
+      "advice": "Keep axis 0 (the batch) and flatten the rest with reshape(N, -1)."
+    },
+    {
+      "test": "test_batches_bad",
+      "advice": "Validate batch_size between 1 and len(x)."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

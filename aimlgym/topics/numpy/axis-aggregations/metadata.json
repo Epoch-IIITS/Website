@@ -1,0 +1,76 @@
+{
+  "id": "NP-05",
+  "slug": "axis-aggregations",
+  "title": "Aggregations Along Axes",
+  "topic": "numpy",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-02"
+  ],
+  "prerequisite_slugs": [
+    "vectorized-math"
+  ],
+  "learning_objectives": [
+    "Aggregate along axis 0 and axis 1",
+    "Use argmax and unravel_index",
+    "Keep dimensions with keepdims"
+  ],
+  "concept_tags": [
+    "aggregation",
+    "axis",
+    "argmax",
+    "keepdims"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S007",
+    "S006"
+  ],
+  "entry_point": "summarize(X)",
+  "hints": [
+    "Validate `X.ndim == 2 and X.size > 0`.",
+    "Reductions: `X.mean(axis=0)`, `X.sum(axis=1)`, `X.argmax(axis=1)`.",
+    "`r, c = np.unravel_index(X.argmax(), X.shape)` then `(int(r), int(c))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_col_means",
+      "advice": "Column means collapse axis 0."
+    },
+    {
+      "test": "test_max_pos",
+      "advice": "Use np.unravel_index on the flat argmax."
+    },
+    {
+      "test": "test_keepdims",
+      "advice": "Pass keepdims=True so the shape is (n_rows, 1)."
+    },
+    {
+      "test": "test_bad_input",
+      "advice": "Reject arrays with ndim != 2."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

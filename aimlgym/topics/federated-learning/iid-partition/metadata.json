@@ -1,0 +1,76 @@
+{
+  "id": "FL-01",
+  "slug": "iid-partition",
+  "title": "IID Client Partitioning",
+  "topic": "federated-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-16"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-cross-validation"
+  ],
+  "learning_objectives": [
+    "Simulate clients by partitioning a dataset",
+    "Produce disjoint, near-equal IID shards",
+    "Report client dataset sizes"
+  ],
+  "concept_tags": [
+    "federated-learning",
+    "partitioning",
+    "iid",
+    "simulation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S028",
+    "S032"
+  ],
+  "entry_point": "iid_partition(n, n_clients, seed); client_sizes(parts)",
+  "hints": [
+    "`perm = np.random.default_rng(seed).permutation(n)`.",
+    "`[np.sort(p) for p in np.array_split(perm, n_clients)]`.",
+    "`[len(p) for p in parts]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_recipe",
+      "advice": "Use default_rng(seed).permutation(n) then np.array_split; sort each part."
+    },
+    {
+      "test": "test_cover_disjoint",
+      "advice": "Every index must appear in exactly one client."
+    },
+    {
+      "test": "test_sizes",
+      "advice": "array_split gives the first n % k clients one extra item."
+    },
+    {
+      "test": "test_errors",
+      "advice": "Reject n_clients greater than n."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

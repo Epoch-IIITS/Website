@@ -1,0 +1,77 @@
+{
+  "id": "NP-09",
+  "slug": "fancy-indexing",
+  "title": "Fancy Indexing and Gather",
+  "topic": "numpy",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "NP-04",
+    "NP-05"
+  ],
+  "prerequisite_slugs": [
+    "boolean-mask",
+    "axis-aggregations"
+  ],
+  "learning_objectives": [
+    "Index with integer arrays",
+    "Pick one element per row with paired index arrays",
+    "Find top-k indices with argsort"
+  ],
+  "concept_tags": [
+    "fancy-indexing",
+    "argsort",
+    "gather",
+    "top-k"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S007"
+  ],
+  "entry_point": "gather_rows(X, idx); pick_per_row(P, cols); top_k(v, k)",
+  "hints": [
+    "`X[np.asarray(idx)]`.",
+    "`P[np.arange(P.shape[0]), cols]`.",
+    "`np.argsort(-v, kind='stable')[:k]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_pick",
+      "advice": "Use P[np.arange(n), cols], not P[:, cols]."
+    },
+    {
+      "test": "test_topk_ties",
+      "advice": "argsort(-v, kind='stable') keeps lower indices first on ties; reversing argsort(v) does not."
+    },
+    {
+      "test": "test_gather",
+      "advice": "Integer-array indexing keeps order and repeats."
+    },
+    {
+      "test": "test_pick_bad",
+      "advice": "Validate one column index per row."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

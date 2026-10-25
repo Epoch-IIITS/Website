@@ -1,0 +1,77 @@
+{
+  "id": "MA-02",
+  "slug": "exp-log",
+  "title": "Exponentials and Logarithms",
+  "topic": "mathematics",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-01"
+  ],
+  "prerequisite_slugs": [
+    "summation"
+  ],
+  "learning_objectives": [
+    "Use the rules log(ab) = log a + log b and log_b x = ln x / ln b",
+    "Avoid underflow by adding log-probabilities instead of multiplying probabilities",
+    "Compute log-sum-exp stably by subtracting the maximum"
+  ],
+  "concept_tags": [
+    "exponential",
+    "logarithm",
+    "log-likelihood",
+    "underflow",
+    "log-sum-exp"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S009",
+    "S050"
+  ],
+  "entry_point": "log_base(x, base); doubling_time(rate); log_likelihood(probs); logsumexp(values)",
+  "hints": [
+    "`math.log(x) / math.log(base)`; `math.log(2) / math.log(1 + rate)`.",
+    "Loop over the probabilities, check `0 < p <= 1`, and add `math.log(p)`.",
+    "`m = max(values)`, then `m + math.log(sum(math.exp(v - m) for v in values))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_log_base",
+      "advice": "Divide `math.log(x)` by `math.log(base)`."
+    },
+    {
+      "test": "test_log_likelihood_no_underflow",
+      "advice": "Add logs one by one instead of taking the log of the product."
+    },
+    {
+      "test": "test_log_likelihood_validates",
+      "advice": "Raise ValueError for any p that is not in (0, 1]."
+    },
+    {
+      "test": "test_logsumexp_large_and_negative",
+      "advice": "Subtract the maximum before exponentiating and add it back after the log."
+    }
+  ],
+  "test_count": 10,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 10,
+        "skipped": 0
+      }
+    }
+  }
+}

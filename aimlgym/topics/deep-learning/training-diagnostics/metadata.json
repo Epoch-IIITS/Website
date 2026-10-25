@@ -1,0 +1,49 @@
+{
+  "id": "DL-P2",
+  "slug": "training-diagnostics",
+  "title": "Training Diagnostics Notebook",
+  "topic": "deep-learning",
+  "kind": "project",
+  "concept_tags": [
+    "debugging",
+    "learning-rate",
+    "overfitting"
+  ],
+  "uses": [
+    {
+      "slug": "torch-optimizers",
+      "id": "DL-15",
+      "title": "Optimisers in torch.optim"
+    },
+    {
+      "slug": "torch-training-loop",
+      "id": "DL-18",
+      "title": "A Full Training Loop"
+    },
+    {
+      "slug": "torch-dropout",
+      "id": "DL-20",
+      "title": "Dropout with train() and eval()"
+    },
+    {
+      "slug": "torch-debugging",
+      "id": "DL-27",
+      "title": "Debugging Training"
+    }
+  ],
+  "brief": "Build a reusable notebook (or script) of experiments that explain why a model trains well or badly:\na learning-rate finder, loss curves for good and bad settings, an overfitting demonstration and\ngradient-norm plots. Use it on your digit recogniser or any other model.\n",
+  "milestones": [
+    "Write a function that trains a model for a few epochs and returns train and validation losses.",
+    "Learning-rate finder: increase the learning rate exponentially over one epoch and plot loss against learning rate.",
+    "Show three curves side by side: learning rate too low, about right and too high.",
+    "Demonstrate overfitting with a large model on 200 examples, then fix it with dropout or weight decay.",
+    "Log the gradient norm of every layer per step and show the effect of gradient clipping."
+  ],
+  "stretch": [
+    "Add a learning-rate schedule (cosine or one-cycle) and compare final accuracy.",
+    "Track experiments in a CSV file and compare runs with different seeds.",
+    "Use TensorBoard to view the curves live."
+  ],
+  "data": "Any small classification dataset works: `sklearn.datasets.load_digits()` (bundled) or synthetic data\nfrom `sklearn.datasets.make_moons(n_samples=1000, noise=0.25, random_state=0)`.\n",
+  "setup": "```bash\npip install torch scikit-learn matplotlib jupyter\njupyter notebook\n```\n"
+}

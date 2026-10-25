@@ -1,0 +1,74 @@
+{
+  "id": "MA-10",
+  "slug": "central-difference",
+  "title": "Numerical Derivative (Central Difference)",
+  "topic": "mathematics",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "MA-02"
+  ],
+  "prerequisite_slugs": [
+    "exp-log"
+  ],
+  "learning_objectives": [
+    "Approximate derivatives with finite differences",
+    "Compare forward and central differences",
+    "Understand the role of the step size h"
+  ],
+  "concept_tags": [
+    "calculus",
+    "derivatives",
+    "finite-differences",
+    "numerical-methods"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S009",
+    "S013"
+  ],
+  "entry_point": "forward_diff(f, x, h=1e-6); central_diff(f, x, h=1e-5)",
+  "hints": [
+    "Validate `h > 0` first.",
+    "Forward: one extra evaluation at `x + h`.",
+    "Central: evaluate at `x + h` and `x - h` and divide by `2 * h`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_central_h01",
+      "advice": "Divide by 2*h in the central difference."
+    },
+    {
+      "test": "test_forward_h01",
+      "advice": "Forward difference uses f(x+h) − f(x) over h."
+    },
+    {
+      "test": "test_bad_h",
+      "advice": "Raise ValueError when h <= 0."
+    },
+    {
+      "test": "test_central_more_accurate",
+      "advice": "Make sure central_diff evaluates at x−h, not at x."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

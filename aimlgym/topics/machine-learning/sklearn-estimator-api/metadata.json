@@ -1,0 +1,77 @@
+{
+  "id": "ML-02",
+  "slug": "sklearn-estimator-api",
+  "title": "The scikit-learn Estimator API",
+  "topic": "machine-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-01"
+  ],
+  "prerequisite_slugs": [
+    "ml-baselines"
+  ],
+  "learning_objectives": [
+    "Use fit, predict and score on any scikit-learn estimator",
+    "Copy an unfitted estimator with clone and read its settings with get_params",
+    "Evaluate a regressor with sklearn.metrics (MSE, MAE, R²)"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "estimator-api",
+    "regression-metrics",
+    "baselines"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S089",
+    "S091"
+  ],
+  "entry_point": "evaluate_regressor(model, X_train, y_train, X_test, y_test)",
+  "hints": [
+    "Check `len(X_train) == len(y_train)` and the same for the test arrays.",
+    "`fitted = clone(model).fit(X_train, y_train)`; `pred = fitted.predict(X_test)`.",
+    "Metrics take `(y_true, y_pred)`; convert predictions with `[float(v) for v in pred]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_linear_example",
+      "advice": "Fit on the training data, predict the test rows, and pass (y_true, y_pred) to the metrics."
+    },
+    {
+      "test": "test_original_model_not_fitted",
+      "advice": "Fit `clone(model)`, not `model` itself."
+    },
+    {
+      "test": "test_metrics_match_formulas",
+      "advice": "Use mean_squared_error, mean_absolute_error and r2_score on the test set."
+    },
+    {
+      "test": "test_plain_floats_and_validation",
+      "advice": "Convert results to float and check that X and y lengths match."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "id": "CV-10",
+  "slug": "conv2d-filter",
+  "title": "2D Filtering (Blur)",
+  "topic": "computer-vision",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-02",
+    "DL-24"
+  ],
+  "prerequisite_slugs": [
+    "rgb-to-gray",
+    "torch-conv1d"
+  ],
+  "learning_objectives": [
+    "Implement 2-D cross-correlation with 'same' output size",
+    "Choose border handling (zero vs edge)",
+    "Build box and Gaussian kernels"
+  ],
+  "concept_tags": [
+    "filtering",
+    "convolution",
+    "blur",
+    "kernels",
+    "padding"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S015",
+    "S006",
+    "S023"
+  ],
+  "entry_point": "filter2d(img, kernel, mode='zero'); box_kernel(k); gaussian_kernel(k, sigma)",
+  "hints": [
+    "`P = np.pad(img, ((rh, rh), (rw, rw)), mode='constant' or 'edge')`.",
+    "Loop over kernel offsets: `out += K[u, v] * P[u:u+H, v:v+W]`.",
+    "Gaussian: `ax = np.arange(k) - k // 2`; `g = np.exp(-(ax[:, None]**2 + ax[None, :]**2) / (2*sigma**2))`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_box_zero",
+      "advice": "Zero padding: border outputs average in zeros."
+    },
+    {
+      "test": "test_no_flip",
+      "advice": "Cross-correlation: an impulse reproduces the kernel flipped — don't flip it yourself."
+    },
+    {
+      "test": "test_against_naive",
+      "advice": "Pad by kernel_size // 2 on each side; out[i, j] uses P[i:i+kh, j:j+kw]."
+    },
+    {
+      "test": "test_gaussian",
+      "advice": "Normalise the Gaussian so it sums to 1."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "CV-11",
+  "slug": "cv-sobel-canny",
+  "title": "Edges with Sobel and Canny",
+  "topic": "computer-vision",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-10",
+    "CV-08"
+  ],
+  "prerequisite_slugs": [
+    "conv2d-filter",
+    "cv-histograms"
+  ],
+  "learning_objectives": [
+    "Compute image gradients with cv2.Sobel in a float output type",
+    "Detect thin edges with Gaussian blur and cv2.Canny",
+    "Explain Canny's hysteresis thresholds"
+  ],
+  "concept_tags": [
+    "opencv",
+    "edge-detection",
+    "sobel",
+    "canny",
+    "gradients"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S119",
+    "S023"
+  ],
+  "entry_point": "edges(gray, low, high, blur_ksize=5)",
+  "hints": [
+    "Validate the image, the thresholds and that `blur_ksize % 2 == 1`.",
+    "`cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)` for gx and `(0, 1)` for gy.",
+    "`cv2.Canny(cv2.GaussianBlur(gray, (k, k), 0), low, high)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_negative_gradients_kept",
+      "advice": "Use cv2.CV_64F as the Sobel output depth."
+    },
+    {
+      "test": "test_magnitude",
+      "advice": "magnitude = np.hypot(gx, gy)."
+    },
+    {
+      "test": "test_canny_outline",
+      "advice": "Blur with GaussianBlur, then cv2.Canny(blurred, low, high)."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Check the image type, 0 <= low <= high and an odd blur size."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

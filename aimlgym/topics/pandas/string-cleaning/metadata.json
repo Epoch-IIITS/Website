@@ -1,0 +1,76 @@
+{
+  "id": "PD-11",
+  "slug": "string-cleaning",
+  "title": "Cleaning Text Columns",
+  "topic": "pandas",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "PD-06"
+  ],
+  "prerequisite_slugs": [
+    "missing-values"
+  ],
+  "learning_objectives": [
+    "Use the .str accessor",
+    "Normalise whitespace and case with regex",
+    "Extract parts of strings and keep missing values missing"
+  ],
+  "concept_tags": [
+    "strings",
+    "regex",
+    "data-cleaning",
+    "str-accessor"
+  ],
+  "permitted_packages": [
+    "pandas",
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S008"
+  ],
+  "entry_point": "clean_contacts(df)",
+  "hints": [
+    "`df['name'].str.strip().str.replace(r'\\s+', ' ', regex=True).str.title()`.",
+    "`df['phone'].str.replace(r'\\D', '', regex=True)`.",
+    "`email.str.split('@').str[1]` — NaN when there is no '@'."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_row0",
+      "advice": "Collapse whitespace with str.replace(r'\\s+', ' ', regex=True) after strip."
+    },
+    {
+      "test": "test_phone_digits",
+      "advice": "Remove all non-digits with the regex \\D."
+    },
+    {
+      "test": "test_no_at_domain_missing",
+      "advice": "If there is no '@', domain must be missing, not the whole email."
+    },
+    {
+      "test": "test_missing_stays_missing",
+      "advice": "Don't use astype(str); .str methods keep NaN as NaN."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

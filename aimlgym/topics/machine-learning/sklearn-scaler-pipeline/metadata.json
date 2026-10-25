@@ -1,0 +1,77 @@
+{
+  "id": "ML-07",
+  "slug": "sklearn-scaler-pipeline",
+  "title": "Scaling inside a Pipeline",
+  "topic": "machine-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-04"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-train-test-split"
+  ],
+  "learning_objectives": [
+    "Chain a StandardScaler and a model in a Pipeline",
+    "Explain why the scaler must be fitted on training data only (leakage)",
+    "Inspect a fitted step through named_steps"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "pipeline",
+    "standardisation",
+    "data-leakage"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S089"
+  ],
+  "entry_point": "train_and_predict(X_train, y_train, X_test)",
+  "hints": [
+    "Create the pipeline inside the function so each call gets fresh steps.",
+    "`pipe.fit(X_train, y_train)` fits the scaler and then the model.",
+    "`[int(v) for v in pipe.predict(X_test)]`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_scaler_uses_training_statistics",
+      "advice": "Fit the pipeline on the training data only; never on X_test."
+    },
+    {
+      "test": "test_step_names",
+      "advice": "Name the steps 'scale' and 'model'."
+    },
+    {
+      "test": "test_new_pipeline_each_call",
+      "advice": "Build the Pipeline inside the function."
+    },
+    {
+      "test": "test_plain_ints",
+      "advice": "Convert predictions with int(...)."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

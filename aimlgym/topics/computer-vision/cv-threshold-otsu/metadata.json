@@ -1,0 +1,77 @@
+{
+  "id": "CV-06",
+  "slug": "cv-threshold-otsu",
+  "title": "Thresholding and Otsu's Method",
+  "topic": "computer-vision",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-04"
+  ],
+  "prerequisite_slugs": [
+    "cv-geometric-transforms"
+  ],
+  "learning_objectives": [
+    "Binarise an image with cv2.threshold and a fixed threshold",
+    "Let Otsu's method choose the threshold from the histogram",
+    "Invert masks with THRESH_BINARY_INV"
+  ],
+  "concept_tags": [
+    "opencv",
+    "thresholding",
+    "otsu",
+    "segmentation"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S117",
+    "S023"
+  ],
+  "entry_point": "binarise(gray, threshold=None, invert=False)",
+  "hints": [
+    "Validate: `gray.ndim == 2 and gray.dtype == np.uint8`.",
+    "`kind = cv2.THRESH_BINARY_INV if invert else cv2.THRESH_BINARY`.",
+    "For Otsu: `cv2.threshold(gray, 0, 255, kind + cv2.THRESH_OTSU)`; return `float(t), mask`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_fixed_threshold_is_strict",
+      "advice": "THRESH_BINARY marks pixels strictly greater than the threshold."
+    },
+    {
+      "test": "test_otsu_matches_between_class_variance",
+      "advice": "With threshold=None add cv2.THRESH_OTSU and return the chosen t."
+    },
+    {
+      "test": "test_invert",
+      "advice": "Use THRESH_BINARY_INV when invert is true."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Only 2-D uint8 images are accepted."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "ML-16",
+  "slug": "sklearn-cross-validation",
+  "title": "Cross-Validation with scikit-learn",
+  "topic": "machine-learning",
+  "difficulty": "intermediate",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ML-14"
+  ],
+  "prerequisite_slugs": [
+    "sklearn-polynomial-validation"
+  ],
+  "learning_objectives": [
+    "Estimate performance with cross_val_score and a shuffled KFold",
+    "Use StratifiedKFold for classification",
+    "Report the mean and spread of fold scores"
+  ],
+  "concept_tags": [
+    "scikit-learn",
+    "cross-validation",
+    "kfold",
+    "evaluation"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "scikit-learn"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S012",
+    "S091"
+  ],
+  "entry_point": "cv_report(model, X, y, n_splits=5, seed=0, stratified=False, scoring=None)",
+  "hints": [
+    "Choose the splitter class from `stratified`, then build it with `shuffle=True, random_state=seed`.",
+    "`scores = cross_val_score(model, X, y, cv=folds, scoring=scoring)`.",
+    "Return `[float(s) for s in scores]`, `float(scores.mean())` and `float(scores.std())`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_matches_manual_loop",
+      "advice": "Use KFold(n_splits, shuffle=True, random_state=seed) and cross_val_score."
+    },
+    {
+      "test": "test_stratified_folds",
+      "advice": "Use StratifiedKFold when stratified is true."
+    },
+    {
+      "test": "test_scoring_argument",
+      "advice": "Pass scoring through to cross_val_score."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject n_splits < 2 and mismatched lengths."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

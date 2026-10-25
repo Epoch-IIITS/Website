@@ -1,0 +1,74 @@
+{
+  "id": "AG-13",
+  "slug": "task-dag-plan",
+  "title": "Dependency-Ordered Plans",
+  "topic": "agentic-ai",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "AG-11"
+  ],
+  "prerequisite_slugs": [
+    "bfs-planner"
+  ],
+  "learning_objectives": [
+    "Represent a plan as a dependency graph",
+    "Topologically sort tasks with Kahn's algorithm",
+    "Detect cycles and group tasks into parallel stages"
+  ],
+  "concept_tags": [
+    "planning",
+    "dag",
+    "topological-sort",
+    "parallelism"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S038",
+    "S037"
+  ],
+  "entry_point": "topo_order(deps); stages(deps)",
+  "hints": [
+    "Build `dependents[d].append(t)` for each t and each d in deps[t]; `indeg[t] = len(deps[t])`.",
+    "`ready = [t for t in deps if indeg[t] == 0]; heapq.heapify(ready)`.",
+    "Stages: loop taking `sorted(t for t in remaining if all deps done)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_order",
+      "advice": "Use a min-heap of ready tasks so the smallest ready task goes first."
+    },
+    {
+      "test": "test_cycle",
+      "advice": "If not all tasks were output, raise ValueError('cycle detected')."
+    },
+    {
+      "test": "test_stages",
+      "advice": "A stage is every task whose dependencies are all in earlier stages."
+    },
+    {
+      "test": "test_unknown_dep",
+      "advice": "Every dependency must be a key of deps."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

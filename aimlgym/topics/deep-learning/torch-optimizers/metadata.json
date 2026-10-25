@@ -1,0 +1,79 @@
+{
+  "id": "DL-15",
+  "slug": "torch-optimizers",
+  "title": "Optimisers in torch.optim",
+  "topic": "deep-learning",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "DL-14",
+    "DL-12"
+  ],
+  "prerequisite_slugs": [
+    "sgd-momentum",
+    "torch-gradcheck"
+  ],
+  "learning_objectives": [
+    "Run the zero_grad / backward / step cycle with torch.optim",
+    "Compare SGD, SGD with momentum, Adam and AdamW on the same problem",
+    "Explain what weight decay does and how AdamW applies it"
+  ],
+  "concept_tags": [
+    "pytorch",
+    "optimisers",
+    "adam",
+    "sgd",
+    "weight-decay"
+  ],
+  "permitted_packages": [
+    "torch"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S107",
+    "S106"
+  ],
+  "entry_point": "minimise(name, start, lr, steps)",
+  "hints": [
+    "Map the name to a constructor with a dict of lambdas, raising ValueError for unknown names.",
+    "`p = torch.tensor(start, dtype=torch.float32, requires_grad=True)`; `opt = ...([p], ...)`.",
+    "In the loop: `opt.zero_grad()`, compute the loss from `p[0]` and `p[1]`, record `loss.item()`, `backward()`, `step()`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_one_sgd_step",
+      "advice": "Record the loss, call backward, then opt.step(); SGD moves by -lr × gradient."
+    },
+    {
+      "test": "test_adam_first_step_is_lr_sized",
+      "advice": "Use torch.optim.Adam(params, lr=lr) for 'adam'."
+    },
+    {
+      "test": "test_momentum_beats_sgd",
+      "advice": "'momentum' is SGD with momentum=0.9."
+    },
+    {
+      "test": "test_unknown_name",
+      "advice": "Raise ValueError for names other than sgd, momentum, adam and adamw."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

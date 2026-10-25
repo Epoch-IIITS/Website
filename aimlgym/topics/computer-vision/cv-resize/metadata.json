@@ -1,0 +1,77 @@
+{
+  "id": "CV-18",
+  "slug": "cv-resize",
+  "title": "Resizing with cv2.resize",
+  "topic": "computer-vision",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "CV-16"
+  ],
+  "prerequisite_slugs": [
+    "cv-psnr"
+  ],
+  "learning_objectives": [
+    "Resize images with cv2.resize and the (width, height) size convention",
+    "Choose nearest, linear, cubic or area interpolation for the task",
+    "Downscale without aliasing using INTER_AREA"
+  ],
+  "concept_tags": [
+    "opencv",
+    "resizing",
+    "interpolation",
+    "image-pyramids"
+  ],
+  "permitted_packages": [
+    "numpy",
+    "opencv-python-headless"
+  ],
+  "optional_packages": [],
+  "library_comparison": false,
+  "source_ids": [
+    "S122",
+    "S023"
+  ],
+  "entry_point": "resize(image, width, height, method=\"linear\")",
+  "hints": [
+    "Map the names to `cv2.INTER_NEAREST`, `cv2.INTER_LINEAR`, `cv2.INTER_CUBIC`, `cv2.INTER_AREA`.",
+    "Validate `width > 0 and height > 0`.",
+    "`cv2.resize(image, (width, height), interpolation=METHODS[method])` — width first."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_size_order",
+      "advice": "cv2.resize takes (width, height)."
+    },
+    {
+      "test": "test_area_halving_averages_blocks",
+      "advice": "Use cv2.INTER_AREA for 'area'."
+    },
+    {
+      "test": "test_nearest_keeps_labels",
+      "advice": "Use cv2.INTER_NEAREST for 'nearest'."
+    },
+    {
+      "test": "test_invalid",
+      "advice": "Reject unknown methods and non-positive sizes."
+    }
+  ],
+  "test_count": 6,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 6,
+        "skipped": 0
+      }
+    }
+  }
+}

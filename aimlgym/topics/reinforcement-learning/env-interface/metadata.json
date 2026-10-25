@@ -1,0 +1,83 @@
+{
+  "id": "RL-03",
+  "slug": "env-interface",
+  "title": "The Environment Interface: reset and step",
+  "topic": "reinforcement-learning",
+  "difficulty": "beginner",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "RL-02"
+  ],
+  "prerequisite_slugs": [
+    "gridworld-step"
+  ],
+  "learning_objectives": [
+    "Implement reset() and step() with the Gymnasium return signature",
+    "Distinguish terminated (the task ended) from truncated (a time limit hit)",
+    "Make stochastic environments reproducible with a seed passed to reset",
+    "Run an episode loop with any policy function"
+  ],
+  "concept_tags": [
+    "environments",
+    "gymnasium-api",
+    "episodes",
+    "termination",
+    "truncation"
+  ],
+  "permitted_packages": [
+    "numpy"
+  ],
+  "optional_packages": [],
+  "library_comparison": true,
+  "source_ids": [
+    "S099",
+    "S033",
+    "S035"
+  ],
+  "entry_point": "class LineWorld(n=5, start=0, slip=0.0, max_steps=20); run_episode(env, policy, seed=None)",
+  "hints": [
+    "Keep `self.done` and `self.steps`; set them in `reset` and check `self.done` at the start of `step`.",
+    "`move = 1 if action == 1 else -1`; if `self.slip > 0 and self.rng.random() < self.slip`, flip it; then `max(0, min(self.n - 1, self.state + move))`.",
+    "`terminated = self.state == self.n - 1`; `truncated = not terminated and self.steps >= self.max_steps`; `self.done = terminated or truncated`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_reach_goal",
+      "advice": "Reward 1.0 and terminated=True exactly when the new state is n - 1."
+    },
+    {
+      "test": "test_wall_and_truncation",
+      "advice": "Clip moves at the walls; truncate when steps reach max_steps; refuse to step after the end."
+    },
+    {
+      "test": "test_validation",
+      "advice": "Check the constructor arguments and the action value."
+    },
+    {
+      "test": "test_slip_reproducible",
+      "advice": "Re-seed in `reset(seed)` and draw one `rng.random()` per step only when slip > 0."
+    },
+    {
+      "test": "test_reset_restarts_episode",
+      "advice": "Reset the state, the step counter and the done flag."
+    }
+  ],
+  "test_count": 7,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 7,
+        "skipped": 0
+      }
+    }
+  }
+}

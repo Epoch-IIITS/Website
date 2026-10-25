@@ -1,0 +1,81 @@
+{
+  "id": "ST-12",
+  "slug": "sampling-distribution",
+  "title": "Sampling Distributions and Standard Error",
+  "topic": "statistics",
+  "difficulty": "advanced",
+  "kind": "function",
+  "optional": false,
+  "prerequisites": [
+    "ST-10",
+    "ST-09"
+  ],
+  "prerequisite_slugs": [
+    "dice-lln",
+    "normal-distribution"
+  ],
+  "learning_objectives": [
+    "Simulate the sampling distribution of the mean with a seeded generator",
+    "Compute the standard error s / √n and explain how it shrinks with n",
+    "Build a normal-approximation 95% confidence interval",
+    "Describe what the central limit theorem does and does not promise"
+  ],
+  "concept_tags": [
+    "sampling-distribution",
+    "standard-error",
+    "central-limit-theorem",
+    "confidence-interval"
+  ],
+  "permitted_packages": [],
+  "optional_packages": [
+    "scipy"
+  ],
+  "library_comparison": true,
+  "source_ids": [
+    "S011",
+    "S010",
+    "S003",
+    "S004"
+  ],
+  "entry_point": "sample_means(population, n, reps, seed); standard_error(sample); mean_ci95(sample)",
+  "hints": [
+    "Create the generator once, outside the repetitions loop, so each repetition continues the stream.",
+    "Sample variance: `sum((x - m) ** 2 for x in sample) / (n - 1)`; SE is `sqrt(var) / sqrt(n)`.",
+    "`z = NormalDist().inv_cdf(0.975)`; return `(m - z * se, m + z * se)`."
+  ],
+  "failure_feedback": [
+    {
+      "test": "test_recipe_matches",
+      "advice": "Create one `random.Random(seed)` and draw indices with `int(rng.random() * len(population))`, n per repetition."
+    },
+    {
+      "test": "test_spread_shrinks_like_sqrt_n",
+      "advice": "Each repetition must draw n values with replacement and record their mean."
+    },
+    {
+      "test": "test_standard_error",
+      "advice": "Use the n - 1 sample standard deviation divided by sqrt(n)."
+    },
+    {
+      "test": "test_ci95",
+      "advice": "Use `NormalDist().inv_cdf(0.975)` (≈ 1.96) times the standard error on both sides of the mean."
+    }
+  ],
+  "test_count": 8,
+  "validation": {
+    "status": "passed",
+    "date": "2026-10-24",
+    "environments": {
+      "executor-pins": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      },
+      "full": {
+        "status": "passed",
+        "tests": 8,
+        "skipped": 0
+      }
+    }
+  }
+}
