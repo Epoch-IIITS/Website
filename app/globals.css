@@ -247,6 +247,18 @@
   @apply bg-muted font-semibold;
 }
 
+/* Give the code the whole screen while the on-screen keyboard is open. */
+@media (max-width: 1023.98px) {
+  .learn-prose table {
+    @apply block overflow-x-auto;
+  }
+
+  .learn-problem-page:has(.learn-mobile-editor:focus) .learn-problem-header,
+  .learn-problem-page:has(.learn-mobile-editor:focus) .learn-mobile-tabs {
+    display: none;
+  }
+}
+
 .learn-prose .katex-display {
   @apply my-5 overflow-x-auto overflow-y-hidden pb-1;
 }
