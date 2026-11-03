@@ -21,7 +21,7 @@ export function TopicInfoDialog({ topic, prerequisites }: { topic: LearnTopic; p
         <CircleHelp className="h-4 w-4" />
       </button>
     </DialogTrigger>
-    <DialogContent className="flex max-h-[85vh] max-w-2xl flex-col gap-0 overflow-hidden p-0">
+    <DialogContent className="flex max-h-[85dvh] w-[calc(100%-2rem)] max-w-2xl flex-col rounded-lg gap-0 overflow-hidden p-0">
       <DialogHeader className="shrink-0 border-b border-border/70 px-6 py-5 pr-12">
         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">{topic.prefix} · Topic guide</p>
         <DialogTitle className="text-xl">{topic.title}</DialogTitle>

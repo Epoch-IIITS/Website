@@ -9,6 +9,7 @@ import { ArrowRight, Check, ChevronDown, CircleHelp, Eye, EyeOff, Lightbulb, Pla
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
+import { MobileCodeEditor } from "@/components/learn/mobile-code-editor"
 import type { LearnExecutionResult, PublicProblemPack } from "@/lib/learn/types"
 
 const MonacoCodeEditor = dynamic(() => import("@/components/learn/monaco-code-editor").then((module) => module.MonacoCodeEditor), { ssr: false, loading: () => <div className="flex h-full min-h-0 items-center justify-center text-xs text-muted-foreground">Loading Python editor…</div> })
@@ -18,6 +19,7 @@ const MonacoCodeView = dynamic(() => import("@/components/learn/monaco-code-edit
 
 type Pane = "concept" | "problem"
 type ConsoleTab = "tests" | "output" | "feedback"
+type Section = "material" | "code" | "results"
 
 function errorSummary(message: string) {
   const lines = message.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
@@ -77,6 +79,10 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
   const { status: sessionStatus } = useSession()
   const signedOut = sessionStatus === "unauthenticated"
   const [isMac, setIsMac] = useState<boolean | null>(null)
+  // Unknown until mounted, so the server sends only the reading pane at every width.
+  const [layout, setLayout] = useState<"mobile" | "desktop" | null>(null)
+  const [section, setSection] = useState<Section>("material")
+  const [pythonSlug, setPythonSlug] = useState<string | null>(null)
   const [pane, setPane] = useState<Pane>("concept")
   const [consoleTab, setConsoleTab] = useState<ConsoleTab>("tests")
   const [code, setCode] = useState(pack.starter)
@@ -96,6 +102,33 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
   const edited = useRef(false)
   const generation = useRef(0)
   const worker = useRef<Worker | null>(null)
+  // Phones download Python only once the learner opens the editor.
+  const wantsPython = layout === "desktop" || pythonSlug === pack.slug
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 1023.98px)")
+    const update = () => setLayout(query.matches ? "mobile" : "desktop")
+    update()
+    query.addEventListener("change", update)
+    return () => query.removeEventListener("change", update)
+  }, [])
+
+  // On-screen keyboards shrink only the visual viewport, so size the page to it to keep the toolbar in view.
+  useEffect(() => {
+    const viewport = window.visualViewport
+    if (layout !== "mobile" || !viewport) return
+    const root = document.documentElement
+    const update = () => {
+      root.style.setProperty("--learn-viewport-height", `${viewport.height}px`)
+      window.scrollTo(0, 0)
+    }
+    update()
+    viewport.addEventListener("resize", update)
+    return () => {
+      viewport.removeEventListener("resize", update)
+      root.style.removeProperty("--learn-viewport-height")
+    }
+  }, [layout])
 
   useEffect(() => {
     setIsMac(/Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent))
@@ -103,6 +136,7 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
 
   useEffect(() => {
     setPane("concept")
+    setSection("material")
     setConsoleTab("tests")
     setCode(pack.starter)
     setHintCount(0)
@@ -150,7 +184,7 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
       await mermaid.run({ nodes: diagrams, suppressErrors: true })
     }).catch(() => { /* Keep readable diagram source if rendering fails. */ })
     return () => { cancelled = true }
-  }, [articleHtml, pane, resolvedTheme])
+  }, [articleHtml, layout, pane, resolvedTheme])
 
   // Start Pyodide when the page opens so the first Run does not wait for it; keep it for later Runs.
   function startWorker() {
@@ -171,9 +205,10 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
 
   useEffect(() => {
     if (!pack.localEligible) { setPython(null); return }
+    if (!wantsPython) return
     startWorker()
     return () => { worker.current?.terminate(); worker.current = null }
-  }, [pack.slug, pack.localEligible])
+  }, [pack.slug, pack.localEligible, wantsPython])
 
   function runLocal(): Promise<LearnExecutionResult | null> {
     return new Promise((resolve) => {
@@ -204,6 +239,7 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
 
   async function execute(kind: "run" | "submit") {
     if (busy) return
+    setSection("results")
     if (new TextEncoder().encode(code).byteLength > 16000 || !code.trim()) {
       setError("Enter Python code under 16 KB before running it.")
       setResult(null)
@@ -295,6 +331,11 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
     setConsoleTab("output")
   }
 
+  function openSection(next: Section) {
+    if (next !== "material") setPythonSlug(pack.slug)
+    setSection(next)
+  }
+
   function updateCode(value: string) {
     edited.current = true
     generation.current++
@@ -304,16 +345,11 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
     setAction(null)
   }
 
-  return <ResizablePanelGroup direction="horizontal" autoSaveId="learn-workspace-columns" className="min-h-0 flex-1">
-      <ResizablePanel defaultSize={45} minSize={32} maxSize={55} className="min-h-0 min-w-0">
-      <section className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border/80 bg-card" aria-label="Learning material">
-        <div className="flex shrink-0 items-center border-b border-border/70 px-3" role="tablist" aria-label="Learning material tabs">
-          {(["concept", "problem"] as const).map((tab) => <button key={tab} type="button" role="tab" aria-selected={pane === tab} onClick={() => setPane(tab)} className={`border-b-2 px-4 py-3 text-xs font-medium transition-colors ${pane === tab ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>{tab === "concept" ? "Concept" : "Problem"}</button>)}
-          <Dialog>
+  const outcomesDialog = <Dialog>
             <DialogTrigger asChild>
               <button type="button" aria-label="Learning outcomes" title="Learning outcomes" className="ml-auto mr-1 inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"><CircleHelp className="h-4 w-4" /></button>
             </DialogTrigger>
-            <DialogContent className="max-w-md">
+            <DialogContent className="w-[calc(100%-2rem)] max-w-md rounded-lg">
               <DialogHeader>
                 <DialogTitle>Learning outcomes</DialogTitle>
                 <DialogDescription>{pack.title} · <span className="capitalize">{pack.difficulty}</span></DialogDescription>
@@ -321,24 +357,71 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
               <ul className="space-y-2.5">{pack.objectives.map((item, index) => <li key={item} className="flex gap-3 text-sm leading-6"><span className="tabular-nums text-primary">{String(index + 1).padStart(2, "0")}</span><span>{item}</span></li>)}</ul>
             </DialogContent>
           </Dialog>
-        </div>
-        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6 xl:px-7">
+  const materialBody = <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 lg:px-6 lg:py-6 xl:px-7">
           {pane === "concept" ? <>
             <article className="learn-prose" dangerouslySetInnerHTML={{ __html: articleHtml }} />
             <Button variant="outline" className="mt-8 rounded-md" onClick={() => setPane("problem")}>Go to problem <ArrowRight className="ml-2 h-4 w-4" /></Button>
           </> : <>
             <article className="learn-prose" dangerouslySetInnerHTML={{ __html: statementHtml }} />
             <section className="mt-8 border-t border-border/70 pt-6"><div className="flex items-center gap-2"><Lightbulb className="h-4 w-4 text-primary" /><h2 className="text-sm font-semibold">Progressive hints</h2></div><p className="mt-1 text-xs text-muted-foreground">Reveal one hint at a time.</p><div className="mt-4">{pack.hints.slice(0, hintCount).map((hint, index) => <div key={index} className="border-t border-border/70 py-3 first:border-t-0"><p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">Hint {index + 1}</p><p className="mt-1 text-sm leading-6">{hint}</p></div>)}</div>{hintCount < pack.hints.length ? <Button variant="outline" size="sm" className="rounded-md" onClick={() => setHintCount(hintCount + 1)}>Reveal hint {hintCount + 1}<ChevronDown className="ml-2 h-3.5 w-3.5" /></Button> : <p className="text-xs text-muted-foreground">All hints revealed.</p>}</section>
-            <section className="mt-7 border-t border-border/70 pt-6"><div className="flex items-center justify-between gap-3"><div><h2 className="text-sm font-semibold">Worked solution</h2><p className="mt-1 text-xs text-muted-foreground">Compare your approach when you are ready.</p></div><Button variant="outline" size="sm" className="rounded-md" onClick={revealSolution}>{solutionOpen ? <EyeOff className="mr-1.5 h-3.5 w-3.5" /> : <Eye className="mr-1.5 h-3.5 w-3.5" />}{solutionOpen ? "Hide" : "Reveal"}</Button></div>{solutionOpen && <div className="mt-5">{solutionLoading ? <p className="text-xs text-muted-foreground">Loading solution…</p> : solutionError ? <p role="alert" className="text-xs text-destructive">{solutionError}</p> : solution ? <><article className="learn-prose" dangerouslySetInnerHTML={{ __html: solution.explanationHtml }} /><div className="mt-4 overflow-hidden rounded-md border border-border/70 bg-white dark:bg-[#1e1e1e]"><MonacoCodeView code={solution.solution} dark={resolvedTheme === "dark"} /></div></> : null}</div>}</section>
+            <section className="mt-7 border-t border-border/70 pt-6"><div className="flex items-center justify-between gap-3"><div><h2 className="text-sm font-semibold">Worked solution</h2><p className="mt-1 text-xs text-muted-foreground">Compare your approach when you are ready.</p></div><Button variant="outline" size="sm" className="rounded-md" onClick={revealSolution}>{solutionOpen ? <EyeOff className="mr-1.5 h-3.5 w-3.5" /> : <Eye className="mr-1.5 h-3.5 w-3.5" />}{solutionOpen ? "Hide" : "Reveal"}</Button></div>{solutionOpen && <div className="mt-5">{solutionLoading ? <p className="text-xs text-muted-foreground">Loading solution…</p> : solutionError ? <p role="alert" className="text-xs text-destructive">{solutionError}</p> : solution ? <><article className="learn-prose" dangerouslySetInnerHTML={{ __html: solution.explanationHtml }} /><div className="mt-4 overflow-hidden rounded-md border border-border/70 bg-white dark:bg-[#1e1e1e]">{layout === "mobile" ? <pre className="overflow-x-auto p-4 font-mono text-xs leading-6">{solution.solution}</pre> : <MonacoCodeView code={solution.solution} dark={resolvedTheme === "dark"} />}</div></> : null}</div>}</section>
+            {layout === "mobile" && <Button className="mt-8 h-11 w-full rounded-md" onClick={() => openSection("code")}>Write your solution <ArrowRight className="ml-2 h-4 w-4" /></Button>}
           </>}
         </div>
+  const signInNote = signedOut && !pack.localEligible && <div role="note" className="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-0.5 border-b border-border/70 bg-muted/30 px-4 py-2 text-xs"><span className="text-muted-foreground">This problem runs on the course server.</span><Link href={`/auth/signin?callbackUrl=${encodeURIComponent(`/learn/problems/${pack.slug}`)}`} className="font-medium text-primary underline">Sign in</Link><span className="text-muted-foreground">to run or submit this problem.</span></div>
+  const consoleTabs = <div className="flex items-center border-b border-border/70 px-2" role="tablist" aria-label="Workspace feedback">{([{"id":"tests","label":"Test cases"},{"id":"output","label":"Output"},{"id":"feedback","label":"Feedback"}] as const).map((tab) => <button key={tab.id} role="tab" aria-selected={consoleTab === tab.id} onClick={() => setConsoleTab(tab.id)} className={`border-b-2 px-3 py-2.5 text-xs font-medium ${consoleTab === tab.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>{tab.label}</button>)}<span className="ml-auto hidden pr-3 text-[11px] text-muted-foreground sm:inline">{pack.testCount} supplied tests</span></div>
+  const consoleBody = <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 lg:px-5 text-xs leading-5">{consoleTab === "tests" ? <><p className="text-muted-foreground">Visible cases from the supplied pack. In snippets, <code>S</code> means the implementation being tested.</p><div className="mt-3">{pack.visibleTests.map((test) => <div key={test.name} className="border-t border-border/70 py-3 first:border-t-0 first:pt-0"><p className="font-medium">{test.name}</p><pre className="mt-1 overflow-x-auto text-[11px] text-muted-foreground"><code>{test.code || "See the problem statement for example behaviour."}</code></pre></div>)}</div></> : consoleTab === "output" ? <div role="status">{busy ? <p className="font-medium">{action === "run" ? "Running visible tests…" : "Grading submission…"}</p> : error ? <p role="alert" className="font-medium text-destructive">{error}{error.includes("Sign in") && <span className="ml-2"><Link href={`/auth/signin?callbackUrl=${encodeURIComponent(`/learn/problems/${pack.slug}`)}`} className="underline">Sign in</Link></span>}</p> : result ? <ExecutionResult result={result} source={resultSource} submitted={action === "submit"} advice={advice} /> : <><p className="font-medium">{resetNotice ? "Starter restored" : "Ready to practise"}</p><p className="mt-2 text-muted-foreground">{resetNotice ? "The supplied starter code is back in the editor." : "Run checks visible tests for practice. Submit grades all supplied tests and saves your result when signed in."}</p>{signedOut && pack.localEligible && <p className="mt-3 text-foreground">Run works in your browser without an account. <Link href={`/auth/signin?callbackUrl=${encodeURIComponent(`/learn/problems/${pack.slug}`)}`} className="font-medium text-primary underline">Sign in</Link> to submit this problem.</p>}</>}</div> : <><p className="text-muted-foreground">Guidance from the supplied pack. These are possible checks, not results from your code.</p><div className="mt-3">{pack.failureFeedback.map((item) => <div key={item.test} className="border-t border-border/70 py-3 first:border-t-0 first:pt-0"><p className="font-medium">{item.test}</p><p className="mt-1 text-muted-foreground">{item.advice}</p></div>)}</div></>}</div>
+
+  if (layout === "mobile") {
+    const activeTab = section === "material" ? pane : section
+    return <div className="flex min-h-0 flex-1 flex-col bg-card">
+      <div className="learn-mobile-tabs flex shrink-0 items-center border-b border-border/70 px-1" role="tablist" aria-label="Problem sections">
+        {(["concept", "problem", "code", "results"] as const).map((tab) => <button key={tab} type="button" role="tab" aria-selected={activeTab === tab} onClick={() => { if (tab === "concept" || tab === "problem") { setPane(tab); openSection("material") } else openSection(tab) }} className={`min-w-0 flex-1 border-b-2 px-1 py-3 text-xs font-medium capitalize ${activeTab === tab ? "border-primary text-primary" : "border-transparent text-muted-foreground"}`}>{tab}</button>)}
+        {outcomesDialog}
+      </div>
+      {/* Keep every section mounted so switching tabs preserves reading position and the code. */}
+      <div className={section === "material" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>{materialBody}</div>
+      <div className={section === "code" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
+        {/* Blurring the editor brings the header back, which would move these buttons out from under the tap. */}
+        <div onMouseDown={(event) => event.preventDefault()} className="flex shrink-0 items-center justify-between gap-2 border-b border-border/70 px-3 py-1.5">
+          <span className="truncate text-[11px] text-muted-foreground" role="status">{python === "preparing" ? "Preparing Python…" : "Python 3"}</span>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <button type="button" onClick={resetCode} aria-label="Reset starter code" className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground hover:bg-muted"><RotateCcw className="h-4 w-4" /></button>
+            <Button size="sm" variant="outline" className="h-10 rounded-md px-3" onClick={() => execute("run")} disabled={busy}><Play className="mr-1.5 h-3.5 w-3.5" />Run</Button>
+            <Button size="sm" className="h-10 rounded-md px-3" onClick={() => execute("submit")} disabled={busy}><Send className="mr-1.5 h-3.5 w-3.5" />Submit</Button>
+          </div>
+        </div>
+        {signInNote}
+        <MobileCodeEditor code={code} onChange={updateCode} />
+      </div>
+      <div className={section === "results" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
+        {consoleTabs}
+        {consoleBody}
+        <div className="shrink-0 border-t border-border/70 p-2"><Button variant="outline" className="h-10 w-full rounded-md" onClick={() => openSection("code")}>Back to code</Button></div>
+      </div>
+    </div>
+  }
+
+  if (layout === null) return <div className="flex min-h-0 flex-1 gap-2">
+    <section className="flex min-h-0 w-full min-w-0 flex-col overflow-hidden bg-card lg:w-[45%] lg:rounded-lg lg:border lg:border-border/80" aria-label="Learning material">{materialBody}</section>
+    <div className="hidden min-w-0 flex-1 rounded-lg border border-border/80 bg-card lg:block" />
+  </div>
+
+  return <ResizablePanelGroup direction="horizontal" autoSaveId="learn-workspace-columns" className="min-h-0 flex-1">
+      <ResizablePanel defaultSize={45} minSize={32} maxSize={55} className="min-h-0 min-w-0">
+      <section className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border/80 bg-card" aria-label="Learning material">
+        <div className="flex shrink-0 items-center border-b border-border/70 px-3" role="tablist" aria-label="Learning material tabs">
+          {(["concept", "problem"] as const).map((tab) => <button key={tab} type="button" role="tab" aria-selected={pane === tab} onClick={() => setPane(tab)} className={`border-b-2 px-4 py-3 text-xs font-medium transition-colors ${pane === tab ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>{tab === "concept" ? "Concept" : "Problem"}</button>)}
+          {outcomesDialog}
+        </div>
+        {materialBody}
       </section>
       </ResizablePanel>
       <ResizableHandle withHandle aria-label="Resize learning material and Python workspace" className="w-2 bg-border/60 transition-colors hover:bg-primary/30" />
       <ResizablePanel defaultSize={55} minSize={45} className="min-h-0 min-w-0">
       <section className="flex h-full min-w-0 flex-col overflow-hidden rounded-lg border border-border/80 bg-card" aria-label="Python workspace">
         <div className="flex shrink-0 items-center justify-between border-b border-border/70 pl-4 pr-3"><div className="flex items-center gap-3"><span className="border-b-2 border-primary px-2 py-3 text-xs font-medium">starter.py</span><span className="text-[11px] text-muted-foreground" role="status">{python === "preparing" ? "Preparing Python…" : "Python 3"}</span></div><div className="flex items-center gap-1.5"><button type="button" onClick={resetCode} title="Reset starter code" aria-label="Reset starter code" className="rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground"><RotateCcw className="h-3.5 w-3.5" /></button><Button size="sm" variant="outline" title={isMac === null ? "Run" : `Run (${isMac ? "⌘" : "Ctrl"}+')`} className="h-8 rounded-md px-3 text-xs" onClick={() => execute("run")} disabled={busy}><Play className="mr-1.5 h-3.5 w-3.5" />Run</Button><Button size="sm" title={isMac === null ? "Submit" : `Submit (${isMac ? "⌘+Return" : "Ctrl+Enter"})`} className="h-8 rounded-md px-3 text-xs" onClick={() => execute("submit")} disabled={busy}><Send className="mr-1.5 h-3.5 w-3.5" />Submit</Button></div></div>
-        {signedOut && !pack.localEligible && <div role="note" className="flex shrink-0 items-center gap-2 border-b border-border/70 bg-muted/30 px-4 py-2 text-xs"><span className="text-muted-foreground">This problem runs on the course server.</span><Link href={`/auth/signin?callbackUrl=${encodeURIComponent(`/learn/problems/${pack.slug}`)}`} className="font-medium text-primary underline">Sign in</Link><span className="text-muted-foreground">to run or submit this problem.</span></div>}
+        {signInNote}
         <ResizablePanelGroup direction="vertical" autoSaveId="learn-workspace-split" className="min-h-0 flex-1">
           <ResizablePanel defaultSize={74} minSize={25} className="min-h-0 min-w-0">
             <div className="h-full min-h-0 bg-white dark:bg-[#1e1e1e]"><MonacoCodeEditor code={code} onChange={updateCode} dark={resolvedTheme === "dark"} /></div>
@@ -346,8 +429,8 @@ export function ProblemWorkspace({ pack, articleHtml, statementHtml }: {
           <ResizableHandle withHandle aria-label="Resize editor and results" className="h-2 bg-border/60 transition-colors hover:bg-primary/30" />
           <ResizablePanel defaultSize={26} minSize={15} maxSize={70} className="min-h-0 min-w-0">
             <div className="flex h-full min-h-0 flex-col">
-              <div className="flex items-center border-b border-border/70 px-2" role="tablist" aria-label="Workspace feedback">{([{"id":"tests","label":"Test cases"},{"id":"output","label":"Output"},{"id":"feedback","label":"Feedback"}] as const).map((tab) => <button key={tab.id} role="tab" aria-selected={consoleTab === tab.id} onClick={() => setConsoleTab(tab.id)} className={`border-b-2 px-3 py-2.5 text-xs font-medium ${consoleTab === tab.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>{tab.label}</button>)}<span className="ml-auto pr-3 text-[11px] text-muted-foreground">{pack.testCount} supplied tests</span></div>
-              <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 text-xs leading-5">{consoleTab === "tests" ? <><p className="text-muted-foreground">Visible cases from the supplied pack. In snippets, <code>S</code> means the implementation being tested.</p><div className="mt-3">{pack.visibleTests.map((test) => <div key={test.name} className="border-t border-border/70 py-3 first:border-t-0 first:pt-0"><p className="font-medium">{test.name}</p><pre className="mt-1 overflow-x-auto text-[11px] text-muted-foreground"><code>{test.code || "See the problem statement for example behaviour."}</code></pre></div>)}</div></> : consoleTab === "output" ? <div role="status">{busy ? <p className="font-medium">{action === "run" ? "Running visible tests…" : "Grading submission…"}</p> : error ? <p role="alert" className="font-medium text-destructive">{error}{error.includes("Sign in") && <span className="ml-2"><Link href={`/auth/signin?callbackUrl=${encodeURIComponent(`/learn/problems/${pack.slug}`)}`} className="underline">Sign in</Link></span>}</p> : result ? <ExecutionResult result={result} source={resultSource} submitted={action === "submit"} advice={advice} /> : <><p className="font-medium">{resetNotice ? "Starter restored" : "Ready to practise"}</p><p className="mt-2 text-muted-foreground">{resetNotice ? "The supplied starter code is back in the editor." : "Run checks visible tests for practice. Submit grades all supplied tests and saves your result when signed in."}</p>{signedOut && pack.localEligible && <p className="mt-3 text-foreground">Run works in your browser without an account. <Link href={`/auth/signin?callbackUrl=${encodeURIComponent(`/learn/problems/${pack.slug}`)}`} className="font-medium text-primary underline">Sign in</Link> to submit this problem.</p>}</>}</div> : <><p className="text-muted-foreground">Guidance from the supplied pack. These are possible checks, not results from your code.</p><div className="mt-3">{pack.failureFeedback.map((item) => <div key={item.test} className="border-t border-border/70 py-3 first:border-t-0 first:pt-0"><p className="font-medium">{item.test}</p><p className="mt-1 text-muted-foreground">{item.advice}</p></div>)}</div></>}</div>
+              {consoleTabs}
+              {consoleBody}
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>
