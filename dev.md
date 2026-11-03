@@ -221,6 +221,8 @@ From another terminal, `curl -i -X POST http://127.0.0.1:8765/execute` should re
 
 Set `LEARN_EXECUTOR_URL` to that HTTPS origin and `LEARN_EXECUTOR_TOKEN` to the same token used by the service in the **Next.js server** environment or `.env.local`, then restart Next.js. Never use a `NEXT_PUBLIC_` prefix. The [executor VPS guide](executor/README.md) gives the shared service setup and three HTTPS options: provider HTTPS proxy, private-IP machine through Tailscale Funnel, or shared public IP with a routed high port through DuckDNS and Caddy. It also documents systemd boot setup, certificate verification, firewall rules, and limits. After connecting it, sign in, Submit a known passing solution, and confirm `/learn/progress` updates only for that account.
 
+Deployment note: we run the executor through Tailscale Funnel, which felt easier than the alternatives. It needs only outbound internet from the VPS, so there are no provider proxy routes or inbound ports to configure. A new Funnel URL can take a short while to start accepting connections.
+
 ## Authentication and authorization
 
 - Admin pages use `AdminGuard`, but UI protection is not sufficient. Preserve authorization checks inside every protected route handler.
