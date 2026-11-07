@@ -1,69 +1,28 @@
 import Link from "next/link";
-import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+
+const links = [
+  { label: "Team", href: "/team" },
+  { label: "Contact", href: "/contact" },
+  { label: "Instagram", href: "https://www.instagram.com/epoch.iiits/", external: true },
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" },
+];
 
 export function Footer() {
   return (
-    <footer className="bg-background border-t">
-      <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
-        <div className="flex justify-center space-x-6 md:order-2">
-          <Link
-            href="#"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <Github className="h-6 w-6" />
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <Twitter className="h-6 w-6" />
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <Linkedin className="h-6 w-6" />
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <Mail className="h-6 w-6" />
-          </Link>
+    <footer className="border-t">
+      <div className="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-6 px-4 py-10 text-sm text-muted-foreground sm:px-8">
+        <div className="flex flex-col gap-1.5">
+          <span className="font-semibold text-foreground">Epoch</span>
+          <span>AI/ML Club, IIIT Sri City · © {new Date().getFullYear()}</span>
         </div>
-        <div className="mt-8 md:order-1 md:mt-0">
-          <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
-            <p className="text-center text-xs leading-5 text-muted-foreground">
-              &copy; 2025 Epoch. All rights reserved.
-            </p>
-            <div className="flex space-x-6">
-              <Link
-                href="/team"
-                className="text-xs text-muted-foreground hover:text-foreground"
-              >
-                Team
-              </Link>
-              <Link
-                href="/contact"
-                className="text-xs text-muted-foreground hover:text-foreground"
-              >
-                Contact
-              </Link>
-              <Link
-                href="/privacy"
-                className="text-xs text-muted-foreground hover:text-foreground"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/terms"
-                className="text-xs text-muted-foreground hover:text-foreground"
-              >
-                Terms
-              </Link>
-            </div>
-          </div>
-        </div>
+        <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          {links.map((link) => link.external ? (
+            <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-foreground">{link.label}</a>
+          ) : (
+            <Link key={link.label} href={link.href} className="transition-colors hover:text-foreground">{link.label}</Link>
+          ))}
+        </nav>
       </div>
     </footer>
   );

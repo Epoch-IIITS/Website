@@ -47,3 +47,10 @@ export function eventForResponse(event: any) {
   }
   return value
 }
+
+/** Day, upper-case month and year of an event in India Standard Time. */
+export function eventDateParts(value: Date | string): { day: string; month: string; year: string } {
+  const parts = new Intl.DateTimeFormat("en-IN", EVENT_DATE_FORMAT).formatToParts(new Date(value))
+  const part = (type: string) => parts.find((item) => item.type === type)?.value ?? ""
+  return { day: part("day"), month: part("month").toUpperCase(), year: part("year") }
+}

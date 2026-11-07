@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +17,8 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { EpochMark } from "@/components/epoch-mark";
+import { cn } from "@/lib/utils";
 import {
   Menu,
   X,
@@ -27,17 +30,28 @@ import {
 } from "lucide-react";
 
 const navigation = [
-  { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "/contact" },
   { name: "Events", href: "/events" },
-  { name: "Gallery", href: "/gallery" },
   { name: "Learn", href: "/learn" },
   { name: "Projects", href: "/projects" },
+  { name: "Blog", href: "/blog" },
+  { name: "Gallery", href: "/gallery" },
   { name: "Team", href: "/team" },
+  { name: "Contact", href: "/contact" },
 ];
+
+function Brand({ onClick }: { onClick?: () => void }) {
+  return (
+    <Link href="/" onClick={onClick} className="flex items-center gap-2.5 text-lg font-semibold tracking-tight text-foreground">
+      <EpochMark className="h-6" />
+      Epoch
+    </Link>
+  );
+}
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isCurrent = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   const { data: session, status } = useSession();
   const [teamEligibleFor, setTeamEligibleFor] = useState<string | null>(null);
 
@@ -79,36 +93,22 @@ export function Navbar() {
     };
   }, [mobileMenuOpen]);
 
-  const handleMenuToggle = () => {
-    console.log(
-      "Menu toggle clicked, current state:",
-      mobileMenuOpen
-    );
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const handleMenuClose = () => {
-    console.log("Closing menu");
-    setMobileMenuOpen(false);
-  };
+  const handleMenuToggle = () => setMobileMenuOpen(!mobileMenuOpen);
+  const handleMenuClose = () => setMobileMenuOpen(false);
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+      <header className="sticky top-0 z-40 w-full border-b bg-background/90 backdrop-blur-md">
+        <nav className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-6 px-4 sm:px-8">
           <div className="flex lg:flex-1">
-            <Link href="/" className="-m-1.5 p-1.5">
-              <span className="text-2xl font-bold text-primary">
-                Epoch
-              </span>
-            </Link>
+            <Brand />
           </div>
 
           {/* Mobile menu button - Added explicit z-index and pointer events */}
           <div className="flex lg:hidden relative z-50">
             <button
               type="button"
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border bg-card text-foreground transition-colors hover:bg-accent"
               onClick={handleMenuToggle}
               aria-expanded={mobileMenuOpen}
               aria-label={
@@ -121,26 +121,27 @@ export function Navbar() {
                   : "Open main menu"}
               </span>
               {mobileMenuOpen ? (
-                <X className="h-6 w-6" aria-hidden="true" />
+                <X className="h-5 w-5" aria-hidden="true" />
               ) : (
-                <Menu className="h-6 w-6" aria-hidden="true" />
+                <Menu className="h-5 w-5" aria-hidden="true" />
               )}
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-6 xl:gap-x-9">
+          <div className="hidden lg:flex lg:gap-x-6 xl:gap-x-7">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-semibold leading-6 text-foreground hover:text-primary transition-colors"
+                aria-current={isCurrent(item.href) ? "page" : undefined}
+                className={cn("text-sm font-medium transition-colors hover:text-foreground", isCurrent(item.href) ? "text-foreground" : "text-muted-foreground")}
               >
                 {item.name}
               </Link>
             ))}
           </div>
 
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-4">
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-3">
             <ThemeToggle />
 
             {status === "loading" ? (
@@ -150,9 +151,10 @@ export function Navbar() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="relative h-8 w-8 rounded-full"
+                    className="relative h-9 w-9 rounded-full p-0"
+                    aria-label="Account menu"
                   >
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-9 w-9">
                       <AvatarImage
                         src={session.user?.image || ""}
                         alt={session.user?.name || ""}
@@ -248,24 +250,16 @@ export function Navbar() {
           />
 
           {/* Menu panel */}
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm border-l shadow-xl">
-            <div className="flex items-center justify-between">
-              <Link
-                href="/"
-                className="-m-1.5 p-1.5"
-                onClick={handleMenuClose}
-              >
-                <span className="text-2xl font-bold text-primary">
-                  Epoch
-                </span>
-              </Link>
+          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-4 py-3 sm:max-w-sm sm:border-l sm:px-6 shadow-xl">
+            <div className="flex h-10 items-center justify-between">
+              <Brand onClick={handleMenuClose} />
               <button
                 type="button"
-                className="-m-2.5 rounded-md p-2.5 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-lg border bg-card text-foreground transition-colors hover:bg-accent"
                 onClick={handleMenuClose}
               >
                 <span className="sr-only">Close menu</span>
-                <X className="h-6 w-6" aria-hidden="true" />
+                <X className="h-5 w-5" aria-hidden="true" />
               </button>
             </div>
 
@@ -276,7 +270,8 @@ export function Navbar() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                      aria-current={isCurrent(item.href) ? "page" : undefined}
+                      className={cn("-mx-3 block rounded-lg px-3 py-2 text-base font-medium leading-7 transition-colors hover:bg-accent hover:text-foreground", isCurrent(item.href) ? "bg-accent text-foreground" : "text-muted-foreground")}
                       onClick={handleMenuClose}
                     >
                       {item.name}
@@ -317,7 +312,7 @@ export function Navbar() {
 
                       <Link
                         href="/profile"
-                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-medium leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                         onClick={handleMenuClose}
                       >
                         Profile
@@ -325,7 +320,7 @@ export function Navbar() {
 
                       {showInitiatives && <Link
                         href="/initiatives"
-                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-medium leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                         onClick={handleMenuClose}
                       >
                         Initiatives
@@ -334,7 +329,7 @@ export function Navbar() {
                       {session.user?.role !== "admin" && (
                         <Link
                           href="/my-rsvps"
-                          className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                          className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-medium leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                           onClick={handleMenuClose}
                         >
                           My RSVPs
@@ -344,7 +339,7 @@ export function Navbar() {
                       {session.user?.role === "admin" && (
                         <Link
                           href="/admin"
-                          className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                          className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-medium leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                           onClick={handleMenuClose}
                         >
                           Admin Dashboard
@@ -359,7 +354,7 @@ export function Navbar() {
                           });
                           handleMenuClose();
                         }}
-                        className="-mx-3 block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                        className="-mx-3 block w-full text-left rounded-lg px-3 py-2.5 text-base font-medium leading-7 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                       >
                         Sign out
                       </button>

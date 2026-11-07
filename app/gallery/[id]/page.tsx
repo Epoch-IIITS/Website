@@ -1,7 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar, ArrowLeft, Images } from "lucide-react";
+import { Images } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EventGallery } from "@/components/event-gallery";
@@ -36,122 +33,42 @@ export default async function GalleryDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const photoCount = gallery.images?.length || 0;
+  const date = new Date(gallery.eventDate).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <Button variant="ghost" asChild className="mb-4">
-            <Link href="/gallery">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Gallery
-            </Link>
-          </Button>
-
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">{gallery.eventName}</h1>
-              <div className="flex items-center gap-4 text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  <span>
-                    {new Date(gallery.eventDate).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Images className="h-4 w-4" />
-                  <span>{gallery.images?.length || 0} photos</span>
-                </div>
-              </div>
-            </div>
-            <Badge variant="secondary" className="w-fit">
-              Event Gallery
-            </Badge>
-          </div>
+    <div className="mx-auto max-w-[1200px] px-4 pb-[72px] sm:px-8">
+      <section className="flex flex-col gap-5 pb-8 pt-12">
+        <nav aria-label="Breadcrumb" className="flex min-w-0 gap-2 text-sm text-muted-foreground">
+          <Link href="/gallery" className="hover:text-foreground">Gallery</Link>
+          <span aria-hidden="true">/</span>
+          <span className="truncate text-foreground" aria-current="page">{gallery.eventName}</span>
+        </nav>
+        <div className="flex max-w-[700px] flex-col gap-3">
+          <h1 className="text-[36px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-[48px]">{gallery.eventName}</h1>
+          {gallery.description && <p className="text-[17px] leading-relaxed text-muted-foreground">{gallery.description}</p>}
+          <span className="font-mono text-xs uppercase text-muted-foreground">
+            <time dateTime={gallery.eventDate}>{date}</time> · {photoCount} {photoCount === 1 ? "photo" : "photos"}
+          </span>
         </div>
+      </section>
 
-        {/* Description */}
-        {gallery.description && (
-          <Card className="mb-8">
-            <CardContent className="p-6">
-              <p className="text-lg leading-relaxed">{gallery.description}</p>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Image Gallery */}
-        {gallery.images && gallery.images.length > 0 ? (
-          <div className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2">Event Photos</h2>
-              <p className="text-muted-foreground">
-                Browse through {gallery.images.length} photos from this event.
-                Click a photo to view it in full.
-              </p>
-            </div>
-
-            {/* Masonry Grid */}
-            <EventGallery
-              images={gallery.images}
-              eventName={gallery.eventName}
-            />
-
-            {/* Gallery Stats */}
-            <Card>
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-primary mb-1">
-                      {gallery.images.length}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Total Photos
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-primary mb-1">
-                      {new Date(gallery.eventDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Event Date
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-primary mb-1">
-                      {new Date(gallery.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Gallery Created
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        ) : (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <Images className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">
-                No photos available
-              </h3>
-              <p className="text-muted-foreground">
-                This gallery doesn't have any photos yet.
-              </p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+      {photoCount > 0 ? (
+        <section aria-label="Event photos" className="flex flex-col gap-4">
+          <p className="text-sm text-muted-foreground">Click a photo to view it in full.</p>
+          <EventGallery images={gallery.images} eventName={gallery.eventName} />
+        </section>
+      ) : (
+        <div className="rounded-2xl border border-dashed border-input bg-card p-12 text-center">
+          <Images className="mx-auto mb-4 h-12 w-12 text-muted-foreground" aria-hidden="true" />
+          <h2 className="mb-2 text-lg font-semibold">No photos available</h2>
+          <p className="text-muted-foreground">This gallery doesn&apos;t have any photos yet.</p>
+        </div>
+      )}
     </div>
   );
 }

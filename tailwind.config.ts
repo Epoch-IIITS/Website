@@ -12,7 +12,27 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['var(--font-geist-sans)', 'Inter', 'system-ui', 'sans-serif'],
+  			mono: ['var(--font-geist-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace']
+  		},
+  		// Primary text uses a lighter blue than primary buttons in dark mode.
+  		textColor: {
+  			primary: {
+  				DEFAULT: 'hsl(var(--primary-text) / <alpha-value>)'
+  			}
+  		},
   		colors: {
+  			subtle: 'hsl(var(--subtle))',
+  			success: {
+  				DEFAULT: 'hsl(var(--success))',
+  				soft: 'hsl(var(--success-soft))'
+  			},
+  			panel: {
+  				DEFAULT: 'hsl(var(--panel))',
+  				foreground: 'hsl(var(--panel-foreground))'
+  			},
+  			sunken: 'hsl(var(--surface-sunken))',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -25,7 +45,8 @@ const config: Config = {
   			},
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				foreground: 'hsl(var(--primary-foreground))',
+  				soft: 'hsl(var(--primary-soft))'
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',

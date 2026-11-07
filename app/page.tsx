@@ -1,354 +1,192 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Users, Code, Zap, ArrowRight, Github, ExternalLink, MapPin, Clock } from "lucide-react"
-import HeroSection from "@/components/HeroSection"
-import CTASection from "@/components/CTAsection"
-import { formatEventDate, formatEventTime } from "@/lib/event-dates"
+import { ArrowRight, MapPin } from "lucide-react"
+import { eventDateParts } from "@/lib/event-dates"
+import { requiredProblems, topics, projects as learnProjects } from "@/lib/learn/data"
 
-async function getLatestContent() {
+async function getJson<T>(path: string, fallback: T): Promise<T> {
   try {
-    const [blogsRes, projectsRes, eventsRes] = await Promise.all([
-      fetch(`${process.env.NEXTAUTH_URL}/api/blogs?published=true&limit=3`, { cache: "no-store" }),
-      fetch(`${process.env.NEXTAUTH_URL}/api/projects?featured=true`, { cache: "no-store" }),
-      fetch(`${process.env.NEXTAUTH_URL}/api/events?upcoming=true`, { cache: "no-store" }),
-    ])
-
-    const blogs = blogsRes.ok ? await blogsRes.json() : { blogs: [] }
-    const projects = projectsRes.ok ? await projectsRes.json() : []
-    const events = eventsRes.ok ? await eventsRes.json() : []
-
-    return { blogs: blogs.blogs || [], projects, events }
-  } catch (error) {
-    return { blogs: [], projects: [], events: [] }
+    const response = await fetch(`${process.env.NEXTAUTH_URL}${path}`, { cache: "no-store" })
+    return response.ok ? await response.json() : fallback
+  } catch {
+    return fallback
   }
 }
 
+async function getLatestContent() {
+  const [blogs, projects, events, galleries] = await Promise.all([
+    getJson<{ blogs?: any[] }>("/api/blogs?published=true&limit=3", { blogs: [] }),
+    getJson<any[]>("/api/projects", []),
+    getJson<any[]>("/api/events", []),
+    getJson<any[]>("/api/gallery", []),
+  ])
+  const list = <T,>(value: unknown): T[] => (Array.isArray(value) ? value : [])
+  return { blogs: blogs.blogs || [], projects: list<any>(projects), events: list<any>(events), galleries: list<any>(galleries) }
+}
+
+function SectionHeading({ kicker, title, href, linkLabel }: { kicker: string; title: string; href: string; linkLabel: string }) {
+  return (
+    <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
+      <div className="flex flex-col gap-2">
+        <span className="kicker">{kicker}</span>
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
+      </div>
+      <Link href={href} className="text-sm font-medium text-primary hover:underline">{linkLabel} →</Link>
+    </div>
+  )
+}
+
+const offerings = [
+  { title: "Workshops & talks", body: "Intro sessions every semester, deep-dives on emerging domains, and hackathons with industry partners." },
+  { title: "A practice track", body: "Concept notes and graded Python problems, from NumPy and Pandas to deep learning and LLMs." },
+  { title: "Real projects", body: "Members build and deploy working tools — event platforms, prediction models, chatbots." },
+  { title: "People to learn with", body: "Seniors, alumni and peers who have taken the same path and share what worked." },
+]
+
 export default async function HomePage() {
-  const { blogs, projects, events } = await getLatestContent()
+  const { blogs, projects, events, galleries } = await getLatestContent()
+  const now = Date.now()
+  const recentEvents = [...events].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5)
+  const featuredProjects = (projects.some((project) => project.featured) ? projects.filter((project) => project.featured) : projects).slice(0, 3)
+  const hero = galleries.find((gallery) => gallery.coverImage || gallery.images?.[0]?.url)
+  const heroImage = hero ? hero.coverImage || hero.images[0].url : null
+
+  const stats = [
+    { value: topics.length, label: "Learn topics" },
+    { value: requiredProblems.length, label: "practice problems" },
+    { value: learnProjects.length, label: "guided project ideas" },
+    { value: projects.length, label: "community projects shipped" },
+  ]
 
   return (
-    <div className="flex flex-col overflow-hidden">
-      {/* Hero Section - Now a Client Component */}
-      <HeroSection />
-
-      {/* Features Section */}
-      <section className="py-24 bg-muted/50">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-20">
-            <Badge variant="secondary" className="mb-4 px-4 py-2 text-sm font-medium">What We Offer</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Everything you need to advance your tech career</h2>
-            <p className="text-xl text-muted-foreground">Comprehensive resources and community support for your growth</p>
+    <div className="flex flex-col">
+      <section className="mx-auto w-full max-w-[1200px] px-4 pb-16 pt-16 sm:px-8 sm:pb-[72px] sm:pt-[88px]">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="flex flex-col gap-7">
+            <div className="kicker flex items-center gap-2.5"><span className="h-2 w-2 rounded-full bg-primary" aria-hidden="true" />AI/ML Club · IIIT Sri City</div>
+            <h1 className="text-[44px] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-[64px]">Learn machine learning by building it.</h1>
+            <p className="max-w-[500px] text-lg leading-relaxed text-muted-foreground">Epoch is the student AI/ML community at IIIT Sri City. Workshops, a hands-on practice track and member-built projects — from your first print() to federated learning.</p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/learn" className="inline-flex h-12 items-center gap-2 rounded-[10px] bg-primary px-[22px] text-[15px] font-medium text-primary-foreground transition-colors hover:bg-primary/90">Start learning <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+              <Link href="/events" className="inline-flex h-12 items-center rounded-[10px] border border-input bg-card px-[22px] text-[15px] font-medium transition-colors hover:bg-accent">See events</Link>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Calendar,
-                title: "Regular Events",
-                description: "Weekly workshops, hackathons, and tech talks"
-              },
-              {
-                icon: Code,
-                title: "Hands-on Projects",
-                description: "Build real-world applications and contribute to open source"
-              },
-              {
-                icon: Users,
-                title: "Community",
-                description: "Connect with like-minded developers and industry professionals"
-              },
-              {
-                icon: Zap,
-                title: "Skill Building",
-                description: "Learn cutting-edge technologies and best practices"
-              }
-            ].map((feature, index) => (
-              <Card key={feature.title} className="group hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-0 bg-background/70 backdrop-blur-sm hover:bg-background">
-                <CardContent className="p-8 text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary text-primary-foreground mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <feature.icon className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">{feature.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-                </CardContent>
-              </Card>
+          {heroImage && (
+            <Link href={`/gallery/${hero._id}`} className="relative block">
+              <img src={heroImage} alt={`${hero.eventName} photo`} className="block aspect-[4/3] w-full rounded-2xl object-cover" />
+              <span className="absolute bottom-4 left-4 flex flex-col gap-0.5 rounded-[10px] bg-card px-3.5 py-2.5 text-[13px] shadow-lg">
+                <span className="font-semibold">{hero.eventName}</span>
+                <span className="font-mono text-xs uppercase text-muted-foreground">{new Date(hero.eventDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} · {hero.images?.length || 0} photos</span>
+              </span>
+            </Link>
+          )}
+        </div>
+        <dl className="mt-16 grid grid-cols-2 border-y lg:mt-[72px] lg:grid-cols-4">
+          {stats.map((stat, index) => (
+            <div key={stat.label} className={`flex flex-col-reverse gap-1 py-6 ${index % 2 ? "border-l pl-6" : ""} ${index === 2 ? "lg:border-l lg:pl-6" : ""} ${index > 1 ? "border-t lg:border-t-0" : ""}`}>
+              <dt className="text-sm text-muted-foreground">{stat.label}</dt>
+              <dd className="text-[32px] font-semibold tracking-tight">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section className="mx-auto w-full max-w-[1200px] px-4 pb-24 pt-12 sm:px-8">
+        <div className="grid gap-12 lg:grid-cols-3">
+          <h2 className="text-[32px] font-semibold leading-tight tracking-tight">What happens at Epoch</h2>
+          <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:col-span-2">
+            {offerings.map((item, index) => (
+              <div key={item.title} className="flex flex-col gap-2">
+                <span className="font-mono text-xs text-primary">{String(index + 1).padStart(2, "0")}</span>
+                <h3 className="text-lg font-semibold">{item.title}</h3>
+                <p className="text-[15px] leading-relaxed text-muted-foreground">{item.body}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Latest Blog Posts */}
+      {recentEvents.length > 0 && (
+        <section className="border-y bg-card">
+          <div className="mx-auto max-w-[1200px] px-4 py-[88px] sm:px-8">
+            <SectionHeading kicker="Events" title="Recent sessions" href="/events" linkLabel="All events" />
+            <div className="flex flex-col border-t">
+              {recentEvents.map((event) => {
+                const { day, month, year } = eventDateParts(event.date)
+                const upcoming = new Date(event.date).getTime() >= now
+                return (
+                  <Link key={event._id} href={`/events/${event._id}`} className="group grid grid-cols-[72px_minmax(0,1fr)] items-center gap-x-6 border-b py-[22px] md:grid-cols-[96px_minmax(0,1fr)_200px] md:gap-x-12">
+                    <span className="flex flex-col font-mono"><span className="text-[22px] font-medium">{day}</span><span className="text-xs text-muted-foreground">{month} {year}</span></span>
+                    <span className="flex min-w-0 flex-col gap-1">
+                      <span className="flex flex-wrap items-center gap-2"><span className="text-[17px] font-semibold group-hover:text-primary">{event.title}</span>{upcoming && <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-medium text-primary">Upcoming</span>}</span>
+                      <span className="truncate text-sm text-muted-foreground">{event.description}</span>
+                    </span>
+                    <span className="hidden items-center gap-1.5 text-sm text-muted-foreground md:flex"><MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden="true" /><span className="truncate">{event.venue}</span></span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="mx-auto w-full max-w-[1200px] px-4 py-24 sm:px-8">
+        <div className="grid items-center gap-14 lg:grid-cols-2">
+          <div className="flex flex-col gap-5">
+            <span className="kicker">Epoch Learn</span>
+            <h2 className="text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[40px]">Read the concept. Write the code. Pass the tests.</h2>
+            <p className="text-[17px] leading-relaxed text-muted-foreground">A browser-based practice track written by the club. Every problem pairs a short concept note with a Python editor and hidden tests, and your progress is saved to your account.</p>
+            <Link href="/learn" className="mt-2 inline-flex h-11 items-center gap-2 self-start rounded-[10px] bg-primary px-[18px] text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">Browse topics <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+          </div>
+          <div className="overflow-hidden rounded-2xl bg-panel text-panel-foreground shadow-2xl shadow-black/20" aria-hidden="true">
+            <div className="flex items-center justify-between border-b border-white/10 px-[18px] py-3.5 font-mono text-xs text-[#A3A9B4]"><span>PY-01 · starter.py</span><span className="text-[#6EE7A0]">● 8 / 8 tests passed</span></div>
+            <pre className="overflow-x-auto whitespace-pre-wrap px-[18px] py-[22px] font-mono text-sm leading-[1.8]"><span className="text-[#7C8494]"># Print six lines. The first one is done for you.</span>{"\n"}print(<span className="text-[#9FD7A8]">&quot;Hello, world!&quot;</span>){"\n"}print(<span className="text-[#9FD7A8]">&quot;Python&quot;</span>, <span className="text-[#9FD7A8]">&quot;is&quot;</span>, <span className="text-[#9FD7A8]">&quot;fun&quot;</span>){"\n"}print(<span className="text-[#9FD7A8]">&quot;2026&quot;</span>, <span className="text-[#9FD7A8]">&quot;10&quot;</span>, <span className="text-[#9FD7A8]">&quot;24&quot;</span>, sep=<span className="text-[#9FD7A8]">&quot;-&quot;</span>){"\n"}print(){"\n"}print(<span className="text-[#9FD7A8]">&quot;Loading&quot;</span>, end=<span className="text-[#9FD7A8]">&quot;...&quot;</span>){"\n"}print(<span className="text-[#9FD7A8]">&quot;done&quot;</span>)</pre>
+            <div className="flex justify-end gap-2 border-t border-white/10 px-[18px] py-3.5 text-[13px]"><span className="rounded-lg border border-white/20 px-3.5 py-2">Run</span><span className="rounded-lg bg-primary px-3.5 py-2 font-medium text-primary-foreground">Submit</span></div>
+          </div>
+        </div>
+      </section>
+
+      {featuredProjects.length > 0 && (
+        <section className="border-y bg-card">
+          <div className="mx-auto max-w-[1200px] px-4 py-[88px] sm:px-8">
+            <SectionHeading kicker="Projects" title="Built by members" href="/projects" linkLabel={`All ${projects.length} projects`} />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {featuredProjects.map((project) => (
+                <article key={project._id} className="flex flex-col overflow-hidden rounded-[14px] border bg-card transition-colors hover:border-input">
+                  {project.image && <img src={project.image} alt={`${project.title} preview`} className="block aspect-video w-full border-b object-cover" />}
+                  <div className="flex flex-1 flex-col gap-2.5 p-5">
+                    <h3 className="text-lg font-semibold">{project.title}</h3>
+                    <p className="line-clamp-3 flex-1 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+                    {project.techStack?.length > 0 && <span className="font-mono text-xs text-muted-foreground">{project.techStack.slice(0, 3).join(" · ")}</span>}
+                    {(project.githubUrl || project.liveUrl) && (
+                      <div className="flex gap-4 border-t pt-3 text-sm font-medium">
+                        {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary">Code ↗</a>}
+                        {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Live demo ↗</a>}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {blogs.length > 0 && (
-        <section className="py-24 bg-background">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-16">
-              <div>
-                <Badge variant="secondary" className="mb-4 px-4 py-2 text-sm font-medium">Latest Insights</Badge>
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Latest Blog Posts</h2>
-                <p className="text-xl text-muted-foreground">Stay updated with our latest insights and tutorials</p>
-              </div>
-              <Button variant="outline" className="hidden md:flex items-center gap-2" asChild>
-                <Link href="/blog">
-                  View All Posts
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogs.map((blog: any, index: number) => (
-                <Card key={blog._id} className="group hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 border-0 bg-card overflow-hidden flex flex-col">
-                  {blog.featuredImage && (
-                    <div className="aspect-video bg-muted overflow-hidden">
-                      <img
-                        src={blog.featuredImage || "/placeholder.svg"}
-                        alt={blog.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  )}
-                  <CardHeader className="p-6">
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                      <time className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {new Date(blog.createdAt).toLocaleDateString()}
-                      </time>
-                    </div>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {blog.tags?.slice(0, 2).map((tag: string) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors line-clamp-2">
-                      <Link href={`/blog/${blog.slug}`}>
-                        {blog.title}
-                      </Link>
-                    </CardTitle>
-                    <CardDescription className="text-muted-foreground line-clamp-3 leading-relaxed">
-                      {blog.excerpt}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-6 pt-0 flex-1 flex flex-col justify-end">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm">
-                          {blog.author?.name?.charAt(0) || 'A'}
-                        </div>
-                        <span className="font-medium text-foreground">{blog.author?.name}</span>
-                      </div>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/blog/${blog.slug}`} className="flex items-center gap-1">
-                          Read More
-                          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-all" />
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            <div className="mt-12 text-center md:hidden">
-              <Button variant="outline" className="flex items-center gap-2 mx-auto" asChild>
-                <Link href="/blog">
-                  View All Posts
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Featured Projects */}
-      {projects.length > 0 && (
-        <section className="py-24 bg-muted/50">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-16">
-              <div>
-                <Badge variant="secondary" className="mb-4 px-4 py-2 text-sm font-medium">Showcase</Badge>
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Featured Projects</h2>
-                <p className="text-xl text-muted-foreground">Check out some of our amazing community projects</p>
-              </div>
-              <Button variant="outline" className="hidden md:flex items-center gap-2" asChild>
-                <Link href="/projects">
-                  View All Projects
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.slice(0, 3).map((project: any) => (
-                <Card key={project._id} className="group hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 border-0 bg-background overflow-hidden">
-                  <CardHeader className="p-6">
-                    <CardTitle className="text-xl font-bold text-foreground mb-2">{project.title}</CardTitle>
-                    <CardDescription className="text-muted-foreground line-clamp-3 leading-relaxed">
-                      {project.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-6 pt-0">
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.techStack?.slice(0, 3).map((tech: string) => (
-                        <Badge key={tech} variant="outline" className="text-xs">
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="flex gap-3">
-                      {project.githubUrl && (
-                        <Button size="sm" variant="outline" className="flex items-center gap-2 flex-1" asChild>
-                          <Link href={project.githubUrl} target="_blank">
-                            <Github className="w-4 h-4" />
-                            Code
-                          </Link>
-                        </Button>
-                      )}
-                      {project.liveUrl && (
-                        <Button size="sm" className="flex items-center gap-2 flex-1" asChild>
-                          <Link href={project.liveUrl} target="_blank">
-                            <ExternalLink className="w-4 h-4" />
-                            Demo
-                          </Link>
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            <div className="mt-12 text-center md:hidden">
-              <Button variant="outline" className="flex items-center gap-2 mx-auto" asChild>
-                <Link href="/projects">
-                  View All Projects
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Upcoming Events */}
-      {events.length > 0 && (
-        <section className="py-24 bg-background">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-16">
-              <div>
-                <Badge variant="secondary" className="mb-4 px-4 py-2 text-sm font-medium">Don't Miss Out</Badge>
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Upcoming Events</h2>
-                <p className="text-xl text-muted-foreground">Join our exciting upcoming events and grow your network</p>
-              </div>
-              <Button variant="outline" className="hidden md:flex items-center gap-2" asChild>
-                <Link href="/events">
-                  View All Events
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {events.slice(0, 2).map((event: any) => (
-                <Card key={event._id} className="group hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 border-0 bg-card overflow-hidden flex flex-col">
-                  {event.image && (
-                    <div className="aspect-video bg-muted overflow-hidden">
-                      <img
-                        src={event.image || "/placeholder.svg"}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  )}
-                  <CardHeader className="p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                        {formatEventDate(event.date)}
-                      </Badge>
-                      <Badge variant="outline">Upcoming</Badge>
-                    </div>
-                    <CardTitle className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
-                      {event.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-8 pt-0 flex-1 flex flex-col justify-between">
-                    <div className="space-y-3 mb-6">
-                      <p className="text-muted-foreground line-clamp-3 leading-relaxed">{event.description}</p>
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        {formatEventDate(event.date)} at {formatEventTime(event.date)}
-                      </div>
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <MapPin className="mr-2 h-4 w-4" />
-                        {event.venue}
-                      </div>
-                      {event.maxAttendees && (
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <Users className="mr-2 h-4 w-4" />
-                          Max {event.maxAttendees} attendees
-                        </div>
-                      )}
-                    </div>
-                    <Button className="w-full font-semibold" asChild>
-                      <Link href={`/events/${event._id}`} className="flex items-center justify-center gap-2">
-                        View Details & RSVP
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            <div className="mt-12 text-center md:hidden">
-              <Button variant="outline" className="flex items-center gap-2 mx-auto" asChild>
-                <Link href="/events">
-                  View All Events
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* CTA Section
-      <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
-        {/* Background Elements 
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-foreground/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-foreground/5 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="relative z-10 mx-auto max-w-4xl px-6 lg:px-8 text-center">
-          <div className="mb-8 inline-flex items-center px-4 py-2 rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground/90 text-sm">
-            🎯 Ready to level up your career?
-          </div>
-          
-          <h2 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-6">Ready to Join Our Community?</h2>
-          <p className="text-xl text-primary-foreground/80 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Sign up today and start your journey with fellow tech enthusiasts. Access exclusive events, resources, and
-            networking opportunities that will accelerate your growth.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Button size="lg" variant="secondary" className="px-8 py-4 text-lg font-semibold shadow-2xl transition-all duration-300 transform hover:scale-105 group" asChild>
-              <Link href="/events" className="flex items-center gap-2">
-                Join Next Event
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        <section className="mx-auto w-full max-w-[1200px] px-4 py-24 sm:px-8">
+          <SectionHeading kicker="Blog" title="Latest writing" href="/blog" linkLabel="All posts" />
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {blogs.map((blog: any) => (
+              <Link key={blog._id} href={`/blog/${blog.slug}`} className="group flex flex-col gap-3.5">
+                {blog.featuredImage ? <img src={blog.featuredImage} alt="" className="block aspect-video w-full rounded-xl border object-cover" /> : <span className="block aspect-video w-full rounded-xl border bg-secondary" aria-hidden="true" />}
+                <span className="font-mono text-xs uppercase text-muted-foreground">{new Date(blog.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}{blog.tags?.[0] ? ` · ${blog.tags[0]}` : ""}</span>
+                <h3 className="text-[19px] font-semibold leading-snug group-hover:text-primary">{blog.title}</h3>
+                {blog.author?.name && <span className="text-sm text-muted-foreground">{blog.author.name}</span>}
               </Link>
-            </Button>
-            <Button size="lg" variant="secondary" className="px-8 py-4 text-lg font-semibold shadow-2xl transition-all duration-300 transform hover:scale-105 group" asChild>
-              <Link href="/contact">Contact Us</Link>
-            </Button>
+            ))}
           </div>
-        </div>
-      </section> */}
-      <CTASection />
+        </section>
+      )}
+
     </div>
   )
 }

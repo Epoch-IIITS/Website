@@ -32,9 +32,9 @@ export default async function LearnProjectPage({ params }: Props) {
   const previous = learnPath[position - 1]
   const next = learnPath[position + 1]
 
-  return <LearnShell active="explore"><div className="mx-auto max-w-3xl px-4 pb-16 pt-6 sm:px-7 lg:pt-8 xl:px-10">
+  return <LearnShell active="projects"><div className="mx-auto max-w-3xl px-4 pb-16 pt-6 sm:px-7 lg:pt-8 xl:px-10">
     <div className="flex items-center justify-between gap-3 border-b border-border/70 pb-4">
-      <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground"><Link href="/learn" className="hover:text-foreground">Learn</Link><ChevronRight className="h-3 w-3 shrink-0" /><Link href={`/learn/topics/${project.topicSlug}`} className="truncate hover:text-foreground">{topicTitle(project.topicSlug)}</Link><ChevronRight className="h-3 w-3 shrink-0" /><span className="text-foreground">{project.id}</span></nav>
+      <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground"><Link href="/learn/projects" className="hover:text-foreground">Projects</Link><ChevronRight className="h-3 w-3 shrink-0" /><Link href={`/learn/topics/${project.topicSlug}`} className="truncate hover:text-foreground">{topicTitle(project.topicSlug)}</Link><ChevronRight className="h-3 w-3 shrink-0" /><span className="text-foreground">{project.id}</span></nav>
       <div className="flex shrink-0 items-center gap-1 text-xs">{previous ? <Link href={pathHref(previous)} aria-label={`Previous: ${previous.item.title}`} title={`Previous: ${previous.item.title}`} className="rounded p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"><ArrowLeft className="h-4 w-4" /></Link> : <span className="w-7" />}{next ? <Link href={pathHref(next)} aria-label={`Next: ${next.item.title}`} title={`Next: ${next.item.title}`} className="rounded p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"><ArrowRight className="h-4 w-4" /></Link> : <span className="w-7" />}</div>
     </div>
     <header className="mt-7">

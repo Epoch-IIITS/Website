@@ -4,37 +4,37 @@ import { type ReactNode, useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
-import { LayoutDashboard, FileText, FolderOpen, Calendar, ImageIcon, Users, Inbox, ArrowUpRight, LogOut, X, Wrench, ScrollText, ChevronDown, GraduationCap } from "lucide-react"
+import { LayoutDashboard, FileText, FolderOpen, Calendar, ImageIcon, Users, Inbox, LogOut, X, Wrench, ScrollText, GraduationCap } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import { Sidebar, SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
+import { EpochMark } from "@/components/epoch-mark"
 
-const navigation = [
-  { label: "Overview", href: "/admin", icon: LayoutDashboard },
-  { label: "Content", icon: FileText, children: [
-    { label: "Blogs", href: "/admin/blogs", icon: FileText },
-    { label: "Projects", href: "/admin/projects", icon: FolderOpen },
-    { label: "Gallery", href: "/admin/gallery", icon: ImageIcon },
+type CountKey = "blogs" | "projects" | "events" | "galleries"
+type NavItem = { label: string; href: string; icon: typeof LayoutDashboard; count?: CountKey }
+
+const overview: NavItem = { label: "Overview", href: "/admin", icon: LayoutDashboard }
+const sections: { label: string; items: NavItem[] }[] = [
+  { label: "Content", items: [
+    { label: "Blog posts", href: "/admin/blogs", icon: FileText, count: "blogs" },
+    { label: "Projects", href: "/admin/projects", icon: FolderOpen, count: "projects" },
+    { label: "Events", href: "/admin/events", icon: Calendar, count: "events" },
+    { label: "Gallery", href: "/admin/gallery", icon: ImageIcon, count: "galleries" },
   ] },
-  { label: "Events", href: "/admin/events", icon: Calendar },
-  { label: "People", icon: Users, children: [
+  { label: "People", items: [
     { label: "Team", href: "/admin/team", icon: Users },
     { label: "Users", href: "/admin/users", icon: Users },
     { label: "Learners", href: "/admin/learners", icon: GraduationCap },
+    { label: "Inbox", href: "/admin/queries", icon: Inbox },
   ] },
-  { label: "Inbox", href: "/admin/queries", icon: Inbox },
-  { label: "Tools", icon: Wrench, children: [
-    { label: "Logs", href: "/admin/logs", icon: ScrollText },
+  { label: "Tools", items: [
+    { label: "Activity log", href: "/admin/logs", icon: ScrollText },
     { label: "Utilities", href: "/admin/utilities", icon: Wrench },
   ] },
 ]
-
-function groupForPath(pathname: string) {
-  return navigation.find(item => item.children?.some(child => pathname === child.href || pathname.startsWith(`${child.href}/`)))?.label ?? null
-}
+const allItems = [overview, ...sections.flatMap(section => section.items)]
 
 export function AdminShell({ children }: { children: ReactNode }) {
   return <SidebarProvider><AdminWorkspace>{children}</AdminWorkspace></SidebarProvider>
@@ -44,47 +44,48 @@ function AdminWorkspace({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const { data: session } = useSession()
   const { setOpenMobile, isMobile } = useSidebar()
-  const [expandedGroup, setExpandedGroup] = useState<string | null>(() => groupForPath(pathname))
-  useEffect(() => { setExpandedGroup(groupForPath(pathname)) }, [pathname])
+  const [counts, setCounts] = useState<Partial<Record<CountKey, number>>>({})
+  useEffect(() => {
+    let cancelled = false
+    fetch("/api/admin/stats", { cache: "no-store" }).then(response => response.ok ? response.json() : null).then(stats => {
+      if (cancelled || !stats) return
+      setCounts({ blogs: stats.blogs?.total, projects: stats.projects?.total, events: stats.events?.total, galleries: stats.galleries?.total })
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [])
   const isActive = (href: string) => pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`))
-  const current = navigation.flatMap(item => item.children ?? [item]).find(item => item.href && isActive(item.href))
+  const current = allItems.find(item => isActive(item.href))
 
-  function navLink({ label, href, icon: Icon }: { label: string; href: string; icon: typeof LayoutDashboard }, nested = false) {
+  function navLink({ label, href, count }: NavItem) {
+    const value = count ? counts[count] : undefined
     return <Link key={href} href={href} onClick={() => setOpenMobile(false)} aria-current={isActive(href) ? "page" : undefined}
-      className={cn("flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors", nested && "ml-6", isActive(href) ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
-      <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />{label}
+      className={cn("flex h-9 items-center justify-between gap-3 rounded-lg px-2.5 text-sm transition-colors", isActive(href) ? "bg-secondary font-medium text-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground")}>
+      <span className="truncate">{label}</span>{value !== undefined && <span className="text-xs tabular-nums text-subtle">{value}</span>}
     </Link>
   }
 
   function sidebar() {
     return (
-      <div className="flex h-full flex-col">
+      <div className="flex h-full flex-col gap-5 bg-card px-3.5 py-[18px]">
         {isMobile && <><SheetTitle className="sr-only">Admin navigation</SheetTitle><SheetDescription className="sr-only">Navigate the Epoch admin workspace.</SheetDescription><Button variant="ghost" size="icon" className="absolute right-2 top-2" aria-label="Close admin navigation" onClick={() => setOpenMobile(false)}><X className="h-4 w-4" /></Button></>}
-        <Link href="/admin" onClick={() => setOpenMobile(false)} className="flex items-center gap-3 px-6 py-7">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-lg font-bold text-primary-foreground">E</span>
-          <div><p className="text-lg font-semibold tracking-tight">Epoch</p><p className="text-xs text-muted-foreground">Admin workspace</p></div>
+        <Link href="/admin" onClick={() => setOpenMobile(false)} className="flex items-center gap-2.5 px-1.5 py-1">
+          <EpochMark className="h-5" />
+          <span className="flex flex-col leading-tight"><span className="text-sm font-semibold">Epoch</span><span className="text-xs text-muted-foreground">Admin workspace</span></span>
         </Link>
-        <p className="px-6 pb-3 pt-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">Workspace</p>
-        <nav aria-label="Admin navigation" className="flex-1 space-y-1 overflow-y-auto px-3">
-          {navigation.map(item => item.children ? (
-            <Collapsible key={item.label} open={expandedGroup === item.label} onOpenChange={open => setExpandedGroup(open ? item.label : null)}>
-              <CollapsibleTrigger className={cn("flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-colors hover:bg-muted hover:text-foreground", item.children.some(child => isActive(child.href)) ? "text-foreground" : "text-muted-foreground")}>
-                <item.icon className="h-4 w-4 shrink-0" aria-hidden="true" />{item.label}
-                <ChevronDown className={cn("ml-auto h-4 w-4 transition-transform", expandedGroup === item.label && "rotate-180")} aria-hidden="true" />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-1 pt-1">
-                {item.children.map(child => navLink(child, true))}
-              </CollapsibleContent>
-            </Collapsible>
-          ) : navLink({ label: item.label, href: item.href!, icon: item.icon }))}
+        <nav aria-label="Admin navigation" className="-mx-1 flex flex-1 flex-col gap-0.5 overflow-y-auto px-1">
+          {navLink(overview)}
+          {sections.map(section => <div key={section.label} className="flex flex-col gap-0.5">
+            <p className="px-2.5 pb-1.5 pt-3.5 font-mono text-[11px] uppercase tracking-[0.06em] text-subtle">{section.label}</p>
+            {section.items.map(item => navLink(item))}
+          </div>)}
         </nav>
-        <div className="space-y-3 border-t p-4">
-          <Button variant="outline" asChild className="w-full justify-between"><Link href="/">View website<ArrowUpRight className="h-4 w-4" /></Link></Button>
-          <div className="flex items-center gap-3 px-1">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold">{session?.user?.name?.charAt(0)?.toUpperCase() || "A"}</div>
+        <div className="flex flex-col gap-3 border-t border-border/60 pt-3">
+          <div className="flex items-center gap-2.5 px-1.5">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-[13px] font-semibold">{session?.user?.name?.charAt(0)?.toUpperCase() || "A"}</span>
             <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{session?.user?.name || "Administrator"}</p><p className="truncate text-xs text-muted-foreground">{session?.user?.email}</p></div>
-            <Button variant="ghost" size="icon" aria-label="Sign out" onClick={() => signOut({ callbackUrl: "/" })}><LogOut className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 text-muted-foreground" aria-label="Sign out" title="Sign out" onClick={() => signOut({ callbackUrl: "/" })}><LogOut className="h-4 w-4" /></Button>
           </div>
+          <div className="flex items-center justify-between px-1.5 text-sm text-muted-foreground"><span>Appearance</span><ThemeToggle /></div>
         </div>
       </div>
     )
@@ -93,15 +94,13 @@ function AdminWorkspace({ children }: { children: ReactNode }) {
   return (
     <>
       <Sidebar>{sidebar()}</Sidebar>
-      <div className="min-h-screen min-w-0 flex-1 bg-muted/20">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 px-4 backdrop-blur sm:px-8">
-          <div className="flex items-center gap-3">
-            <SidebarTrigger aria-label="Toggle admin navigation" />
-            <span className="text-sm text-muted-foreground">Workspace</span><span className="text-muted-foreground/50">/</span><span className="text-sm font-medium">{current?.label || "Admin"}</span>
-          </div>
-          <ThemeToggle />
+      <div className="min-h-screen min-w-0 flex-1 bg-sunken">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur md:hidden">
+          <SidebarTrigger aria-label="Open admin navigation" />
+          <span className="text-sm text-muted-foreground">Admin</span><span className="text-muted-foreground/50">/</span><span className="truncate text-sm font-medium">{current?.label || "Workspace"}</span>
         </header>
-        <div className="min-w-0 px-2 py-4 sm:px-4 sm:py-6">{children}</div>
+        <div className="hidden md:block"><SidebarTrigger aria-label="Toggle admin navigation" className="m-3 mb-0 text-muted-foreground" /></div>
+        <div className="min-w-0 px-2 pb-14 pt-4 sm:px-6 md:pt-1 lg:px-8">{children}</div>
       </div>
     </>
   )
