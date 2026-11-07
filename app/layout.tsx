@@ -24,7 +24,7 @@
 // }) {
 //   return (
 //     <html lang="en" suppressHydrationWarning>
-//       <body className={inter.className}>
+//       <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
 //         <Providers>
 //           <PageLoader />
 //           {/* Shooting stars background */}
@@ -65,7 +65,7 @@
 // }) {
 //   return (
 //     <html lang="en" suppressHydrationWarning>
-//       <body className={inter.className}>
+//       <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
 //         <Providers>
 //           <PageLoader />
 //           <ConditionalLayout>
@@ -80,19 +80,14 @@
 import './globals.css'
 import type React from "react"
 import type { Metadata } from "next"
-import localFont from "next/font/local"
+import { Geist, Geist_Mono } from "next/font/google"
 import { Providers } from "@/components/providers"
 import { Toaster } from "@/components/ui/sonner"
 import { ConditionalLayout } from "@/components/conditional-layout"
 import { Analytics } from '@vercel/analytics/next'
 
-const inter = localFont({
-  src: [
-    { path: "../fonts/Inter-Regular.ttf", weight: "400", style: "normal" },
-    { path: "../fonts/Inter-Bold.ttf", weight: "700", style: "normal" },
-  ],
-  display: "swap",
-})
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" })
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" })
 
 export const metadata: Metadata = {
   title: "Epoch - Innovation & Learning",
@@ -108,7 +103,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
         <Providers>
           <ConditionalLayout>
             {children}

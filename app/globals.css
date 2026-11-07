@@ -3,66 +3,96 @@
 @tailwind utilities;
 
 @layer base {
+  /* Epoch redesign palette: neutral ink on off-white, one blue accent. */
   :root {
-    --background: 300 50% 98%;
-    --foreground: 270 20% 15%;
+    --background: 60 14% 98%; /* #FBFBFA */
+    --foreground: 217 22% 7%; /* #0E1116 */
 
     --card: 0 0% 100%;
-    --card-foreground: 270 20% 15%;
+    --card-foreground: 217 22% 7%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 270 20% 15%;
+    --popover-foreground: 217 22% 7%;
 
-    --primary: 280 60% 40%; /* Deep purple */
+    --primary: 224 75% 48%; /* #1F4FD8 */
     --primary-foreground: 0 0% 100%;
+    --primary-text: 224 75% 48%;
+    --primary-soft: 224 78% 96%; /* #EEF2FD */
 
-    --secondary: 330 40% 95%; /* Light pinkish background */
-    --secondary-foreground: 330 40% 25%;
+    --secondary: 60 7% 94%; /* #F0F0EE */
+    --secondary-foreground: 217 22% 7%;
 
-    --muted: 300 30% 95%;
-    --muted-foreground: 270 10% 40%;
+    --muted: 60 7% 94%;
+    --muted-foreground: 220 11% 33%; /* #4A505C */
+    --subtle: 220 9% 46%; /* #6B7280 */
 
-    --accent: 330 70% 50%; /* Vibrant pink */
-    --accent-foreground: 0 0% 100%;
+    --accent: 60 7% 94%;
+    --accent-foreground: 217 22% 7%;
 
-    --destructive: 0 85% 65%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 300 30% 90%;
-    --input: 300 30% 90%;
-    --ring: 280 60% 40%;
+    --success: 145 73% 28%; /* #137A3F */
+    --success-soft: 143 47% 94%; /* #E9F6EE */
 
-    --radius: 0.5rem;
+    --surface-sunken: 60 9% 96%; /* #F6F6F4 */
+    --panel: 217 22% 7%; /* code and call-to-action panels */
+    --panel-foreground: 220 10% 92%;
+
+    --border: 60 6% 90%; /* #E7E7E4 */
+    --input: 220 9% 86%; /* #D9DBDF */
+    --ring: 224 75% 48%;
+
+    --radius: 0.625rem;
+
+    --sidebar-background: var(--card);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--secondary);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
   }
 
   .dark {
-    --background: 270 25% 10%; /* Dark purple */
-    --foreground: 300 30% 95%;
+    --background: 216 19% 5%; /* #0B0D10 */
+    --foreground: 220 10% 94%; /* #EDEEF0 */
 
-    --card: 270 30% 12%;
-    --card-foreground: 300 30% 95%;
+    --card: 218 17% 9%; /* #13161B */
+    --card-foreground: 220 10% 94%;
 
-    --popover: 270 30% 12%;
-    --popover-foreground: 300 30% 95%;
+    --popover: 218 17% 9%;
+    --popover-foreground: 220 10% 94%;
 
-    --primary: 280 80% 65%; /* Brighter purple for contrast */
-    --primary-foreground: 270 20% 10%;
+    --primary: 226 71% 55%; /* #3A60DE */
+    --primary-foreground: 0 0% 100%;
+    --primary-text: 226 100% 78%; /* #8EA8FF */
+    --primary-soft: 224 42% 18%; /* #1A2440 */
 
-    --secondary: 330 20% 20%; /* Muted pinkish gray */
-    --secondary-foreground: 330 70% 90%;
+    --secondary: 218 16% 14%; /* #1E2229 */
+    --secondary-foreground: 220 10% 94%;
 
-    --muted: 270 15% 20%;
-    --muted-foreground: 300 15% 70%;
+    --muted: 218 16% 14%;
+    --muted-foreground: 219 10% 67%; /* #A3A9B4 */
+    --subtle: 219 8% 59%; /* #8F95A0 */
 
-    --accent: 330 70% 60%; /* Bright pink */
-    --accent-foreground: 0 0% 100%;
+    --accent: 218 16% 14%;
+    --accent-foreground: 220 10% 94%;
 
-    --destructive: 0 60% 45%;
+    --destructive: 0 63% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 20% 25%;
-    --input: 270 20% 25%;
-    --ring: 330 70% 60%;
+    --success: 145 70% 67%; /* #6EE7A0 */
+    --success-soft: 144 39% 12%; /* #12291C */
+
+    --surface-sunken: 216 19% 5%;
+    --panel: 218 19% 12%; /* #181C23 */
+    --panel-foreground: 220 10% 92%;
+
+    --border: 218 14% 16%; /* #23272E */
+    --input: 220 12% 24%; /* #363B45 */
+    --ring: 226 100% 78%;
   }
 }
 
@@ -71,7 +101,13 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .kicker {
+    @apply font-mono text-xs font-normal uppercase tracking-[0.08em] text-muted-foreground;
   }
 }
 
@@ -283,4 +319,22 @@
 
 .prose th {
   @apply bg-muted font-semibold;
+}
+
+/* Infinity loader: a gradient trail travelling around the Epoch mark. */
+.infinity-loader-trail {
+  stroke-dasharray: 32 68;
+  animation: infinity-loader 1.6s linear infinite;
+}
+
+@keyframes infinity-loader {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infinity-loader-trail {
+    animation-duration: 4s;
+  }
 }

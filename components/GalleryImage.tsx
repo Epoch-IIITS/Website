@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import { useEffect } from "react";
 
 interface GalleryImageProps {
   src: string;
@@ -21,10 +20,6 @@ export default function GalleryImage({
   width,
   height,
 }: GalleryImageProps) {
-  useEffect(() => {
-    console.log("Image src:", src);
-  }, [src]);
-
   const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
     target.src = "/placeholder.svg?height=200&width=300&text=No+Image";

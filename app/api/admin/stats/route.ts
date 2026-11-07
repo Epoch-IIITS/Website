@@ -35,6 +35,7 @@ export async function GET() {
       upcomingRSVPs,
       totalGalleries,
       totalUsers,
+      totalAdmins,
       totalQueries,
     ] = await Promise.all([
       Blog.countDocuments(),
@@ -46,6 +47,7 @@ export async function GET() {
       RSVP.countDocuments({ event: { $in: upcomingEventIds } }),
       Gallery.countDocuments(),
       User.countDocuments(),
+      User.countDocuments({ role: "admin" }),
       ContactQuery.countDocuments(),
     ])
 
@@ -73,6 +75,7 @@ export async function GET() {
       },
       users: {
         total: totalUsers,
+        admins: totalAdmins,
       },
     }
 

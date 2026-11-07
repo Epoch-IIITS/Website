@@ -64,20 +64,20 @@ export function EventGallery({ images, eventName }: { images: EventPhoto[]; even
 
   return (
     <>
-      <div className="columns-1 gap-4 space-y-4 md:columns-2 lg:columns-3">
+      <div className="grid grid-flow-dense grid-cols-2 gap-3 md:grid-cols-4">
         {images.map((photo, index) => (
           <button
             key={`${photo.url}-${index}`}
             type="button"
             aria-label={`Open photo ${index + 1} of ${images.length}${photo.caption ? `: ${photo.caption}` : ""}`}
             aria-haspopup="dialog"
-            className="group relative block w-full break-inside-avoid overflow-hidden rounded-lg border bg-card text-left transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className={`group relative block w-full cursor-zoom-in overflow-hidden rounded-xl bg-secondary text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${index === 0 && images.length > 4 ? "col-span-2 row-span-2" : ""}`}
             onClick={event => {
               opener.current = event.currentTarget
               setActiveIndex(index)
             }}
           >
-            <GalleryImage src={photo.url || "/placeholder.svg"} alt={photo.caption || `${eventName} — photo ${index + 1}`} aspect="aspect-[4/3]" />
+            <GalleryImage src={photo.url || "/placeholder.svg"} alt={photo.caption || `${eventName} — photo ${index + 1}`} aspect="aspect-[4/3]" className="h-full" />
             {photo.caption && (
               <span className="absolute inset-x-0 bottom-0 break-words bg-black/60 p-3 text-sm leading-relaxed text-white">
                 <span className="line-clamp-3">{photo.caption}</span>

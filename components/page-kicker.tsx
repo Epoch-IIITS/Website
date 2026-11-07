@@ -4,15 +4,16 @@ import { cn } from "@/lib/utils";
 export function PageKicker({
   children,
   className,
+  as: Tag = "h1",
 }: {
   children: ReactNode;
   className?: string;
+  /** Use "p" when the page renders its own h1 title below the kicker. */
+  as?: "h1" | "p";
 }) {
   return (
     <header className={cn("mb-12", className)}>
-      <h1 className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-        {children}
-      </h1>
+      <Tag className="kicker">{children}</Tag>
     </header>
   );
 }
